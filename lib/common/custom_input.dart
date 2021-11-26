@@ -18,17 +18,17 @@ class CustomOutLineInput extends StatefulWidget {
   final bool? isDisable;
   final bool? isSecure;
   CustomOutLineInput(
-      {this.statusTypeInput: StatusTypeInput.VALID,
-      this.controller,
+      {this.statusTypeInput = StatusTypeInput.VALID,
+      required this.controller,
       this.validator,
-      this.backgroundColorLabel: CustomColor.white,
-      this.textInputType: TextInputType.text,
-      @required this.isDisable,
-      this.isSecure: false,
+      this.backgroundColorLabel = CustomColor.white,
+      this.textInputType = TextInputType.text,
+      required this.isDisable,
+      this.isSecure = false,
       this.nextNode,
-      @required this.focusNode,
-      @required this.deviceSize,
-      @required this.labelText});
+      required this.focusNode,
+      required this.deviceSize,
+      required this.labelText});
 
   @override
   _CustomOutLineInputState createState() => _CustomOutLineInputState();
@@ -76,6 +76,9 @@ class _CustomOutLineInputState extends State<CustomOutLineInput> {
         colorLabel = CustomColor.blue;
       });
     } else {
+      if (widget.controller == null) {
+        return;
+      }
       if (widget.controller!.text.isEmpty) {
         setStateIfMounted(() {
           colorBorder = Colors.red;
@@ -113,7 +116,8 @@ class _CustomOutLineInputState extends State<CustomOutLineInput> {
                 child: Center(
                   child: TextFormField(
                     obscureText: widget.isSecure!,
-                    validator: widget.validator!(),
+                    validator:
+                        widget.validator == null ? null : widget.validator!(),
                     maxLines: 1,
                     keyboardType: widget.textInputType,
                     style: TextStyle(color: colorLabel, fontSize: 16),
@@ -123,13 +127,14 @@ class _CustomOutLineInputState extends State<CustomOutLineInput> {
                         : TextInputAction.done,
                     onFieldSubmitted: (term) {
                       widget.focusNode!.unfocus();
-                      if (widget.nextNode != null)
+                      if (widget.nextNode != null) {
                         FocusScope.of(context).requestFocus(widget.nextNode);
+                      }
                     },
                     controller: widget.controller,
                     focusNode: widget.focusNode,
                     cursorColor: CustomColor.blue,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       border: InputBorder.none,
                       focusedBorder: InputBorder.none,
                       enabledBorder: InputBorder.none,

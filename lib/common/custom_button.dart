@@ -10,15 +10,15 @@ class CustomButton extends StatelessWidget {
   final Color? textColor;
   final String? text;
   final bool? isLoading;
-  CustomButton(
-      {@required this.height,
-      @required this.text,
-      @required this.width,
-      @required this.onPressFunction,
-      @required this.isLoading,
-      @required this.textColor,
-      @required this.buttonColor,
-      @required this.borderRadius});
+  const CustomButton(
+      {required this.height,
+      required this.text,
+      required this.width,
+      required this.onPressFunction,
+      required this.isLoading,
+      required this.textColor,
+      required this.buttonColor,
+      required this.borderRadius});
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,7 @@ class CustomButton extends StatelessWidget {
         isLoading: isLoading,
         textColor: textColor!,
         fontSize: 16,
-        onPressFunction: onPressFunction!,
+        onPressFunction: null ?? onPressFunction,
       ),
     );
   }
