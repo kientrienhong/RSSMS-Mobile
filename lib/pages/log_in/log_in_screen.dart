@@ -1,3 +1,8 @@
+import 'package:rssms/constants/constants.dart' as constant;
+import 'package:rssms/pages/customers/bottom_navigation/custom_bottom_navigation.dart';
+import 'package:rssms/pages/customers/cart/cart_screen.dart';
+import 'package:rssms/pages/customers/notification/notification_screen.dart';
+import 'package:rssms/pages/customers/profile/profile_screen.dart';
 import 'package:rssms/pages/log_in/widget/button_icon.dart';
 
 import '/common/background.dart';
@@ -129,14 +134,26 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
   @override
   void onClickSignIn(String email, String password) async {
     try {
-      User user = Provider.of<User>(context, listen: false);
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => const CustomBottomNavigation(
+                  listIndexStack: [
+                    ProfileScreen(),
+                    CartScreen(),
+                    NotificationScreen(),
+                  ],
+                  listNavigator: constant.LIST_CUSTOMER_BOTTOM_NAVIGATION,
+                )),
+      );
+      // User user = Provider.of<User>(context, listen: false);
 
-      final result = await loginPresenter.handleSignIn(email, password);
-      if (result != null) {
-        user.setUser(user: result);
-        if (_model.user.role == UserRole.customer) {
-        } else {}
-      }
+      // final result = await loginPresenter.handleSignIn(email, password);
+      // if (result != null) {
+      //   user.setUser(user: result);
+      //   if (_model.user.role == UserRole.customer) {
+      //   } else {}
+      // }
     } catch (e) {
       loginPresenter.view.updateViewErrorMsg('Tài khoản / mật khẩu không đúng');
     }
