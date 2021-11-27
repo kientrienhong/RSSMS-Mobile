@@ -1,3 +1,5 @@
+import 'package:rssms/pages/log_in/widget/button_icon.dart';
+
 import '/common/background.dart';
 import '/common/custom_button.dart';
 import '/common/custom_color.dart';
@@ -33,7 +35,7 @@ class LogInScreen extends StatelessWidget {
                     children: [
                       CustomSizedBox(
                         context: context,
-                        height: 152,
+                        height: 120,
                       ),
                       Image.asset('assets/images/logo.png'),
                       CustomSizedBox(
@@ -47,7 +49,7 @@ class LogInScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             CustomText(
-                                text: 'Haven\'t had account yet?',
+                                text: 'Chưa có tài khoản?',
                                 color: CustomColor.black,
                                 context: context,
                                 fontWeight: FontWeight.bold,
@@ -65,7 +67,7 @@ class LogInScreen extends StatelessWidget {
                                 // );
                               },
                               child: CustomText(
-                                  text: 'Sign up',
+                                  text: 'Đăng ký',
                                   color: CustomColor.purple,
                                   context: context,
                                   fontWeight: FontWeight.bold,
@@ -136,7 +138,7 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
         } else {}
       }
     } catch (e) {
-      loginPresenter.view.updateViewErrorMsg('Invalid username / password');
+      loginPresenter.view.updateViewErrorMsg('Tài khoản / mật khẩu không đúng');
     }
   }
 
@@ -194,7 +196,7 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
           ),
           CustomOutLineInput(
             deviceSize: widget.deviceSize,
-            labelText: 'Password',
+            labelText: 'Mật khẩu',
             isDisable: false,
             isSecure: true,
             focusNode: _focusNodePassword,
@@ -214,12 +216,40 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
             ),
           CustomSizedBox(
             context: context,
-            height: 40,
+            height: 24,
+          ),
+          ButtonIcon(
+              height: 18,
+              url: 'assets/images/google.png',
+              text: 'Đăng nhập bằng Google',
+              width: double.infinity,
+              onPressFunction: () {},
+              isLoading: _model.isLoading,
+              textColor: CustomColor.white,
+              buttonColor: const Color(0xFFE16259),
+              borderRadius: 6),
+          CustomSizedBox(
+            context: context,
+            height: 8,
+          ),
+          ButtonIcon(
+              height: 18,
+              url: 'assets/images/facebook.png',
+              text: 'Đăng nhập bằng Facebook',
+              width: double.infinity,
+              onPressFunction: () {},
+              isLoading: _model.isLoading,
+              textColor: CustomColor.white,
+              buttonColor: const Color(0xFF1877F2),
+              borderRadius: 6),
+          CustomSizedBox(
+            context: context,
+            height: 8,
           ),
           CustomButton(
-              height: 32,
+              height: 18,
               isLoading: _model.isLoading,
-              text: 'Sign in',
+              text: 'Đăng nhập',
               width: double.infinity,
               textColor: CustomColor.white,
               onPressFunction: _model.isDisableLogin == false
@@ -228,7 +258,7 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
               buttonColor: _model.isDisableLogin == false
                   ? CustomColor.purple
                   : CustomColor.black[3],
-              borderRadius: 4),
+              borderRadius: 6),
         ],
       ),
     );

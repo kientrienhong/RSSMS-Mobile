@@ -98,90 +98,84 @@ class _CustomOutLineInputState extends State<CustomOutLineInput> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: widget.statusTypeInput != StatusTypeInput.INVALID
-          ? widget.deviceSize!.height / 9.5
-          : widget.deviceSize!.height / 7,
-      width: widget.deviceSize!.width,
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Stack(
-          overflow: Overflow.visible,
-          children: [
-            Container(
-                height: widget.deviceSize!.height / 13,
-                padding: const EdgeInsets.only(left: 16, top: 4, bottom: 2),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(4),
-                    border: Border.all(color: colorBorder, width: 1)),
-                child: Center(
-                  child: TextFormField(
-                    obscureText: widget.isSecure!,
-                    validator:
-                        widget.validator == null ? null : widget.validator!(),
-                    maxLines: 1,
-                    keyboardType: widget.textInputType,
-                    style: TextStyle(color: colorLabel, fontSize: 16),
-                    enabled: !widget.isDisable!,
-                    textInputAction: widget.nextNode != null
-                        ? TextInputAction.next
-                        : TextInputAction.done,
-                    onFieldSubmitted: (term) {
-                      widget.focusNode!.unfocus();
-                      if (widget.nextNode != null) {
-                        FocusScope.of(context).requestFocus(widget.nextNode);
-                      }
-                    },
-                    controller: widget.controller,
-                    focusNode: widget.focusNode,
-                    cursorColor: CustomColor.blue,
-                    decoration: const InputDecoration(
-                      border: InputBorder.none,
-                      focusedBorder: InputBorder.none,
-                      enabledBorder: InputBorder.none,
-                      errorBorder: InputBorder.none,
-                      disabledBorder: InputBorder.none,
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      CustomText(
+          text: widget.labelText!,
+          color: CustomColor.black,
+          context: context,
+          fontSize: 16),
+      CustomSizedBox(context: context, height: 8),
+      Container(
+        height: widget.statusTypeInput != StatusTypeInput.INVALID
+            ? widget.deviceSize!.height / 9.5
+            : widget.deviceSize!.height / 7,
+        width: widget.deviceSize!.width,
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Stack(
+            overflow: Overflow.visible,
+            children: [
+              Container(
+                  height: widget.deviceSize!.height / 15,
+                  padding: const EdgeInsets.only(left: 16, top: 4, bottom: 2),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(4),
+                      border: Border.all(color: colorBorder, width: 1)),
+                  child: Center(
+                    child: TextFormField(
+                      obscureText: widget.isSecure!,
+                      validator:
+                          widget.validator == null ? null : widget.validator!(),
+                      maxLines: 1,
+                      keyboardType: widget.textInputType,
+                      style: TextStyle(color: colorLabel, fontSize: 16),
+                      enabled: !widget.isDisable!,
+                      textInputAction: widget.nextNode != null
+                          ? TextInputAction.next
+                          : TextInputAction.done,
+                      onFieldSubmitted: (term) {
+                        widget.focusNode!.unfocus();
+                        if (widget.nextNode != null) {
+                          FocusScope.of(context).requestFocus(widget.nextNode);
+                        }
+                      },
+                      controller: widget.controller,
+                      focusNode: widget.focusNode,
+                      cursorColor: CustomColor.blue,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        focusedBorder: InputBorder.none,
+                        enabledBorder: InputBorder.none,
+                        errorBorder: InputBorder.none,
+                        disabledBorder: InputBorder.none,
+                      ),
                     ),
-                  ),
-                )),
-            Positioned(
-              top: -widget.deviceSize!.height / 55,
-              left: 16,
-              child: Container(
-                color: widget.backgroundColorLabel,
-                padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-                child: CustomText(
-                  text: widget.labelText!,
-                  color: colorLabel,
+                  )),
+            ],
+          ),
+          if (widget.statusTypeInput == StatusTypeInput.INVALID)
+            CustomSizedBox(
+              context: context,
+              height: 8,
+            ),
+          if (widget.statusTypeInput == StatusTypeInput.INVALID)
+            CustomText(
+              text: '* Required',
+              color: Colors.red,
+              context: context,
+              textAlign: TextAlign.start,
+              fontSize: 14,
+            ),
+          widget.statusTypeInput == StatusTypeInput.INVALID
+              ? CustomSizedBox(
                   context: context,
-                  fontSize: 14,
+                  height: 8,
+                )
+              : CustomSizedBox(
+                  context: context,
+                  height: 4,
                 ),
-              ),
-            )
-          ],
-        ),
-        if (widget.statusTypeInput == StatusTypeInput.INVALID)
-          CustomSizedBox(
-            context: context,
-            height: 8,
-          ),
-        if (widget.statusTypeInput == StatusTypeInput.INVALID)
-          CustomText(
-            text: '* Required',
-            color: Colors.red,
-            context: context,
-            textAlign: TextAlign.start,
-            fontSize: 14,
-          ),
-        widget.statusTypeInput == StatusTypeInput.INVALID
-            ? CustomSizedBox(
-                context: context,
-                height: 8,
-              )
-            : CustomSizedBox(
-                context: context,
-                height: 4,
-              ),
-      ]),
-    );
+        ]),
+      ),
+    ]);
   }
 }

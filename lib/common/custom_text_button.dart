@@ -1,34 +1,32 @@
 import '/common/custom_text.dart';
 import 'package:flutter/material.dart';
 
-class CustomTextButton extends TextButton {
+class CustomTextButton extends Container {
   final String text;
   final Color textColor;
   final BuildContext context;
   final int fontSize;
-  final VoidCallback? onPressFunction;
-  final isLoading;
+  final bool isLoading;
   CustomTextButton(
       {required this.text,
       required this.isLoading,
       required this.textColor,
       required this.context,
-      required this.onPressFunction,
       required this.fontSize})
       : super(
-            child: isLoading == true
-                ? SizedBox(
-                    height: 16,
-                    width: 16,
-                    child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                    ),
-                  )
-                : CustomText(
-                    text: text,
-                    fontWeight: FontWeight.bold,
-                    color: textColor,
-                    context: context,
-                    fontSize: fontSize),
-            onPressed: isLoading == false ? onPressFunction : () {});
+          child: isLoading == true
+              ? const SizedBox(
+                  height: 16,
+                  width: 16,
+                  child: CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                  ),
+                )
+              : CustomText(
+                  text: text,
+                  fontWeight: FontWeight.bold,
+                  color: textColor,
+                  context: context,
+                  fontSize: fontSize),
+        );
 }

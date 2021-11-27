@@ -9,7 +9,7 @@ class CustomButton extends StatelessWidget {
   final VoidCallback? onPressFunction;
   final Color? textColor;
   final String? text;
-  final bool? isLoading;
+  final bool isLoading;
   const CustomButton(
       {required this.height,
       required this.text,
@@ -18,23 +18,32 @@ class CustomButton extends StatelessWidget {
       required this.isLoading,
       required this.textColor,
       required this.buttonColor,
-      required this.borderRadius});
+      required this.borderRadius,
+      Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: height,
-      width: width,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(borderRadius!),
-          color: buttonColor),
-      child: CustomTextButton(
-        context: context,
-        text: text!,
-        isLoading: isLoading,
-        textColor: textColor!,
-        fontSize: 16,
-        onPressFunction: null ?? onPressFunction,
+    final heightMockUp = 896;
+    final widthMockUp = 414;
+
+    return GestureDetector(
+      onTap: null ?? onPressFunction,
+      child: Container(
+        height: MediaQuery.of(context).size.height * (height! / widthMockUp),
+        width: width,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(borderRadius!),
+            color: buttonColor),
+        child: Center(
+          child: CustomTextButton(
+            context: context,
+            text: text!,
+            isLoading: isLoading,
+            textColor: textColor!,
+            fontSize: 16,
+          ),
+        ),
       ),
     );
   }
