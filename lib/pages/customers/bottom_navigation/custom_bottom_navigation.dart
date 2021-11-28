@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rssms/common/custom_color.dart';
+import 'package:rssms/views/custom_bottom_navigation_view.dart';
 
 class CustomBottomNavigation extends StatefulWidget {
   final List<dynamic>? listNavigator;
@@ -12,7 +13,8 @@ class CustomBottomNavigation extends StatefulWidget {
   _CustomBottomNavigationState createState() => _CustomBottomNavigationState();
 }
 
-class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
+class _CustomBottomNavigationState extends State<CustomBottomNavigation>
+    implements CustomBottomNavigationView {
   int _index = 0;
 
   @override
@@ -21,7 +23,8 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
     _index = 0;
   }
 
-  void _tapTab(int index) {
+  @override
+  void onChangeTab(int index) {
     setState(() {
       _index = index;
     });
@@ -48,7 +51,7 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
         items: mapListBottomNavigationBarItem(),
         currentIndex: _index,
         selectedItemColor: CustomColor.white,
-        onTap: _tapTab,
+        onTap: onChangeTab,
       ),
       body: Stack(
         children: [
