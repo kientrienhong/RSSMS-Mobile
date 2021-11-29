@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rssms/common/custom_color.dart';
+import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/pages/customers/cart/tabs/handy_tab.dart';
 import 'package:rssms/pages/customers/cart/tabs/self_storage_tab.dart';
 import 'package:rssms/pages/customers/cart/widgets/product_widget.dart';
@@ -51,29 +52,22 @@ class _DoorToDoorTabState extends State<DoorToDoorTab>
           .toList();
     }
 
-    // return Container(
-    //   color: CustomColor.black,
-    //   width: deviceSize.width,
-    //   height: deviceSize.height,
-    //   child: Column(
-    //     children: [
-    //       SizedBox(
-    //         height: deviceSize.height / 6,
-    //         width: deviceSize.width * 1 / 3,
-    //         child: Row(
-    //           mainAxisAlignment: MainAxisAlignment.spaceAround,
-    //           children: mapListTab(),
-    //         ),
-    //       ),
-    //       ProductWidget(
-    //         product: listProduct[0],
-    //       )
-    //       // _index == 0 ? HandyTab() : SelfStorageTab()
-    //     ],
-    //   ),
-    // );
-    return ProductWidget(
-      product: listProduct[0],
+    return SizedBox(
+      width: deviceSize.width,
+      height: deviceSize.height,
+      child: ListView(
+        children: [
+          CustomSizedBox(
+            context: context,
+            height: 16,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: mapListTab(),
+          ),
+          _index == 0 ? HandyTab() : SelfStorageTab()
+        ],
+      ),
     );
   }
 }

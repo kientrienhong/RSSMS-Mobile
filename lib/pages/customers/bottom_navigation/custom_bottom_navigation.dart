@@ -43,6 +43,7 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: CustomColor.white,
       resizeToAvoidBottomInset: true,
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: CustomColor.blue,
