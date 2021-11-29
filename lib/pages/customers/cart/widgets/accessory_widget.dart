@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
+import 'package:rssms/pages/customers/cart/widgets/info_pop_up.dart';
 import 'package:rssms/pages/customers/cart/widgets/quantity_widget.dart';
 import 'package:rssms/views/product_view.dart';
 
@@ -57,9 +58,20 @@ class _AccessoryWidgetState extends State<AccessoryWidget>
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              Container(
-                  margin: const EdgeInsets.only(right: 8, top: 8),
-                  child: Image.asset('assets/images/info.png')),
+              GestureDetector(
+                onTap: () {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return InfoPopUp(
+                          product: widget.product,
+                        );
+                      });
+                },
+                child: Container(
+                    margin: const EdgeInsets.only(right: 8, top: 8),
+                    child: Image.asset('assets/images/info.png')),
+              ),
             ],
           ),
           SizedBox(
