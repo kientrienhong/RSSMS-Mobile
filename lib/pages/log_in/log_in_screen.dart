@@ -4,6 +4,7 @@ import 'package:rssms/pages/customers/cart/cart_screen.dart';
 import 'package:rssms/pages/customers/notification/notification_screen.dart';
 import 'package:rssms/pages/customers/profile/profile_screen.dart';
 import 'package:rssms/pages/log_in/widget/button_icon.dart';
+import 'package:rssms/pages/sign_up/sign_up_screen.dart';
 
 import '/common/background.dart';
 import '/common/custom_button.dart';
@@ -65,11 +66,11 @@ class LogInScreen extends StatelessWidget {
                             ),
                             GestureDetector(
                               onTap: () {
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //       builder: (context) => SignUpScreen()),
-                                // );
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => SignUpScreen()),
+                                );
                               },
                               child: CustomText(
                                   text: 'Đăng ký',

@@ -1,30 +1,28 @@
-import 'dart:convert';
+import 'package:rssms/models/signup_model.dart';
+import 'package:rssms/views/signup_view.dart';
 
-import '/api/firebase_services.dart';
-
-import '/api/api_services.dart';
 import '/models/entity/user.dart';
-import '/models/login_model.dart';
-import '/views/login_view.dart';
 
-class LoginPresenter {
-  LoginModel? _model;
-  LoginView? _view;
-  
-  LoginView get view => _view!;
+class SignUpPresenter {
+  SignUpModel? _model;
+  SignUpView? _view;
 
-  setView(LoginView value) {
+  SignUpView get view => _view!;
+
+  setView(SignUpView value) {
     _view = value;
   }
 
-  LoginModel get model => _model!;
+  SignUpModel get model => _model!;
 
-  LoginPresenter() {
-    _model = LoginModel();
+  SignUpPresenter() {
+    _model = SignUpModel();
   }
 
-  void handleOnChangeInput(String email, String password) {
-    _view!.updateViewStatusButton(email, password);
+  void handleOnChangeInput(String email, String password,
+      String confirmPassword, String firstname, String lastname, String phone) {
+    _view!.updateViewStatusButton(
+        email, password, confirmPassword, firstname, lastname, phone);
   }
 
   Future<User?> handleSignIn(String email, String password) async {
