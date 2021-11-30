@@ -28,9 +28,9 @@ class CartTab extends StatelessWidget {
               color: Colors.transparent,
               boxShadow: [
                 BoxShadow(
-                  color: Colors.grey.withOpacity(0.1),
+                  color: CustomColor.black[2]!,
                   spreadRadius: 3,
-                  blurRadius: 16,
+                  blurRadius: 24,
                   offset: Offset(0, 0), // changes position of shadow
                 ),
               ],
