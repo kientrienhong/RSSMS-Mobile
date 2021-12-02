@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/pages/customers/cart/tabs/handy_tab.dart';
 import 'package:rssms/pages/customers/cart/tabs/self_storage_tab.dart';
-import 'package:rssms/pages/customers/cart/widgets/product_widget.dart';
 import 'package:rssms/pages/customers/cart/widgets/title_tab.dart';
 import 'package:rssms/views/door_to_door_view.dart';
 import '../../../../constants/constants.dart' as constants;

@@ -38,7 +38,7 @@ class _CartScreenState extends State<CartScreen> implements CartScreenView {
     return Stack(
       children: [
         _index == 0 ? DoorToDoorTab() : SelfStorageTab(),
-        CartTab(deviceSize: deviceSize, index: _index, tapTab: onChangeTab)
+        CartTab(deviceSize: deviceSize, index: _index, tapTab: onChangeTab),
       ],
     );
   }
