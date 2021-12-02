@@ -6,7 +6,7 @@ import 'package:rssms/models/signup_model.dart';
 import 'package:rssms/pages/customers/bottom_navigation/custom_bottom_navigation.dart';
 import 'package:rssms/pages/customers/cart/cart_screen.dart';
 import 'package:rssms/pages/customers/notification/notification_screen.dart';
-import 'package:rssms/pages/customers/profile/profile_screen.dart';
+import 'package:rssms/pages/customers/my_account/profile/profile_screen.dart';
 import 'package:rssms/presenters/signup_presenters.dart';
 import 'package:rssms/views/signup_view.dart';
 
@@ -27,7 +27,7 @@ class SignUpScreen extends StatelessWidget {
         body: SingleChildScrollView(
           child: Container(
             width: deviceSize.width,
-            height: deviceSize.height * 1.4,
+            height: deviceSize.height * 1.5,
             child: Stack(
               clipBehavior: Clip.none,
               children: [
@@ -97,17 +97,6 @@ class _FormSignUpState extends State<FormSignUp> implements SignUpView {
   String get _firstname => _controllerEmail.text;
   String get _lastname => _controllerPassword.text;
   String get _birthdate => _controllerBirthDate.text;
-
-  _selectDate(
-      {required BuildContext context,
-      required DateTime initialDate,
-      required DateTime startDate}) async {
-    final DateTime? picked = await showDatePicker(
-        context: context,
-        initialDate: initialDate,
-        firstDate: startDate,
-        lastDate: DateTime(2022));
-  }
 
   @override
   void initState() {

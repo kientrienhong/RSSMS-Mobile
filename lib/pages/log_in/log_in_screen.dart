@@ -1,8 +1,8 @@
 import 'package:rssms/constants/constants.dart' as constant;
 import 'package:rssms/pages/customers/bottom_navigation/custom_bottom_navigation.dart';
 import 'package:rssms/pages/customers/cart/cart_screen.dart';
+import 'package:rssms/pages/customers/my_account/my_account.dart';
 import 'package:rssms/pages/customers/notification/notification_screen.dart';
-import 'package:rssms/pages/customers/profile/profile_screen.dart';
 import 'package:rssms/pages/log_in/widget/button_icon.dart';
 import 'package:rssms/pages/sign_up/sign_up_screen.dart';
 
@@ -12,12 +12,10 @@ import '/common/custom_color.dart';
 import '/common/custom_input.dart';
 import '/common/custom_sizebox.dart';
 import '/common/custom_text.dart';
-import '/models/entity/user.dart';
 import '/models/login_model.dart';
 import '/presenters/login_presenters.dart';
 import '/views/login_view.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class LogInScreen extends StatelessWidget {
   @override
@@ -140,7 +138,7 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
         MaterialPageRoute(
             builder: (context) => const CustomBottomNavigation(
                   listIndexStack: [
-                    ProfileScreen(),
+                    MyAccountScreen(),
                     CartScreen(),
                     NotificationScreen(),
                   ],

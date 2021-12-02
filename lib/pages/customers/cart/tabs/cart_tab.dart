@@ -19,10 +19,10 @@ class CartTab extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.only(
             bottom: 16,
-            left: deviceSize.width / 7,
+            left: deviceSize.width / 7, 
             right: deviceSize.width / 7),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(24),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(24),
           child: Container(
             decoration: BoxDecoration(
               color: Colors.transparent,

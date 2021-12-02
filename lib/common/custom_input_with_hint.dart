@@ -5,9 +5,8 @@ import 'package:flutter/material.dart';
 
 enum StatusTypeInput { VALID, INVALID, DISABLE }
 
-class CustomOutLineInputDateTime extends StatefulWidget {
+class CustomOutLineInputWithHint extends StatefulWidget {
   final Size? deviceSize;
-  final String? labelText;
   final FocusNode? focusNode;
   final FocusNode? nextNode;
   final Color? backgroundColorLabel;
@@ -17,8 +16,8 @@ class CustomOutLineInputDateTime extends StatefulWidget {
   Function? validator;
   final bool? isDisable;
   final bool? isSecure;
-  String icon;
-  CustomOutLineInputDateTime(
+  String? hintText;
+  CustomOutLineInputWithHint(
       {this.statusTypeInput = StatusTypeInput.VALID,
       required this.controller,
       this.validator,
@@ -27,16 +26,15 @@ class CustomOutLineInputDateTime extends StatefulWidget {
       required this.isDisable,
       this.isSecure = false,
       this.nextNode,
-      required this.icon,
       required this.focusNode,
       required this.deviceSize,
-      required this.labelText});
+      this.hintText});
 
   @override
   _CustomOutLineInputState createState() => _CustomOutLineInputState();
 }
 
-class _CustomOutLineInputState extends State<CustomOutLineInputDateTime> {
+class _CustomOutLineInputState extends State<CustomOutLineInputWithHint> {
   late Color colorBorder;
   late Color colorLabel;
   @override
@@ -101,21 +99,8 @@ class _CustomOutLineInputState extends State<CustomOutLineInputDateTime> {
   @override
   Widget build(BuildContext context) {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      if (widget.labelText!.isNotEmpty)
-        Column(
-          children: [
-            CustomText(
-                text: widget.labelText!,
-                color: CustomColor.black,
-                context: context,
-                fontSize: 16),
-            CustomSizedBox(context: context, height: 8),
-          ],
-        ),
       Container(
-        height: widget.statusTypeInput != StatusTypeInput.INVALID
-            ? widget.deviceSize!.height / 9.5
-            : widget.deviceSize!.height / 7,
+        height: widget.deviceSize!.height / 9.5,
         width: widget.deviceSize!.width,
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Stack(
@@ -129,21 +114,6 @@ class _CustomOutLineInputState extends State<CustomOutLineInputDateTime> {
                       border: Border.all(color: colorBorder, width: 1)),
                   child: Center(
                     child: TextFormField(
-                      onTap: () async {
-                        DateTime? date = DateTime(1900);
-                        FocusScope.of(context).requestFocus(new FocusNode());
-                        date = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(1900),
-                          lastDate: DateTime(2100),
-                        );
-                        widget.controller?.text = date!.day.toString() +
-                            "/" +
-                            date.month.toString() +
-                            "/" +
-                            date.year.toString();
-                      },
                       obscureText: widget.isSecure!,
                       validator:
                           widget.validator == null ? null : widget.validator!(),
@@ -164,10 +134,7 @@ class _CustomOutLineInputState extends State<CustomOutLineInputDateTime> {
                       focusNode: widget.focusNode,
                       cursorColor: CustomColor.blue,
                       decoration: InputDecoration(
-                        hintText: "dd/mm/yyyy",
-                        suffixIcon: Image.asset(
-                          widget.icon,
-                        ),
+                        hintText: widget.hintText,
                         border: InputBorder.none,
                         focusedBorder: InputBorder.none,
                         enabledBorder: InputBorder.none,
@@ -178,28 +145,6 @@ class _CustomOutLineInputState extends State<CustomOutLineInputDateTime> {
                   )),
             ],
           ),
-          if (widget.statusTypeInput == StatusTypeInput.INVALID)
-            CustomSizedBox(
-              context: context,
-              height: 8,
-            ),
-          if (widget.statusTypeInput == StatusTypeInput.INVALID)
-            CustomText(
-              text: '* Required',
-              color: Colors.red,
-              context: context,
-              textAlign: TextAlign.start,
-              fontSize: 14,
-            ),
-          widget.statusTypeInput == StatusTypeInput.INVALID
-              ? CustomSizedBox(
-                  context: context,
-                  height: 8,
-                )
-              : CustomSizedBox(
-                  context: context,
-                  height: 4,
-                ),
         ]),
       ),
     ]);
