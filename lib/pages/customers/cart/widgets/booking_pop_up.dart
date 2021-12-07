@@ -17,7 +17,8 @@ class _BookingPopUpState extends State<BookingPopUp>
     implements BookingPopUpView {
   final _dateDeliveryController = TextEditingController();
   final _dateReturnController = TextEditingController();
-
+  DateTime dateDelivery = DateTime.now();
+  DateTime dateReturn = DateTime.now();
   late int _currentIndex;
   late bool _isCustomerDelivery;
   late int _diffDate;
@@ -68,23 +69,49 @@ class _BookingPopUpState extends State<BookingPopUp>
 
   @override
   Widget build(BuildContext context) {
-    DateTime dateDelivery = DateTime.now();
-    DateTime dateReturn = DateTime.now();
-
     final deviceSize = MediaQuery.of(context).size;
-    _selectDate(BuildContext context, DateTime dateSelect,
-        TextEditingController textEditingController) async {
+
+    _selectDateReturn(BuildContext context) async {
       final DateTime? picked = await showDatePicker(
         context: context,
-        initialDate: dateSelect,
+        initialDate: dateReturn,
         firstDate: DateTime.now(),
         lastDate: DateTime(2025),
       );
-      if (picked != null && picked != dateSelect)
+      if (picked != null && picked != dateReturn) {
         setState(() {
-          dateSelect = picked;
-          textEditingController.text = picked.toIso8601String().split("T")[0];
+          dateReturn = picked;
+          _dateReturnController.text = picked.toIso8601String().split("T")[0];
         });
+        if (_dateDeliveryController.text.isNotEmpty &&
+            _dateReturnController.text.isNotEmpty) {
+          setState(() {
+            _diffDate = picked.difference(dateDelivery).inDays;
+          });
+        }
+      }
+    }
+
+    _selectDateDelivery(BuildContext context) async {
+      final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: dateDelivery,
+        firstDate: DateTime.now(),
+        lastDate: DateTime(2025),
+      );
+      if (picked != null && picked != dateDelivery) {
+        setState(() {
+          dateDelivery = picked;
+          _dateDeliveryController.text = picked.toIso8601String().split("T")[0];
+        });
+
+        if (_dateDeliveryController.text.isNotEmpty &&
+            _dateReturnController.text.isNotEmpty) {
+          setState(() {
+            _diffDate = dateReturn.difference(picked).inDays;
+          });
+        }
+      }
     }
 
     return AlertDialog(
@@ -126,8 +153,7 @@ class _BookingPopUpState extends State<BookingPopUp>
                       child: TextField(
                         controller: _dateDeliveryController,
                         onTap: () {
-                          _selectDate(
-                              context, dateDelivery, _dateDeliveryController);
+                          _selectDateDelivery(context);
                         },
                         style: const TextStyle(fontSize: 12),
                         textAlign: TextAlign.center,
@@ -224,8 +250,7 @@ class _BookingPopUpState extends State<BookingPopUp>
                       child: TextField(
                         controller: _dateReturnController,
                         onTap: () {
-                          _selectDate(
-                              context, dateReturn, _dateReturnController);
+                          _selectDateReturn(context);
                         },
                         style: const TextStyle(fontSize: 12),
                         textAlign: TextAlign.center,
