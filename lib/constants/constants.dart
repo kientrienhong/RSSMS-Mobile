@@ -4,6 +4,9 @@ const List<Map<String, String>> LIST_CUSTOMER_BOTTOM_NAVIGATION = [
   {'url': "assets/images/notification.png", 'label': 'Notification'},
 ];
 
+const DOOR_TO_DOOR_TAB = 0;
+const SELF_STORAGE_TAB = 0;
+
 const List<Map<String, String>> TAB_DOOR_TO_DOOR = [
   {"name": "Ít đồ"},
   {"name": "Nhiều đồ"}
