@@ -4,6 +4,7 @@ import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/pages/customers/cart/widgets/info_pop_up.dart';
 import 'package:rssms/pages/customers/cart/widgets/quantity_widget.dart';
+import 'package:rssms/views/accessory_view.dart';
 import 'package:rssms/views/product_view.dart';
 
 class AccessoryWidget extends StatefulWidget {
@@ -16,7 +17,7 @@ class AccessoryWidget extends StatefulWidget {
 }
 
 class _AccessoryWidgetState extends State<AccessoryWidget>
-    implements ProductView {
+    implements AccessoryView {
   @override
   void onAddQuantity() {
     Map<String, dynamic> tempProduct = {...widget.product!};
