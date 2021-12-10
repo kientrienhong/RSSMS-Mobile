@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/pages/customers/cart/tabs/cart_tab.dart';
 import 'package:rssms/pages/customers/cart/tabs/door_to_door_tab.dart';
 import 'package:rssms/pages/customers/cart/tabs/self_storage_tab.dart';
-import 'package:rssms/pages/customers/cart/widgets/product_widget.dart';
-import 'package:rssms/pages/customers/cart/widgets/title_tab.dart';
 import 'package:rssms/views/cart_screen_view.dart';
 import '../../../constants/constants.dart' as constants;
 
@@ -37,8 +34,10 @@ class _CartScreenState extends State<CartScreen> implements CartScreenView {
 
     return Stack(
       children: [
-        _index == 0 ? DoorToDoorTab() : SelfStorageTab(),
-        CartTab(deviceSize: deviceSize, index: _index, tapTab: onChangeTab)
+        _index == constants.DOOR_TO_DOOR_TAB
+            ? const DoorToDoorTab()
+            : const SelfStorageTab(),
+        CartTab(deviceSize: deviceSize, index: _index, tapTab: onChangeTab),
       ],
     );
   }

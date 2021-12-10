@@ -4,6 +4,9 @@ const List<Map<String, String>> LIST_CUSTOMER_BOTTOM_NAVIGATION = [
   {'url': "assets/images/notification.png", 'label': 'Notification'},
 ];
 
+const DOOR_TO_DOOR_TAB = 0;
+const SELF_STORAGE_TAB = 0;
+
 const List<Map<String, String>> TAB_DOOR_TO_DOOR = [
   {"name": "Ít đồ"},
   {"name": "Nhiều đồ"}
@@ -22,4 +25,12 @@ const List<Map<String, dynamic>> LIST_ACCESSORY = [
   {'url': 'assets/images/locker.png', 'name': 'Ổ khóa cao cấp', 'id': 6},
   {'url': 'assets/images/peFoam.png', 'name': 'Xốp hơi, xốp foam', 'id': 7},
   {'url': 'assets/images/PEstretchfilm.png', 'name': 'Màn quấn PE', 'id': 8},
+];
+
+const List<String> LIST_TIME_PICK_UP = [
+  "8am - 10am",
+  "10am - 12pm",
+  "12pm - 2pm",
+  "2pm - 4pm",
+  "4pm - 6pm",
 ];

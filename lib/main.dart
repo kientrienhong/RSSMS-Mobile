@@ -1,5 +1,8 @@
 import 'dart:io';
 
+import 'package:rssms/models/entity/order_booking.dart';
+import 'package:rssms/models/entity/user.dart';
+
 import '/config/http_overrides.dart';
 import '/pages/log_in/log_in_screen.dart';
 import 'package:flutter/material.dart';
@@ -10,9 +13,17 @@ void main() async {
 
   HttpOverrides.global = MyHttpOverrides();
 
-  runApp(
-    MyApp(),
-  );
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider<User>(
+        create: (_) => User.empty(),
+      ),
+      ChangeNotifierProvider<OrderBooking>(
+        create: (_) => OrderBooking.empty(),
+      ),
+    ],
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {

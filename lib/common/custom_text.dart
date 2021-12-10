@@ -19,7 +19,7 @@ class CustomText extends Text {
             style: TextStyle(
                 fontWeight: fontWeight,
                 color: color,
-                fontFamily: 'Roboto',
+                fontFamily: 'Helvetica',
                 fontSize: MediaQuery.of(context).size.width /
                     (widthMockUp / fontSize)));
 }

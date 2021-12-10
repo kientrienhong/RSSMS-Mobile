@@ -4,6 +4,7 @@ import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/pages/customers/cart/widgets/accessory_widget.dart';
+import 'package:rssms/pages/customers/cart/widgets/booking_pop_up.dart';
 import 'package:rssms/pages/customers/cart/widgets/product_widget.dart';
 import '../../../../constants/constants.dart' as constants;
 
@@ -92,7 +93,13 @@ class _HandyTabState extends State<HandyTab> {
             height: 18,
             text: 'Đặt',
             width: double.infinity,
-            onPressFunction: () {},
+            onPressFunction: () {
+              showDialog(
+                  context: context,
+                  builder: (ctx) {
+                    return BookingPopUp();
+                  });
+            },
             isLoading: false,
             textColor: CustomColor.white,
             buttonColor: CustomColor.blue,
