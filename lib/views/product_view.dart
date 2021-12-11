@@ -1,4 +1,4 @@
 abstract class ProductView {
-  void onAddQuantity();
-  void onMinusQuantity();
+  void onAddQuantity(double deviceSizeHeight);
+  void onMinusQuantity(double deviceSizeHeight);
 }

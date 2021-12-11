@@ -4,7 +4,7 @@ import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/pages/customers/cart/widgets/accessory_widget.dart';
-import 'package:rssms/pages/customers/cart/widgets/booking_pop_up.dart';
+import 'package:rssms/pages/customers/cart/widgets/booking_pop_up_door_to_door.dart';
 import 'package:rssms/pages/customers/cart/widgets/product_widget.dart';
 import '../../../../constants/constants.dart' as constants;
 
@@ -97,7 +97,7 @@ class _HandyTabState extends State<HandyTab> {
               showDialog(
                   context: context,
                   builder: (ctx) {
-                    return BookingPopUp();
+                    return BookingPopUpDoorToDoor();
                   });
             },
             isLoading: false,
