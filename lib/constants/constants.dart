@@ -15,6 +15,11 @@ const TYPE_PRODUCT = {
   'SERVICES': 3,
 };
 
+// STATUS_INVOICE
+const PAID = 1;
+const EXPIRED_SOON = 2;
+const EXPIRED = 3;
+
 const SELF_STORAGE = 0;
 const ACCESSORY = 1;
 const HANDY = 2;
@@ -91,4 +96,65 @@ const List<String> LIST_TIME_PICK_UP = [
   "12pm - 2pm",
   "2pm - 4pm",
   "4pm - 6pm",
+];
+
+const List<Map<String, dynamic>> LIST_INVOICE = [
+  {
+    "url": "assets/images/delivery-box1.png",
+    "id": "1312",
+    "getDate": "12/12/2021",
+    "returnnDate": "12/12/2021",
+    "status": "Đã hoàn thành",
+    "statusCode": 1
+  },
+  {
+    "url": "assets/images/warehouse1.png",
+    "id": "2546",
+    "getDate": "12/12/2021",
+    "returnnDate": "12/12/2021",
+    "status": "Đã hoàn thành",
+    "statusCode": 1
+  },
+  {
+    "url": "assets/images/warehouse1.png",
+    "id": "8456",
+    "getDate": "12/12/2021",
+    "returnnDate": "12/12/2021",
+    "status": "Sắp hết hạn",
+    "statusCode": 2
+  },
+  {
+    "url": "assets/images/warehouse1.png",
+    "id": "1225",
+    "getDate": "12/12/2021",
+    "returnnDate": "12/12/2021",
+    "status": "Đã hết hạn",
+    "statusCode": 3
+  },
+  {
+    "url": "assets/images/warehouse1.png",
+    "id": "1225",
+    "getDate": "12/12/2021",
+    "returnnDate": "12/12/2021",
+    "status": "Đã hết hạn",
+    "statusCode": 3
+  },
+];
+
+const List<Map<String, dynamic>> LIST_REQUEST = [
+  {
+    "url": "assets/images/truck1.png",
+    "requestId": "1312",
+    "orderId": "1312",
+    "dateChange": "12/12/2021",
+    "status": "Đang giao hàng",
+    "statusCode": 1
+  },
+  {
+    "url": "assets/images/error1.png",
+    "requestId": "1312",
+    "orderId": "1312",
+    "status": "Chưa hoàn tiền",
+    "statusCode": 2
+  },
 ];
