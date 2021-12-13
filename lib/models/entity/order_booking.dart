@@ -1,24 +1,27 @@
 import 'package:flutter/cupertino.dart';
-import 'package:rssms/models/entity/product.dart';
 
 class OrderBooking with ChangeNotifier {
-  List<Product>? listProduct;
-  OrderBooking({required this.listProduct});
+  Map<String, List<dynamic>>? productOrder;
+  OrderBooking({required this.productOrder});
 
   OrderBooking.empty() {
-    listProduct = [];
+    productOrder = {
+      'product': [],
+      'accessory': [],
+      'service': [],
+    };
   }
 
   OrderBooking copyWith({
-    List<Product>? listProduct,
+    Map<String, List<dynamic>>? productOrder,
   }) {
     return OrderBooking(
-      listProduct: listProduct ?? this.listProduct,
+      productOrder: productOrder ?? this.productOrder,
     );
   }
 
   void setOrderBooking({required OrderBooking orderBooking}) {
-    listProduct = orderBooking.listProduct ?? listProduct;
+    productOrder = orderBooking.productOrder ?? productOrder;
     notifyListeners();
   }
 }

@@ -30,7 +30,12 @@ class _ProductWidgetState extends State<ProductWidget> implements ProductView {
   void onAddQuantity(double deviceSizeHeight) {
     OrderBooking orderBooking =
         Provider.of<OrderBooking>(context, listen: false);
-
+    orderBooking.productOrder!['product']!.add({
+      'idOfList':
+          '${widget.product!['id']}-${orderBooking.productOrder!['product']!.length}',
+      'note': '',
+      'product': widget.product
+    });
     Map<String, dynamic> tempProduct = {...widget.product!};
     tempProduct['quantity'] += 1;
     setState(() {

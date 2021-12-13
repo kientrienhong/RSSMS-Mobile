@@ -4,17 +4,17 @@ import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/common/list_time_select.dart';
-import 'package:rssms/views/booking_pop_up_view.dart';
+import 'package:rssms/views/booking_pop_up_view_door_to_door.dart';
 
-class BookingPopUp extends StatefulWidget {
-  const BookingPopUp({Key? key}) : super(key: key);
+class BookingPopUpDoorToDoor extends StatefulWidget {
+  const BookingPopUpDoorToDoor({Key? key}) : super(key: key);
 
   @override
-  State<BookingPopUp> createState() => _BookingPopUpState();
+  State<BookingPopUpDoorToDoor> createState() => _BookingPopUpDoorToDoorState();
 }
 
-class _BookingPopUpState extends State<BookingPopUp>
-    implements BookingPopUpView {
+class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
+    implements BookingPopUpViewDoorToDoor {
   final _dateDeliveryController = TextEditingController();
   final _dateReturnController = TextEditingController();
   DateTime dateDelivery = DateTime.now();
