@@ -318,7 +318,7 @@ class _FormSignUpState extends State<FormSignUp> implements SignUpView {
             ),
           CustomSizedBox(
             context: context,
-            height: 24,
+            height: 8,
           ),
           CustomButton(
               height: 18,
