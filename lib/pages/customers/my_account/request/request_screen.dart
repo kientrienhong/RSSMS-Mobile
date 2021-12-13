@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:rssms/common/custom_color.dart';
-import 'package:rssms/common/custom_sizebox.dart';
-import 'package:rssms/pages/customers/my_account/invoice/invoice_widget.dart';
 import 'package:rssms/pages/customers/my_account/request/request_widget.dart';
 import '../../../../constants/constants.dart' as constants;
 
@@ -48,6 +46,7 @@ class RequestScreen extends StatelessWidget {
             ),
             Expanded(
                 child: ListView(
+              padding: const EdgeInsets.all(0),
               children: mapInvoiceWidget(listRequest),
             ))
           ],

@@ -89,7 +89,6 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                 value: '2'),
                           ],
                       onSelected: (_) {
-                        print(filterIndex);
                         setState(() {
                           filterIndex = _.toString();
                         });
@@ -110,6 +109,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
             ),
             Expanded(
                 child: ListView(
+              padding: const EdgeInsets.all(0),
               children: mapInvoiceWidget(listInvoice),
             ))
           ],

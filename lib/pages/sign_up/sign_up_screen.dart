@@ -25,14 +25,25 @@ class SignUpScreen extends StatelessWidget {
     return Scaffold(
         backgroundColor: CustomColor.white,
         body: SingleChildScrollView(
-          child: Container(
+          child: SizedBox(
             width: deviceSize.width,
             height: deviceSize.height * 1.5,
             child: Stack(
               clipBehavior: Clip.none,
               children: [
                 const Background(),
-                Container(
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+                  child: GestureDetector(
+                    onTap: () => {Navigator.of(context).pop()},
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 16.0),
+                      child: Image.asset('assets/images/arrowLeft.png'),
+                    ),
+                  ),
+                ),
+                SizedBox(
                   width: deviceSize.width,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,

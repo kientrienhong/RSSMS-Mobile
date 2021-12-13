@@ -18,7 +18,7 @@ class _ProfileScreenState extends State<MyAccountScreen>
   @override
   void initState() {
     _scrollController = ScrollController();
-    _tabController = TabController(vsync: this, length: 3);
+    _tabController = TabController(vsync: this, length: 3, initialIndex: 1);
     super.initState();
   }
 
