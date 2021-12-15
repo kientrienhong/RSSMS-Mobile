@@ -11,6 +11,10 @@ class CustomColor {
     3: Color(0xFFA19FA8),
   });
 
+  static const _yellowPrimaryValue = 0xFFD9A825;
+  static const MaterialColor yellow = MaterialColor(
+      _yellowPrimaryValue, <int, Color>{0: Color(_yellowPrimaryValue)});
+
   static const _bluePrimaryValue = 0xFFF04BFFE;
   static const MaterialColor blue = MaterialColor(
       _bluePrimaryValue, <int, Color>{0: Color(_bluePrimaryValue)});
