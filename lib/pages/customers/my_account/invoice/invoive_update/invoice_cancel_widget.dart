@@ -27,6 +27,7 @@ class _InvoiceCancelWidgetState extends State<InvoiceCancelWidget> {
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
     return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 18),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

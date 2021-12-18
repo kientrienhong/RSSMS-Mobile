@@ -12,8 +12,7 @@ class AccessoryInvoiceWidget extends StatelessWidget {
     return SizedBox(
       child: Table(
         defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-        columnWidths: const {0: FractionColumnWidth(.55)},
-        defaultColumnWidth: const FlexColumnWidth(1),
+        columnWidths: const {0: FractionColumnWidth(.6)},
         children: [
           TableRow(
             children: [

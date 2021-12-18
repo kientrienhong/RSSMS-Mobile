@@ -177,7 +177,7 @@ class InvoiceProductWidget extends StatelessWidget {
               height: 16,
             ),
             Table(
-              columnWidths: {0: FractionColumnWidth(.55)},
+              columnWidths: {0: FractionColumnWidth(.57)},
               children: [
                 TableRow(children: [
                   CustomText(

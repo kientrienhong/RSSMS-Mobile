@@ -84,7 +84,7 @@ class InvoiceDetailScreen extends StatelessWidget {
                           enlargeCenterPage: true,
                           aspectRatio: 16 / 9,
                           autoPlayCurve: Curves.fastOutSlowIn,
-                          enableInfiniteScroll: true,
+                          enableInfiniteScroll: false,
                           viewportFraction: 0.8,
                         ),
                       ),

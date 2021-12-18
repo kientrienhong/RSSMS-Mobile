@@ -54,16 +54,19 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
       children: [
         OutlinedButton(
           style: ButtonStyle(
-              backgroundColor:
-                  MaterialStateProperty.resolveWith((states) => color),
-              shape: MaterialStateProperty.all(const CircleBorder()),
-              side: MaterialStateProperty.all(
-                const BorderSide(color: CustomColor.blue, width: 1.5),
-              ),
-              maximumSize: MaterialStateProperty.all(
-                Size(50, 50),
-              ),
-              minimumSize: MaterialStateProperty.all(Size(30, 30))),
+            backgroundColor:
+                MaterialStateProperty.resolveWith((states) => color),
+            shape: MaterialStateProperty.all(const CircleBorder()),
+            side: MaterialStateProperty.all(
+              const BorderSide(color: CustomColor.blue, width: 1.5),
+            ),
+            maximumSize: MaterialStateProperty.all(
+              const Size(70, 70),
+            ),
+            minimumSize: MaterialStateProperty.all(
+              const Size(25, 25),
+            ),
+          ),
           onPressed: () {
             setState(() {
               _state = index;
@@ -71,7 +74,7 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
           },
           child: const Icon(
             Icons.check,
-            size: 20,
+            size: 15,
             color: CustomColor.white,
           ),
         ),
@@ -93,93 +96,176 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
     List<Map<String, dynamic>> listProduct = widget.invoice!["item"];
     return Container(
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CustomText(
-              text: "Đơn hàng của bạn",
-              color: CustomColor.blue,
-              context: context,
-              fontWeight: FontWeight.bold,
-              fontSize: 24),
-          CustomSizedBox(
-            context: context,
-            height: 14,
-          ),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-            decoration: BoxDecoration(
-                border: Border.all(color: CustomColor.blue, width: 1)),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CustomText(
-                    text: "Kho",
+                    text: "Đơn hàng của bạn",
                     color: CustomColor.blue,
                     context: context,
                     fontWeight: FontWeight.bold,
-                    fontSize: 20),
+                    fontSize: 24),
                 CustomSizedBox(
                   context: context,
-                  height: 16,
-                ),
-                Table(
-                  columnWidths: {0: FractionColumnWidth(.55)},
-                  children: [
-                    TableRow(children: [
-                      CustomText(
-                          text: "Sản phẩm",
-                          color: CustomColor.black,
-                          fontWeight: FontWeight.bold,
-                          context: context,
-                          fontSize: 14),
-                      CustomText(
-                          text: "Số lượng",
-                          color: CustomColor.black,
-                          fontWeight: FontWeight.bold,
-                          context: context,
-                          fontSize: 14),
-                      CustomText(
-                          text: "Tổng tiền",
-                          color: CustomColor.black,
-                          fontWeight: FontWeight.bold,
-                          context: context,
-                          fontSize: 14)
-                    ])
-                  ],
-                ),
-                CustomSizedBox(
-                  context: context,
-                  height: 16,
-                ),
-                Column(
-                  children: mapProductWidget(listProduct),
+                  height: 14,
                 ),
                 Container(
-                  color: CustomColor.white,
-                  child: const Divider(
-                    thickness: 0.6,
-                    color: Color(0xFF8D8D8D),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                  decoration: BoxDecoration(
+                      border: Border.all(color: CustomColor.blue, width: 1)),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomText(
+                          text: "Kho",
+                          color: CustomColor.blue,
+                          context: context,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20),
+                      CustomSizedBox(
+                        context: context,
+                        height: 16,
+                      ),
+                      Table(
+                        columnWidths: {0: FractionColumnWidth(.55)},
+                        children: [
+                          TableRow(children: [
+                            CustomText(
+                                text: "Sản phẩm",
+                                color: CustomColor.black,
+                                fontWeight: FontWeight.bold,
+                                context: context,
+                                fontSize: 14),
+                            CustomText(
+                                text: "Số lượng",
+                                color: CustomColor.black,
+                                fontWeight: FontWeight.bold,
+                                context: context,
+                                fontSize: 14),
+                            CustomText(
+                                text: "Tổng tiền",
+                                color: CustomColor.black,
+                                fontWeight: FontWeight.bold,
+                                context: context,
+                                fontSize: 14)
+                          ])
+                        ],
+                      ),
+                      CustomSizedBox(
+                        context: context,
+                        height: 16,
+                      ),
+                      Column(
+                        children: mapProductWidget(listProduct),
+                      ),
+                      Container(
+                        color: CustomColor.white,
+                        child: const Divider(
+                          thickness: 0.6,
+                          color: Color(0xFF8D8D8D),
+                        ),
+                      ),
+                      CustomSizedBox(
+                        context: context,
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          CustomText(
+                              text: "Tạm tính",
+                              color: Colors.black,
+                              context: context,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16),
+                          CustomText(
+                              text: widget.invoice!["totalItem"].toString() +
+                                  " đ",
+                              color: Colors.black,
+                              context: context,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16),
+                        ],
+                      ),
+                      CustomSizedBox(
+                        context: context,
+                        height: 16,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          CustomText(
+                              text: "Số tháng muốn gia hạn",
+                              color: Colors.black,
+                              context: context,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16),
+                          QuantityWidget(
+                            product: widget.invoice,
+                            width: deviceSize.width / 10,
+                            addQuantity: () => onAddQuantity(),
+                            minusQuantity: () => onMinusQuantity(),
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          ),
+                        ],
+                      ),
+                      CustomSizedBox(
+                        context: context,
+                        height: 6,
+                      ),
+                      Container(
+                        color: CustomColor.white,
+                        child: const Divider(
+                          thickness: 0.6,
+                          color: Color(0xFF8D8D8D),
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          CustomText(
+                              text: "Tổng tiền thuê kho",
+                              color: Colors.black,
+                              context: context,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16),
+                          CustomText(
+                              text: (widget.invoice!["totalItem"] *
+                                          widget.invoice!["quantity"])
+                                      .toString() +
+                                  " đ",
+                              color: CustomColor.blue,
+                              context: context,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 17),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
                 CustomSizedBox(
                   context: context,
-                  height: 10,
+                  height: 16,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     CustomText(
-                        text: "Tạm tính",
+                        text: "Ngày trả kho",
                         color: Colors.black,
                         context: context,
                         fontWeight: FontWeight.bold,
-                        fontSize: 16),
+                        fontSize: 18),
                     CustomText(
-                        text: widget.invoice!["totalItem"].toString() + " đ",
-                        color: Colors.black,
+                        text: widget.invoice!["returnnDate"],
+                        color: CustomColor.black,
                         context: context,
                         fontWeight: FontWeight.bold,
-                        fontSize: 16),
+                        fontSize: 18),
                   ],
                 ),
                 CustomSizedBox(
@@ -189,161 +275,97 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    CustomText(
-                        text: "Số tháng muốn gia hạn",
-                        color: Colors.black,
-                        context: context,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16),
-                    QuantityWidget(
-                      product: widget.invoice,
-                      width: deviceSize.width / 10,
-                      addQuantity: () => onAddQuantity(),
-                      minusQuantity: () => onMinusQuantity(),
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    const Flexible(
+                      child: Text(
+                        "Ngày trả kho sau khi gia hạn",
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 18),
+                      ),
                     ),
+                    CustomSizedBox(
+                      context: context,
+                      width: 100,
+                    ),
+                    CustomText(
+                        text: widget.invoice!["returnnDate"],
+                        color: CustomColor.black,
+                        context: context,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18),
                   ],
                 ),
                 CustomSizedBox(
                   context: context,
-                  height: 6,
+                  height: 16,
                 ),
-                Container(
-                  color: CustomColor.white,
-                  child: const Divider(
-                    thickness: 0.6,
-                    color: Color(0xFF8D8D8D),
-                  ),
+                CustomText(
+                    text: "Phương thức thanh toán",
+                    color: CustomColor.blue,
+                    context: context,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 24),
+                CustomSizedBox(
+                  context: context,
+                  height: 14,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    CustomText(
-                        text: "Tổng tiền thuê kho",
-                        color: Colors.black,
-                        context: context,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16),
-                    CustomText(
-                        text: (widget.invoice!["totalItem"] *
-                                    widget.invoice!["quantity"])
-                                .toString() +
-                            " đ",
-                        color: CustomColor.blue,
-                        context: context,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 17),
-                  ],
-                ),
+              ],
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 14),
+            child: Column(
+              children: [
+                customRadioButton(
+                    "Thanh toán tiền mặt",
+                    PaymentMethod.tienmat,
+                    _state == PaymentMethod.tienmat
+                        ? CustomColor.blue
+                        : CustomColor.white),
+                customRadioButton(
+                    "Ứng dụng Mobile Banking",
+                    PaymentMethod.mbanking,
+                    _state == PaymentMethod.mbanking
+                        ? CustomColor.blue
+                        : CustomColor.white),
+                customRadioButton(
+                    "Thẻ ATM và tài khoản ngân hàng",
+                    PaymentMethod.theatm,
+                    _state == PaymentMethod.theatm
+                        ? CustomColor.blue
+                        : CustomColor.white),
+                customRadioButton(
+                    "Thẻ thanh toán quốc tế",
+                    PaymentMethod.quocte,
+                    _state == PaymentMethod.quocte
+                        ? CustomColor.blue
+                        : CustomColor.white),
+                customRadioButton(
+                    "Ví điện tử",
+                    PaymentMethod.vidientu,
+                    _state == PaymentMethod.vidientu
+                        ? CustomColor.blue
+                        : CustomColor.white),
               ],
             ),
           ),
           CustomSizedBox(
             context: context,
-            height: 16,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              CustomText(
-                  text: "Ngày trả kho",
-                  color: Colors.black,
-                  context: context,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18),
-              CustomText(
-                  text: widget.invoice!["returnnDate"],
-                  color: CustomColor.black,
-                  context: context,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18),
-            ],
-          ),
-          CustomSizedBox(
-            context: context,
-            height: 16,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Flexible(
-                child: Text(
-                  "Ngày trả kho sau khi gia hạn",
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: 18),
-                ),
-              ),
-              CustomSizedBox(
-                context: context,
-                width: 100,
-              ),
-              CustomText(
-                  text: widget.invoice!["returnnDate"],
-                  color: CustomColor.black,
-                  context: context,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18),
-            ],
-          ),
-          CustomSizedBox(
-            context: context,
-            height: 16,
-          ),
-          CustomText(
-              text: "Phương thức thanh toán",
-              color: CustomColor.blue,
-              context: context,
-              fontWeight: FontWeight.bold,
-              fontSize: 24),
-          CustomSizedBox(
-            context: context,
             height: 14,
           ),
-          customRadioButton(
-              "Thanh toán tiền mặt",
-              PaymentMethod.tienmat,
-              _state == PaymentMethod.tienmat
-                  ? CustomColor.blue
-                  : CustomColor.white),
-          customRadioButton(
-              "Ứng dụng Mobile Banking",
-              PaymentMethod.mbanking,
-              _state == PaymentMethod.mbanking
-                  ? CustomColor.blue
-                  : CustomColor.white),
-          customRadioButton(
-              "Thẻ ATM và tài khoản ngân hàng",
-              PaymentMethod.theatm,
-              _state == PaymentMethod.theatm
-                  ? CustomColor.blue
-                  : CustomColor.white),
-          customRadioButton(
-              "Thẻ thanh toán quốc tế",
-              PaymentMethod.quocte,
-              _state == PaymentMethod.quocte
-                  ? CustomColor.blue
-                  : CustomColor.white),
-          customRadioButton(
-              "Ví điện tử",
-              PaymentMethod.vidientu,
-              _state == PaymentMethod.vidientu
-                  ? CustomColor.blue
-                  : CustomColor.white),
-          CustomSizedBox(
-            context: context,
-            height: 14,
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 24),
+            child: CustomButton(
+                height: 18,
+                isLoading: false,
+                text: 'Thanh toán',
+                textColor: CustomColor.white,
+                onPressFunction: null,
+                width: deviceSize.width,
+                buttonColor: CustomColor.blue,
+                borderRadius: 6),
           ),
-          CustomButton(
-              height: 18,
-              isLoading: false,
-              text: 'Thanh toán',
-              textColor: CustomColor.white,
-              onPressFunction: null,
-              width: deviceSize.width,
-              buttonColor: CustomColor.blue,
-              borderRadius: 6),
         ],
       ),
     );
