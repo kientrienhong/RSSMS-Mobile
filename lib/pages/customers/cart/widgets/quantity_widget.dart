@@ -7,8 +7,8 @@ class QuantityWidget extends StatefulWidget {
   final double? width;
   final VoidCallback? addQuantity;
   final VoidCallback? minusQuantity;
-
   final MainAxisAlignment? mainAxisAlignment;
+
   const QuantityWidget(
       {Key? key,
       this.product,
@@ -76,10 +76,6 @@ class _QuantityWidgetState extends State<QuantityWidget> {
               height: 20,
               child: Image.asset('assets/images/addButton.png',
                   fit: BoxFit.cover)),
-        ),
-        CustomSizedBox(
-          context: context,
-          width: 16,
         ),
       ],
     );

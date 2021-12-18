@@ -94,17 +94,6 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                         });
                       }),
                 ),
-                // OutlinedButton(
-                //   onPressed: () {},
-                //   child: const ImageIcon(
-                //     AssetImage('assets/images/filter.png'),
-                //     color: CustomColor.black,
-                //   ),
-                //   style: OutlinedButton.styleFrom(
-                //       primary: Colors.white,
-                //       minimumSize: const Size(48, 48),
-                //       side: const BorderSide(color: Colors.black, width: 0.8)),
-                // ),
               ],
             ),
             Expanded(

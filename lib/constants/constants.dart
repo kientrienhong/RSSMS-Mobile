@@ -103,41 +103,236 @@ const List<Map<String, dynamic>> LIST_INVOICE = [
     "url": "assets/images/delivery-box1.png",
     "id": "1312",
     "getDate": "12/12/2021",
+    "address": "2 Gia Phu, Phuong 13, Quan 5, TP Ho Chi Minh",
     "returnnDate": "12/12/2021",
-    "status": "Đã hoàn thành",
-    "statusCode": 1
+    "status": "Đã thanh toán",
+    "discount": "Không có",
+    "month": 1,
+    "quantity": 1,
+    "totalPrice": 190000,
+    "totalItem": 140000,
+    "item": [
+      {
+        "name": "Size S",
+        "quantity": 1,
+        "url": "assets/images/boxSizeS.png",
+        "price": 70000
+      },
+      {
+        "name": "Size L",
+        "quantity": 1,
+        "url": "assets/images/boxSizeL.png",
+        "price": 70000
+      },
+    ],
+    "accessory": [
+      {
+        "name": "Băng keo trong",
+        "quantity": 1,
+        "url": "assets/images/tape.png",
+        "price": 25000
+      },
+      {
+        "name": "Xốp hơi, xốp foam",
+        "quantity": 1,
+        "url": "assets/images/peFoam.png",
+        "price": 25000
+      },
+    ],
+    "statusCode": 1,
+    "image": [
+      {"url": "assets/images/image28.png"},
+      {"url": "assets/images/image28.png"},
+    ],
+    "type": 0
   },
   {
     "url": "assets/images/warehouse1.png",
     "id": "2546",
     "getDate": "12/12/2021",
+    "address": "2 Gia Phu, Phuong 13, Quan 5, TP Ho Chi Minh",
     "returnnDate": "12/12/2021",
-    "status": "Đã hoàn thành",
-    "statusCode": 1
+    "discount": "Không có",
+    "totalPrice": 190000,
+    "totalItem": 140000,
+    "month": 1,
+    "quantity": 1,
+    "item": [
+      {
+        "name": "Size S",
+        "quantity": 1,
+        "url": "assets/images/boxSizeS.png",
+        "price": 70000
+      },
+      {
+        "name": "Size L",
+        "quantity": 1,
+        "url": "assets/images/boxSizeL.png",
+        "price": 70000
+      },
+    ],
+    "accessory": [
+      {
+        "name": "Băng keo trong",
+        "quantity": 1,
+        "url": "assets/images/tape.png",
+        "price": 25000
+      },
+      {
+        "name": "Xốp hơi, xốp foam",
+        "quantity": 1,
+        "url": "assets/images/peFoam.png",
+        "price": 25000
+      },
+    ],
+    "status": "Đã thanh toán",
+    "statusCode": 1,
+    "image": [
+      {"url": "assets/images/image27.png"},
+      {"url": "assets/images/image28.png"},
+    ],
+    "type": 1
   },
   {
     "url": "assets/images/warehouse1.png",
     "id": "8456",
     "getDate": "12/12/2021",
+    "address": "2 Gia Phu, Phuong 13, Quan 5, TP Ho Chi Minh",
     "returnnDate": "12/12/2021",
+    "discount": "Không có",
+    "totalPrice": 190000,
+    "totalItem": 140000,
+    "month": 1,
+    "quantity": 1,
+    "item": [
+      {
+        "name": "Size S",
+        "quantity": 1,
+        "url": "assets/images/boxSizeS.png",
+        "price": 70.000
+      },
+      {
+        "name": "Size L",
+        "quantity": 1,
+        "url": "assets/images/boxSizeL.png",
+        "price": 70.000
+      },
+    ],
+    "accessory": [
+      {
+        "name": "Băng keo trong",
+        "quantity": 1,
+        "url": "assets/images/tape.png",
+        "price": 25000
+      },
+      {
+        "name": "Xốp hơi, xốp foam",
+        "quantity": 1,
+        "url": "assets/images/peFoam.png",
+        "price": 25000
+      },
+    ],
     "status": "Sắp hết hạn",
-    "statusCode": 2
+    "statusCode": 2,
+    "image": [
+      {"url": "assets/images/image27.png"},
+      {"url": "assets/images/image28.png"},
+    ],
+    "type": 1
   },
   {
     "url": "assets/images/warehouse1.png",
     "id": "1225",
     "getDate": "12/12/2021",
+    "address": "2 Gia Phu, Phuong 13, Quan 5, TP Ho Chi Minh",
     "returnnDate": "12/12/2021",
+    "discount": "Không có",
+    "totalPrice": 190000,
+    "totalItem": 140000,
+    "month": 1,
+    "quantity": 1,
+    "item": [
+      {
+        "name": "Size S",
+        "quantity": 1,
+        "url": "assets/images/boxSizeS.png",
+        "price": 70.000
+      },
+      {
+        "name": "Size L",
+        "quantity": 1,
+        "url": "assets/images/boxSizeL.png",
+        "price": 70000
+      },
+    ],
+    "accessory": [
+      {
+        "name": "Băng keo trong",
+        "quantity": 1,
+        "url": "assets/images/tape.png",
+        "price": 25000
+      },
+      {
+        "name": "Xốp hơi, xốp foam",
+        "quantity": 1,
+        "url": "assets/images/peFoam.png",
+        "price": 25000
+      },
+    ],
     "status": "Đã hết hạn",
-    "statusCode": 3
+    "statusCode": 3,
+    "image": [
+      {"url": "assets/images/image27.png"},
+      {"url": "assets/images/image28.png"},
+    ],
+    "type": 1
   },
   {
     "url": "assets/images/warehouse1.png",
     "id": "1225",
     "getDate": "12/12/2021",
+    "address": "2 Gia Phu, Phuong 13, Quan 5, TP Ho Chi Minh",
     "returnnDate": "12/12/2021",
+    "discount": "Không có",
+    "totalPrice": 190000,
+    "totalItem": 140000,
+    "month": 1,
+    "quantity": 1,
+    "item": [
+      {
+        "name": "Size S",
+        "quantity": 1,
+        "url": "assets/images/boxSizeS.png",
+        "price": 70000
+      },
+      {
+        "name": "Size L",
+        "quantity": 1,
+        "url": "assets/images/boxSizeL.png",
+        "price": 70000
+      },
+    ],
+    "accessory": [
+      {
+        "name": "Băng keo trong",
+        "quantity": 1,
+        "url": "assets/images/tape.png",
+        "price": 25000
+      },
+      {
+        "name": "Xốp hơi, xốp foam",
+        "quantity": 1,
+        "url": "assets/images/peFoam.png",
+        "price": 25000
+      },
+    ],
     "status": "Đã hết hạn",
-    "statusCode": 3
+    "statusCode": 3,
+    "image": [
+      {"url": "assets/images/image27.png"},
+      {"url": "assets/images/image28.png"},
+    ],
+    "type": 1
   },
 ];
 
