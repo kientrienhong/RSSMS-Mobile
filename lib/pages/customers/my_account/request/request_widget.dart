@@ -22,7 +22,7 @@ class _RequestWidgetState extends State<RequestWidget> {
         top: deviceSize.height / 45,
         bottom: deviceSize.height / 45,
       ),
-      margin: const EdgeInsets.symmetric(vertical: 16),
+      margin: const EdgeInsets.symmetric(vertical: 10),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           color: CustomColor.white,
@@ -33,6 +33,7 @@ class _RequestWidgetState extends State<RequestWidget> {
                 offset: const Offset(0, 6)),
           ]),
       child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 16),
         child: Column(children: [
           Row(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -43,10 +44,10 @@ class _RequestWidgetState extends State<RequestWidget> {
                     child: Image.asset(widget.request!['url']!)),
                 CustomSizedBox(
                   context: context,
-                  width: 5,
+                  width: 15,
                 ),
                 SizedBox(
-                  width: (deviceSize.width - 50) * 3 / 4,
+                  width: (deviceSize.width - 50) * 3 / 5,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     mainAxisAlignment: MainAxisAlignment.center,
