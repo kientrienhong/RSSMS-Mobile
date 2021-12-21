@@ -106,7 +106,6 @@ class FormLogIn extends StatefulWidget {
 
 class _FormLogInState extends State<FormLogIn> implements LoginView {
   late LoginPresenter loginPresenter;
-  late LoginGooglePresenter loginGooglePresenter;
 
   late LoginModel _model;
 

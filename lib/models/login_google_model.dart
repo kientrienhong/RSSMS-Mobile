@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
-class AuthService {
+class LoginGoogleModel {
   final _auth = FirebaseAuth.instance;
 
   Future<UserCredential> signInWithCredential(AuthCredential credential) =>
