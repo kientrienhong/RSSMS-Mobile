@@ -5,6 +5,7 @@ import 'package:rssms/pages/customers/notification/notification_screen.dart';
 import 'package:rssms/pages/customers/profile/profile_screen.dart';
 import 'package:rssms/pages/log_in/widget/button_icon.dart';
 
+import '../../presenters/login_google_presenters.dart';
 import '/common/background.dart';
 import '/common/custom_button.dart';
 import '/common/custom_color.dart';
@@ -105,6 +106,7 @@ class FormLogIn extends StatefulWidget {
 
 class _FormLogInState extends State<FormLogIn> implements LoginView {
   late LoginPresenter loginPresenter;
+  late LoginGooglePresenter loginGooglePresenter;
 
   late LoginModel _model;
 
