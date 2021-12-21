@@ -61,7 +61,7 @@ class _InvoiceCancelWidgetState extends State<InvoiceCancelWidget> {
           CustomButton(
               height: 18,
               isLoading: false,
-              text: 'Thanh toán',
+              text: 'Gửi yêu cầu',
               textColor: CustomColor.white,
               onPressFunction: null,
               width: deviceSize.width,

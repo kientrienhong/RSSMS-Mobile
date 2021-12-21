@@ -90,6 +90,47 @@ class _ProfileScreenState extends State<FormProfileScreen>
   String get _district => _controllerWard.text;
   String get _birthdate => _controllerBirthDate.text;
 
+  Widget customRadioButton(String text, String gender, Color color) {
+    return Row(
+      children: [
+        OutlinedButton(
+          style: ButtonStyle(
+            backgroundColor:
+                MaterialStateProperty.resolveWith((states) => color),
+            shape: MaterialStateProperty.all(const CircleBorder()),
+            side: MaterialStateProperty.all(
+              const BorderSide(color: CustomColor.blue, width: 1.5),
+            ),
+            maximumSize: MaterialStateProperty.all(
+              const Size(70, 70),
+            ),
+            minimumSize: MaterialStateProperty.all(
+              const Size(25, 25),
+            ),
+          ),
+          onPressed: () {
+            setState(() {
+              _textGender = gender;
+            });
+          },
+          child: const Icon(
+            Icons.check,
+            size: 15,
+            color: CustomColor.white,
+          ),
+        ),
+        Text(
+          text,
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+            color: (_textGender == gender) ? CustomColor.blue : Colors.black,
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -193,23 +234,18 @@ class _ProfileScreenState extends State<FormProfileScreen>
                 CustomSizedBox(context: context, height: 8),
                 Row(
                   children: [
-                    RadioButton(
-                      description: "Nam",
-                      value: "Male",
-                      groupValue: _textGender,
-                      onChanged: (value) => setState(
-                        () => _textGender = value.toString(),
-                      ),
-                      activeColor: Colors.blue,
-                    ),
-                    RadioButton(
-                      description: "Nữ",
-                      value: "Female",
-                      groupValue: _textGender,
-                      onChanged: (value) =>
-                          setState(() => _textGender = value.toString()),
-                      activeColor: Colors.blue,
-                    ),
+                    customRadioButton(
+                        "Nam",
+                        "Nam",
+                        _textGender == "Nam"
+                            ? CustomColor.blue
+                            : CustomColor.white),
+                    customRadioButton(
+                        "Nữ",
+                        "Nữ",
+                        _textGender == "Nữ"
+                            ? CustomColor.blue
+                            : CustomColor.white),
                   ],
                 )
               ],
