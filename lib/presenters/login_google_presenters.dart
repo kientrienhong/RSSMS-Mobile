@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:rssms/models/login_google_model.dart';
 
 class LoginGoogle extends ChangeNotifier {
-  final authService = AuthService();
+  final authService = LoginGoogleModel();
   final googleSignin = GoogleSignIn();
   Stream<User?> get currentUser => authService.currentUser;
 
