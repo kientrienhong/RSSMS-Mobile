@@ -7,7 +7,7 @@ import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/invoice_image_widget.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/invoice_info_widget.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/invoice_product_widget.dart';
-import 'package:rssms/pages/customers/my_account/invoice/invoive_update/invoice_update_screen.dart';
+import 'package:rssms/pages/customers/my_account/invoice/invoive_update/send_request_screen.dart';
 
 class InvoiceDetailScreen extends StatelessWidget {
   Map<String, dynamic>? invoice;
@@ -96,13 +96,13 @@ class InvoiceDetailScreen extends StatelessWidget {
                       child: CustomButton(
                           height: 20,
                           isLoading: false,
-                          text: 'Cập nhật đơn',
+                          text: 'Gửi yêu cầu',
                           textColor: CustomColor.white,
                           onPressFunction: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => InvoiveUpdateScreen(
+                                  builder: (context) => SendRequestScreen(
                                         invoice: invoice,
                                       )),
                             );

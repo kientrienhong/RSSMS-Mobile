@@ -50,43 +50,46 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
   }
 
   Widget customRadioButton(String text, PaymentMethod index, Color color) {
-    return Row(
-      children: [
-        OutlinedButton(
-          style: ButtonStyle(
-            backgroundColor:
-                MaterialStateProperty.resolveWith((states) => color),
-            shape: MaterialStateProperty.all(const CircleBorder()),
-            side: MaterialStateProperty.all(
-              const BorderSide(color: CustomColor.blue, width: 1.5),
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _state = index;
+        });
+      },
+      child: Row(
+        children: [
+          OutlinedButton(
+            style: ButtonStyle(
+              backgroundColor:
+                  MaterialStateProperty.resolveWith((states) => color),
+              shape: MaterialStateProperty.all(const CircleBorder()),
+              side: MaterialStateProperty.all(
+                const BorderSide(color: CustomColor.blue, width: 1.5),
+              ),
+              maximumSize: MaterialStateProperty.all(
+                const Size(70, 70),
+              ),
+              minimumSize: MaterialStateProperty.all(
+                const Size(25, 25),
+              ),
             ),
-            maximumSize: MaterialStateProperty.all(
-              const Size(70, 70),
-            ),
-            minimumSize: MaterialStateProperty.all(
-              const Size(25, 25),
+            onPressed: () {},
+            child: const Icon(
+              Icons.check,
+              size: 15,
+              color: CustomColor.white,
             ),
           ),
-          onPressed: () {
-            setState(() {
-              _state = index;
-            });
-          },
-          child: const Icon(
-            Icons.check,
-            size: 15,
-            color: CustomColor.white,
+          Text(
+            text,
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+              color: (_state == index) ? CustomColor.blue : Colors.black,
+            ),
           ),
-        ),
-        Text(
-          text,
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
-            color: (_state == index) ? CustomColor.blue : Colors.black,
-          ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -274,18 +277,17 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Flexible(
-                    child: Text(
-                      "Ngày trả kho sau khi gia hạn",
+                  SizedBox(
+                    width: deviceSize.width * 1.3 / 3,
+                    child: CustomText(
+                      text: "Ngày trả kho sau khi gia hạn",
+                      color: CustomColor.black,
+                      context: context,
+                      fontWeight: FontWeight.bold,
                       maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 18),
+                      fontSize: 18,
+                      textOverflow: TextOverflow.ellipsis,
                     ),
-                  ),
-                  CustomSizedBox(
-                    context: context,
-                    width: 100,
                   ),
                   CustomText(
                       text: widget.invoice!["returnnDate"],

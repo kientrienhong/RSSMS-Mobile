@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
@@ -112,18 +111,19 @@ class InvoiceInfoWidget extends StatelessWidget {
               context: context,
               fontWeight: FontWeight.bold,
               fontSize: 17),
-          CustomSizedBox(
-            context: context,
-            width: 100,
-          ),
-          Flexible(
-            child: Text(
-              invoice!["address"],
-              maxLines: 4,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          SizedBox(
+            width: deviceSize.width * 1.5 / 3,
+            child: CustomText(
+              text: invoice!["address"],
+              color: CustomColor.black,
+              textAlign: TextAlign.right,
+              context: context,
+              fontWeight: FontWeight.bold,
+              maxLines: 2,
+              fontSize: 16,
+              textOverflow: TextOverflow.ellipsis,
             ),
-          )
+          ),
         ],
       ),
       CustomSizedBox(

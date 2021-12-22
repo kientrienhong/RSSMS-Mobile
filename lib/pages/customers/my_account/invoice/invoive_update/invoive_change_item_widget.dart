@@ -80,17 +80,17 @@ class _ChangeItemWidgetState extends State<ChangeItemWidget> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Flexible(
-                child: Text(
-                  "Ngày nhận hàng hiện tại",
+              SizedBox(
+                width: deviceSize.width * 1.3 / 3,
+                child: CustomText(
+                  text: "Ngày nhận hàng hiện tại",
+                  color: CustomColor.black,
+                  context: context,
+                  fontWeight: FontWeight.bold,
                   maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  fontSize: 18,
+                  textOverflow: TextOverflow.ellipsis,
                 ),
-              ),
-              CustomSizedBox(
-                context: context,
-                width: deviceSize.width / 4,
               ),
               CustomText(
                   text: widget.invoice!["returnnDate"],
@@ -107,13 +107,19 @@ class _ChangeItemWidgetState extends State<ChangeItemWidget> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              CustomText(
+              SizedBox(
+                width: deviceSize.width * 1.3 / 3,
+                child: CustomText(
                   text: "Ngày nhận hàng mới",
-                  color: Colors.black,
+                  color: CustomColor.black,
                   context: context,
                   fontWeight: FontWeight.bold,
-                  fontSize: 18),
-              Container(
+                  maxLines: 2,
+                  fontSize: 18,
+                  textOverflow: TextOverflow.ellipsis,
+                ),
+              ),
+              SizedBox(
                 width: deviceSize.width / 2.5,
                 child: CustomOutLineInputDateTime(
                   deviceSize: deviceSize,

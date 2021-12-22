@@ -1,23 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
+import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoive_update/invoice_cancel_widget.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoive_update/invoive_change_item_widget.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoive_update/invoive_extend_widget.dart';
 
-class InvoiveUpdateScreen extends StatefulWidget {
+class SendRequestScreen extends StatefulWidget {
   Map<String, dynamic>? invoice;
 
-  InvoiveUpdateScreen({Key? key, required this.invoice}) : super(key: key);
+  SendRequestScreen({Key? key, required this.invoice}) : super(key: key);
 
   @override
-  InvoiveUpdateScreenState createState() => InvoiveUpdateScreenState();
+  SendRequestScreenState createState() => SendRequestScreenState();
 }
 
-enum CurrentRadioState { giahandon, doido, huydon }
+enum CurrentRadioState { extendOrder, modifyItem, cancelOrder }
 
-class InvoiveUpdateScreenState extends State<InvoiveUpdateScreen> {
-  CurrentRadioState? _state = CurrentRadioState.giahandon;
+class SendRequestScreenState extends State<SendRequestScreen> {
+  CurrentRadioState? _state = CurrentRadioState.extendOrder;
 
   Color getColor(Set<MaterialState> states) {
     if (states.contains(MaterialState.focused)) {
@@ -27,42 +28,48 @@ class InvoiveUpdateScreenState extends State<InvoiveUpdateScreen> {
   }
 
   Widget customRadioButton(String text, CurrentRadioState index, Color color) {
-    return Row(
-      children: [
-        OutlinedButton(
-          style: ButtonStyle(
-            backgroundColor:
-                MaterialStateProperty.resolveWith((states) => color),
-            shape: MaterialStateProperty.all(CircleBorder()),
-            side: MaterialStateProperty.all(
-              const BorderSide(color: CustomColor.blue, width: 1.5),
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _state = index;
+        });
+      },
+      child: Container(
+        padding: const EdgeInsets.only(left: 10),
+        child: Row(
+          children: [
+            OutlinedButton(
+              style: ButtonStyle(
+                backgroundColor:
+                    MaterialStateProperty.resolveWith((states) => color),
+                shape: MaterialStateProperty.all(CircleBorder()),
+                side: MaterialStateProperty.all(
+                  const BorderSide(color: CustomColor.blue, width: 1.5),
+                ),
+                maximumSize: MaterialStateProperty.all(
+                  Size(50, 50),
+                ),
+                minimumSize: MaterialStateProperty.all(
+                  Size(25, 25),
+                ),
+              ),
+              onPressed: () {},
+              child: const Icon(
+                Icons.check,
+                size: 15,
+                color: CustomColor.white,
+              ),
             ),
-            maximumSize: MaterialStateProperty.all(
-              Size(50, 50),
+            Text(
+              text,
+              style: TextStyle(
+                fontSize: 14,
+                color: (_state == index) ? CustomColor.blue : Colors.black,
+              ),
             ),
-            minimumSize: MaterialStateProperty.all(
-              Size(25, 25),
-            ),
-          ),
-          onPressed: () {
-            setState(() {
-              _state = index;
-            });
-          },
-          child: const Icon(
-            Icons.check,
-            size: 15,
-            color: CustomColor.white,
-          ),
+          ],
         ),
-        Text(
-          text,
-          style: TextStyle(
-            fontSize: 14,
-            color: (_state == index) ? CustomColor.blue : Colors.black,
-          ),
-        ),
-      ],
+      ),
     );
   }
 
@@ -86,45 +93,58 @@ class InvoiveUpdateScreenState extends State<InvoiveUpdateScreen> {
                   child: Image.asset('assets/images/arrowLeft.png'),
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.only(left: 20),
+                child: CustomText(
+                    text: "Các loại yêu cầu",
+                    color: CustomColor.blue,
+                    context: context,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 24),
+              ),
+              CustomSizedBox(
+                context: context,
+                height: 8,
+              ),
               customRadioButton(
                   "Gia hạn đơn",
-                  CurrentRadioState.giahandon,
-                  _state == CurrentRadioState.giahandon
+                  CurrentRadioState.extendOrder,
+                  _state == CurrentRadioState.extendOrder
                       ? CustomColor.blue
                       : CustomColor.white),
               if (widget.invoice!["type"] == 0)
                 customRadioButton(
                     "Đặt lịch thay đổi đồ dùng đang được giữ",
-                    CurrentRadioState.doido,
-                    _state == CurrentRadioState.doido
+                    CurrentRadioState.modifyItem,
+                    _state == CurrentRadioState.modifyItem
                         ? CustomColor.blue
                         : CustomColor.white),
               if (widget.invoice!["type"] == 1)
                 customRadioButton(
                     "Dời lịch nhận kho",
-                    CurrentRadioState.doido,
-                    _state == CurrentRadioState.doido
+                    CurrentRadioState.modifyItem,
+                    _state == CurrentRadioState.modifyItem
                         ? CustomColor.blue
                         : CustomColor.white),
               customRadioButton(
                   "Hủy đơn",
-                  CurrentRadioState.huydon,
-                  _state == CurrentRadioState.huydon
+                  CurrentRadioState.cancelOrder,
+                  _state == CurrentRadioState.cancelOrder
                       ? CustomColor.blue
                       : CustomColor.white),
               CustomSizedBox(
                 context: context,
                 height: 24,
               ),
-              if (_state == CurrentRadioState.giahandon)
+              if (_state == CurrentRadioState.extendOrder)
                 InvoiveExtendWidget(
                   invoice: widget.invoice,
                 ),
-              if (_state == CurrentRadioState.doido)
+              if (_state == CurrentRadioState.modifyItem)
                 ChangeItemWidget(
                   invoice: widget.invoice,
                 ),
-              if (_state == CurrentRadioState.huydon)
+              if (_state == CurrentRadioState.cancelOrder)
                 const InvoiceCancelWidget()
             ],
           ),

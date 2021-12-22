@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
@@ -9,6 +10,9 @@ class ProductInvoiceWidget extends StatelessWidget {
   ProductInvoiceWidget({Key? key, this.product}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final deviceSize = MediaQuery.of(context).size;
+    final oCcy = NumberFormat("#,##0", "en_US");
+
     return SizedBox(
         child: Table(
       defaultVerticalAlignment: TableCellVerticalAlignment.middle,
@@ -25,18 +29,23 @@ class ProductInvoiceWidget extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CustomText(
-                      text: product!["name"],
-                      color: Colors.black54,
-                      fontWeight: FontWeight.bold,
-                      context: context,
-                      fontSize: 14),
+                  SizedBox(
+                    width: deviceSize.width * 2 / 8,
+                    child: CustomText(
+                        text: product!["name"],
+                        color: CustomColor.black,
+                        fontWeight: FontWeight.bold,
+                        maxLines: 1,
+                        textOverflow: TextOverflow.ellipsis,
+                        context: context,
+                        fontSize: 14),
+                  ),
                   CustomSizedBox(
                     context: context,
                     height: 6,
                   ),
                   CustomText(
-                      text: product!["price"].toString() + "đ / tháng",
+                      text: oCcy.format(product!["price"]) + "đ / tháng",
                       color: CustomColor.blue,
                       fontWeight: FontWeight.bold,
                       context: context,
@@ -54,7 +63,7 @@ class ProductInvoiceWidget extends StatelessWidget {
               fontSize: 20),
           CustomText(
               text:
-                  (product!["quantity"] * product!["price"]).toString() + " đ",
+                  oCcy.format(product!["quantity"] * product!["price"]) + " đ",
               color: CustomColor.blue,
               textAlign: TextAlign.center,
               fontWeight: FontWeight.bold,

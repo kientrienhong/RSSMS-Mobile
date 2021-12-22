@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
@@ -9,6 +10,7 @@ import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/p
 class InvoiceProductWidget extends StatelessWidget {
   Map<String, dynamic>? invoice;
   final Size deviceSize;
+  final oCcy = NumberFormat("#,##0", "en_US");
 
   InvoiceProductWidget(
       {Key? key, required this.invoice, required this.deviceSize})
@@ -100,7 +102,7 @@ class InvoiceProductWidget extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     fontSize: 16),
                 CustomText(
-                    text: invoice!["totalItem"].toString(),
+                    text: oCcy.format(invoice!["totalItem"]),
                     color: Colors.black,
                     context: context,
                     fontWeight: FontWeight.bold,
@@ -154,7 +156,7 @@ class InvoiceProductWidget extends StatelessWidget {
                     fontSize: 16),
                 CustomText(
                     text:
-                        (invoice!["month"] * invoice!["totalItem"]).toString() +
+                        oCcy.format(invoice!["month"] * invoice!["totalItem"]) +
                             " đ",
                     color: CustomColor.blue,
                     context: context,
@@ -229,8 +231,8 @@ class InvoiceProductWidget extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     fontSize: 16),
                 CustomText(
-                    text: (invoice!["totalPrice"] - invoice!["totalItem"])
-                            .toString() +
+                    text: oCcy.format(
+                            invoice!["totalPrice"] - invoice!["totalItem"]) +
                         " đ",
                     color: CustomColor.blue,
                     context: context,
@@ -263,7 +265,7 @@ class InvoiceProductWidget extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     fontSize: 16),
                 CustomText(
-                    text: invoice!["totalPrice"].toString() + " đ",
+                    text: oCcy.format(invoice!["totalPrice"]) + " đ",
                     color: CustomColor.blue,
                     context: context,
                     fontWeight: FontWeight.bold,
@@ -316,7 +318,7 @@ class InvoiceProductWidget extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     fontSize: 19),
                 CustomText(
-                    text: invoice!["totalPrice"].toString() + " đ",
+                    text: oCcy.format(invoice!["totalPrice"]) + " đ",
                     color: CustomColor.blue,
                     context: context,
                     fontWeight: FontWeight.bold,
