@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/common/list_time_select.dart';
+import 'package:rssms/models/entity/order_booking.dart';
 import 'package:rssms/views/booking_pop_up_view_door_to_door.dart';
 
 class BookingPopUpDoorToDoor extends StatefulWidget {
@@ -16,6 +19,8 @@ class BookingPopUpDoorToDoor extends StatefulWidget {
 class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
     implements BookingPopUpViewDoorToDoor {
   final _dateDeliveryController = TextEditingController();
+  final oCcy = new NumberFormat("#,##0", "en_US");
+
   final _dateReturnController = TextEditingController();
   DateTime dateDelivery = DateTime.now();
   DateTime dateReturn = DateTime.now();
@@ -67,10 +72,37 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
     );
   }
 
+  String totalEachPart(List<dynamic> list) {
+    var sum = 0;
+
+    list.forEach((element) {
+      sum += element['price'] * element['quantity'] as int;
+    });
+
+    return '${oCcy.format(sum)} VND';
+  }
+
+  String totalBill() {
+    var sum = 0;
+    OrderBooking orderBooking =
+        Provider.of<OrderBooking>(context, listen: false);
+
+    List listKeys = orderBooking.productOrder!.keys.toList();
+
+    listKeys.forEach((element) {
+      orderBooking.productOrder![element]!.forEach((ele) {
+        sum += ele['price'] * ele['quantity'] as int;
+      });
+    });
+
+    return '${oCcy.format(sum)} VND';
+  }
+
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
-
+    OrderBooking orderBooking =
+        Provider.of<OrderBooking>(context, listen: false);
     _selectDateReturn(BuildContext context) async {
       final DateTime? picked = await showDatePicker(
         context: context,
@@ -294,19 +326,25 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
                 height: 8,
               ),
               buildInfo(
-                  'Chi phí thuê: ', '${_diffDate} ngày', CustomColor.black),
-              CustomSizedBox(
-                context: context,
-                height: 8,
-              ),
-              buildInfo('Phụ kiện đóng gói: ', '${_diffDate} ngày',
+                  'Chi phí thuê: ',
+                  totalEachPart(orderBooking.productOrder!['product']!),
                   CustomColor.black),
               CustomSizedBox(
                 context: context,
                 height: 8,
               ),
               buildInfo(
-                  'Dịch vụ hỗ trợ: ', '${_diffDate} ngày', CustomColor.black),
+                  'Phụ kiện đóng gói: ',
+                  totalEachPart(orderBooking.productOrder!['accessory']!),
+                  CustomColor.black),
+              CustomSizedBox(
+                context: context,
+                height: 8,
+              ),
+              buildInfo(
+                  'Dịch vụ hỗ trợ: ',
+                  totalEachPart(orderBooking.productOrder!['service']!),
+                  CustomColor.black),
               CustomSizedBox(
                 context: context,
                 height: 8,
@@ -320,7 +358,7 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
                 context: context,
                 height: 8,
               ),
-              buildInfo('Tổng cộng ', '${_diffDate} ngày', CustomColor.black),
+              buildInfo('Tổng cộng ', totalBill(), CustomColor.black),
               CustomSizedBox(
                 context: context,
                 height: 16,

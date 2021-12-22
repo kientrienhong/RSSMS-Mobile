@@ -68,25 +68,39 @@ const List<Map<String, dynamic>> LIST_ACCESSORY = [
     'url': 'assets/images/tape.png',
     'name': 'Băng keo trong',
     'id': 5,
+    'price': 20000,
     'type': ACCESSORY
   },
   {
     'url': 'assets/images/locker.png',
     'name': 'Ổ khóa cao cấp',
     'id': 6,
+    'price': 20000,
     'type': ACCESSORY
   },
   {
     'url': 'assets/images/peFoam.png',
     'name': 'Xốp hơi, xốp foam',
     'id': 7,
+    'price': 20000,
     'type': ACCESSORY
   },
   {
     'url': 'assets/images/PEstretchfilm.png',
     'name': 'Màn quấn PE',
     'id': 8,
+    'price': 20000,
     'type': ACCESSORY
+  },
+];
+
+const List<Map<String, dynamic>> LIST_SERVICES = [
+  {
+    'url': 'assets/images/packaging.png',
+    'name': 'Đóng gói dễ vỡ',
+    'id': 8,
+    'price': 20000,
+    'type': SERVICES
   },
 ];
 
