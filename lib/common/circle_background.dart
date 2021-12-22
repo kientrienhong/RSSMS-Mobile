@@ -6,10 +6,12 @@ class CircleBackground extends StatelessWidget {
   final double positionTop;
   final double positionLeft;
 
-  CircleBackground(
-      {required this.size,
+  const CircleBackground(
+      {Key? key,
+      required this.size,
       required this.positionLeft,
-      required this.positionTop});
+      required this.positionTop})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

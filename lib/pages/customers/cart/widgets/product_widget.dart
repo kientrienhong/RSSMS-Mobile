@@ -152,7 +152,8 @@ class _ProductWidgetState extends State<ProductWidget> implements ProductView {
                     context: context,
                     height: 8,
                   ),
-                  SizedBox(
+                  Container(
+                    padding: EdgeInsets.only(right: 16),
                     width: (deviceSize.width - 32) / 8,
                     child: QuantityWidget(
                       product: widget.product,
