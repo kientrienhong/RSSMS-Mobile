@@ -72,7 +72,8 @@ class _ChangeItemWidgetState extends State<ChangeItemWidget> {
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
-    return SizedBox(
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 18),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

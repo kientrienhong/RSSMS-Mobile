@@ -34,6 +34,15 @@ class InvoiveUpdateScreenState extends State<InvoiveUpdateScreen> {
             backgroundColor:
                 MaterialStateProperty.resolveWith((states) => color),
             shape: MaterialStateProperty.all(CircleBorder()),
+            side: MaterialStateProperty.all(
+              const BorderSide(color: CustomColor.blue, width: 1.5),
+            ),
+            maximumSize: MaterialStateProperty.all(
+              Size(50, 50),
+            ),
+            minimumSize: MaterialStateProperty.all(
+              Size(25, 25),
+            ),
           ),
           onPressed: () {
             setState(() {
@@ -42,7 +51,7 @@ class InvoiveUpdateScreenState extends State<InvoiveUpdateScreen> {
           },
           child: const Icon(
             Icons.check,
-            size: 20,
+            size: 15,
             color: CustomColor.white,
           ),
         ),
@@ -63,14 +72,15 @@ class InvoiveUpdateScreenState extends State<InvoiveUpdateScreen> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 6, vertical: 24),
           color: CustomColor.white,
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
           width: deviceSize.width,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 24),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 24, horizontal: 24),
                 child: GestureDetector(
                   onTap: () => {Navigator.of(context).pop()},
                   child: Image.asset('assets/images/arrowLeft.png'),

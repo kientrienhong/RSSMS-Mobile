@@ -142,7 +142,7 @@ const List<Map<String, dynamic>> LIST_INVOICE = [
     "statusCode": 1,
     "image": [
       {"url": "assets/images/image28.png"},
-      {"url": "assets/images/image28.png"},
+      {"url": "assets/images/image27.png"},
     ],
     "type": 0
   },
