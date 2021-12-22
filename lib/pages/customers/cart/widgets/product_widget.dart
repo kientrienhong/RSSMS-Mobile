@@ -30,14 +30,15 @@ class _ProductWidgetState extends State<ProductWidget> implements ProductView {
   void onAddQuantity(double deviceSizeHeight) {
     OrderBooking orderBooking =
         Provider.of<OrderBooking>(context, listen: false);
-    orderBooking.productOrder!['product']!.add({
-      'idOfList':
-          '${widget.product!['id']}-${orderBooking.productOrder!['product']!.length}',
-      'note': '',
-      'product': widget.product
-    });
     Map<String, dynamic> tempProduct = {...widget.product!};
     tempProduct['quantity'] += 1;
+    orderBooking.productOrder!['product']!.add({
+      ...widget.product!,
+      'quantity': 1,
+      'idOfList': '${widget.product!['id']}-${tempProduct['quantity']}',
+      'note': '',
+    });
+
     setState(() {
       widget.product = tempProduct;
       additionHeight = tempProduct['quantity'] * deviceSizeHeight * 7;
@@ -46,10 +47,20 @@ class _ProductWidgetState extends State<ProductWidget> implements ProductView {
 
   @override
   void onMinusQuantity(double deviceSizeHeight) {
+    OrderBooking orderBooking =
+        Provider.of<OrderBooking>(context, listen: false);
     Map<String, dynamic> tempProduct = {...widget.product!};
     if (tempProduct['quantity'] == 0) {
       return;
     }
+    final foundItem = orderBooking.productOrder!['product']!.indexWhere(
+      (e) =>
+          e['idOfList'].toString() ==
+          '${widget.product!['id']}-${tempProduct['quantity']}',
+    );
+
+    orderBooking.productOrder!['product']!.removeAt(foundItem);
+
     tempProduct['quantity'] -= 1;
     setState(() {
       widget.product = tempProduct;
@@ -175,6 +186,18 @@ class _ProductWidgetState extends State<ProductWidget> implements ProductView {
                     bottom: SizeConfig.blockSizeVertical! * 1),
                 height: SizeConfig.blockSizeVertical! * 6,
                 child: TextFormField(
+                  onChanged: (text) {
+                    OrderBooking orderBooking =
+                        Provider.of<OrderBooking>(context, listen: false);
+                    final foundItem =
+                        orderBooking.productOrder!['product']!.indexWhere(
+                      (e) =>
+                          e['idOfList'].toString() ==
+                          '${widget.product!['id']}-${index + 1}',
+                    );
+                    orderBooking.productOrder!['product']![foundItem]['note'] =
+                        text;
+                  },
                   textAlignVertical: TextAlignVertical.center,
                   decoration: InputDecoration(
                     contentPadding:
