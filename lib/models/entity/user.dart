@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 
 enum UserRole { owner, customer }
 
-class User with ChangeNotifier {
+class Users with ChangeNotifier {
   String? name;
   String? email;
   String? phone;
@@ -11,7 +11,7 @@ class User with ChangeNotifier {
   String? jwtToken;
   String? avatar;
   String? idTokenFirebase;
-  User.empty() {
+  Users.empty() {
     name = '';
     email = '';
     phone = '';
@@ -22,7 +22,7 @@ class User with ChangeNotifier {
     avatar = '';
   }
 
-  User(
+  Users(
       {this.name,
       this.email,
       this.idTokenFirebase,
@@ -32,7 +32,7 @@ class User with ChangeNotifier {
       this.avatar,
       this.jwtToken});
 
-  User.copyWith(
+  Users.copyWith(
       {String? name,
       String? email,
       String? phone,
@@ -51,7 +51,7 @@ class User with ChangeNotifier {
     avatar = avatar;
   }
 
-  void setUser({required User user}) {
+  void setUser({required Users user}) {
     name = user.name ?? name;
     email = user.email ?? email;
     phone = user.phone ?? phone;
@@ -63,7 +63,7 @@ class User with ChangeNotifier {
     notifyListeners();
   }
 
-  User copyWith(
+  Users copyWith(
       {String? name,
       String? email,
       String? phone,
@@ -72,7 +72,7 @@ class User with ChangeNotifier {
       String? idTokenFirebase,
       String? jwtToken,
       String? avatar}) {
-    return User(
+    return Users(
         address: address ?? this.address,
         email: email ?? this.email,
         idTokenFirebase: idTokenFirebase ?? this.idTokenFirebase,
@@ -83,11 +83,11 @@ class User with ChangeNotifier {
         role: role ?? this.role);
   }
 
-  factory User.fromJson(Map<String, dynamic> json) {
+  factory Users.fromJson(Map<String, dynamic> json) {
     String roleString = json['roleName'];
     UserRole userRole =
         roleString == 'Owner' ? UserRole.owner : UserRole.customer;
-    return User(
+    return Users(
         avatar: json['avatar'],
         address: json['address'],
         email: json['email'],
