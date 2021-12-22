@@ -27,7 +27,7 @@ class ProfilePresenter {
   //       email, password, confirmPassword, firstname, lastname, phone);
   // }
 
-  Future<User?> handleSignIn(String email, String password) async {
+  Future<Users?> handleSignIn(String email, String password) async {
     _view!.updateLoading();
     try {
       // final result = await FirebaseServices.firebaseLogin(email, password);
@@ -42,7 +42,7 @@ class ProfilePresenter {
       // print(user.jwtToken);
       // _model.user = user.copyWith(idTokenFirebase: result);
       // return _model.user;
-      return User();
+      return Users();
     } catch (e) {
       // print(e.toString());
       // throw Exception('Invalid email or password');

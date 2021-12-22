@@ -4,13 +4,13 @@ class ProfileModel {
   bool? _isDisableUpdate;
   String? _errorMsg;
   bool? _isLoading;
-  User? _user;
+  Users? _user;
 
   ProfileModel() {
     _isDisableUpdate = true;
     _errorMsg = '';
     _isLoading = false;
-    _user = User.empty();
+    _user = Users.empty();
   }
 
   get user => _user;

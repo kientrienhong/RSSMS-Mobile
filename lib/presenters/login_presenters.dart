@@ -10,7 +10,7 @@ import '/views/login_view.dart';
 class LoginPresenter {
   LoginModel? _model;
   LoginView? _view;
-  
+
   LoginView get view => _view!;
 
   setView(LoginView value) {
@@ -27,7 +27,7 @@ class LoginPresenter {
     _view!.updateViewStatusButton(email, password);
   }
 
-  Future<User?> handleSignIn(String email, String password) async {
+  Future<Users?> handleSignIn(String email, String password) async {
     _view!.updateLoading();
     try {
       // final result = await FirebaseServices.firebaseLogin(email, password);
@@ -42,7 +42,7 @@ class LoginPresenter {
       // print(user.jwtToken);
       // _model.user = user.copyWith(idTokenFirebase: result);
       // return _model.user;
-      return User();
+      return Users();
     } catch (e) {
       // print(e.toString());
       // throw Exception('Invalid email or password');

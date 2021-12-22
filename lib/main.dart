@@ -15,8 +15,8 @@ void main() async {
 
   runApp(MultiProvider(
     providers: [
-      ChangeNotifierProvider<User>(
-        create: (_) => User.empty(),
+      ChangeNotifierProvider<Users>(
+        create: (_) => Users.empty(),
       ),
       ChangeNotifierProvider<OrderBooking>(
         create: (_) => OrderBooking.empty(),
