@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rssms/common/custom_app_bar.dart';
+import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_input_with_hint.dart';
 import 'package:rssms/common/custom_radio_button.dart';
@@ -79,6 +80,7 @@ class _HandleInputState extends State<HandleInput> {
   final _controllerName = TextEditingController();
   final _controllerAddress = TextEditingController();
   final _controllerBuilding = TextEditingController();
+  final _controllerNote = TextEditingController();
 
   final _focusNodeFloorReturn = FocusNode();
   final _focusNodeAreaReturn = FocusNode();
@@ -94,6 +96,8 @@ class _HandleInputState extends State<HandleInput> {
   late String _districtReturn;
   late String _wardReturn;
   SelectDistrict currentIndex = SelectDistrict.same;
+  List<int> currentIndexNoteChoice = [];
+
   List<Widget> _buildListDropDown() {
     return constants.LIST_ADDRESS_CHOICES
         .map((e) => CustomRadioButton(
@@ -123,7 +127,6 @@ class _HandleInputState extends State<HandleInput> {
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
-    final _index = 0;
     void onChangeDropdownDistrictButton(String value) {
       setState(() {
         _district = value;
@@ -146,6 +149,18 @@ class _HandleInputState extends State<HandleInput> {
       setState(() {
         _wardReturn = value;
       });
+    }
+
+    void onTapChoice(int index, int indexFound) {
+      if (indexFound == -1) {
+        setState(() {
+          currentIndexNoteChoice.add(index);
+        });
+      } else {
+        setState(() {
+          currentIndexNoteChoice.remove(index);
+        });
+      }
     }
 
     return Column(
@@ -203,7 +218,15 @@ class _HandleInputState extends State<HandleInput> {
             focusNodeArea: _focusNodeArea,
             focusNodeBuilding: _focusNodeBuilding,
             focusNodeFloor: _focusNodeFloor),
+        CustomSizedBox(
+          context: context,
+          height: 8,
+        ),
         buildTitle('ĐỊA CHỈ VÀ THỜI GIAN CHÚNG TÔI TRẢ ĐỒ ĐẠC', context),
+        CustomSizedBox(
+          context: context,
+          height: 8,
+        ),
         Column(
           children: _buildListDropDown(),
         ),
@@ -224,6 +247,10 @@ class _HandleInputState extends State<HandleInput> {
                 focusNodeFloor: _focusNodeFloorReturn,
               )
             : Container(),
+        CustomSizedBox(
+          context: context,
+          height: 8,
+        ),
         CustomText(
           text: 'Lưu ý với nhân viên chúng tôi',
           color: CustomColor.blue,
@@ -247,11 +274,67 @@ class _HandleInputState extends State<HandleInput> {
           children: List.generate(
               constants.LIST_CHOICE_NOTED_BOOKING.length,
               (index) => NoteSelect(
+                  onTapChoice: onTapChoice,
                   url: constants.LIST_CHOICE_NOTED_BOOKING[index]['url'],
                   name: constants.LIST_CHOICE_NOTED_BOOKING[index]['name'],
-                  currentIndex: _index,
+                  currentIndex: currentIndexNoteChoice,
                   index: index)),
-        )
+        ),
+        CustomSizedBox(
+          context: context,
+          height: 16,
+        ),
+        CustomText(
+          text: 'Ghi chú',
+          color: CustomColor.blue,
+          context: context,
+          fontSize: 18,
+          textAlign: TextAlign.start,
+          fontWeight: FontWeight.bold,
+        ),
+        CustomSizedBox(
+          context: context,
+          height: 8,
+        ),
+        Container(
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(4),
+              border: Border.all(color: CustomColor.black[3]!, width: 1)),
+          child: TextFormField(
+            minLines: 6,
+            controller: _controllerNote,
+            keyboardType: TextInputType.multiline,
+            maxLines: null,
+          ),
+        ),
+        CustomSizedBox(
+          context: context,
+          height: 24,
+        ),
+        Container(
+          width: double.infinity,
+          child: Center(
+            child: CustomButton(
+                height: 18,
+                text: 'Tiếp theo',
+                width: deviceSize.width * 1.2 / 3,
+                onPressFunction: () {
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              const InputInformationDoorToDoor()));
+                },
+                isLoading: false,
+                textColor: CustomColor.white,
+                buttonColor: CustomColor.blue,
+                borderRadius: 6),
+          ),
+        ),
+        CustomSizedBox(
+          context: context,
+          height: 24,
+        ),
       ],
     );
   }
