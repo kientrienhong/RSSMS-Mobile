@@ -1,39 +1,43 @@
-import 'package:dropdown_below/dropdown_below.dart';
 import 'package:flutter/material.dart';
+import 'package:group_radio_button/group_radio_button.dart';
 import 'package:rssms/common/custom_app_bar.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_input.dart';
 import 'package:rssms/common/custom_input_with_hint.dart';
+import 'package:rssms/common/custom_radio_button.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
+import 'package:rssms/pages/customers/input_information_booking/widgets/input_form_door_to_door.dart';
+import '../../../constants/constants.dart' as constants;
+
+enum SelectDistrict { same, different, notYet }
+Widget buildTitle(String name, BuildContext context) {
+  return Row(
+    crossAxisAlignment: CrossAxisAlignment.center,
+    children: [
+      Image.asset('assets/images/delivery.png'),
+      CustomSizedBox(
+        context: context,
+        width: 8,
+      ),
+      Flexible(
+        child: CustomText(
+            text: name,
+            color: CustomColor.blue,
+            fontWeight: FontWeight.bold,
+            context: context,
+            maxLines: 2,
+            fontSize: 18),
+      )
+    ],
+  );
+}
 
 class InputInformationDoorToDoor extends StatelessWidget {
   const InputInformationDoorToDoor({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    Widget buildTitle(String name) {
-      return Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Image.asset('assets/images/delivery.png'),
-          CustomSizedBox(
-            context: context,
-            width: 8,
-          ),
-          Flexible(
-            child: CustomText(
-                text: name,
-                color: CustomColor.blue,
-                fontWeight: FontWeight.bold,
-                context: context,
-                maxLines: 2,
-                fontSize: 18),
-          )
-        ],
-      );
-    }
-
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -43,8 +47,9 @@ class InputInformationDoorToDoor extends StatelessWidget {
               CustomAppBar(
                 isHome: false,
               ),
-              buildTitle('ĐỊA CHỈ VÀ THỜI GIAN CHÚNG TÔI ĐẾN LẤY ĐỒ ĐẠC'),
-              FormInput()
+              buildTitle(
+                  'ĐỊA CHỈ VÀ THỜI GIAN CHÚNG TÔI ĐẾN LẤY ĐỒ ĐẠC', context),
+              HandleInput()
             ],
           ),
         ),
@@ -53,14 +58,14 @@ class InputInformationDoorToDoor extends StatelessWidget {
   }
 }
 
-class FormInput extends StatefulWidget {
-  const FormInput({Key? key}) : super(key: key);
+class HandleInput extends StatefulWidget {
+  const HandleInput({Key? key}) : super(key: key);
 
   @override
-  _FormInputState createState() => _FormInputState();
+  _HandleInputState createState() => _HandleInputState();
 }
 
-class _FormInputState extends State<FormInput> {
+class _HandleInputState extends State<HandleInput> {
   final _focusNodeEmail = FocusNode();
   final _focusNodeFloor = FocusNode();
   final _focusNodeArea = FocusNode();
@@ -75,10 +80,81 @@ class _FormInputState extends State<FormInput> {
   final _controllerName = TextEditingController();
   final _controllerAddress = TextEditingController();
   final _controllerBuilding = TextEditingController();
-  String dropdownValue = 'One';
+
+  final _focusNodeEmailReturn = FocusNode();
+  final _focusNodeFloorReturn = FocusNode();
+  final _focusNodeAreaReturn = FocusNode();
+  final _focusNodePhoneReturn = FocusNode();
+  final _focusNodeNameReturn = FocusNode();
+  final _focusNodeAddressReturn = FocusNode();
+  final _focusNodeBuildingReturn = FocusNode();
+  final _controllerEmailReturn = TextEditingController();
+  final _controllerFloorReturn = TextEditingController();
+  final _controllerAreaReturn = TextEditingController();
+  final _controllerPhoneReturn = TextEditingController();
+  final _controllerNameReturn = TextEditingController();
+  final _controllerAddressReturn = TextEditingController();
+  final _controllerBuildingReturn = TextEditingController();
+
+  late String _district;
+  late String _ward;
+  late String _districtReturn;
+  late String _wardReturn;
+  SelectDistrict currentIndex = SelectDistrict.same;
+  List<Widget> _buildListDropDown() {
+    return constants.LIST_ADDRESS_CHOICES
+        .map((e) => CustomRadioButton(
+            function: () {
+              setState(() {
+                currentIndex = e['value'];
+              });
+            },
+            text: e['name'],
+            color: currentIndex == e['value']
+                ? CustomColor.blue
+                : CustomColor.white,
+            state: currentIndex,
+            value: e['value']))
+        .toList();
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _district = 'Quận';
+    _ward = 'Quận';
+    _districtReturn = 'Quận';
+    _wardReturn = 'Quận';
+  }
+
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
+
+    void onChangeDropdownDistrictButton(String value) {
+      setState(() {
+        _district = value;
+      });
+    }
+
+    void onChangeDropdownWardButton(String value) {
+      setState(() {
+        _ward = value;
+      });
+    }
+
+    void onChangeDropdownDistrictReturnButton(String value) {
+      setState(() {
+        _districtReturn = value;
+      });
+    }
+
+    void onChangeDropdownWardReturnButton(String value) {
+      setState(() {
+        _wardReturn = value;
+      });
+    }
 
     return Column(
       children: [
@@ -121,91 +197,40 @@ class _FormInputState extends State<FormInput> {
             ),
           ],
         ),
-        CustomOutLineInputWithHint(
-          controller: _controllerAddress,
-          isDisable: false,
-          focusNode: _focusNodeAddress,
-          deviceSize: deviceSize,
-          hintText: 'Địa chỉ',
-          nextNode: _focusNodeBuilding,
+        InputFormDoorToDoor(
+            onChangeDropdownDistrictButton: onChangeDropdownDistrictButton,
+            onChangeDropdownWardButton: onChangeDropdownWardButton,
+            controllerAddress: _controllerAddress,
+            controllerArea: _controllerArea,
+            controllerBuilding: _controllerBuilding,
+            district: _district,
+            controllerFloor: _controllerFloor,
+            ward: _ward,
+            focusNodeAddress: _focusNodeAddress,
+            focusNodeArea: _focusNodeArea,
+            focusNodeBuilding: _focusNodeBuilding,
+            focusNodeFloor: _focusNodeFloor),
+        buildTitle('ĐỊA CHỈ VÀ THỜI GIAN CHÚNG TÔI TRẢ ĐỒ ĐẠC', context),
+        Column(
+          children: _buildListDropDown(),
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            SizedBox(
-              width: (deviceSize.width - 48) / 2.1,
-              child: DropdownButton<String>(
-                value: dropdownValue,
-                icon: const Icon(Icons.arrow_downward),
-                elevation: 16,
-                style: const TextStyle(color: Colors.deepPurple),
-                underline: Container(
-                  height: 2,
-                  color: Colors.deepPurpleAccent,
-                ),
-                onChanged: (String? newValue) {
-                  setState(() {
-                    dropdownValue = newValue!;
-                  });
-                },
-                items: <String>['One', 'Two', 'Free', 'Four']
-                    .map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-              ),
-            ),
-            SizedBox(
-              width: (deviceSize.width - 48) / 2.1,
-              child: CustomOutLineInputWithHint(
-                controller: _controllerEmail,
-                isDisable: false,
-                focusNode: _focusNodeEmail,
-                deviceSize: deviceSize,
-                hintText: 'Email',
-                nextNode: _focusNodeAddress,
-              ),
-            ),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            SizedBox(
-              width: (deviceSize.width - 48) / 3.2,
-              child: CustomOutLineInputWithHint(
-                  controller: _controllerBuilding,
-                  isDisable: false,
-                  focusNode: _focusNodeBuilding,
-                  deviceSize: deviceSize,
-                  hintText: 'Tòa nhà',
-                  nextNode: _focusNodeArea),
-            ),
-            SizedBox(
-              width: (deviceSize.width - 48) / 3.2,
-              child: CustomOutLineInputWithHint(
-                controller: _controllerArea,
-                isDisable: false,
-                focusNode: _focusNodeArea,
-                deviceSize: deviceSize,
-                hintText: 'Khu',
-                nextNode: _focusNodeFloor,
-              ),
-            ),
-            SizedBox(
-              width: (deviceSize.width - 48) / 3.2,
-              child: CustomOutLineInputWithHint(
-                controller: _controllerFloor,
-                isDisable: false,
-                focusNode: _focusNodeFloor,
-                deviceSize: deviceSize,
-                hintText: 'Tầng',
-              ),
-            ),
-          ],
-        ),
+        currentIndex == SelectDistrict.different
+            ? InputFormDoorToDoor(
+                onChangeDropdownDistrictButton:
+                    onChangeDropdownDistrictReturnButton,
+                onChangeDropdownWardButton: onChangeDropdownWardReturnButton,
+                controllerAddress: _controllerAddressReturn,
+                controllerArea: _controllerAreaReturn,
+                controllerBuilding: _controllerBuildingReturn,
+                district: _districtReturn,
+                controllerFloor: _controllerFloorReturn,
+                ward: _wardReturn,
+                focusNodeAddress: _focusNodeAddressReturn,
+                focusNodeArea: _focusNodeAreaReturn,
+                focusNodeBuilding: _focusNodeBuildingReturn,
+                focusNodeFloor: _focusNodeFloorReturn,
+              )
+            : Container()
       ],
     );
   }

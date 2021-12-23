@@ -1,3 +1,5 @@
+import 'package:rssms/pages/customers/input_information_booking/input_information_door_to_door.dart';
+
 const List<Map<String, String>> LIST_CUSTOMER_BOTTOM_NAVIGATION = [
   {'url': "assets/images/profile.png", 'label': 'Profile'},
   {'url': "assets/images/addIcon.png", 'label': 'Cart'},
@@ -366,4 +368,10 @@ const List<Map<String, dynamic>> LIST_REQUEST = [
     "status": "Chưa hoàn tiền",
     "statusCode": 2
   },
+];
+
+const List<Map<String, dynamic>> LIST_ADDRESS_CHOICES = [
+  {'name': 'Giống địa chỉ lấy đồ đạc', 'value': SelectDistrict.same},
+  {'name': 'Khác địa chỉ lấy đồ đạc', 'value': SelectDistrict.different},
+  {'name': 'Chưa xác định (Bổ sung sau)', 'value': SelectDistrict.notYet},
 ];
