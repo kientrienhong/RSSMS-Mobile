@@ -133,7 +133,7 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
   @override
   void onClickSignIn(String email, String password) async {
     try {
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(
             builder: (context) => const CustomBottomNavigation(

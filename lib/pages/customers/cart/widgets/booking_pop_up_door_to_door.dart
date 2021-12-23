@@ -7,6 +7,7 @@ import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/common/list_time_select.dart';
 import 'package:rssms/models/entity/order_booking.dart';
+import 'package:rssms/pages/customers/input_information_booking/input_information_door_to_door.dart';
 import 'package:rssms/views/booking_pop_up_view_door_to_door.dart';
 
 class BookingPopUpDoorToDoor extends StatefulWidget {
@@ -370,7 +371,13 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
                       height: 18,
                       text: 'Tiếp theo',
                       width: deviceSize.width * 1.2 / 3,
-                      onPressFunction: () {},
+                      onPressFunction: () {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const InputInformationDoorToDoor()));
+                      },
                       isLoading: false,
                       textColor: CustomColor.white,
                       buttonColor: CustomColor.blue,
