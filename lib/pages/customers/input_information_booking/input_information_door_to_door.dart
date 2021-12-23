@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:group_radio_button/group_radio_button.dart';
 import 'package:rssms/common/custom_app_bar.dart';
 import 'package:rssms/common/custom_color.dart';
-import 'package:rssms/common/custom_input.dart';
 import 'package:rssms/common/custom_input_with_hint.dart';
 import 'package:rssms/common/custom_radio_button.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/pages/customers/input_information_booking/widgets/input_form_door_to_door.dart';
+import 'package:rssms/pages/customers/input_information_booking/widgets/note_select.dart';
 import '../../../constants/constants.dart' as constants;
 
 enum SelectDistrict { same, different, notYet }
@@ -81,18 +80,12 @@ class _HandleInputState extends State<HandleInput> {
   final _controllerAddress = TextEditingController();
   final _controllerBuilding = TextEditingController();
 
-  final _focusNodeEmailReturn = FocusNode();
   final _focusNodeFloorReturn = FocusNode();
   final _focusNodeAreaReturn = FocusNode();
-  final _focusNodePhoneReturn = FocusNode();
-  final _focusNodeNameReturn = FocusNode();
   final _focusNodeAddressReturn = FocusNode();
   final _focusNodeBuildingReturn = FocusNode();
-  final _controllerEmailReturn = TextEditingController();
   final _controllerFloorReturn = TextEditingController();
   final _controllerAreaReturn = TextEditingController();
-  final _controllerPhoneReturn = TextEditingController();
-  final _controllerNameReturn = TextEditingController();
   final _controllerAddressReturn = TextEditingController();
   final _controllerBuildingReturn = TextEditingController();
 
@@ -120,7 +113,6 @@ class _HandleInputState extends State<HandleInput> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _district = 'Quận';
     _ward = 'Quận';
@@ -131,7 +123,7 @@ class _HandleInputState extends State<HandleInput> {
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
-
+    final _index = 0;
     void onChangeDropdownDistrictButton(String value) {
       setState(() {
         _district = value;
@@ -157,6 +149,7 @@ class _HandleInputState extends State<HandleInput> {
     }
 
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CustomSizedBox(
           context: context,
@@ -230,7 +223,35 @@ class _HandleInputState extends State<HandleInput> {
                 focusNodeBuilding: _focusNodeBuildingReturn,
                 focusNodeFloor: _focusNodeFloorReturn,
               )
-            : Container()
+            : Container(),
+        CustomText(
+          text: 'Lưu ý với nhân viên chúng tôi',
+          color: CustomColor.blue,
+          context: context,
+          fontSize: 18,
+          textAlign: TextAlign.start,
+          fontWeight: FontWeight.bold,
+        ),
+        CustomSizedBox(
+          context: context,
+          height: 8,
+        ),
+        GridView.count(
+          shrinkWrap: true,
+          crossAxisCount: 3,
+          childAspectRatio: 1,
+          mainAxisSpacing: 8,
+          crossAxisSpacing: 8,
+          padding: const EdgeInsets.all(4),
+          physics: const NeverScrollableScrollPhysics(),
+          children: List.generate(
+              constants.LIST_CHOICE_NOTED_BOOKING.length,
+              (index) => NoteSelect(
+                  url: constants.LIST_CHOICE_NOTED_BOOKING[index]['url'],
+                  name: constants.LIST_CHOICE_NOTED_BOOKING[index]['name'],
+                  currentIndex: _index,
+                  index: index)),
+        )
       ],
     );
   }

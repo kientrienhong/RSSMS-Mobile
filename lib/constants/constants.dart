@@ -375,3 +375,18 @@ const List<Map<String, dynamic>> LIST_ADDRESS_CHOICES = [
   {'name': 'Khác địa chỉ lấy đồ đạc', 'value': SelectDistrict.different},
   {'name': 'Chưa xác định (Bổ sung sau)', 'value': SelectDistrict.notYet},
 ];
+
+const List<Map<String, dynamic>> LIST_CHOICE_NOTED_BOOKING = [
+  {'name': 'Hàng cồng kềnh', 'url': 'assets/images/unweildy.png'},
+  {'name': 'Hàng nặng', 'url': 'assets/images/weighty.png'},
+  {'name': 'Hàng dễ vỡ', 'url': 'assets/images/vulnerable.png'},
+  {
+    'name': 'Hẻm nhỏ (xe tải không vào được)',
+    'url': 'assets/images/narrow.png'
+  },
+  {
+    'name': 'Nhà nhiều tầng không thang máy',
+    'url': 'assets/images/building.png'
+  },
+  {'name': 'Không chỗ đậu xe', 'url': 'assets/images/noParking.png'},
+];
