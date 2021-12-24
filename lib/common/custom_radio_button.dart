@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rssms/common/custom_color.dart';
+import 'package:rssms/common/custom_sizebox.dart';
 
 class CustomRadioButton extends StatelessWidget {
   VoidCallback function;
@@ -18,38 +19,35 @@ class CustomRadioButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isCheck = state == value;
+
     return GestureDetector(
       onTap: () {
         function();
       },
       child: Container(
-        margin: const EdgeInsets.only(bottom: 8),
+        margin: const EdgeInsets.only(bottom: 16),
         padding: const EdgeInsets.all(0),
         child: Row(
           children: [
-            OutlinedButton(
-              style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.resolveWith((states) => color),
-                shape: MaterialStateProperty.all(const CircleBorder()),
-                side: MaterialStateProperty.all(
-                  const BorderSide(color: CustomColor.blue, width: 1.5),
-                ),
-                maximumSize: MaterialStateProperty.all(
-                  const Size(50, 50),
-                ),
-                minimumSize: MaterialStateProperty.all(
-                  const Size(25, 25),
+            Container(
+              width: 28,
+              height: 28,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  color: isCheck ? CustomColor.blue : CustomColor.white,
+                  border: Border.all(width: 1.5, color: CustomColor.blue)),
+              child: const Center(
+                child: Icon(
+                  Icons.check,
+                  size: 14,
+                  color: CustomColor.white,
                 ),
               ),
-              onPressed: () {
-                function();
-              },
-              child: const Icon(
-                Icons.check,
-                size: 15,
-                color: CustomColor.white,
-              ),
+            ),
+            CustomSizedBox(
+              context: context,
+              width: 8,
             ),
             Flexible(
               child: Text(
@@ -58,7 +56,7 @@ class CustomRadioButton extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
-                  color: (state == value) ? CustomColor.blue : Colors.black,
+                  color: isCheck ? CustomColor.blue : Colors.black,
                 ),
               ),
             ),
