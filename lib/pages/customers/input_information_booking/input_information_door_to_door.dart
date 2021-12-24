@@ -8,6 +8,7 @@ import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/pages/customers/input_information_booking/widgets/input_form_door_to_door.dart';
 import 'package:rssms/pages/customers/input_information_booking/widgets/note_select.dart';
+import 'package:rssms/pages/customers/payment_method_booking/payment_method_booking_screen.dart';
 import '../../../constants/constants.dart' as constants;
 
 enum SelectDistrict { same, different, notYet }
@@ -255,7 +256,7 @@ class _HandleInputState extends State<HandleInput> {
           text: 'Lưu ý với nhân viên chúng tôi',
           color: CustomColor.blue,
           context: context,
-          fontSize: 18,
+          fontSize: 24,
           textAlign: TextAlign.start,
           fontWeight: FontWeight.bold,
         ),
@@ -288,7 +289,7 @@ class _HandleInputState extends State<HandleInput> {
           text: 'Ghi chú',
           color: CustomColor.blue,
           context: context,
-          fontSize: 18,
+          fontSize: 24,
           textAlign: TextAlign.start,
           fontWeight: FontWeight.bold,
         ),
@@ -323,7 +324,7 @@ class _HandleInputState extends State<HandleInput> {
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              const InputInformationDoorToDoor()));
+                              const PaymentMethodBookingScreen()));
                 },
                 isLoading: false,
                 textColor: CustomColor.white,

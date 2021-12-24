@@ -22,7 +22,8 @@ class CustomRadioButton extends StatelessWidget {
       onTap: () {
         function();
       },
-      child: Padding(
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 8),
         padding: const EdgeInsets.all(0),
         child: Row(
           children: [
@@ -50,12 +51,15 @@ class CustomRadioButton extends StatelessWidget {
                 color: CustomColor.white,
               ),
             ),
-            Text(
-              text,
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-                color: (state == value) ? CustomColor.blue : Colors.black,
+            Flexible(
+              child: Text(
+                text,
+                maxLines: null,
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  color: (state == value) ? CustomColor.blue : Colors.black,
+                ),
               ),
             ),
           ],

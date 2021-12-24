@@ -1,4 +1,5 @@
 import 'package:rssms/pages/customers/input_information_booking/input_information_door_to_door.dart';
+import 'package:rssms/pages/customers/payment_method_booking/payment_method_booking_screen.dart';
 
 const List<Map<String, String>> LIST_CUSTOMER_BOTTOM_NAVIGATION = [
   {'url': "assets/images/profile.png", 'label': 'Profile'},
@@ -389,4 +390,28 @@ const List<Map<String, dynamic>> LIST_CHOICE_NOTED_BOOKING = [
     'url': 'assets/images/building.png'
   },
   {'name': 'Không chỗ đậu xe', 'url': 'assets/images/noParking.png'},
+];
+
+const List<Map<String, dynamic>> LIST_PAYMENT_METHOD_CHOICES = [
+  {'name': 'Thanh toán tiền mặt', 'value': PAYMENT_METHOD.cash},
+  {
+    'name': 'Ứng dụng Mobile Banking quét mã VNPAY QR',
+    'value': PAYMENT_METHOD.mobileBanking
+  },
+  {'name': 'Thẻ ATM và tài khoản ngân hàng', 'value': PAYMENT_METHOD.ATM},
+  {'name': 'Thẻ thanh toán quốc tế', 'value': PAYMENT_METHOD.visa},
+  {'name': 'Ví điện tử', 'value': PAYMENT_METHOD.eWallet},
+];
+
+const List<Map<String, dynamic>> LIST_PAYMENT_EACH_MONTH_CHOICES = [
+  {
+    'name':
+        'Thanh toán toàn bộ đơn hàng\n\n- Đối với đơn hàng dưới 1 tháng\n\n-Giảm 10% đối với đơn hàng trên 1 tháng',
+    'value': PAYMENT_EACH_MONTHS_METHODS.YES
+  },
+  {
+    'name':
+        'Thanh toán theo từng tháng\n\n- Không áp dụng với đơn hàng dưới 1 tháng\n\n- Thanh toán ngay: chi phí tháng đầu tiên + chi phí khác: nếu có\n\n- Các tháng sau, chi phí sẽ thanh toán theo từng tháng vào ngày thứ 30 của tháng gửi giữ',
+    'value': PAYMENT_EACH_MONTHS_METHODS.NO
+  },
 ];
