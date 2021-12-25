@@ -6,6 +6,7 @@ import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/pages/customers/cart/widgets/accessory_widget.dart';
 import 'package:rssms/pages/customers/cart/widgets/booking_pop_up_door_to_door.dart';
 import 'package:rssms/pages/customers/cart/widgets/product_widget.dart';
+import 'package:rssms/pages/customers/cart/widgets/service_widget.dart';
 import '../../../../constants/constants.dart' as constants;
 
 class HandyTab extends StatefulWidget {
@@ -84,7 +85,6 @@ class _HandyTabState extends State<HandyTab> {
           itemBuilder: (ctx, i) {
             return AccessoryWidget(
               product: listAccessory[i],
-              nameType: 'accessory',
             );
           },
           itemCount: listAccessory.length,
@@ -122,9 +122,8 @@ class _HandyTabState extends State<HandyTab> {
             crossAxisSpacing: 16.0,
           ),
           itemBuilder: (ctx, i) {
-            return AccessoryWidget(
+            return ServiceWidget(
               product: listService[i],
-              nameType: 'service',
             );
           },
           itemCount: listService.length,

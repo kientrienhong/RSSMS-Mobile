@@ -21,19 +21,22 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
     implements BookingPopUpViewDoorToDoor {
   final _dateDeliveryController = TextEditingController();
   final oCcy = new NumberFormat("#,##0", "en_US");
-
   final _dateReturnController = TextEditingController();
-  DateTime dateDelivery = DateTime.now();
-  DateTime dateReturn = DateTime.now();
+  late DateTime dateDelivery;
+  late DateTime dateReturn;
   late int _currentIndex;
   late bool _isCustomerDelivery;
   late int _diffDate;
+  late int _months;
   @override
   void initState() {
     super.initState();
     _currentIndex = -1;
     _isCustomerDelivery = false;
     _diffDate = 0;
+    _months = (_diffDate / 30).ceil();
+    dateDelivery = DateTime.now().add(const Duration(days: 1));
+    dateReturn = DateTime.now().add(const Duration(days: 1));
   }
 
   @override
@@ -73,13 +76,15 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
     );
   }
 
-  String totalEachPart(List<dynamic> list) {
+  String totalEachPart(List<dynamic> list, String type) {
     var sum = 0;
 
     list.forEach((element) {
       sum += element['price'] * element['quantity'] as int;
     });
-
+    if (type == 'product') {
+      sum *= _months;
+    }
     return '${oCcy.format(sum)} VND';
   }
 
@@ -107,11 +112,14 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
     _selectDateReturn(BuildContext context) async {
       final DateTime? picked = await showDatePicker(
         context: context,
-        initialDate: dateReturn,
-        firstDate: DateTime.now(),
+        initialDate:
+            _dateReturnController.text.isNotEmpty ? dateReturn : dateDelivery,
+        firstDate: _dateDeliveryController.text.isNotEmpty == true
+            ? dateDelivery
+            : DateTime.now().add(const Duration(days: 1)),
         lastDate: DateTime(2025),
       );
-      if (picked != null && picked != dateReturn) {
+      if (picked != null) {
         setState(() {
           dateReturn = picked;
           _dateReturnController.text = picked.toIso8601String().split("T")[0];
@@ -120,6 +128,7 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
             _dateReturnController.text.isNotEmpty) {
           setState(() {
             _diffDate = picked.difference(dateDelivery).inDays;
+            _months = (_diffDate / 30).ceil();
           });
         }
       }
@@ -129,7 +138,7 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
       final DateTime? picked = await showDatePicker(
         context: context,
         initialDate: dateDelivery,
-        firstDate: DateTime.now(),
+        firstDate: DateTime.now().add(const Duration(days: 1)),
         lastDate: DateTime(2025),
       );
       if (picked != null && picked != dateDelivery) {
@@ -142,6 +151,7 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
             _dateReturnController.text.isNotEmpty) {
           setState(() {
             _diffDate = dateReturn.difference(picked).inDays;
+            _months = (_diffDate / 30).ceil();
           });
         }
       }
@@ -328,7 +338,8 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
               ),
               buildInfo(
                   'Chi phí thuê: ',
-                  totalEachPart(orderBooking.productOrder!['product']!),
+                  totalEachPart(
+                      orderBooking.productOrder!['product']!, 'product'),
                   CustomColor.black),
               CustomSizedBox(
                 context: context,
@@ -336,7 +347,8 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
               ),
               buildInfo(
                   'Phụ kiện đóng gói: ',
-                  totalEachPart(orderBooking.productOrder!['accessory']!),
+                  totalEachPart(
+                      orderBooking.productOrder!['accessory']!, 'accessory'),
                   CustomColor.black),
               CustomSizedBox(
                 context: context,
@@ -344,7 +356,8 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
               ),
               buildInfo(
                   'Dịch vụ hỗ trợ: ',
-                  totalEachPart(orderBooking.productOrder!['service']!),
+                  totalEachPart(
+                      orderBooking.productOrder!['service']!, 'services'),
                   CustomColor.black),
               CustomSizedBox(
                 context: context,
@@ -372,7 +385,7 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
                       text: 'Tiếp theo',
                       width: deviceSize.width * 1.2 / 3,
                       onPressFunction: () {
-                        Navigator.pushReplacement(
+                        Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>

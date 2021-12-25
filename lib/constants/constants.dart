@@ -66,6 +66,23 @@ const List<Map<String, dynamic>> LIST_PRODUCT = [
   },
 ];
 
+const List<Map<String, dynamic>> LIST_SELF_STORAGE = [
+  {
+    'url': 'assets/images/8m2.png',
+    'name': 'Kho 8m2',
+    'id': 10,
+    'price': 10000,
+    'type': SELF_STORAGE
+  },
+  {
+    'url': 'assets/images/16m2.png',
+    'name': 'Kho 16m2',
+    'id': 11,
+    'price': 20000,
+    'type': SELF_STORAGE
+  },
+];
+
 const List<Map<String, dynamic>> LIST_ACCESSORY = [
   {
     'url': 'assets/images/tape.png',
@@ -101,7 +118,7 @@ const List<Map<String, dynamic>> LIST_SERVICES = [
   {
     'url': 'assets/images/packaging.png',
     'name': 'Đóng gói dễ vỡ',
-    'id': 8,
+    'id': 9,
     'price': 20000,
     'type': SERVICES
   },
