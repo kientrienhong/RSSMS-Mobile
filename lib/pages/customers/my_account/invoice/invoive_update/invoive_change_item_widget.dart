@@ -227,7 +227,7 @@ class _ChangeItemWidgetState extends State<ChangeItemWidget> {
             height: 14,
           ),
           CustomButton(
-              height: 18,
+              height: 24,
               isLoading: false,
               text: 'Gửi yêu cầu',
               textColor: CustomColor.white,

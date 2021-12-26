@@ -235,7 +235,7 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
             height: 24,
           ),
           ButtonIcon(
-              height: 18,
+              height: 24,
               url: 'assets/images/google.png',
               text: 'Đăng nhập bằng Google',
               width: double.infinity,
@@ -249,7 +249,7 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
             height: 8,
           ),
           ButtonIcon(
-              height: 18,
+              height: 24,
               url: 'assets/images/facebook.png',
               text: 'Đăng nhập bằng Facebook',
               width: double.infinity,
@@ -263,7 +263,7 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
             height: 8,
           ),
           CustomButton(
-              height: 18,
+              height: 24,
               isLoading: _model.isLoading,
               text: 'Đăng nhập',
               width: double.infinity,

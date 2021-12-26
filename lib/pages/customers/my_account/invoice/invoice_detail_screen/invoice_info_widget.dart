@@ -160,7 +160,7 @@ class InvoiceInfoWidget extends StatelessWidget {
               fontWeight: FontWeight.bold,
               fontSize: 17),
           CustomButton(
-              height: 18,
+              height: 24,
               isLoading: false,
               text: 'Xem thêm',
               textColor: CustomColor.white,

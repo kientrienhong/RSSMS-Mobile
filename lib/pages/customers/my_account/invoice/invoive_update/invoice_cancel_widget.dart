@@ -59,7 +59,7 @@ class _InvoiceCancelWidgetState extends State<InvoiceCancelWidget> {
             height: 16,
           ),
           CustomButton(
-              height: 18,
+              height: 24,
               isLoading: false,
               text: 'Gửi yêu cầu',
               textColor: CustomColor.white,

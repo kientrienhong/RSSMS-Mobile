@@ -94,7 +94,7 @@ class InvoiceDetailScreen extends StatelessWidget {
                     ),
                     Center(
                       child: CustomButton(
-                          height: 20,
+                          height: 24,
                           isLoading: false,
                           text: 'Gửi yêu cầu',
                           textColor: CustomColor.white,

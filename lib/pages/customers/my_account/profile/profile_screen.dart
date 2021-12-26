@@ -304,7 +304,7 @@ class _ProfileScreenState extends State<FormProfileScreen>
             ),
             Center(
               child: CustomButton(
-                  height: 20,
+                  height: 24,
                   isLoading: false,
                   text: 'Cập Nhật',
                   width: widget.deviceSize.width / 3,
@@ -366,7 +366,7 @@ class _ProfileScreenState extends State<FormProfileScreen>
               ),
             Center(
               child: CustomButton(
-                  height: 20,
+                  height: 24,
                   isLoading: false,
                   text: 'Cập Nhật',
                   width: widget.deviceSize.width / 3,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
@@ -17,7 +18,8 @@ class BookingPopUpSelfStorage extends StatefulWidget {
 class _BookingPopUpSelfStorageState extends State<BookingPopUpSelfStorage> {
   final oCcy = new NumberFormat("#,##0", "en_US");
   late final _dateDeliveryController;
-  late final _dateReturn;
+  late var _dateReturn;
+  final _monthController = TextEditingController(text: '0');
   late int _months;
   late DateTime dateDelivery;
   Widget buildInfo(String title, String value, Color valueColor) {
@@ -41,6 +43,26 @@ class _BookingPopUpSelfStorageState extends State<BookingPopUpSelfStorage> {
     );
   }
 
+  void minusQuantity() {
+    setState(() {
+      if (_months > 0) {
+        _months--;
+        _monthController.text = _months.toString();
+        _dateReturn = DateTime(
+            dateDelivery.year, dateDelivery.month + _months, dateDelivery.day);
+      }
+    });
+  }
+
+  void addQuantity() {
+    setState(() {
+      _months++;
+      _monthController.text = _months.toString();
+      _dateReturn = DateTime(
+          dateDelivery.year, dateDelivery.month + _months, dateDelivery.day);
+    });
+  }
+
   String totalEachPart(List<dynamic> list, String type) {
     var sum = 0;
 
@@ -61,9 +83,15 @@ class _BookingPopUpSelfStorageState extends State<BookingPopUpSelfStorage> {
     List listKeys = orderBooking.productOrder!.keys.toList();
 
     listKeys.forEach((element) {
-      orderBooking.productOrder![element]!.forEach((ele) {
-        sum += ele['price'] * ele['quantity'] as int;
-      });
+      if (element == 'product') {
+        orderBooking.productOrder![element]!.forEach((ele) {
+          sum += ele['price'] * ele['quantity'] * _months as int;
+        });
+      } else {
+        orderBooking.productOrder![element]!.forEach((ele) {
+          sum += ele['price'] * ele['quantity'] as int;
+        });
+      }
     });
 
     return '${oCcy.format(sum)} VND';
@@ -89,18 +117,23 @@ class _BookingPopUpSelfStorageState extends State<BookingPopUpSelfStorage> {
   void initState() {
     super.initState();
     _months = 0;
+    _monthController;
     _dateDeliveryController = TextEditingController();
     dateDelivery = DateTime.now().add(const Duration(days: 1));
+    _dateReturn = '';
   }
 
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
+    OrderBooking orderBooking =
+        Provider.of<OrderBooking>(context, listen: false);
     return AlertDialog(
       insetPadding: const EdgeInsets.all(15),
       content: SizedBox(
         width: double.infinity,
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -157,7 +190,12 @@ class _BookingPopUpSelfStorageState extends State<BookingPopUpSelfStorage> {
                 ],
               ),
             ),
+            CustomSizedBox(
+              context: context,
+              height: 16,
+            ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CustomText(
                     text: 'Tháng: ',
@@ -166,10 +204,12 @@ class _BookingPopUpSelfStorageState extends State<BookingPopUpSelfStorage> {
                     fontWeight: FontWeight.bold,
                     fontSize: 16),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.end!,
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     GestureDetector(
-                      // onTap: widget.minusQuantity,
+                      onTap: () {
+                        minusQuantity();
+                      },
                       child: SizedBox(
                           height: 20,
                           child: Image.asset(
@@ -182,9 +222,10 @@ class _BookingPopUpSelfStorageState extends State<BookingPopUpSelfStorage> {
                       width: 8,
                     ),
                     SizedBox(
-                      // width: widget.width,
+                      width: deviceSize.width / 10,
                       height: 24,
                       child: TextFormField(
+                        controller: _monthController,
                         keyboardType: TextInputType.number,
                         textAlign: TextAlign.center,
                         decoration: InputDecoration(
@@ -201,7 +242,6 @@ class _BookingPopUpSelfStorageState extends State<BookingPopUpSelfStorage> {
                               borderSide:
                                   BorderSide(color: CustomColor.black[3]!)),
                         ),
-                        // controller: _controller,
                       ),
                     ),
                     CustomSizedBox(
@@ -209,7 +249,9 @@ class _BookingPopUpSelfStorageState extends State<BookingPopUpSelfStorage> {
                       width: 8,
                     ),
                     GestureDetector(
-                      // onTap: widget.addQuantity,
+                      onTap: () {
+                        addQuantity();
+                      },
                       child: SizedBox(
                           height: 20,
                           child: Image.asset('assets/images/addButton.png',
@@ -218,7 +260,79 @@ class _BookingPopUpSelfStorageState extends State<BookingPopUpSelfStorage> {
                   ],
                 )
               ],
-            )
+            ),
+            CustomSizedBox(
+              context: context,
+              height: 16,
+            ),
+            buildInfo('Ngày trả hàng', _dateReturn.toString().split(' ')[0],
+                CustomColor.blue),
+            CustomSizedBox(
+              context: context,
+              height: 16,
+            ),
+            CustomText(
+                text: 'Tạm tính',
+                color: CustomColor.blue,
+                context: context,
+                fontWeight: FontWeight.bold,
+                fontSize: 24),
+            CustomSizedBox(
+              context: context,
+              height: 16,
+            ),
+            buildInfo(
+                'Chi phí thuê: ',
+                totalEachPart(
+                    orderBooking.productOrder!['product']!, 'product'),
+                CustomColor.black),
+            CustomSizedBox(
+              context: context,
+              height: 8,
+            ),
+            buildInfo(
+                'Phụ kiện đóng gói: ',
+                totalEachPart(
+                    orderBooking.productOrder!['accessory']!, 'accessory'),
+                CustomColor.black),
+            CustomSizedBox(
+              context: context,
+              height: 8,
+            ),
+            Container(
+              width: double.infinity,
+              height: 1,
+              color: CustomColor.black,
+            ),
+            CustomSizedBox(
+              context: context,
+              height: 8,
+            ),
+            buildInfo('Tổng cộng ', totalBill(), CustomColor.black),
+            CustomSizedBox(
+              context: context,
+              height: 16,
+            ),
+            SizedBox(
+              width: double.infinity,
+              child: Center(
+                child: CustomButton(
+                    height: 24,
+                    text: 'Tiếp theo',
+                    width: deviceSize.width * 1.2 / 3,
+                    onPressFunction: () {
+                      // Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //         builder: (context) =>
+                      //             const InputInformationDoorToDoor()));
+                    },
+                    isLoading: false,
+                    textColor: CustomColor.white,
+                    buttonColor: CustomColor.blue,
+                    borderRadius: 6),
+              ),
+            ),
           ],
         ),
       ),

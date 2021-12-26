@@ -358,7 +358,7 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: CustomButton(
-              height: 18,
+              height: 24,
               isLoading: false,
               text: 'Thanh toán',
               textColor: CustomColor.white,

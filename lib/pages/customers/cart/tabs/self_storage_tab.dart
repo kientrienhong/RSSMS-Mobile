@@ -102,7 +102,7 @@ class SelfStorageTab extends StatelessWidget {
               height: 16,
             ),
             CustomButton(
-                height: 18,
+                height: 24,
                 text: 'Đặt',
                 width: double.infinity,
                 onPressFunction: () {

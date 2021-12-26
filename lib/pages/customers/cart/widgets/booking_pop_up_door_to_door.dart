@@ -96,9 +96,15 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
     List listKeys = orderBooking.productOrder!.keys.toList();
 
     listKeys.forEach((element) {
-      orderBooking.productOrder![element]!.forEach((ele) {
-        sum += ele['price'] * ele['quantity'] as int;
-      });
+      if (element == 'product') {
+        orderBooking.productOrder![element]!.forEach((ele) {
+          sum += ele['price'] * ele['quantity'] * _months as int;
+        });
+      } else {
+        orderBooking.productOrder![element]!.forEach((ele) {
+          sum += ele['price'] * ele['quantity'] as int;
+        });
+      }
     });
 
     return '${oCcy.format(sum)} VND';
@@ -381,7 +387,7 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   CustomButton(
-                      height: 18,
+                      height: 24,
                       text: 'Tiếp theo',
                       width: deviceSize.width * 1.2 / 3,
                       onPressFunction: () {
@@ -396,7 +402,7 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
                       buttonColor: CustomColor.blue,
                       borderRadius: 6),
                   CustomButton(
-                      height: 18,
+                      height: 24,
                       text: 'Hủy',
                       width: deviceSize.width * 0.7 / 3,
                       onPressFunction: () {

@@ -316,7 +316,7 @@ class _HandleInputState extends State<HandleInput> {
           width: double.infinity,
           child: Center(
             child: CustomButton(
-                height: 18,
+                height: 24,
                 text: 'Tiếp theo',
                 width: deviceSize.width * 1.2 / 3,
                 onPressFunction: () {

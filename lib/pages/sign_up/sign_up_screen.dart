@@ -332,7 +332,7 @@ class _FormSignUpState extends State<FormSignUp> implements SignUpView {
             height: 8,
           ),
           CustomButton(
-              height: 18,
+              height: 24,
               isLoading: false,
               text: 'Đăng Ký',
               width: double.infinity,
