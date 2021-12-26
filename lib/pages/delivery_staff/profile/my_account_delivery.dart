@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_tabbutton.dart';
-import 'package:rssms/pages/customers/my_account/invoice/invoice_screen.dart';
-import 'package:rssms/pages/customers/my_account/request/request_screen.dart';
+import 'package:rssms/pages/delivery_staff/request/request_screen.dart';
 import 'package:rssms/pages/profile/profile_screen.dart';
 
-class MyAccountScreen extends StatefulWidget {
-  const MyAccountScreen({Key? key}) : super(key: key);
+class MyAccountDeliveryScreen extends StatefulWidget {
+  const MyAccountDeliveryScreen({Key? key}) : super(key: key);
 
   @override
-  State<MyAccountScreen> createState() => _ProfileScreenState();
+  State<MyAccountDeliveryScreen> createState() =>
+      _MyAccountDeliveryScreenState();
 }
 
-class _ProfileScreenState extends State<MyAccountScreen>
+class _MyAccountDeliveryScreenState extends State<MyAccountDeliveryScreen>
     with SingleTickerProviderStateMixin {
   var _scrollController, _tabController;
   @override
   void initState() {
     _scrollController = ScrollController();
-    _tabController = TabController(vsync: this, length: 3, initialIndex: 1);
+    _tabController = TabController(vsync: this, length: 2, initialIndex: 0);
     super.initState();
   }
 
@@ -58,13 +58,8 @@ class _ProfileScreenState extends State<MyAccountScreen>
                       onPressed: () {},
                     ),
                     TabButton(
-                      text: "Đơn Hàng",
-                      pageNumber: 1,
-                      onPressed: () {},
-                    ),
-                    TabButton(
                       text: "Yêu Cầu",
-                      pageNumber: 2,
+                      pageNumber: 1,
                       onPressed: () {},
                     )
                   ],
@@ -74,7 +69,7 @@ class _ProfileScreenState extends State<MyAccountScreen>
           },
           body: TabBarView(
             controller: _tabController,
-            children: const [ProfileScreen(), InvoiceScreen(), RequestScreen()],
+            children: const [ProfileScreen(), RequestScreen()],
           )),
     );
   }

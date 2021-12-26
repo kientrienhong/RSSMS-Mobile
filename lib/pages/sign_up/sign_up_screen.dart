@@ -3,10 +3,10 @@ import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_input_date.dart';
 import 'package:rssms/constants/constants.dart' as constant;
 import 'package:rssms/models/signup_model.dart';
-import 'package:rssms/pages/customers/bottom_navigation/custom_bottom_navigation.dart';
+import 'package:rssms/common/custom_bottom_navigation.dart';
 import 'package:rssms/pages/customers/cart/cart_screen.dart';
 import 'package:rssms/pages/customers/notification/notification_screen.dart';
-import 'package:rssms/pages/customers/my_account/profile/profile_screen.dart';
+import 'package:rssms/pages/profile/profile_screen.dart';
 import 'package:rssms/presenters/signup_presenters.dart';
 import 'package:rssms/views/signup_view.dart';
 

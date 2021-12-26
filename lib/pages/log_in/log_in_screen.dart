@@ -1,8 +1,11 @@
 import 'package:rssms/constants/constants.dart' as constant;
-import 'package:rssms/pages/customers/bottom_navigation/custom_bottom_navigation.dart';
+import 'package:rssms/common/custom_bottom_navigation.dart';
 import 'package:rssms/pages/customers/cart/cart_screen.dart';
 import 'package:rssms/pages/customers/my_account/my_account.dart';
 import 'package:rssms/pages/customers/notification/notification_screen.dart';
+import 'package:rssms/pages/delivery_staff/delivery/delivery_screen.dart';
+import 'package:rssms/pages/delivery_staff/profile/my_account_delivery.dart';
+import 'package:rssms/pages/delivery_staff/qr/qr_screen.dart';
 import 'package:rssms/pages/log_in/widget/button_icon.dart';
 import 'package:rssms/pages/sign_up/sign_up_screen.dart';
 
@@ -133,18 +136,35 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
   @override
   void onClickSignIn(String email, String password) async {
     try {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-            builder: (context) => const CustomBottomNavigation(
-                  listIndexStack: [
-                    MyAccountScreen(),
-                    CartScreen(),
-                    NotificationScreen(),
-                  ],
-                  listNavigator: constant.LIST_CUSTOMER_BOTTOM_NAVIGATION,
-                )),
-      );
+      if (email.contains('delivery')) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => const CustomBottomNavigation(
+                    listIndexStack: [
+                      MyAccountDeliveryScreen(),
+                      DeliveryScreen(),
+                      QrScreen(),
+                      NotificationScreen(),
+                    ],
+                    listNavigator: constant.LIST_DELIVERY_BOTTOM_NAVIGATION,
+                  )),
+        );
+      } else {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => const CustomBottomNavigation(
+                    listIndexStack: [
+                      MyAccountScreen(),
+                      CartScreen(),
+                      NotificationScreen(),
+                    ],
+                    listNavigator: constant.LIST_CUSTOMER_BOTTOM_NAVIGATION,
+                  )),
+        );
+      }
+
       // User user = Provider.of<User>(context, listen: false);
 
       // final result = await loginPresenter.handleSignIn(email, password);
