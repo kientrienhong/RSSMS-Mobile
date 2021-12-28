@@ -1,5 +1,6 @@
 import 'package:rssms/pages/customers/input_information_booking/input_information_door_to_door.dart';
 import 'package:rssms/pages/customers/payment_method_booking/payment_method_booking_screen.dart';
+import 'package:rssms/pages/delivery_staff/delivery/delivery_screen.dart';
 
 const List<Map<String, String>> LIST_CUSTOMER_BOTTOM_NAVIGATION = [
   {'url': "assets/images/profile.png", 'label': 'Profile'},
@@ -438,4 +439,29 @@ const List<Map<String, dynamic>> LIST_PAYMENT_EACH_MONTH_CHOICES = [
         'Thanh toán theo từng tháng\n\n- Không áp dụng với đơn hàng dưới 1 tháng\n\n- Thanh toán ngay: chi phí tháng đầu tiên + chi phí khác: nếu có\n\n- Các tháng sau, chi phí sẽ thanh toán theo từng tháng vào ngày thứ 30 của tháng gửi giữ',
     'value': PAYMENT_EACH_MONTHS_METHODS.NO
   },
+];
+
+const List<Map<String, dynamic>> LIST_SCHEDULE_DELIVERY = [
+  {
+    'id': 0,
+    'time': '8 a.m - 10 a.m',
+    'order': {
+      'id': 321,
+      'status': ORDER_STATUS.notYet,
+      'address': '12 An Bình, phường 13, quận 9, TP. HCM',
+      'customerName': 'Trần Văn A',
+      'customerPhone': '0777457890'
+    }
+  },
+  {
+    'id': 1,
+    'time': '10 a.m - 12 a.m',
+    'order': {
+      'id': 322,
+      'status': ORDER_STATUS.completed,
+      'address': '12 An Bình, phường 13, quận 9, TP. HCM',
+      'customerName': 'Trần Văn B',
+      'customerPhone': '0777457259'
+    }
+  }
 ];
