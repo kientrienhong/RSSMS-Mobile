@@ -1,5 +1,4 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
@@ -9,6 +8,8 @@ import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/common/list_time_select.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/invoice_image_widget.dart';
+import 'package:rssms/pages/customers/my_account/invoice/invoive_update/widgets/image_select.dart';
+import 'package:collection/collection.dart';
 
 class ChangeItemWidget extends StatefulWidget {
   Map<String, dynamic>? invoice;
@@ -34,6 +35,7 @@ class _ChangeItemWidgetState extends State<ChangeItemWidget> {
   String get _street => _controllerStreet.text;
   String get _wart => _controllerWard.text;
   String get _district => _controllerWard.text;
+  List<Map<String, dynamic>> currentIndexNoteChoice = [];
 
   late int _currentIndex;
 
@@ -41,6 +43,18 @@ class _ChangeItemWidgetState extends State<ChangeItemWidget> {
     setState(() {
       _currentIndex = index;
     });
+  }
+
+  void onTapChoice(Map<String, dynamic> image, int indexFound, int index) {
+    if (indexFound == -1) {
+      setState(() {
+        currentIndexNoteChoice.add({...image, 'index': index});
+      });
+    } else {
+      setState(() {
+        currentIndexNoteChoice.removeAt(indexFound);
+      });
+    }
   }
 
   @override
@@ -63,9 +77,12 @@ class _ChangeItemWidgetState extends State<ChangeItemWidget> {
     _controllerDistrict.dispose();
   }
 
-  List<Widget> mapImageWidget(listImage) => listImage
-      .map<InvoiceImageWidget>((i) => InvoiceImageWidget(
-            image: i,
+  List<Widget> mapImageWidget(List<Map<String, dynamic>> listImage) => listImage
+      .mapIndexed<ImageSelectWidget>((i, ele) => ImageSelectWidget(
+            index: i,
+            image: ele,
+            listCurrent: currentIndexNoteChoice,
+            onTapChoice: onTapChoice,
           ))
       .toList();
 
@@ -168,7 +185,7 @@ class _ChangeItemWidgetState extends State<ChangeItemWidget> {
           ),
           Row(
             children: [
-              Container(
+              SizedBox(
                 width: deviceSize.width / 3,
                 child: CustomOutLineInputWithHint(
                   deviceSize: deviceSize,
@@ -183,7 +200,7 @@ class _ChangeItemWidgetState extends State<ChangeItemWidget> {
                 context: context,
                 width: 16,
               ),
-              Container(
+              SizedBox(
                 width: deviceSize.width / 4,
                 child: CustomOutLineInputWithHint(
                   deviceSize: deviceSize,
@@ -210,16 +227,13 @@ class _ChangeItemWidgetState extends State<ChangeItemWidget> {
               height: 14,
             ),
           if (widget.invoice!["type"] == 0)
-            CarouselSlider(
-              items: mapImageWidget(widget.invoice!["image"]),
-              //Slider Container properties
-              options: CarouselOptions(
-                height: 180.0,
-                enlargeCenterPage: true,
-                aspectRatio: 16 / 9,
-                autoPlayCurve: Curves.fastOutSlowIn,
-                enableInfiniteScroll: true,
-                viewportFraction: 0.8,
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 12.0),
+                child: Row(
+                  children: mapImageWidget(widget.invoice!["image"]),
+                ),
               ),
             ),
           CustomSizedBox(

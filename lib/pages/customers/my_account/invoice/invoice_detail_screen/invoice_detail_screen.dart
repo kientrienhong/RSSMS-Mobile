@@ -76,16 +76,13 @@ class InvoiceDetailScreen extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                           fontSize: 16),
                     if (invoice!["type"] == 0)
-                      CarouselSlider(
-                        items: mapImageWidget(listImage),
-                        //Slider Container properties
-                        options: CarouselOptions(
-                          height: 180.0,
-                          enlargeCenterPage: true,
-                          aspectRatio: 16 / 9,
-                          autoPlayCurve: Curves.fastOutSlowIn,
-                          enableInfiniteScroll: false,
-                          viewportFraction: 0.8,
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 12.0),
+                          child: Row(
+                            children: mapImageWidget(listImage),
+                          ),
                         ),
                       ),
                     CustomSizedBox(

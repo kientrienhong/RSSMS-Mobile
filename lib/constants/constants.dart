@@ -183,8 +183,8 @@ const List<Map<String, dynamic>> LIST_INVOICE = [
     ],
     "statusCode": 1,
     "image": [
-      {"url": "assets/images/image28.png"},
-      {"url": "assets/images/image27.png"},
+      {"url": "assets/images/image28.png", "name": 'Box 1', 'id': 1},
+      {"url": "assets/images/image27.png", "name": 'Box 2', 'id': 2},
     ],
     "type": 0
   },
@@ -230,8 +230,8 @@ const List<Map<String, dynamic>> LIST_INVOICE = [
     "status": "Đã thanh toán",
     "statusCode": 1,
     "image": [
-      {"url": "assets/images/image27.png"},
-      {"url": "assets/images/image28.png"},
+      {"url": "assets/images/image28.png", "name": 'Box 1', 'id': 1},
+      {"url": "assets/images/image27.png", "name": 'Box 2', 'id': 2},
     ],
     "type": 1
   },
@@ -277,8 +277,8 @@ const List<Map<String, dynamic>> LIST_INVOICE = [
     "status": "Sắp hết hạn",
     "statusCode": 2,
     "image": [
-      {"url": "assets/images/image27.png"},
-      {"url": "assets/images/image28.png"},
+      {"url": "assets/images/image28.png", "name": 'Box 1', 'id': 1},
+      {"url": "assets/images/image27.png", "name": 'Box 2', 'id': 2},
     ],
     "type": 1
   },
@@ -324,8 +324,8 @@ const List<Map<String, dynamic>> LIST_INVOICE = [
     "status": "Đã hết hạn",
     "statusCode": 3,
     "image": [
-      {"url": "assets/images/image27.png"},
-      {"url": "assets/images/image28.png"},
+      {"url": "assets/images/image28.png", "name": 'Box 1', 'id': 1},
+      {"url": "assets/images/image27.png", "name": 'Box 2', 'id': 2},
     ],
     "type": 1
   },
@@ -371,8 +371,8 @@ const List<Map<String, dynamic>> LIST_INVOICE = [
     "status": "Đã hết hạn",
     "statusCode": 3,
     "image": [
-      {"url": "assets/images/image27.png"},
-      {"url": "assets/images/image28.png"},
+      {"url": "assets/images/image28.png", "name": 'Box 1', 'id': 1},
+      {"url": "assets/images/image27.png", "name": 'Box 2', 'id': 2},
     ],
     "type": 1
   },
