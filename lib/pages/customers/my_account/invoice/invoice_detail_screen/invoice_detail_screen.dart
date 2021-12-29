@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
@@ -85,6 +86,23 @@ class InvoiceDetailScreen extends StatelessWidget {
                           ),
                         ),
                       ),
+                    CustomText(
+                        text: "QR code",
+                        color: CustomColor.blue,
+                        context: context,
+                        textAlign: TextAlign.right,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16),
+                    SizedBox(
+                      width: double.infinity,
+                      child: Center(
+                        child: QrImage(
+                          data: '1',
+                          size: 88.0,
+                          version: 2,
+                        ),
+                      ),
+                    ),
                     CustomSizedBox(
                       context: context,
                       height: 16,
