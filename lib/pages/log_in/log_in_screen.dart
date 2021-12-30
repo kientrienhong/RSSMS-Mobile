@@ -146,7 +146,7 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
                       MyAccountDeliveryScreen(),
                       DeliveryScreen(),
                       QrScreen(),
-                      NotificationScreen(),
+                      NotificationDeliveryScreen(),
                     ],
                     listNavigator: constant.LIST_DELIVERY_BOTTOM_NAVIGATION,
                   )),
@@ -159,7 +159,7 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
                     listIndexStack: [
                       MyAccountScreen(),
                       CartScreen(),
-                      NotificationDeliveryScreen(),
+                      NotificationScreen(),
                     ],
                     listNavigator: constant.LIST_CUSTOMER_BOTTOM_NAVIGATION,
                   )),

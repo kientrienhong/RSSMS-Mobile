@@ -481,3 +481,16 @@ const List<Map<String, dynamic>> LIST_TIME_LINE_MODIFY = [
   {'id': 1, 'name': 'Đang vận chuyển', 'date': '22/12', 'time': '11:00'},
   {'id': 1, 'name': 'Bàn giao đồ', 'date': '28/12', 'time': '10:43'},
 ];
+
+const List<Map<String, dynamic>> LIST_NOTIFICATION_DELIVERY = [
+  {
+    'id': 1,
+    'content': 'Đơn hàng #1233 của bạn đã được lưu trữ trong kho',
+    'timeRemaining': '10m'
+  },
+  {
+    'id': 2,
+    'content': 'Đơn hàng #1233 của bạn sắp hết hạn',
+    'timeRemaining': '10m'
+  },
+];
