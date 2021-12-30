@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
-import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/invoice_image_detail.dart';
+import 'package:rssms/common/invoice_image_detail.dart';
 
 class InvoiceImageWidget extends StatelessWidget {
   Map<String, dynamic> image;

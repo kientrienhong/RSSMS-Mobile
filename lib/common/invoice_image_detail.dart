@@ -78,12 +78,6 @@ class _InvoiceImageDetailState extends State<InvoiceImageDetail> {
                         textColor: CustomColor.white,
                         buttonColor: CustomColor.red,
                         borderRadius: 6),
-                    // TextFormField(
-                    //   controller: _noteController,
-                    //   readOnly: widget.isDisable,
-                    //   maxLines: 4,
-
-                    // )
                   ],
                 )
               ],
