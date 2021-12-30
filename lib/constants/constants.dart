@@ -1,4 +1,5 @@
 import 'package:rssms/pages/customers/input_information_booking/input_information_door_to_door.dart';
+import 'package:rssms/pages/customers/my_account/request/request_screen.dart';
 import 'package:rssms/pages/customers/payment_method_booking/payment_method_booking_screen.dart';
 import 'package:rssms/pages/delivery_staff/delivery/delivery_screen.dart';
 
@@ -385,14 +386,14 @@ const List<Map<String, dynamic>> LIST_REQUEST = [
     "orderId": "1312",
     "dateChange": "12/12/2021",
     "status": "Đang giao hàng",
-    "statusCode": 1
+    'type': REQUEST_TYPE.modifyRequest,
   },
   {
     "url": "assets/images/error1.png",
     "requestId": "1312",
     "orderId": "1312",
     "status": "Chưa hoàn tiền",
-    "statusCode": 2
+    'type': REQUEST_TYPE.cancelOrderRequest,
   },
 ];
 

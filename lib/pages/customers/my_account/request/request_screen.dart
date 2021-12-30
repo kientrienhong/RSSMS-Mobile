@@ -3,6 +3,8 @@ import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/pages/customers/my_account/request/request_widget.dart';
 import '../../../../constants/constants.dart' as constants;
 
+enum REQUEST_TYPE { modifyRequest, cancelOrderRequest, cancelDeliveryRequest }
+
 class RequestScreen extends StatelessWidget {
   const RequestScreen({Key? key}) : super(key: key);
 
@@ -15,7 +17,7 @@ class RequestScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
-    final List<Map<String, dynamic?>> listRequest =
+    final List<Map<String, dynamic>> listRequest =
         constants.LIST_REQUEST.toList();
 
     return Container(

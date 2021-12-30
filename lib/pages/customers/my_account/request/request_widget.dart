@@ -5,16 +5,12 @@ import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/pages/customers/detail_request/detail_request_screen.dart';
+import 'package:rssms/pages/customers/my_account/request/request_screen.dart';
 
-class RequestWidget extends StatefulWidget {
+class RequestWidget extends StatelessWidget {
   Map<String, dynamic>? request;
   RequestWidget({Key? key, this.request}) : super(key: key);
 
-  @override
-  _RequestWidgetState createState() => _RequestWidgetState();
-}
-
-class _RequestWidgetState extends State<RequestWidget> {
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
@@ -23,7 +19,9 @@ class _RequestWidgetState extends State<RequestWidget> {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => const DetailRequestScreen()));
+                builder: (context) => DetailRequestScreen(
+                      request: request!,
+                    )));
       },
       child: Container(
         padding: EdgeInsets.only(
@@ -49,7 +47,7 @@ class _RequestWidgetState extends State<RequestWidget> {
                 children: [
                   SizedBox(
                       width: (deviceSize.width - 32) / 4,
-                      child: Image.asset(widget.request!['url']!)),
+                      child: Image.asset(request!['url']!)),
                   CustomSizedBox(
                     context: context,
                     width: 15,
@@ -61,8 +59,7 @@ class _RequestWidgetState extends State<RequestWidget> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         CustomText(
-                            text:
-                                "Request id: #" + widget.request!["requestId"],
+                            text: "Request id: #" + request!["requestId"],
                             color: CustomColor.black,
                             context: context,
                             fontWeight: FontWeight.bold,
@@ -72,7 +69,7 @@ class _RequestWidgetState extends State<RequestWidget> {
                           height: 14,
                         ),
                         CustomText(
-                            text: "Order id: #" + widget.request!["orderId"],
+                            text: "Order id: #" + request!["orderId"],
                             color: CustomColor.black,
                             context: context,
                             fontWeight: FontWeight.bold,
@@ -81,14 +78,14 @@ class _RequestWidgetState extends State<RequestWidget> {
                           context: context,
                           height: 14,
                         ),
-                        if (widget.request!["statusCode"] == 1)
+                        if (request!["type"] == REQUEST_TYPE.modifyRequest)
                           Column(
                             children: [
                               Row(
                                 children: [
                                   CustomText(
                                       text: 'Ngày đổi đồ: ' +
-                                          widget.request!["dateChange"],
+                                          request!["dateChange"],
                                       color: CustomColor.black,
                                       context: context,
                                       fontWeight: FontWeight.bold,
@@ -104,8 +101,7 @@ class _RequestWidgetState extends State<RequestWidget> {
                         Row(
                           children: [
                             CustomText(
-                                text:
-                                    'Trạng thái: ' + widget.request!["status"],
+                                text: 'Trạng thái: ' + request!["status"],
                                 color: CustomColor.black,
                                 context: context,
                                 fontWeight: FontWeight.bold,

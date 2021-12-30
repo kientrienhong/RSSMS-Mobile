@@ -4,15 +4,10 @@ import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/invoice_detail_screen.dart';
 
-class InvoiceWidget extends StatefulWidget {
+class InvoiceWidget extends StatelessWidget {
   Map<String, dynamic>? invoice;
   InvoiceWidget({Key? key, this.invoice}) : super(key: key);
 
-  @override
-  _InvoiceWidgetState createState() => _InvoiceWidgetState();
-}
-
-class _InvoiceWidgetState extends State<InvoiceWidget> {
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
@@ -22,7 +17,7 @@ class _InvoiceWidgetState extends State<InvoiceWidget> {
           context,
           MaterialPageRoute(
               builder: (context) => InvoiceDetailScreen(
-                    invoice: widget.invoice,
+                    invoice: invoice,
                     deviceSize: deviceSize,
                   )),
         );
@@ -49,7 +44,7 @@ class _InvoiceWidgetState extends State<InvoiceWidget> {
             children: [
               SizedBox(
                   width: (deviceSize.width - 32) / 4,
-                  child: Image.asset(widget.invoice!['url']!)),
+                  child: Image.asset(invoice!['url']!)),
               SizedBox(
                 width: (deviceSize.width - 50) * 3 / 4,
                 child: Container(
@@ -62,16 +57,16 @@ class _InvoiceWidgetState extends State<InvoiceWidget> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           CustomText(
-                              text: "#" + widget.invoice!['id']!,
+                              text: "#" + invoice!['id']!,
                               color: CustomColor.black,
                               context: context,
                               fontWeight: FontWeight.bold,
                               fontSize: 20),
                           CustomText(
-                              text: widget.invoice!['status']!,
-                              color: widget.invoice!['statusCode']! == 1
+                              text: invoice!['status']!,
+                              color: invoice!['statusCode']! == 1
                                   ? CustomColor.blue
-                                  : widget.invoice!['statusCode']! == 2
+                                  : invoice!['statusCode']! == 2
                                       ? const Color.fromRGBO(249, 168, 37, 1)
                                       : CustomColor.red,
                               context: context,
@@ -92,7 +87,7 @@ class _InvoiceWidgetState extends State<InvoiceWidget> {
                               fontWeight: FontWeight.bold,
                               fontSize: 14),
                           CustomText(
-                              text: widget.invoice!["getDate"]!,
+                              text: invoice!["getDate"]!,
                               color: CustomColor.black,
                               fontWeight: FontWeight.w100,
                               context: context,
@@ -112,7 +107,7 @@ class _InvoiceWidgetState extends State<InvoiceWidget> {
                               fontWeight: FontWeight.bold,
                               fontSize: 14),
                           CustomText(
-                              text: widget.invoice!["returnnDate"]!,
+                              text: invoice!["returnnDate"]!,
                               color: CustomColor.black[2]!,
                               context: context,
                               fontWeight: FontWeight.w500,

@@ -22,6 +22,7 @@ class TimeLine extends StatelessWidget {
 
     return ListView(
       shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
       children: mapListTimeLine(),
     );
   }
@@ -48,7 +49,7 @@ class TimeLineElement extends StatelessWidget {
 
     return Container(
       width: deviceSize.width,
-      margin: const EdgeInsets.only(bottom: 24),
+      margin: EdgeInsets.only(bottom: deviceSize.height / 12),
       child: Row(
         children: [
           Column(
@@ -81,7 +82,7 @@ class TimeLineElement extends StatelessWidget {
                       child: Container(
                         width: 1,
                         color: CustomColor.black[3],
-                        height: deviceSize.height / 10,
+                        height: deviceSize.height / 7,
                       ),
                     ),
               Container(
@@ -101,7 +102,7 @@ class TimeLineElement extends StatelessWidget {
               color: color,
               context: context,
               fontWeight: FontWeight.bold,
-              fontSize: 24),
+              fontSize: 20),
         ],
       ),
     );

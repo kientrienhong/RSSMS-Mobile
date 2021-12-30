@@ -6,9 +6,13 @@ import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/common/invoice_image_widget.dart';
 import 'package:rssms/common/timeline.dart';
 import 'package:rssms/constants/constants.dart' as constants;
+import 'package:rssms/pages/customers/my_account/request/request_screen.dart';
 
 class DetailRequestScreen extends StatelessWidget {
-  const DetailRequestScreen({Key? key}) : super(key: key);
+  final Map<String, dynamic> request;
+
+  const DetailRequestScreen({Key? key, required this.request})
+      : super(key: key);
 
   List<Widget> mapImageWidget(listImage) => listImage
       .map<InvoiceImageWidget>((i) => InvoiceImageWidget(
@@ -68,11 +72,13 @@ class DetailRequestScreen extends StatelessWidget {
                 context: context,
                 height: 16,
               ),
-              buildInfo('Ngày đổi đồ:', '12/01/2022', CustomColor.black),
-              CustomSizedBox(
-                context: context,
-                height: 16,
-              ),
+              if (request['type'] == REQUEST_TYPE.modifyRequest)
+                buildInfo('Ngày đổi đồ:', '12/01/2022', CustomColor.black),
+              if (request['type'] == REQUEST_TYPE.modifyRequest)
+                CustomSizedBox(
+                  context: context,
+                  height: 16,
+                ),
               buildInfo(
                   'Địa chỉ: ',
                   '12 Kim Bien, phuong 13, quan 5, TP Ho Chi Minh',
@@ -81,33 +87,35 @@ class DetailRequestScreen extends StatelessWidget {
                 context: context,
                 height: 24,
               ),
-              CustomText(
-                  text: 'Danh sách muốn đổi đồ',
-                  color: CustomColor.black,
-                  context: context,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 12.0),
-                  child: Row(
-                    children:
-                        mapImageWidget(constants.LIST_REQUEST_MODIFY_IMAGE),
+              if (request['type'] == REQUEST_TYPE.modifyRequest)
+                CustomText(
+                    text: 'Danh sách muốn đổi đồ',
+                    color: CustomColor.black,
+                    context: context,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20),
+              if (request['type'] == REQUEST_TYPE.modifyRequest)
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 12.0),
+                    child: Row(
+                      children:
+                          mapImageWidget(constants.LIST_REQUEST_MODIFY_IMAGE),
+                    ),
                   ),
                 ),
-              ),
               CustomSizedBox(
                 context: context,
                 height: 24,
               ),
               CustomText(
-                  text: 'Thông tin vận chuyển',
+                  text: 'Dòng thời gian',
                   color: CustomColor.black,
                   context: context,
                   fontWeight: FontWeight.bold,
                   fontSize: 20),
-              TimeLine(listTimeLine: constants.LIST_TIME_LINE_MODIFY)
+              const TimeLine(listTimeLine: constants.LIST_TIME_LINE_MODIFY)
             ],
           ),
         ),
