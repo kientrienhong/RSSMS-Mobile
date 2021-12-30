@@ -120,9 +120,9 @@ class _HandleInputState extends State<HandleInput> {
   void initState() {
     super.initState();
     _district = 'Quận';
-    _ward = 'Quận';
+    _ward = 'Phường';
     _districtReturn = 'Quận';
-    _wardReturn = 'Quận';
+    _wardReturn = 'Phường';
   }
 
   @override
@@ -320,7 +320,7 @@ class _HandleInputState extends State<HandleInput> {
                 text: 'Tiếp theo',
                 width: deviceSize.width * 1.2 / 3,
                 onPressFunction: () {
-                  Navigator.pushReplacement(
+                  Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) =>

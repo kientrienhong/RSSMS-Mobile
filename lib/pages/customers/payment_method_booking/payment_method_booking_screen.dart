@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:rssms/common/custom_app_bar.dart';
+import 'package:rssms/common/custom_bottom_navigation.dart';
+import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_radio_button.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
+import 'package:rssms/pages/customers/cart/cart_screen.dart';
+import 'package:rssms/pages/customers/my_account/my_account.dart';
+import 'package:rssms/pages/delivery_staff/notifcation/notification_delivery.dart';
 import '../../../constants/constants.dart' as constants;
 
 enum PAYMENT_METHOD { cash, mobileBanking, ATM, visa, eWallet }
@@ -60,6 +65,7 @@ class _PaymentMethodBookingScreenState
 
   @override
   Widget build(BuildContext context) {
+    final deviceSize = MediaQuery.of(context).size;
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
@@ -122,6 +128,47 @@ class _PaymentMethodBookingScreenState
                   keyboardType: TextInputType.multiline,
                   maxLines: null,
                 ),
+              ),
+              CustomSizedBox(
+                context: context,
+                height: 16,
+              ),
+              Container(
+                width: double.infinity,
+                child: Center(
+                  child: CustomButton(
+                      height: 24,
+                      text: 'Tiếp theo',
+                      width: deviceSize.width * 1.2 / 3,
+                      onPressFunction: () {
+                        Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const CustomBottomNavigation(
+                                      listIndexStack: [
+                                        MyAccountScreen(),
+                                        CartScreen(),
+                                        NotificationDeliveryScreen(),
+                                      ],
+                                      listNavigator: constants
+                                          .LIST_CUSTOMER_BOTTOM_NAVIGATION,
+                                    )),
+                            (Route<dynamic> route) => false);
+
+                        // Navigator.pushAndRemoveUntil(
+                        //     MaterialPageRoute(
+                        //         builder: (context) => LoginScreen()),
+                        //     (Route<dynamic> route) => false);
+                      },
+                      isLoading: false,
+                      textColor: CustomColor.white,
+                      buttonColor: CustomColor.blue,
+                      borderRadius: 6),
+                ),
+              ),
+              CustomSizedBox(
+                context: context,
+                height: 32,
               ),
             ],
           ),

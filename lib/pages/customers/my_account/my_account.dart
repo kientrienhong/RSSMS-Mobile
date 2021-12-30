@@ -3,6 +3,7 @@ import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_tabbutton.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoice_screen.dart';
 import 'package:rssms/pages/customers/my_account/request/request_screen.dart';
+import 'package:rssms/pages/log_in/log_in_screen.dart';
 import 'package:rssms/pages/profile/profile_screen.dart';
 
 class MyAccountScreen extends StatefulWidget {
@@ -32,6 +33,16 @@ class _ProfileScreenState extends State<MyAccountScreen>
             return <Widget>[
               SliverAppBar(
                 title: const Text("My Account"),
+                actions: <Widget>[
+                  GestureDetector(
+                      onTap: () => {
+                            Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(
+                                    builder: (context) => LogInScreen()),
+                                (Route<dynamic> route) => false)
+                          },
+                      child: Image.asset('assets/images/logout.png'))
+                ],
                 titleTextStyle: const TextStyle(
                     color: Colors.black,
                     fontSize: 25,
