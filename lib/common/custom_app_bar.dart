@@ -1,3 +1,7 @@
+import 'package:rssms/common/custom_color.dart';
+import 'package:rssms/common/custom_sizebox.dart';
+import 'package:rssms/common/custom_text.dart';
+
 import '/models/entity/user.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -20,7 +24,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         width: deviceSize.width,
         height: 80,
         child: Row(
-            mainAxisAlignment: name == null
+            mainAxisAlignment: name != null
                 ? MainAxisAlignment.spaceBetween
                 : MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -31,7 +35,18 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                         Navigator.of(context).pop();
                       },
                       child: Image.asset('assets/images/arrowLeft.png'))
-                  : Container()
+                  : Container(),
+              CustomText(
+                text: name!,
+                color: CustomColor.black,
+                context: context,
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+              CustomSizedBox(
+                context: context,
+                width: 8,
+              ),
             ]),
       ),
     );

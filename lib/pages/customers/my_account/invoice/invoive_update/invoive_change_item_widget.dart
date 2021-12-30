@@ -7,7 +7,7 @@ import 'package:rssms/common/custom_input_with_hint.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/common/list_time_select.dart';
-import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/invoice_image_widget.dart';
+import 'package:rssms/common/invoice_image_widget.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoive_update/widgets/image_select.dart';
 import 'package:collection/collection.dart';
 

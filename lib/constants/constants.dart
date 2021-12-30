@@ -465,3 +465,18 @@ const List<Map<String, dynamic>> LIST_SCHEDULE_DELIVERY = [
     }
   }
 ];
+
+const List<Map<String, dynamic>> LIST_REQUEST_MODIFY_IMAGE = [
+  {
+    'id': 1,
+    'url': 'assets/images/image28.png',
+    'name': 'Box 2',
+    'note': 'dasd',
+  }
+];
+
+const List<Map<String, dynamic>> LIST_TIME_LINE_MODIFY = [
+  {'id': 1, 'name': 'Đã gửi yêu cầu', 'date': '20/12', 'time': '10:32'},
+  {'id': 1, 'name': 'Đang vận chuyển', 'date': '22/12', 'time': '11:00'},
+  {'id': 1, 'name': 'Bàn giao đồ', 'date': '28/12', 'time': '10:43'},
+];
