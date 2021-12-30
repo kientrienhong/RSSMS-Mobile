@@ -12,6 +12,7 @@ import 'package:rssms/pages/customers/payment_method_booking/payment_method_book
 import '../../../constants/constants.dart' as constants;
 
 enum SelectDistrict { same, different, notYet }
+
 Widget buildTitle(String name, BuildContext context) {
   return Row(
     crossAxisAlignment: CrossAxisAlignment.center,
@@ -34,8 +35,11 @@ Widget buildTitle(String name, BuildContext context) {
   );
 }
 
-class InputInformationDoorToDoor extends StatelessWidget {
-  const InputInformationDoorToDoor({Key? key}) : super(key: key);
+class InputInformation extends StatelessWidget {
+  final bool isSelfStorageOrder;
+
+  const InputInformation({Key? key, required this.isSelfStorageOrder})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -47,10 +51,13 @@ class InputInformationDoorToDoor extends StatelessWidget {
             children: [
               CustomAppBar(
                 isHome: false,
+                name: '',
               ),
               buildTitle(
                   'ĐỊA CHỈ VÀ THỜI GIAN CHÚNG TÔI ĐẾN LẤY ĐỒ ĐẠC', context),
-              HandleInput()
+              HandleInput(
+                isSelfStorageOrder: isSelfStorageOrder,
+              )
             ],
           ),
         ),
@@ -60,7 +67,9 @@ class InputInformationDoorToDoor extends StatelessWidget {
 }
 
 class HandleInput extends StatefulWidget {
-  const HandleInput({Key? key}) : super(key: key);
+  final bool isSelfStorageOrder;
+  const HandleInput({Key? key, required this.isSelfStorageOrder})
+      : super(key: key);
 
   @override
   _HandleInputState createState() => _HandleInputState();
@@ -99,8 +108,25 @@ class _HandleInputState extends State<HandleInput> {
   SelectDistrict currentIndex = SelectDistrict.same;
   List<int> currentIndexNoteChoice = [];
 
-  List<Widget> _buildListDropDown() {
+  List<Widget> _buildListReceivedAddress() {
     return constants.LIST_ADDRESS_CHOICES
+        .map((e) => CustomRadioButton(
+            function: () {
+              setState(() {
+                currentIndex = e['value'];
+              });
+            },
+            text: e['name'],
+            color: currentIndex == e['value']
+                ? CustomColor.blue
+                : CustomColor.white,
+            state: currentIndex,
+            value: e['value']))
+        .toList();
+  }
+
+  List<Widget> _buildListPackagingAddress() {
+    return constants.LIST_ADDRESS_PACKAGING_CHOICES
         .map((e) => CustomRadioButton(
             function: () {
               setState(() {
@@ -223,96 +249,135 @@ class _HandleInputState extends State<HandleInput> {
           context: context,
           height: 8,
         ),
-        buildTitle('ĐỊA CHỈ VÀ THỜI GIAN CHÚNG TÔI TRẢ ĐỒ ĐẠC', context),
-        CustomSizedBox(
-          context: context,
-          height: 8,
-        ),
-        Column(
-          children: _buildListDropDown(),
-        ),
-        currentIndex == SelectDistrict.different
-            ? InputFormDoorToDoor(
-                onChangeDropdownDistrictButton:
-                    onChangeDropdownDistrictReturnButton,
-                onChangeDropdownWardButton: onChangeDropdownWardReturnButton,
-                controllerAddress: _controllerAddressReturn,
-                controllerArea: _controllerAreaReturn,
-                controllerBuilding: _controllerBuildingReturn,
-                district: _districtReturn,
-                controllerFloor: _controllerFloorReturn,
-                ward: _wardReturn,
-                focusNodeAddress: _focusNodeAddressReturn,
-                focusNodeArea: _focusNodeAreaReturn,
-                focusNodeBuilding: _focusNodeBuildingReturn,
-                focusNodeFloor: _focusNodeFloorReturn,
-              )
-            : Container(),
-        CustomSizedBox(
-          context: context,
-          height: 8,
-        ),
-        CustomText(
-          text: 'Lưu ý với nhân viên chúng tôi',
-          color: CustomColor.blue,
-          context: context,
-          fontSize: 24,
-          textAlign: TextAlign.start,
-          fontWeight: FontWeight.bold,
-        ),
-        CustomSizedBox(
-          context: context,
-          height: 8,
-        ),
-        GridView.count(
-          shrinkWrap: true,
-          crossAxisCount: 3,
-          childAspectRatio: 1,
-          mainAxisSpacing: 8,
-          crossAxisSpacing: 8,
-          padding: const EdgeInsets.all(4),
-          physics: const NeverScrollableScrollPhysics(),
-          children: List.generate(
-              constants.LIST_CHOICE_NOTED_BOOKING.length,
-              (index) => NoteSelect(
-                  onTapChoice: onTapChoice,
-                  url: constants.LIST_CHOICE_NOTED_BOOKING[index]['url'],
-                  name: constants.LIST_CHOICE_NOTED_BOOKING[index]['name'],
-                  currentIndex: currentIndexNoteChoice,
-                  index: index)),
-        ),
-        CustomSizedBox(
-          context: context,
-          height: 16,
-        ),
-        CustomText(
-          text: 'Ghi chú',
-          color: CustomColor.blue,
-          context: context,
-          fontSize: 24,
-          textAlign: TextAlign.start,
-          fontWeight: FontWeight.bold,
-        ),
-        CustomSizedBox(
-          context: context,
-          height: 8,
-        ),
-        Container(
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(4),
-              border: Border.all(color: CustomColor.black[3]!, width: 1)),
-          child: TextFormField(
-            minLines: 6,
-            controller: _controllerNote,
-            keyboardType: TextInputType.multiline,
-            maxLines: null,
+        if (widget.isSelfStorageOrder == false)
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              buildTitle('ĐỊA CHỈ VÀ THỜI GIAN CHÚNG TÔI TRẢ ĐỒ ĐẠC', context),
+              CustomSizedBox(
+                context: context,
+                height: 16,
+              ),
+              Column(
+                children: _buildListReceivedAddress(),
+              ),
+              currentIndex == SelectDistrict.different
+                  ? InputFormDoorToDoor(
+                      onChangeDropdownDistrictButton:
+                          onChangeDropdownDistrictReturnButton,
+                      onChangeDropdownWardButton:
+                          onChangeDropdownWardReturnButton,
+                      controllerAddress: _controllerAddressReturn,
+                      controllerArea: _controllerAreaReturn,
+                      controllerBuilding: _controllerBuildingReturn,
+                      district: _districtReturn,
+                      controllerFloor: _controllerFloorReturn,
+                      ward: _wardReturn,
+                      focusNodeAddress: _focusNodeAddressReturn,
+                      focusNodeArea: _focusNodeAreaReturn,
+                      focusNodeBuilding: _focusNodeBuildingReturn,
+                      focusNodeFloor: _focusNodeFloorReturn,
+                    )
+                  : Container(),
+              CustomSizedBox(
+                context: context,
+                height: 8,
+              ),
+              CustomText(
+                text: 'Lưu ý với nhân viên chúng tôi',
+                color: CustomColor.blue,
+                context: context,
+                fontSize: 24,
+                textAlign: TextAlign.start,
+                fontWeight: FontWeight.bold,
+              ),
+              CustomSizedBox(
+                context: context,
+                height: 8,
+              ),
+              GridView.count(
+                shrinkWrap: true,
+                crossAxisCount: 2,
+                childAspectRatio: 1,
+                mainAxisSpacing: 8,
+                crossAxisSpacing: 8,
+                padding: const EdgeInsets.all(4),
+                physics: const NeverScrollableScrollPhysics(),
+                children: List.generate(
+                    constants.LIST_CHOICE_NOTED_BOOKING.length,
+                    (index) => NoteSelect(
+                        onTapChoice: onTapChoice,
+                        url: constants.LIST_CHOICE_NOTED_BOOKING[index]['url'],
+                        name: constants.LIST_CHOICE_NOTED_BOOKING[index]
+                            ['name'],
+                        currentIndex: currentIndexNoteChoice,
+                        index: index)),
+              ),
+              CustomSizedBox(
+                context: context,
+                height: 16,
+              ),
+              CustomText(
+                text: 'Ghi chú',
+                color: CustomColor.blue,
+                context: context,
+                fontSize: 24,
+                textAlign: TextAlign.start,
+                fontWeight: FontWeight.bold,
+              ),
+              CustomSizedBox(
+                context: context,
+                height: 8,
+              ),
+              Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(4),
+                    border: Border.all(color: CustomColor.black[3]!, width: 1)),
+                child: TextFormField(
+                  minLines: 6,
+                  controller: _controllerNote,
+                  keyboardType: TextInputType.multiline,
+                  maxLines: null,
+                ),
+              ),
+            ],
           ),
-        ),
+        if (widget.isSelfStorageOrder)
+          Column(
+            children: [
+              buildTitle('ĐỊA CHỈ NHẬN PHỤ KIỆN ĐÓNG GÓI (NẾU CÓ)', context),
+              CustomSizedBox(
+                context: context,
+                height: 16,
+              ),
+              Column(
+                children: _buildListPackagingAddress(),
+              ),
+              currentIndex == SelectDistrict.different
+                  ? InputFormDoorToDoor(
+                      onChangeDropdownDistrictButton:
+                          onChangeDropdownDistrictReturnButton,
+                      onChangeDropdownWardButton:
+                          onChangeDropdownWardReturnButton,
+                      controllerAddress: _controllerAddressReturn,
+                      controllerArea: _controllerAreaReturn,
+                      controllerBuilding: _controllerBuildingReturn,
+                      district: _districtReturn,
+                      controllerFloor: _controllerFloorReturn,
+                      ward: _wardReturn,
+                      focusNodeAddress: _focusNodeAddressReturn,
+                      focusNodeArea: _focusNodeAreaReturn,
+                      focusNodeBuilding: _focusNodeBuildingReturn,
+                      focusNodeFloor: _focusNodeFloorReturn,
+                    )
+                  : Container(),
+            ],
+          ),
         CustomSizedBox(
           context: context,
           height: 24,
         ),
-        Container(
+        SizedBox(
           width: double.infinity,
           child: Center(
             child: CustomButton(

@@ -7,7 +7,7 @@ import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/common/list_time_select.dart';
 import 'package:rssms/models/entity/order_booking.dart';
-import 'package:rssms/pages/customers/input_information_booking/input_information_door_to_door.dart';
+import 'package:rssms/pages/customers/input_information_booking/input_information.dart';
 import 'package:rssms/views/booking_pop_up_view_door_to_door.dart';
 
 class BookingPopUpDoorToDoor extends StatefulWidget {
@@ -394,8 +394,9 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) =>
-                                    const InputInformationDoorToDoor()));
+                                builder: (context) => const InputInformation(
+                                      isSelfStorageOrder: false,
+                                    )));
                       },
                       isLoading: false,
                       textColor: CustomColor.white,

@@ -49,7 +49,7 @@ class NoteSelect extends StatelessWidget {
             Image.asset(url),
             CustomSizedBox(
               context: context,
-              height: 8,
+              height: 16,
             ),
             Flexible(
               child: CustomText(

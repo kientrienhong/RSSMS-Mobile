@@ -1,4 +1,4 @@
-import 'package:rssms/pages/customers/input_information_booking/input_information_door_to_door.dart';
+import 'package:rssms/pages/customers/input_information_booking/input_information.dart';
 import 'package:rssms/pages/customers/my_account/request/request_screen.dart';
 import 'package:rssms/pages/customers/payment_method_booking/payment_method_booking_screen.dart';
 import 'package:rssms/pages/delivery_staff/delivery/delivery_screen.dart';
@@ -401,6 +401,11 @@ const List<Map<String, dynamic>> LIST_ADDRESS_CHOICES = [
   {'name': 'Giống địa chỉ lấy đồ đạc', 'value': SelectDistrict.same},
   {'name': 'Khác địa chỉ lấy đồ đạc', 'value': SelectDistrict.different},
   {'name': 'Chưa xác định (Bổ sung sau)', 'value': SelectDistrict.notYet},
+];
+
+const List<Map<String, dynamic>> LIST_ADDRESS_PACKAGING_CHOICES = [
+  {'name': 'Giống địa chỉ người thuê', 'value': SelectDistrict.same},
+  {'name': 'Khác địa chỉ người thuê', 'value': SelectDistrict.different},
 ];
 
 const List<Map<String, dynamic>> LIST_CHOICE_NOTED_BOOKING = [

@@ -73,7 +73,10 @@ class _PaymentMethodBookingScreenState
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CustomAppBar(isHome: false),
+              CustomAppBar(
+                isHome: false,
+                name: '',
+              ),
               CustomText(
                   text: 'Phương thức thanh toán',
                   color: CustomColor.blue,

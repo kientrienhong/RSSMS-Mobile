@@ -6,6 +6,7 @@ import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/models/entity/order_booking.dart';
+import 'package:rssms/pages/customers/input_information_booking/input_information.dart';
 
 class BookingPopUpSelfStorage extends StatefulWidget {
   const BookingPopUpSelfStorage({Key? key}) : super(key: key);
@@ -321,11 +322,12 @@ class _BookingPopUpSelfStorageState extends State<BookingPopUpSelfStorage> {
                     text: 'Tiếp theo',
                     width: deviceSize.width * 1.2 / 3,
                     onPressFunction: () {
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (context) =>
-                      //             const InputInformationDoorToDoor()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const InputInformation(
+                                    isSelfStorageOrder: true,
+                                  )));
                     },
                     isLoading: false,
                     textColor: CustomColor.white,
