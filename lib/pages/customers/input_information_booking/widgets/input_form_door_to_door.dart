@@ -116,7 +116,7 @@ class _InputFormDoorToDoorState extends State<InputFormDoorToDoor> {
                   onChanged: (value) {
                     widget.onChangeDropdownWardButton(value as String);
                   },
-                  items: <String>['Quận', 'Customer', 'Owner']
+                  items: <String>['Phường', 'Customer', 'Owner']
                       .map((e) => DropdownMenuItem<String>(
                           value: e,
                           child: CustomText(

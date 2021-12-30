@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:rssms/common/custom_button.dart';
+import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_input.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 
@@ -21,8 +23,10 @@ class _InvoiceImageDetailState extends State<InvoiceImageDetail> {
   @override
   void initState() {
     _nameController = TextEditingController(text: 'Box 1');
+
     _noteController = TextEditingController(
-        text: '- 1 picture of idols/n- 2 clothes of zara');
+        text: '1 picture of idol'
+            ' + 2 clothes of zara');
     _nameFocusNode = FocusNode();
     _noteFocusNode = FocusNode();
     super.initState();
@@ -62,7 +66,18 @@ class _InvoiceImageDetailState extends State<InvoiceImageDetail> {
                         focusNode: _noteFocusNode,
                         deviceSize: deviceSize,
                         maxLine: 3,
-                        labelText: 'Note')
+                        labelText: 'Note'),
+                    CustomButton(
+                        height: 24,
+                        text: 'Đóng',
+                        width: deviceSize.width * 1.2 / 3,
+                        onPressFunction: () {
+                          Navigator.of(context).pop();
+                        },
+                        isLoading: false,
+                        textColor: CustomColor.white,
+                        buttonColor: CustomColor.red,
+                        borderRadius: 6),
                     // TextFormField(
                     //   controller: _noteController,
                     //   readOnly: widget.isDisable,
