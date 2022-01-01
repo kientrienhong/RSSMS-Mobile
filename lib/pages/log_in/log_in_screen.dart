@@ -36,7 +36,7 @@ class LogInScreen extends StatelessWidget {
               clipBehavior: Clip.none,
               children: [
                 const Background(),
-                Container(
+                SizedBox(
                   width: deviceSize.width,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -51,7 +51,7 @@ class LogInScreen extends StatelessWidget {
                         height: 56,
                       ),
                       Expanded(child: FormLogIn(deviceSize)),
-                      Container(
+                      SizedBox(
                         width: deviceSize.width,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -133,6 +133,12 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
   void onChangeInput() {
     loginPresenter.handleOnChangeInput(_email, _password);
   }
+
+  @override
+  void onClickSignInFaceBook() {}
+
+  @override
+  void onClickSignInGoogle() {}
 
   @override
   void onClickSignIn(String email, String password) async {
@@ -240,7 +246,7 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
             controller: _controllerPassword,
           ),
           if (_model.errorMsg.isNotEmpty)
-            Container(
+            SizedBox(
               width: double.infinity,
               child: CustomText(
                 text: _model.errorMsg,

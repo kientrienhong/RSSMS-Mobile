@@ -7,4 +7,6 @@ abstract class LoginView {
   // handle events
   void onChangeInput();
   void onClickSignIn(String email, String password);
+  void onClickSignInGoogle();
+  void onClickSignInFaceBook();
 }
