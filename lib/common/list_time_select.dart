@@ -17,6 +17,8 @@ class ListTimeSelect extends StatelessWidget {
       childAspectRatio: 4,
       mainAxisSpacing: 8,
       crossAxisSpacing: 8,
+      padding: const EdgeInsets.all(0),
+      physics: const NeverScrollableScrollPhysics(),
       children: List.generate(
           constants.LIST_TIME_PICK_UP.length,
           (index) => TimeSelect(

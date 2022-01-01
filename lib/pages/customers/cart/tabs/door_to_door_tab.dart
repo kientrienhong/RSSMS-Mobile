@@ -33,9 +33,6 @@ class _DoorToDoorTabState extends State<DoorToDoorTab>
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
-    final List<Map<String, dynamic?>> listProduct = constants.LIST_PRODUCT
-        .map<Map<String, dynamic>>((e) => {...e, 'quantity': 0})
-        .toList();
     List<TitleTab> mapListTab() {
       int index = 0;
 

@@ -17,6 +17,7 @@ class CustomOutLineInput extends StatefulWidget {
   Function? validator;
   final bool? isDisable;
   final bool? isSecure;
+  final int? maxLine;
   CustomOutLineInput(
       {this.statusTypeInput = StatusTypeInput.VALID,
       required this.controller,
@@ -28,6 +29,7 @@ class CustomOutLineInput extends StatefulWidget {
       this.nextNode,
       required this.focusNode,
       required this.deviceSize,
+      this.maxLine: 1,
       required this.labelText});
 
   @override
@@ -98,84 +100,93 @@ class _CustomOutLineInputState extends State<CustomOutLineInput> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      CustomText(
-          text: widget.labelText!,
-          color: CustomColor.black,
-          context: context,
-          fontSize: 16),
-      CustomSizedBox(context: context, height: 8),
-      Container(
-        height: widget.statusTypeInput != StatusTypeInput.INVALID
-            ? widget.deviceSize!.height / 9.5
-            : widget.deviceSize!.height / 7,
-        width: widget.deviceSize!.width,
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Stack(
-            overflow: Overflow.visible,
-            children: [
-              Container(
-                  height: widget.deviceSize!.height / 15,
-                  padding: const EdgeInsets.only(left: 16, top: 4, bottom: 2),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(4),
-                      border: Border.all(color: colorBorder, width: 1)),
-                  child: Center(
-                    child: TextFormField(
-                      obscureText: widget.isSecure!,
-                      validator:
-                          widget.validator == null ? null : widget.validator!(),
-                      maxLines: 1,
-                      keyboardType: widget.textInputType,
-                      style: TextStyle(color: colorLabel, fontSize: 16),
-                      enabled: !widget.isDisable!,
-                      textInputAction: widget.nextNode != null
-                          ? TextInputAction.next
-                          : TextInputAction.done,
-                      onFieldSubmitted: (term) {
-                        widget.focusNode!.unfocus();
-                        if (widget.nextNode != null) {
-                          FocusScope.of(context).requestFocus(widget.nextNode);
-                        }
-                      },
-                      controller: widget.controller,
-                      focusNode: widget.focusNode,
-                      cursorColor: CustomColor.blue,
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        focusedBorder: InputBorder.none,
-                        enabledBorder: InputBorder.none,
-                        errorBorder: InputBorder.none,
-                        disabledBorder: InputBorder.none,
-                      ),
-                    ),
-                  )),
-            ],
-          ),
-          if (widget.statusTypeInput == StatusTypeInput.INVALID)
-            CustomSizedBox(
-              context: context,
-              height: 8,
-            ),
-          if (widget.statusTypeInput == StatusTypeInput.INVALID)
-            CustomText(
-              text: '* Required',
-              color: Colors.red,
-              context: context,
-              textAlign: TextAlign.start,
-              fontSize: 14,
-            ),
-          widget.statusTypeInput == StatusTypeInput.INVALID
-              ? CustomSizedBox(
-                  context: context,
-                  height: 8,
-                )
-              : CustomSizedBox(
-                  context: context,
-                  height: 4,
+    return Container(
+      margin: const EdgeInsets.only(bottom: 16),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        CustomText(
+            text: widget.labelText!,
+            color: CustomColor.black,
+            fontWeight: FontWeight.bold,
+            context: context,
+            fontSize: 16),
+        CustomSizedBox(context: context, height: 8),
+        SizedBox(
+          width: widget.deviceSize!.width,
+          child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Stack(
+                  overflow: Overflow.visible,
+                  children: [
+                    Container(
+                        height: widget.maxLine == 1
+                            ? widget.deviceSize!.height / 15
+                            : null,
+                        padding:
+                            const EdgeInsets.only(left: 16, top: 4, bottom: 2),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(4),
+                            border: Border.all(color: colorBorder, width: 1)),
+                        child: Center(
+                          child: TextFormField(
+                            obscureText: widget.isSecure!,
+                            validator: widget.validator == null
+                                ? null
+                                : widget.validator!(),
+                            maxLines: widget.maxLine,
+                            keyboardType: widget.textInputType,
+                            style: TextStyle(color: colorLabel, fontSize: 16),
+                            enabled: !widget.isDisable!,
+                            textInputAction: widget.nextNode != null
+                                ? TextInputAction.next
+                                : TextInputAction.done,
+                            onFieldSubmitted: (term) {
+                              widget.focusNode!.unfocus();
+                              if (widget.nextNode != null) {
+                                FocusScope.of(context)
+                                    .requestFocus(widget.nextNode);
+                              }
+                            },
+                            controller: widget.controller,
+                            focusNode: widget.focusNode,
+                            cursorColor: CustomColor.blue,
+                            decoration: const InputDecoration(
+                              border: InputBorder.none,
+                              focusedBorder: InputBorder.none,
+                              enabledBorder: InputBorder.none,
+                              errorBorder: InputBorder.none,
+                              disabledBorder: InputBorder.none,
+                            ),
+                          ),
+                        )),
+                  ],
                 ),
-        ]),
-      ),
-    ]);
+                if (widget.statusTypeInput == StatusTypeInput.INVALID)
+                  CustomSizedBox(
+                    context: context,
+                    height: 8,
+                  ),
+                if (widget.statusTypeInput == StatusTypeInput.INVALID)
+                  CustomText(
+                    text: '* Required',
+                    color: Colors.red,
+                    context: context,
+                    textAlign: TextAlign.start,
+                    fontSize: 14,
+                  ),
+                widget.statusTypeInput == StatusTypeInput.INVALID
+                    ? CustomSizedBox(
+                        context: context,
+                        height: 8,
+                      )
+                    : CustomSizedBox(
+                        context: context,
+                        height: 4,
+                      ),
+              ]),
+        ),
+      ]),
+    );
   }
 }

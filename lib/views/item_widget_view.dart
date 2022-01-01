@@ -1,4 +1,4 @@
-abstract class AccessoryView {
+abstract class ItemWidgetView {
   void onAddQuantity();
   void onMinusQuantity();
 }

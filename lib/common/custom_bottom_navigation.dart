@@ -47,6 +47,7 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation>
       resizeToAvoidBottomInset: true,
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: CustomColor.blue,
+        type: BottomNavigationBarType.fixed,
         showSelectedLabels: false,
         showUnselectedLabels: false,
         items: mapListBottomNavigationBarItem(),

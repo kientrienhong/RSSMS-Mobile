@@ -6,6 +6,7 @@ import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/pages/customers/cart/widgets/accessory_widget.dart';
 import 'package:rssms/pages/customers/cart/widgets/booking_pop_up_door_to_door.dart';
 import 'package:rssms/pages/customers/cart/widgets/product_widget.dart';
+import 'package:rssms/pages/customers/cart/widgets/service_widget.dart';
 import '../../../../constants/constants.dart' as constants;
 
 class HandyTab extends StatefulWidget {
@@ -34,6 +35,9 @@ class _HandyTabState extends State<HandyTab> {
         .map<Map<String, dynamic>>((e) => {...e, 'quantity': 0})
         .toList();
     final List<Map<String, dynamic?>> listAccessory = constants.LIST_ACCESSORY
+        .map<Map<String, dynamic>>((e) => {...e, 'quantity': 0})
+        .toList();
+    final List<Map<String, dynamic?>> listService = constants.LIST_SERVICES
         .map<Map<String, dynamic>>((e) => {...e, 'quantity': 0})
         .toList();
     return Padding(
@@ -87,10 +91,49 @@ class _HandyTabState extends State<HandyTab> {
         ),
         CustomSizedBox(
           context: context,
+          height: 8,
+        ),
+        Row(
+          children: [
+            CustomText(
+                text: 'Dịch vụ ',
+                color: CustomColor.blue,
+                fontWeight: FontWeight.bold,
+                context: context,
+                fontSize: 24),
+            CustomText(
+                text: 'hỗ trợ ',
+                color: CustomColor.black[3]!,
+                context: context,
+                fontWeight: FontWeight.bold,
+                fontSize: 24)
+          ],
+        ),
+        CustomSizedBox(
+          context: context,
+          height: 8,
+        ),
+        GridView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            childAspectRatio: 0.6,
+            crossAxisSpacing: 16.0,
+          ),
+          itemBuilder: (ctx, i) {
+            return ServiceWidget(
+              product: listService[i],
+            );
+          },
+          itemCount: listService.length,
+        ),
+        CustomSizedBox(
+          context: context,
           height: 16,
         ),
         CustomButton(
-            height: 18,
+            height: 24,
             text: 'Đặt',
             width: double.infinity,
             onPressFunction: () {

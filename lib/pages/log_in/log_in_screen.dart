@@ -1,9 +1,14 @@
 import 'package:rssms/constants/constants.dart' as constant;
-import 'package:rssms/pages/customers/bottom_navigation/custom_bottom_navigation.dart';
+import 'package:rssms/common/custom_bottom_navigation.dart';
 import 'package:rssms/pages/customers/cart/cart_screen.dart';
+import 'package:rssms/pages/customers/my_account/my_account.dart';
 import 'package:rssms/pages/customers/notification/notification_screen.dart';
-import 'package:rssms/pages/customers/profile/profile_screen.dart';
+import 'package:rssms/pages/delivery_staff/delivery/delivery_screen.dart';
+import 'package:rssms/pages/delivery_staff/my_account/my_account_delivery.dart';
+import 'package:rssms/pages/delivery_staff/notifcation/notification_delivery.dart';
+import 'package:rssms/pages/delivery_staff/qr/qr_screen.dart';
 import 'package:rssms/pages/log_in/widget/button_icon.dart';
+import 'package:rssms/pages/sign_up/sign_up_screen.dart';
 
 import '../../presenters/login_google_presenters.dart';
 import '/common/background.dart';
@@ -12,12 +17,10 @@ import '/common/custom_color.dart';
 import '/common/custom_input.dart';
 import '/common/custom_sizebox.dart';
 import '/common/custom_text.dart';
-import '/models/entity/user.dart';
 import '/models/login_model.dart';
 import '/presenters/login_presenters.dart';
 import '/views/login_view.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class LogInScreen extends StatelessWidget {
   @override
@@ -34,7 +37,7 @@ class LogInScreen extends StatelessWidget {
               clipBehavior: Clip.none,
               children: [
                 const Background(),
-                Container(
+                SizedBox(
                   width: deviceSize.width,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -49,7 +52,7 @@ class LogInScreen extends StatelessWidget {
                         height: 56,
                       ),
                       Expanded(child: FormLogIn(deviceSize)),
-                      Container(
+                      SizedBox(
                         width: deviceSize.width,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -66,11 +69,11 @@ class LogInScreen extends StatelessWidget {
                             ),
                             GestureDetector(
                               onTap: () {
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //       builder: (context) => SignUpScreen()),
-                                // );
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => SignUpScreen()),
+                                );
                               },
                               child: CustomText(
                                   text: 'Đăng ký',
@@ -133,20 +136,43 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
   }
 
   @override
+  void onClickSignInFaceBook() {}
+
+  @override
+  void onClickSignInGoogle() {}
+
+  @override
   void onClickSignIn(String email, String password) async {
     try {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => const CustomBottomNavigation(
-                  listIndexStack: [
-                    ProfileScreen(),
-                    CartScreen(),
-                    NotificationScreen(),
-                  ],
-                  listNavigator: constant.LIST_CUSTOMER_BOTTOM_NAVIGATION,
-                )),
-      );
+      if (email.contains('delivery')) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => const CustomBottomNavigation(
+                    listIndexStack: [
+                      MyAccountDeliveryScreen(),
+                      DeliveryScreen(),
+                      QrScreen(),
+                      NotificationDeliveryScreen(),
+                    ],
+                    listNavigator: constant.LIST_DELIVERY_BOTTOM_NAVIGATION,
+                  )),
+        );
+      } else {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => const CustomBottomNavigation(
+                    listIndexStack: [
+                      MyAccountScreen(),
+                      CartScreen(),
+                      NotificationScreen(),
+                    ],
+                    listNavigator: constant.LIST_CUSTOMER_BOTTOM_NAVIGATION,
+                  )),
+        );
+      }
+
       // User user = Provider.of<User>(context, listen: false);
 
       // final result = await loginPresenter.handleSignIn(email, password);
@@ -221,7 +247,7 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
             controller: _controllerPassword,
           ),
           if (_model.errorMsg.isNotEmpty)
-            Container(
+            SizedBox(
               width: double.infinity,
               child: CustomText(
                 text: _model.errorMsg,
@@ -237,7 +263,7 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
             height: 24,
           ),
           ButtonIcon(
-              height: 18,
+              height: 24,
               url: 'assets/images/google.png',
               text: 'Đăng nhập bằng Google',
               width: double.infinity,
@@ -251,7 +277,7 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
             height: 8,
           ),
           ButtonIcon(
-              height: 18,
+              height: 24,
               url: 'assets/images/facebook.png',
               text: 'Đăng nhập bằng Facebook',
               width: double.infinity,
@@ -265,7 +291,7 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
             height: 8,
           ),
           CustomButton(
-              height: 18,
+              height: 24,
               isLoading: _model.isLoading,
               text: 'Đăng nhập',
               width: double.infinity,

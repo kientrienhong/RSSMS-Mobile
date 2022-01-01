@@ -10,6 +10,7 @@ import '/views/login_view.dart';
 class LoginPresenter {
   LoginModel? _model;
   LoginView? _view;
+
   LoginView get view => _view!;
 
   setView(LoginView value) {
