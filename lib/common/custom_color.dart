@@ -39,6 +39,10 @@ class CustomColor {
   static const MaterialColor green =
       MaterialColor(_greenSemantic, <int, Color>{0: Color(_greenSemantic)});
 
+  static const _greenBrightSemantic = 0xFF26FF7B;
+  static const MaterialColor greenBright = MaterialColor(
+      _greenBrightSemantic, <int, Color>{0: Color(_greenBrightSemantic)});
+
   static const _orangeSemantic = 0xFFFF7C33;
   static const MaterialColor orange =
       MaterialColor(_orangeSemantic, <int, Color>{0: Color(_orangeSemantic)});

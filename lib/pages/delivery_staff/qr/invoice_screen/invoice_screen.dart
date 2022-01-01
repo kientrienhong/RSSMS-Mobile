@@ -6,6 +6,7 @@ import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/invoice_product_widget.dart';
 import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_screen/update_invoice_screen.dart';
 import 'package:rssms/pages/delivery_staff/qr/invoice_screen/widget/invoice_info_widget.dart';
+import 'package:rssms/pages/delivery_staff/store_order/store_order_screen.dart';
 
 class InvoiceDetailsScreen extends StatelessWidget {
   Map<String, dynamic>? invoice;
@@ -70,25 +71,42 @@ class InvoiceDetailsScreen extends StatelessWidget {
                       context: context,
                       height: 16,
                     ),
-                    Center(
-                      child: CustomButton(
-                          height: 24,
-                          isLoading: false,
-                          text: 'Cập nhật đơn',
-                          textColor: CustomColor.white,
-                          onPressFunction: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => UpdateInvoiceScreen(
-                                        invoice: invoice,
-                                      )),
-                            );
-                          },
-                          width: deviceSize.width / 2.5,
-                          buttonColor: CustomColor.blue,
-                          borderRadius: 6),
-                    )
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          CustomButton(
+                              height: 24,
+                              isLoading: false,
+                              text: 'Cập nhật đơn',
+                              textColor: CustomColor.white,
+                              onPressFunction: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => UpdateInvoiceScreen(
+                                            invoice: invoice,
+                                          )),
+                                );
+                              },
+                              width: deviceSize.width / 2.5,
+                              buttonColor: CustomColor.blue,
+                              borderRadius: 6),
+                          CustomButton(
+                              height: 24,
+                              isLoading: false,
+                              text: 'Đem đơn về kho',
+                              textColor: CustomColor.white,
+                              onPressFunction: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => StoreOrderScreen()),
+                                );
+                              },
+                              width: deviceSize.width / 2.5,
+                              buttonColor: CustomColor.green,
+                              borderRadius: 6),
+                        ])
                   ],
                 ),
               ),

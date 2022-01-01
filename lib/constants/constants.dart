@@ -1,3 +1,4 @@
+import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/pages/customers/input_information_booking/input_information.dart';
 import 'package:rssms/pages/customers/my_account/request/request_screen.dart';
 import 'package:rssms/pages/customers/payment_method_booking/payment_method_booking_screen.dart';
@@ -37,6 +38,16 @@ const ACCESSORY = 1;
 const HANDY = 2;
 const UNWEILDY = 4;
 const SERVICES = 3;
+
+const AVAILABLE = 0;
+const LIST_NOTE_STATUS_BOX = [
+  {'color': CustomColor.brightBlue, 'name': 'Available'},
+  {'color': CustomColor.blue, 'name': 'Rented'},
+  {'color': CustomColor.red, 'name': 'Expired'},
+  {'color': CustomColor.orange, 'name': 'Expired soon'},
+  {'color': CustomColor.greenBright, 'name': 'Selected'},
+  {'color': CustomColor.green, 'name': 'Placing'},
+];
 
 const List<Map<String, String>> TAB_DOOR_TO_DOOR = [
   {"name": "Ít đồ"},
@@ -159,6 +170,30 @@ const List<Map<String, dynamic>> LIST_INVOICE = [
         "name": "Size S",
         "quantity": 1,
         "url": "assets/images/boxSizeS.png",
+        "price": 70000
+      },
+      {
+        "name": "Size L",
+        "quantity": 1,
+        "url": "assets/images/boxSizeL.png",
+        "price": 70000
+      },
+      {
+        "name": "Size L",
+        "quantity": 1,
+        "url": "assets/images/boxSizeL.png",
+        "price": 70000
+      },
+      {
+        "name": "Size L",
+        "quantity": 1,
+        "url": "assets/images/boxSizeL.png",
+        "price": 70000
+      },
+      {
+        "name": "Size L",
+        "quantity": 1,
+        "url": "assets/images/boxSizeL.png",
         "price": 70000
       },
       {
@@ -498,4 +533,10 @@ const List<Map<String, dynamic>> LIST_NOTIFICATION_DELIVERY = [
     'content': 'Đơn hàng #1233 của bạn sắp hết hạn',
     'timeRemaining': '10m'
   },
+];
+
+const List<Map<String, dynamic>> LIST_SCHELVES = [
+  {
+    'name': '',
+  }
 ];
