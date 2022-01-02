@@ -1,16 +1,15 @@
 import 'dart:io';
-import 'dart:async';
-
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_input_with_hint.dart';
 import 'package:rssms/common/custom_radio_button.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
+import 'package:rssms/common/update_image_invoice.dart';
+import 'package:rssms/models/entity/add_image.dart';
 import 'package:rssms/pages/log_in/widget/button_icon.dart';
 
 class UpdateInvoiceScreen extends StatefulWidget {
@@ -33,7 +32,7 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen> {
   String get _phone => _controllerPhone.text;
   STATUS_INVOICE? status;
   File? image;
-  List<File>? listImage = [];
+  List<AddedImage>? listImage = [];
   bool? isPaid = false;
   @override
   void dispose() {
@@ -45,25 +44,13 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen> {
     _controllerPhone.dispose();
   }
 
-  Future pickImage(ImageSource source) async {
-    try {
-      final image = await ImagePicker().pickImage(source: source);
-      if (image == null) return;
-      final imageTempo = File(image.path);
-      setState(() {
-        this.image = imageTempo;
-        listImage!.add(this.image!);
-      });
-    } on PlatformException catch (e) {
-      print("Failed to pickimage: $e");
-    } on Exception catch (ex) {
-      print(ex);
-    }
-  }
-
-  _buildGridView({required List<File> path, required Size deviceSize}) {
+  _buildGridView({
+    required List<AddedImage> path,
+    required Size deviceSize,
+  }) {
     return SizedBox(
-      height: path.length >= 2 ? deviceSize.height / 2 : deviceSize.height / 4,
+      height:
+          path.length >= 2 ? deviceSize.height / 1.8 : deviceSize.height / 4,
       child: GridView.builder(
           padding: const EdgeInsets.all(0),
           physics: NeverScrollableScrollPhysics(),
@@ -83,13 +70,19 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen> {
                     dashPattern: const [8, 4],
                     child: Center(
                       child: ButtonIcon(
-                          height: path.length >= 3
+                          height: path.length >= 2
                               ? deviceSize.height / 2.6
                               : deviceSize.height / 4,
                           width: 50,
                           url: "assets/images/plus.png",
                           text: "",
-                          onPressFunction: () => pickImage(ImageSource.gallery),
+                          onPressFunction: () => showDialog(
+                              context: context,
+                              builder: (ctx) {
+                                return UpdateImageInvoice(
+                                  isDisable: false,
+                                );
+                              }),
                           isLoading: false,
                           textColor: Colors.white,
                           buttonColor: Colors.white,
@@ -99,6 +92,7 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen> {
             }
             return Stack(children: [
               Container(
+                width: deviceSize.width,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
                     color: CustomColor.white,
@@ -113,16 +107,13 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Image.file(
-                        path[index],
-                        fit: BoxFit.cover,
+                        path[index].image!,
+                        height: deviceSize.height / 6,
+                        width: deviceSize.width,
                       ),
                     ),
-                    CustomSizedBox(
-                      context: context,
-                      height: 10,
-                    ),
                     CustomText(
-                        text: "Box " + (index + 1).toString(),
+                        text: path[index].name.toString(),
                         color: Colors.black,
                         context: context,
                         fontWeight: FontWeight.bold,
@@ -161,10 +152,11 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen> {
   @override
   Widget build(BuildContext context) {
     var deviceSize = MediaQuery.of(context).size;
-    print(listImage!.length);
+    listImage = Provider.of<AddedImage>(context).listImage;
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
+          color: CustomColor.white,
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
           width: deviceSize.width,
           child: Column(
@@ -234,7 +226,12 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen> {
                 context: context,
                 height: 16,
               ),
-              _buildGridView(deviceSize: deviceSize, path: listImage!),
+              Consumer<AddedImage>(
+                builder: (context, image, child) {
+                  return _buildGridView(
+                      deviceSize: deviceSize, path: listImage!);
+                },
+              ),
               CustomText(
                 text: "Tình trạng đơn hàng",
                 color: CustomColor.black,

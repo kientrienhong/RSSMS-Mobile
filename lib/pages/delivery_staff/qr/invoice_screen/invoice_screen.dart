@@ -20,6 +20,7 @@ class InvoiceDetailsScreen extends StatelessWidget {
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
+          color: CustomColor.white,
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
           width: deviceSize.width,
           child: Column(
