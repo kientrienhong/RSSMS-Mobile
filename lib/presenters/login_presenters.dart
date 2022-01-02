@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '/api/firebase_services.dart';
@@ -53,6 +55,44 @@ class LoginPresenter {
       print('${result.user!.metadata}');
       //print('${result.user.providerData}');
       print('${result.user!.refreshToken}');
+    } catch (error) {
+      print(error);
+    } finally {
+      _view!.updateLoading();
+    }
+  }
+
+  Future<User?> handleSignInFacebook() async {
+    try {
+      final res = await _model!.fb!.logIn(permissions: [
+        FacebookPermission.publicProfile,
+        FacebookPermission.email
+      ]);
+
+      // check the status of our login
+      if (res.status == FacebookLoginStatus.success) {
+        final FacebookAccessToken? fbToken = res.accessToken;
+
+        //Convert to Auth Credential
+        final AuthCredential credential =
+            FacebookAuthProvider.credential(fbToken!.token);
+
+        //User Credential to Sign in with Firebase
+        final result = await _model!.auth.signInWithCredential(credential);
+
+        print('${result.user!.displayName} is now logged in');
+
+        final requestData = await FacebookAuth.i.getUserData(
+          fields: "email, name, picture",
+        );
+
+        // user = Users(
+        //   name: requestData["name"],
+        //   email: requestData["email"],
+        //   avatar: requestData["picture"]["data"]["url"] ?? " ",
+        //   phone: requestData["phone"],
+        // );
+      }
     } catch (error) {
       print(error);
     } finally {

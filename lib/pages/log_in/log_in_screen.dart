@@ -136,7 +136,9 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
   }
 
   @override
-  void onClickSignInFaceBook() {}
+  void onClickSignInFaceBook() {
+    loginPresenter.handleSignInFacebook();
+  }
 
   @override
   void onClickSignInGoogle() {
@@ -285,7 +287,9 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
               url: 'assets/images/facebook.png',
               text: 'Đăng nhập bằng Facebook',
               width: double.infinity,
-              onPressFunction: () {},
+              onPressFunction: () {
+                onClickSignInFaceBook();
+              },
               isLoading: _model.isLoading,
               textColor: CustomColor.white,
               buttonColor: const Color(0xFF1877F2),

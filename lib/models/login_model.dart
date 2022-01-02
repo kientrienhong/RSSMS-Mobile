@@ -1,3 +1,5 @@
+import 'package:flutter_login_facebook/flutter_login_facebook.dart';
+
 import '/models/entity/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -7,6 +9,7 @@ class LoginModel {
   bool? _isLoading;
   Users? _user;
   FirebaseAuth? _auth;
+  FacebookLogin? _fb;
 
   LoginModel() {
     _isDisableLogin = true;
@@ -14,6 +17,7 @@ class LoginModel {
     _isLoading = false;
     _user = Users.empty();
     _auth = FirebaseAuth.instance;
+    _fb = FacebookLogin();
   }
   get user => _user;
 
@@ -34,4 +38,8 @@ class LoginModel {
   FirebaseAuth get auth => this._auth!;
 
   set auth(FirebaseAuth value) => this._auth = value;
+
+  FacebookLogin? get fb => this._fb;
+
+  set fb(FacebookLogin? value) => this._fb = value;
 }
