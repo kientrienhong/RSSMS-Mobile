@@ -1,6 +1,4 @@
 import '/common/custom_color.dart';
-import '/common/custom_sizebox.dart';
-import '/common/custom_text.dart';
 import 'package:flutter/material.dart';
 
 enum StatusTypeInput { VALID, INVALID, DISABLE }
@@ -18,7 +16,8 @@ class CustomOutLineInputWithHint extends StatefulWidget {
   final bool? isSecure;
   String? hintText;
   CustomOutLineInputWithHint(
-      {this.statusTypeInput = StatusTypeInput.VALID,
+      {Key? key,
+      this.statusTypeInput = StatusTypeInput.VALID,
       required this.controller,
       this.validator,
       this.backgroundColorLabel = CustomColor.white,
@@ -28,7 +27,8 @@ class CustomOutLineInputWithHint extends StatefulWidget {
       this.nextNode,
       required this.focusNode,
       required this.deviceSize,
-      this.hintText});
+      this.hintText})
+      : super(key: key);
 
   @override
   _CustomOutLineInputState createState() => _CustomOutLineInputState();
@@ -99,12 +99,12 @@ class _CustomOutLineInputState extends State<CustomOutLineInputWithHint> {
   @override
   Widget build(BuildContext context) {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      Container(
+      SizedBox(
         height: widget.deviceSize!.height / 9.5,
         width: widget.deviceSize!.width,
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Stack(
-            overflow: Overflow.visible,
+            clipBehavior: Clip.none,
             children: [
               Container(
                   height: widget.deviceSize!.height / 15,

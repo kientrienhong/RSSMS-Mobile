@@ -60,7 +60,7 @@ class _DoorToDoorTabState extends State<DoorToDoorTab>
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: mapListTab(),
           ),
-          _index == 0 ? HandyTab() : SelfStorageTab()
+          _index == 0 ? const HandyTab() : const SelfStorageTab()
         ],
       ),
     );

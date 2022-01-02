@@ -8,12 +8,14 @@ class CustomTextButton extends Container {
   final int fontSize;
   final bool isLoading;
   CustomTextButton(
-      {required this.text,
+      {Key? key,
+      required this.text,
       required this.isLoading,
       required this.textColor,
       required this.context,
       required this.fontSize})
       : super(
+          key: key,
           child: isLoading == true
               ? const SizedBox(
                   height: 16,

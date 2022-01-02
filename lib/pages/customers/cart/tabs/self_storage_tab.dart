@@ -18,12 +18,11 @@ class SelfStorageTab extends StatelessWidget {
       .toList();
   @override
   Widget build(BuildContext context) {
-    final deviceSize = MediaQuery.of(context).size;
-    final List<Map<String, dynamic?>> listSelfStorage = constants
+    final List<Map<String, dynamic>> listSelfStorage = constants
         .LIST_SELF_STORAGE
         .map<Map<String, dynamic>>((e) => {...e, 'quantity': 0})
         .toList();
-    final List<Map<String, dynamic?>> listAccessory = constants.LIST_ACCESSORY
+    final List<Map<String, dynamic>> listAccessory = constants.LIST_ACCESSORY
         .map<Map<String, dynamic>>((e) => {...e, 'quantity': 0})
         .toList();
     return SingleChildScrollView(

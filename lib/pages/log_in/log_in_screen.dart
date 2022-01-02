@@ -29,7 +29,7 @@ class LogInScreen extends StatelessWidget {
     return Scaffold(
         backgroundColor: CustomColor.white,
         body: SingleChildScrollView(
-          child: Container(
+          child: SizedBox(
             width: deviceSize.width,
             height: deviceSize.height,
             child: Stack(
@@ -135,10 +135,14 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
   }
 
   @override
-  void onClickSignInFaceBook() {}
+  void onClickSignInFaceBook() {
+    loginPresenter.handleSignInFacebook();
+  }
 
   @override
-  void onClickSignInGoogle() {}
+  void onClickSignInGoogle() {
+    loginPresenter.handleSignInGoogle();
+  }
 
   @override
   void onClickSignIn(String email, String password) async {
@@ -266,7 +270,9 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
               url: 'assets/images/google.png',
               text: 'Đăng nhập bằng Google',
               width: double.infinity,
-              onPressFunction: () {},
+              onPressFunction: () {
+                onClickSignInGoogle();
+              },
               isLoading: _model.isLoading,
               textColor: CustomColor.white,
               buttonColor: const Color(0xFFE16259),
@@ -280,7 +286,9 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
               url: 'assets/images/facebook.png',
               text: 'Đăng nhập bằng Facebook',
               width: double.infinity,
-              onPressFunction: () {},
+              onPressFunction: () {
+                onClickSignInFaceBook();
+              },
               isLoading: _model.isLoading,
               textColor: CustomColor.white,
               buttonColor: const Color(0xFF1877F2),

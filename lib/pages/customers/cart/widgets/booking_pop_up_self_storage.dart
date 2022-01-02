@@ -17,7 +17,7 @@ class BookingPopUpSelfStorage extends StatefulWidget {
 }
 
 class _BookingPopUpSelfStorageState extends State<BookingPopUpSelfStorage> {
-  final oCcy = new NumberFormat("#,##0", "en_US");
+  final oCcy = NumberFormat("#,##0", "en_US");
   late final _dateDeliveryController;
   late var _dateReturn;
   final _monthController = TextEditingController(text: '0');

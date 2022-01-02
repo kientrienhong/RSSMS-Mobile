@@ -23,7 +23,7 @@ class BoxWidget extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        onTap(index, currentIndex);
+        onTap(index, box['status']);
       },
       child: Container(
         margin: const EdgeInsets.only(bottom: 16),
