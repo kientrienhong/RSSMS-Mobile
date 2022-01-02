@@ -139,7 +139,9 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
   void onClickSignInFaceBook() {}
 
   @override
-  void onClickSignInGoogle() {}
+  void onClickSignInGoogle() {
+    loginPresenter.handleSignInGoogle();
+  }
 
   @override
   void onClickSignIn(String email, String password) async {
@@ -267,7 +269,9 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
               url: 'assets/images/google.png',
               text: 'Đăng nhập bằng Google',
               width: double.infinity,
-              onPressFunction: () {},
+              onPressFunction: () {
+                onClickSignInGoogle();
+              },
               isLoading: _model.isLoading,
               textColor: CustomColor.white,
               buttonColor: const Color(0xFFE16259),

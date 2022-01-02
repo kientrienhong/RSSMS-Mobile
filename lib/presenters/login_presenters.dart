@@ -1,5 +1,8 @@
 import 'dart:convert';
 
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+
 import '/api/firebase_services.dart';
 
 import '/api/api_services.dart';
@@ -25,6 +28,36 @@ class LoginPresenter {
 
   void handleOnChangeInput(String email, String password) {
     _view!.updateViewStatusButton(email, password);
+  }
+
+  Future<Users?> handleSignInGoogle() async {
+    try {
+      _view!.updateLoading();
+
+      final googleSignin = GoogleSignIn();
+
+      final GoogleSignInAccount? googleUser = await googleSignin.signIn();
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser!.authentication;
+      final AuthCredential credential = GoogleAuthProvider.credential(
+          idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
+
+      //Firebase Sign in
+      final result = await _model!.auth.signInWithCredential(credential);
+
+      print('${result.user!.displayName}');
+      print('${result.user!.email}');
+      print('${result.user!.phoneNumber}');
+      print('${result.user!.photoURL}');
+      print('${result.user!.uid}');
+      print('${result.user!.metadata}');
+      //print('${result.user.providerData}');
+      print('${result.user!.refreshToken}');
+    } catch (error) {
+      print(error);
+    } finally {
+      _view!.updateLoading();
+    }
   }
 
   Future<Users?> handleSignIn(String email, String password) async {
