@@ -23,8 +23,8 @@ class ItemRadioWidget extends StatelessWidget {
       child: Column(
         children: [
           SizedBox(
-              height: deviceSize.height / 8,
-              width: deviceSize.width / 8,
+              height: deviceSize.height / 9,
+              width: deviceSize.width / 9,
               child: Image.asset(product['url'])),
           CustomText(
               text: '${product['name']} x ${product['quantity']}',
