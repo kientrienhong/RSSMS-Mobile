@@ -20,7 +20,7 @@ class RequestScreen extends StatelessWidget {
     final List<Map<String, dynamic>> listRequest =
         constants.LIST_REQUEST.toList();
 
-    return Container(
+    return SizedBox(
       width: deviceSize.width,
       height: deviceSize.height * 1.5,
       child: Padding(

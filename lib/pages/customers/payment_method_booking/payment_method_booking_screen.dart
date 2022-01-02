@@ -67,13 +67,14 @@ class _PaymentMethodBookingScreenState
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: CustomColor.white,
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CustomAppBar(
+              const CustomAppBar(
                 isHome: false,
                 name: '',
               ),

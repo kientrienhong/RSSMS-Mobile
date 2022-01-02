@@ -3,6 +3,7 @@ import 'package:rssms/pages/customers/input_information_booking/input_informatio
 import 'package:rssms/pages/customers/my_account/request/request_screen.dart';
 import 'package:rssms/pages/customers/payment_method_booking/payment_method_booking_screen.dart';
 import 'package:rssms/pages/delivery_staff/delivery/delivery_screen.dart';
+import 'package:rssms/pages/delivery_staff/request/widgets/request_widget.dart';
 
 const List<Map<String, String>> LIST_CUSTOMER_BOTTOM_NAVIGATION = [
   {'url': "assets/images/profile.png", 'label': 'Profile'},
@@ -526,12 +527,14 @@ const List<Map<String, dynamic>> LIST_NOTIFICATION_DELIVERY = [
   {
     'id': 1,
     'content': 'Đơn hàng #1233 của bạn đã được lưu trữ trong kho',
-    'timeRemaining': '10m'
+    'timeRemaining': '10m',
+    'url': 'assets/images/truck1.png'
   },
   {
     'id': 2,
     'content': 'Đơn hàng #1233 của bạn sắp hết hạn',
-    'timeRemaining': '10m'
+    'timeRemaining': '10m',
+    'url': 'assets/images/dangerCircle.png'
   },
 ];
 
@@ -539,4 +542,22 @@ const List<Map<String, dynamic>> LIST_SCHELVES = [
   {
     'name': '',
   }
+];
+
+const List<Map<String, dynamic>> LIST_REQUEST_DELIVERY = [
+  {
+    'date': '01/01/2022',
+    'reason': 'Đi chơi Tết',
+    'status': StatusRequestDelivery.processing
+  },
+  {
+    'date': '04/01/2022',
+    'reason': 'Bận việc gia đình',
+    'status': StatusRequestDelivery.approved
+  },
+  {
+    'date': '10/01/2022',
+    'reason': 'Bận việc gia đình',
+    'status': StatusRequestDelivery.reject
+  },
 ];

@@ -23,10 +23,10 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
-    final List<Map<String, dynamic?>> listInvoice =
+    final List<Map<String, dynamic>> listInvoice =
         constants.LIST_INVOICE.toList();
 
-    return Container(
+    return SizedBox(
       width: deviceSize.width,
       height: deviceSize.height * 1.5,
       child: Padding(

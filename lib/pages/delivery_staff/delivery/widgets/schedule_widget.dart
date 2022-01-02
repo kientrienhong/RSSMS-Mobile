@@ -80,7 +80,7 @@ class ScheduleWidget extends StatelessWidget {
                       child: Container(
                         width: 1,
                         color: CustomColor.black[3],
-                        height: deviceSize.height / 2.8,
+                        height: deviceSize.height / 3,
                       ),
                     ),
               Container(
@@ -110,7 +110,7 @@ class ScheduleWidget extends StatelessWidget {
                     fontSize: 24),
                 CustomSizedBox(
                   context: context,
-                  height: 24,
+                  height: 40,
                 ),
                 Container(
                   padding: const EdgeInsets.all(12),

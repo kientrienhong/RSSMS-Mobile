@@ -1,4 +1,3 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:rssms/common/custom_button.dart';
@@ -28,6 +27,7 @@ class InvoiceDetailScreen extends StatelessWidget {
     List<Map<String, dynamic>> listImage = invoice!["image"];
 
     return Scaffold(
+      backgroundColor: CustomColor.white,
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),

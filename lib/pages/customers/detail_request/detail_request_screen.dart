@@ -58,7 +58,7 @@ class DetailRequestScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CustomAppBar(
+              const CustomAppBar(
                 isHome: false,
                 name: 'Chi tiết yêu cầu',
               ),
