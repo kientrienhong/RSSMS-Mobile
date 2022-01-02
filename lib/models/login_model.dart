@@ -35,11 +35,11 @@ class LoginModel {
 
   set isDisableLogin(value) => _isDisableLogin = value;
 
-  FirebaseAuth get auth => this._auth!;
+  FirebaseAuth get auth => _auth!;
 
-  set auth(FirebaseAuth value) => this._auth = value;
+  set auth(FirebaseAuth value) => _auth = value;
 
-  FacebookLogin? get fb => this._fb;
+  FacebookLogin? get fb => _fb;
 
-  set fb(FacebookLogin? value) => this._fb = value;
+  set fb(FacebookLogin? value) => _fb = value;
 }

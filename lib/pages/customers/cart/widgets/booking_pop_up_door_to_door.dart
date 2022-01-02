@@ -20,7 +20,7 @@ class BookingPopUpDoorToDoor extends StatefulWidget {
 class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
     implements BookingPopUpViewDoorToDoor {
   final _dateDeliveryController = TextEditingController();
-  final oCcy = new NumberFormat("#,##0", "en_US");
+  final oCcy = NumberFormat("#,##0", "en_US");
   final _dateReturnController = TextEditingController();
   late DateTime dateDelivery;
   late DateTime dateReturn;
@@ -79,9 +79,10 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
   String totalEachPart(List<dynamic> list, String type) {
     var sum = 0;
 
-    list.forEach((element) {
+    for (var element in list) {
       sum += element['price'] * element['quantity'] as int;
-    });
+    }
+
     if (type == 'product') {
       sum *= _months;
     }
@@ -95,17 +96,17 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
 
     List listKeys = orderBooking.productOrder!.keys.toList();
 
-    listKeys.forEach((element) {
+    for (var element in listKeys) {
       if (element == 'product') {
-        orderBooking.productOrder![element]!.forEach((ele) {
+        for (var ele in orderBooking.productOrder![element]!) {
           sum += ele['price'] * ele['quantity'] * _months as int;
-        });
+        }
       } else {
-        orderBooking.productOrder![element]!.forEach((ele) {
+        for (var ele in orderBooking.productOrder![element]!) {
           sum += ele['price'] * ele['quantity'] as int;
-        });
+        }
       }
-    });
+    }
 
     return '${oCcy.format(sum)} VND';
   }
@@ -262,7 +263,7 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
                         checkColor: Colors.white,
                         fillColor: MaterialStateProperty.all(CustomColor.blue),
                         value: _isCustomerDelivery,
-                        shape: CircleBorder(),
+                        shape: const CircleBorder(),
                         onChanged: (bool? value) {
                           onChangeIsCustomerDelivery(value!);
                         },
@@ -326,7 +327,7 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
                 context: context,
                 height: 16,
               ),
-              buildInfo('Tổng ngày: ', '${_diffDate} ngày', CustomColor.blue),
+              buildInfo('Tổng ngày: ', '$_diffDate ngày', CustomColor.blue),
               CustomSizedBox(
                 context: context,
                 height: 16,

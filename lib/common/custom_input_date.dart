@@ -19,7 +19,8 @@ class CustomOutLineInputDateTime extends StatefulWidget {
   final bool? isSecure;
   String icon;
   CustomOutLineInputDateTime(
-      {this.statusTypeInput = StatusTypeInput.VALID,
+      {Key? key,
+      this.statusTypeInput = StatusTypeInput.VALID,
       required this.controller,
       this.validator,
       this.backgroundColorLabel = CustomColor.white,
@@ -30,7 +31,8 @@ class CustomOutLineInputDateTime extends StatefulWidget {
       required this.icon,
       required this.focusNode,
       required this.deviceSize,
-      required this.labelText});
+      required this.labelText})
+      : super(key: key);
 
   @override
   _CustomOutLineInputState createState() => _CustomOutLineInputState();
@@ -112,14 +114,14 @@ class _CustomOutLineInputState extends State<CustomOutLineInputDateTime> {
             CustomSizedBox(context: context, height: 8),
           ],
         ),
-      Container(
+      SizedBox(
         height: widget.statusTypeInput != StatusTypeInput.INVALID
             ? widget.deviceSize!.height / 9.5
             : widget.deviceSize!.height / 7,
         width: widget.deviceSize!.width,
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Stack(
-            overflow: Overflow.visible,
+            clipBehavior: Clip.none,
             children: [
               Container(
                   height: widget.deviceSize!.height / 15,
@@ -131,7 +133,7 @@ class _CustomOutLineInputState extends State<CustomOutLineInputDateTime> {
                     child: TextFormField(
                       onTap: () async {
                         DateTime? date = DateTime(1900);
-                        FocusScope.of(context).requestFocus(new FocusNode());
+                        FocusScope.of(context).requestFocus(FocusNode());
                         date = await showDatePicker(
                           context: context,
                           initialDate: DateTime.now(),

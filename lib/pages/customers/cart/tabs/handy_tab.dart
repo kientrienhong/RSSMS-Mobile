@@ -30,14 +30,13 @@ class _HandyTabState extends State<HandyTab> {
 
   @override
   Widget build(BuildContext context) {
-    final deviceSize = MediaQuery.of(context).size;
-    final List<Map<String, dynamic?>> listProduct = constants.LIST_PRODUCT
+    final List<Map<String, dynamic>> listProduct = constants.LIST_PRODUCT
         .map<Map<String, dynamic>>((e) => {...e, 'quantity': 0})
         .toList();
-    final List<Map<String, dynamic?>> listAccessory = constants.LIST_ACCESSORY
+    final List<Map<String, dynamic>> listAccessory = constants.LIST_ACCESSORY
         .map<Map<String, dynamic>>((e) => {...e, 'quantity': 0})
         .toList();
-    final List<Map<String, dynamic?>> listService = constants.LIST_SERVICES
+    final List<Map<String, dynamic>> listService = constants.LIST_SERVICES
         .map<Map<String, dynamic>>((e) => {...e, 'quantity': 0})
         .toList();
     return Padding(
@@ -140,7 +139,7 @@ class _HandyTabState extends State<HandyTab> {
               showDialog(
                   context: context,
                   builder: (ctx) {
-                    return BookingPopUpDoorToDoor();
+                    return const BookingPopUpDoorToDoor();
                   });
             },
             isLoading: false,

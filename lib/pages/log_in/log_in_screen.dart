@@ -10,7 +10,6 @@ import 'package:rssms/pages/delivery_staff/qr/qr_screen.dart';
 import 'package:rssms/pages/log_in/widget/button_icon.dart';
 import 'package:rssms/pages/sign_up/sign_up_screen.dart';
 
-import '../../presenters/login_google_presenters.dart';
 import '/common/background.dart';
 import '/common/custom_button.dart';
 import '/common/custom_color.dart';
@@ -30,7 +29,7 @@ class LogInScreen extends StatelessWidget {
     return Scaffold(
         backgroundColor: CustomColor.white,
         body: SingleChildScrollView(
-          child: Container(
+          child: SizedBox(
             width: deviceSize.width,
             height: deviceSize.height,
             child: Stack(
