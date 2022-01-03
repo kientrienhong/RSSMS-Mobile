@@ -34,7 +34,7 @@ class LoginPresenter {
 
   Future<Users?> handleSignInGoogle() async {
     try {
-      _view!.updateLoading();
+      _view!.updateLoadingGoogle();
 
       final googleSignin = GoogleSignIn();
 
@@ -58,12 +58,14 @@ class LoginPresenter {
     } catch (error) {
       print(error);
     } finally {
-      _view!.updateLoading();
+      _view!.updateLoadingGoogle();
     }
   }
 
   Future<User?> handleSignInFacebook() async {
     try {
+      _view!.updateLoadingFacebook();
+
       final res = await _model!.fb!.logIn(permissions: [
         FacebookPermission.publicProfile,
         FacebookPermission.email
@@ -96,7 +98,7 @@ class LoginPresenter {
     } catch (error) {
       print(error);
     } finally {
-      _view!.updateLoading();
+      _view!.updateLoadingFacebook();
     }
   }
 
@@ -120,7 +122,7 @@ class LoginPresenter {
       // print(e.toString());
       // throw Exception('Invalid email or password');
     } finally {
-      // _view.updateLoading();
+      _view!.updateLoading();
     }
   }
 }

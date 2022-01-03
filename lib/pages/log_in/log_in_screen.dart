@@ -130,6 +130,24 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
   }
 
   @override
+  void updateLoadingGoogle() {
+    if (mounted) {
+      setState(() {
+        _model.isLoadingGoogle = !_model.isLoadingGoogle;
+      });
+    }
+  }
+
+  @override
+  void updateLoadingFacebook() {
+    if (mounted) {
+      setState(() {
+        _model.isLoadingFacebook = !_model.isLoadingFacebook;
+      });
+    }
+  }
+
+  @override
   void onChangeInput() {
     loginPresenter.handleOnChangeInput(_email, _password);
   }
@@ -191,10 +209,11 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
 
   @override
   updateLoading() {
-    if (mounted)
+    if (mounted) {
       setState(() {
-        _model.isLoading = !_model.isLoading;
+        _model.isLoading = _model.isLoading;
       });
+    }
   }
 
   @override
@@ -273,7 +292,7 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
               onPressFunction: () {
                 onClickSignInGoogle();
               },
-              isLoading: _model.isLoading,
+              isLoading: _model.isLoadingGoogle,
               textColor: CustomColor.white,
               buttonColor: const Color(0xFFE16259),
               borderRadius: 6),
@@ -289,7 +308,7 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
               onPressFunction: () {
                 onClickSignInFaceBook();
               },
-              isLoading: _model.isLoading,
+              isLoading: _model.isLoadingFacebook,
               textColor: CustomColor.white,
               buttonColor: const Color(0xFF1877F2),
               borderRadius: 6),

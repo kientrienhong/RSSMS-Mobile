@@ -7,6 +7,9 @@ class LoginModel {
   bool? _isDisableLogin;
   String? _errorMsg;
   bool? _isLoading;
+  bool? _isLoadingGoogle;
+  bool? _isLoadingFacebook;
+
   Users? _user;
   FirebaseAuth? _auth;
   FacebookLogin? _fb;
@@ -15,6 +18,8 @@ class LoginModel {
     _isDisableLogin = true;
     _errorMsg = '';
     _isLoading = false;
+    _isLoadingFacebook = false;
+    _isLoadingGoogle = false;
     _user = Users.empty();
     _auth = FirebaseAuth.instance;
     _fb = FacebookLogin();
@@ -38,6 +43,14 @@ class LoginModel {
   FirebaseAuth get auth => _auth!;
 
   set auth(FirebaseAuth value) => _auth = value;
+
+  get isLoadingGoogle => _isLoadingGoogle;
+
+  set isLoadingGoogle(value) => _isLoadingGoogle = value;
+
+  get isLoadingFacebook => _isLoadingFacebook;
+
+  set isLoadingFacebook(value) => _isLoadingFacebook = value;
 
   FacebookLogin? get fb => _fb;
 
