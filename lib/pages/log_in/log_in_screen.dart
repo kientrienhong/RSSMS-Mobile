@@ -20,6 +20,8 @@ import '/models/login_model.dart';
 import '/presenters/login_presenters.dart';
 import '/views/login_view.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'dart:io' show Platform;
 
 class LogInScreen extends StatelessWidget {
   @override
@@ -108,7 +110,8 @@ class FormLogIn extends StatefulWidget {
 
 class _FormLogInState extends State<FormLogIn> implements LoginView {
   late LoginPresenter loginPresenter;
-
+  late FirebaseMessaging _firebaseMessaging;
+  late String _token;
   late LoginModel _model;
 
   final _focusNodeEmail = FocusNode();
@@ -122,11 +125,24 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
   @override
   void initState() {
     super.initState();
+    _firebaseMessaging = FirebaseMessaging.instance;
     loginPresenter = LoginPresenter();
     loginPresenter.setView(this);
     _model = loginPresenter.model;
     _controllerEmail.addListener(onChangeInput);
     _controllerPassword.addListener(onChangeInput);
+    firebaseCloudMessagingListeners();
+  }
+
+  void firebaseCloudMessagingListeners() {
+    _firebaseMessaging.getToken().then((token) {
+      _token = token!;
+    });
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      RemoteNotification notification = message.notification!;
+      AndroidNotification? android = message.notification?.android;
+    });
   }
 
   @override
@@ -154,12 +170,12 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
 
   @override
   void onClickSignInFaceBook() {
-    loginPresenter.handleSignInFacebook();
+    loginPresenter.handleSignInFacebook(_token);
   }
 
   @override
   void onClickSignInGoogle() {
-    loginPresenter.handleSignInGoogle();
+    loginPresenter.handleSignInGoogle(_token);
   }
 
   @override

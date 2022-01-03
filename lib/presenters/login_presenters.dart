@@ -32,7 +32,7 @@ class LoginPresenter {
     _view!.updateViewStatusButton(email, password);
   }
 
-  Future<Users?> handleSignInGoogle() async {
+  Future<Users?> handleSignInGoogle(String deviceToken) async {
     try {
       _view!.updateLoadingGoogle();
 
@@ -46,15 +46,11 @@ class LoginPresenter {
 
       //Firebase Sign in
       final result = await _model!.auth.signInWithCredential(credential);
-
-      print('${result.user!.displayName}');
-      print('${result.user!.email}');
-      print('${result.user!.phoneNumber}');
-      print('${result.user!.photoURL}');
-      print('${result.user!.uid}');
-      print('${result.user!.metadata}');
-      //print('${result.user.providerData}');
-      print('${result.user!.refreshToken}');
+      print(result.user!.uid);
+      print(deviceToken);
+      final response =
+          await ApiServices.logInThirParty(result.user!.uid, deviceToken);
+      print(response.body);
     } catch (error) {
       print(error);
     } finally {
@@ -62,7 +58,7 @@ class LoginPresenter {
     }
   }
 
-  Future<User?> handleSignInFacebook() async {
+  Future<User?> handleSignInFacebook(String deviceToken) async {
     try {
       _view!.updateLoadingFacebook();
 
@@ -82,11 +78,15 @@ class LoginPresenter {
         //User Credential to Sign in with Firebase
         final result = await _model!.auth.signInWithCredential(credential);
 
-        print('${result.user!.displayName} is now logged in');
+        final response =
+            await ApiServices.logInThirParty(result.user!.uid, deviceToken);
+        print(response.body);
+        // print(result);
+        // final requestData = await FacebookAuth.i.getUserData(
+        //   fields: "email, name, picture",
+        // );
 
-        final requestData = await FacebookAuth.i.getUserData(
-          fields: "email, name, picture",
-        );
+        // print(requestData);
 
         // user = Users(
         //   name: requestData["name"],
