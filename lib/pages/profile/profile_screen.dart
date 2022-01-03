@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:rssms/common/background.dart';
 import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
@@ -6,6 +7,7 @@ import 'package:rssms/common/custom_input_date.dart';
 import 'package:rssms/common/custom_input_with_hint.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
+import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/models/profile_model.dart';
 import 'package:rssms/presenters/profile_presenter.dart';
 import 'package:rssms/views/profile_view.dart';
@@ -19,19 +21,19 @@ class ProfileScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
-        child: Container(
+        child: SizedBox(
           width: deviceSize.width,
           height: deviceSize.height * 1.5,
           child: Stack(
             clipBehavior: Clip.none,
             children: [
               const Background(),
-              Container(
+              SizedBox(
                 width: deviceSize.width,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Expanded(child: FormProfileScreen(deviceSize)),
+                    Expanded(child: FormProfileScreen(deviceSize: deviceSize)),
                   ],
                 ),
               ),
@@ -45,7 +47,8 @@ class ProfileScreen extends StatelessWidget {
 
 class FormProfileScreen extends StatefulWidget {
   final Size deviceSize;
-  FormProfileScreen(this.deviceSize);
+  const FormProfileScreen({Key? key, required this.deviceSize})
+      : super(key: key);
 
   @override
   State<FormProfileScreen> createState() => _ProfileScreenState();
@@ -65,27 +68,7 @@ class _ProfileScreenState extends State<FormProfileScreen>
   final _focusNodeWard = FocusNode();
   final _focusNodeBirthDate = FocusNode();
   final _focusNodeDistrict = FocusNode();
-
-  final _controllerFullname = TextEditingController();
-  final _controllerOldPassword = TextEditingController();
-  final _controllerPassword = TextEditingController();
-  final _controllerConfirmPassword = TextEditingController();
-  final _controllerPhone = TextEditingController();
-  final _controllerStreet = TextEditingController();
-  final _controllerWard = TextEditingController();
-  final _controllerBirthDate = TextEditingController();
-  final _controllerDistrict = TextEditingController();
-
   String _textGender = "";
-
-  String get _email => _controllerFullname.text;
-  String get _password => _controllerPassword.text;
-  String get _confirmPassword => _controllerConfirmPassword.text;
-  String get _phone => _controllerPhone.text;
-  String get _street => _controllerStreet.text;
-  String get _wart => _controllerWard.text;
-  String get _district => _controllerWard.text;
-  String get _birthdate => _controllerBirthDate.text;
 
   Widget customRadioButton(String text, String gender, Color color) {
     return Row(
@@ -131,17 +114,19 @@ class _ProfileScreenState extends State<FormProfileScreen>
   @override
   void initState() {
     super.initState();
-    profilePresenter = ProfilePresenter();
+    Users users = Provider.of<Users>(context, listen: false);
+    print(users.phone);
+    profilePresenter = ProfilePresenter(users);
     profilePresenter.setView(this);
     _model = profilePresenter.model;
-    _controllerFullname.addListener(onChangeInput);
-    _controllerOldPassword.addListener(onChangeInput);
-    _controllerPassword.addListener(onChangeInput);
-    _controllerConfirmPassword.addListener(onChangeInput);
-    _controllerPhone.addListener(onChangeInput);
-    _controllerStreet.addListener(onChangeInput);
-    _controllerWard.addListener(onChangeInput);
-    _controllerBirthDate.addListener(onChangeInput);
+    _model.controllerFullname.addListener(onChangeInput);
+    _model.controllerOldPassword.addListener(onChangeInput);
+    _model.controllerPassword.addListener(onChangeInput);
+    _model.controllerConfirmPassword.addListener(onChangeInput);
+    _model.controllerPhone.addListener(onChangeInput);
+    _model.controllerStreet.addListener(onChangeInput);
+    _model.controllerWard.addListener(onChangeInput);
+    _model.controllerBirthDate.addListener(onChangeInput);
   }
 
   @override
@@ -157,15 +142,15 @@ class _ProfileScreenState extends State<FormProfileScreen>
     _focusNodeBirthDate.dispose();
     _focusNodePhone.dispose();
 
-    _controllerFullname.dispose();
-    _controllerOldPassword.dispose();
-    _controllerPassword.dispose();
-    _controllerConfirmPassword.dispose();
-    _controllerStreet.dispose();
-    _controllerWard.dispose();
-    _controllerDistrict.dispose();
-    _controllerPhone.dispose();
-    _controllerBirthDate.dispose();
+    _model.controllerFullname.dispose();
+    _model.controllerOldPassword.dispose();
+    _model.controllerPassword.dispose();
+    _model.controllerConfirmPassword.dispose();
+    _model.controllerStreet.dispose();
+    _model.controllerWard.dispose();
+    _model.controllerDistrict.dispose();
+    _model.controllerPhone.dispose();
+    _model.controllerBirthDate.dispose();
   }
 
   @override
@@ -198,7 +183,7 @@ class _ProfileScreenState extends State<FormProfileScreen>
               isDisable: false,
               focusNode: _focusNodeFullname,
               nextNode: _focusNodePhone,
-              controller: _controllerFullname,
+              controller: _model.controllerFullname,
             ),
             CustomOutLineInputWithHint(
               deviceSize: widget.deviceSize,
@@ -206,17 +191,17 @@ class _ProfileScreenState extends State<FormProfileScreen>
               isDisable: false,
               focusNode: _focusNodePhone,
               nextNode: _focusNodeBirthDate,
-              controller: _controllerBirthDate,
+              controller: _model.controllerPhone,
               textInputType: TextInputType.number,
             ),
-            Container(
+            SizedBox(
               width: widget.deviceSize.width / 2.5,
               child: CustomOutLineInputDateTime(
                 deviceSize: widget.deviceSize,
                 labelText: '',
                 isDisable: false,
                 focusNode: _focusNodeBirthDate,
-                controller: _controllerBirthDate,
+                controller: _model.controllerBirthDate,
                 icon: "assets/images/calendar.png",
               ),
             ),
@@ -267,11 +252,11 @@ class _ProfileScreenState extends State<FormProfileScreen>
               hintText: "Đường",
               isDisable: false,
               focusNode: _focusNodeStreet,
-              controller: _controllerStreet,
+              controller: _model.controllerStreet,
             ),
             Row(
               children: [
-                Container(
+                SizedBox(
                   width: widget.deviceSize.width / 3,
                   child: CustomOutLineInputWithHint(
                     deviceSize: widget.deviceSize,
@@ -279,14 +264,14 @@ class _ProfileScreenState extends State<FormProfileScreen>
                     isDisable: false,
                     textInputType: TextInputType.number,
                     focusNode: _focusNodeWard,
-                    controller: _controllerWard,
+                    controller: _model.controllerWard,
                   ),
                 ),
                 CustomSizedBox(
                   context: context,
                   width: 16,
                 ),
-                Container(
+                SizedBox(
                   width: widget.deviceSize.width / 4,
                   child: CustomOutLineInputWithHint(
                     deviceSize: widget.deviceSize,
@@ -294,7 +279,7 @@ class _ProfileScreenState extends State<FormProfileScreen>
                     isDisable: false,
                     isSecure: true,
                     focusNode: _focusNodeDistrict,
-                    controller: _controllerDistrict,
+                    controller: _model.controllerDistrict,
                   ),
                 ),
               ],
@@ -331,7 +316,7 @@ class _ProfileScreenState extends State<FormProfileScreen>
               isDisable: false,
               isSecure: true,
               focusNode: _focusNodeOldPassword,
-              controller: _controllerOldPassword,
+              controller: _model.controllerOldPassword,
             ),
             CustomOutLineInputWithHint(
               deviceSize: widget.deviceSize,
@@ -339,7 +324,7 @@ class _ProfileScreenState extends State<FormProfileScreen>
               isDisable: false,
               isSecure: true,
               focusNode: _focusNodePassword,
-              controller: _controllerPassword,
+              controller: _model.controllerPassword,
             ),
             CustomOutLineInputWithHint(
               deviceSize: widget.deviceSize,
@@ -347,10 +332,10 @@ class _ProfileScreenState extends State<FormProfileScreen>
               isDisable: false,
               isSecure: true,
               focusNode: _focusNodeConfirmPassword,
-              controller: _controllerConfirmPassword,
+              controller: _model.controllerConfirmPassword,
             ),
             if (_model.errorMsg.isNotEmpty)
-              Container(
+              SizedBox(
                 width: double.infinity,
                 child: CustomText(
                   text: _model.errorMsg,

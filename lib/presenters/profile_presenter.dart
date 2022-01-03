@@ -17,8 +17,8 @@ class ProfilePresenter {
 
   ProfileModel get model => _model!;
 
-  ProfilePresenter() {
-    _model = ProfileModel();
+  ProfilePresenter(Users user) {
+    _model = ProfileModel(user);
   }
 
   // void handleOnChangeInput(String email, String password,
