@@ -43,14 +43,11 @@ class LoginPresenter {
           await googleUser!.authentication;
       final AuthCredential credential = GoogleAuthProvider.credential(
           idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
-
       //Firebase Sign in
       final result = await _model!.auth.signInWithCredential(credential);
-      print(result.user!.uid);
-      print(deviceToken);
       final response =
           await ApiServices.logInThirParty(result.user!.uid, deviceToken);
-      print(response.body);
+      return Users.fromMap(jsonDecode(response.body));
     } catch (error) {
       print(error);
     } finally {
@@ -58,7 +55,7 @@ class LoginPresenter {
     }
   }
 
-  Future<User?> handleSignInFacebook(String deviceToken) async {
+  Future<Users?> handleSignInFacebook(String deviceToken) async {
     try {
       _view!.updateLoadingFacebook();
 
@@ -80,21 +77,11 @@ class LoginPresenter {
 
         final response =
             await ApiServices.logInThirParty(result.user!.uid, deviceToken);
-        print(response.body);
-        // print(result);
-        // final requestData = await FacebookAuth.i.getUserData(
-        //   fields: "email, name, picture",
-        // );
 
-        // print(requestData);
-
-        // user = Users(
-        //   name: requestData["name"],
-        //   email: requestData["email"],
-        //   avatar: requestData["picture"]["data"]["url"] ?? " ",
-        //   phone: requestData["phone"],
-        // );
+        return Users.fromMap(jsonDecode(response.body));
       }
+
+      return null;
     } catch (error) {
       print(error);
     } finally {
@@ -102,24 +89,12 @@ class LoginPresenter {
     }
   }
 
-  Future<Users?> handleSignIn(
+  Future<Users> handleSignIn(
       String email, String password, String deviceToken) async {
     _view!.updateLoading();
     try {
       final response =
           await ApiServices.logInWithEmail(email, password, deviceToken);
-      // final result = await FirebaseServices.firebaseLogin(email, password);
-      // print(result);
-      // if (result == null) {
-      //   _view.updateViewErrorMsg('Invalid username / password');
-      //   throw Exception('Invalid email or password');
-      // }
-      // var response = await ApiServices.logIn(result);
-      // response = json.encode(response.data);
-      // User user = User.fromJson(json.decode(response));
-      // print(user.jwtToken);
-      // _model.user = user.copyWith(idTokenFirebase: result);
-      // return _model.user;
       return Users.fromMap(jsonDecode(response.body));
     } catch (e) {
       print(e.toString());

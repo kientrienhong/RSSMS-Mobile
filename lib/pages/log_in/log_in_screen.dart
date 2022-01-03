@@ -10,6 +10,7 @@ import 'package:rssms/pages/delivery_staff/my_account/my_account_delivery.dart';
 import 'package:rssms/pages/delivery_staff/notifcation/notification_delivery.dart';
 import 'package:rssms/pages/delivery_staff/qr/qr_screen.dart';
 import 'package:rssms/pages/log_in/widget/button_icon.dart';
+import 'package:rssms/pages/no_permission/no_permission.dart';
 import 'package:rssms/pages/sign_up/sign_up_screen.dart';
 import '/common/background.dart';
 import '/common/custom_button.dart';
@@ -169,13 +170,49 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
   }
 
   @override
-  void onClickSignInFaceBook() {
-    loginPresenter.handleSignInFacebook(_token);
+  void onClickSignInFaceBook() async {
+    final result = await loginPresenter.handleSignInFacebook(_token);
+    Users user = Provider.of<Users>(context, listen: false);
+    if (result != null) {
+      user.setUser(user: result);
+      if (user.roleName == 'Customer') {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => const CustomBottomNavigation(
+                    listIndexStack: [
+                      MyAccountScreen(),
+                      CartScreen(),
+                      NotificationScreen(),
+                    ],
+                    listNavigator: constant.LIST_CUSTOMER_BOTTOM_NAVIGATION,
+                  )),
+        );
+      } else {}
+    }
   }
 
   @override
-  void onClickSignInGoogle() {
-    loginPresenter.handleSignInGoogle(_token);
+  void onClickSignInGoogle() async {
+    final result = await loginPresenter.handleSignInGoogle(_token);
+    Users user = Provider.of<Users>(context, listen: false);
+    if (result != null) {
+      user.setUser(user: result);
+      if (user.roleName == 'Customer') {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => const CustomBottomNavigation(
+                    listIndexStack: [
+                      MyAccountScreen(),
+                      CartScreen(),
+                      NotificationScreen(),
+                    ],
+                    listNavigator: constant.LIST_CUSTOMER_BOTTOM_NAVIGATION,
+                  )),
+        );
+      } else {}
+    }
   }
 
   @override
@@ -217,7 +254,12 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
                       listNavigator: constant.LIST_CUSTOMER_BOTTOM_NAVIGATION,
                     )),
           );
-        } else {}
+        } else {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const NoPermissionScreen()));
+        }
       }
     } catch (e) {
       loginPresenter.view.updateViewErrorMsg('Tài khoản / mật khẩu không đúng');
