@@ -6,8 +6,10 @@ import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/common/list_time_select.dart';
+import 'package:rssms/models/booking_pop_up_door_to_door_models.dart';
 import 'package:rssms/models/entity/order_booking.dart';
 import 'package:rssms/pages/customers/input_information_booking/input_information.dart';
+import 'package:rssms/presenters/booking_pop_up_door_to_door_presenters.dart';
 import 'package:rssms/views/booking_pop_up_view_door_to_door.dart';
 
 class BookingPopUpDoorToDoor extends StatefulWidget {
@@ -19,39 +21,40 @@ class BookingPopUpDoorToDoor extends StatefulWidget {
 
 class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
     implements BookingPopUpViewDoorToDoor {
-  final _dateDeliveryController = TextEditingController();
+  late BookingPopUpDoorToDoorPresenters _presenter;
+
+  late BookingPopUpDoorToDoorModel _model;
+
   final oCcy = NumberFormat("#,##0", "en_US");
-  final _dateReturnController = TextEditingController();
-  late DateTime dateDelivery;
-  late DateTime dateReturn;
-  late int _currentIndex;
-  late bool _isCustomerDelivery;
-  late int _diffDate;
-  late int _months;
   @override
   void initState() {
     super.initState();
-    _currentIndex = -1;
-    _isCustomerDelivery = false;
-    _diffDate = 0;
-    _months = (_diffDate / 30).ceil();
-    dateDelivery = DateTime.now().add(const Duration(days: 1));
-    dateReturn = DateTime.now().add(const Duration(days: 1));
+    OrderBooking orderBooking =
+        Provider.of<OrderBooking>(context, listen: false);
+    _presenter = BookingPopUpDoorToDoorPresenters(orderBooking);
+    _presenter.view = this;
+    _model = _presenter.models;
   }
 
   @override
   void onChangeIsCustomerDelivery(bool value) {
+    OrderBooking orderBooking =
+        Provider.of<OrderBooking>(context, listen: false);
     setState(() {
-      _currentIndex = -1;
-      _isCustomerDelivery = !_isCustomerDelivery;
+      orderBooking.setOrderBooking(
+          orderBooking: orderBooking.copyWith(
+              isCustomerDelivery: value, currentSelectTime: -1));
     });
   }
 
   @override
   void onChangeTime(int index) {
+    OrderBooking orderBooking =
+        Provider.of<OrderBooking>(context, listen: false);
     setState(() {
-      _currentIndex = index;
-      _isCustomerDelivery = false;
+      orderBooking.setOrderBooking(
+          orderBooking: orderBooking.copyWith(
+              isCustomerDelivery: false, currentSelectTime: index));
     });
   }
 
@@ -77,6 +80,8 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
   }
 
   String totalEachPart(List<dynamic> list, String type) {
+    OrderBooking orderBooking =
+        Provider.of<OrderBooking>(context, listen: false);
     var sum = 0;
 
     for (var element in list) {
@@ -84,7 +89,7 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
     }
 
     if (type == 'product') {
-      sum *= _months;
+      sum *= orderBooking.months as int;
     }
     return '${oCcy.format(sum)} VND';
   }
@@ -99,7 +104,7 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
     for (var element in listKeys) {
       if (element == 'product') {
         for (var ele in orderBooking.productOrder![element]!) {
-          sum += ele['price'] * ele['quantity'] * _months as int;
+          sum += ele['price'] * ele['quantity'] * orderBooking.months as int;
         }
       } else {
         for (var ele in orderBooking.productOrder![element]!) {
@@ -116,26 +121,38 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
     final deviceSize = MediaQuery.of(context).size;
     OrderBooking orderBooking =
         Provider.of<OrderBooking>(context, listen: false);
+
     _selectDateReturn(BuildContext context) async {
       final DateTime? picked = await showDatePicker(
         context: context,
-        initialDate:
-            _dateReturnController.text.isNotEmpty ? dateReturn : dateDelivery,
-        firstDate: _dateDeliveryController.text.isNotEmpty == true
-            ? dateDelivery
+        initialDate: _model.dateReturnController.text.isNotEmpty
+            ? orderBooking.dateTimeReturn
+            : orderBooking.dateTimeDelivery,
+        firstDate: _model.dateDeliveryController.text.isNotEmpty == true
+            ? orderBooking.dateTimeDelivery
             : DateTime.now().add(const Duration(days: 1)),
         lastDate: DateTime(2025),
       );
       if (picked != null) {
         setState(() {
-          dateReturn = picked;
-          _dateReturnController.text = picked.toIso8601String().split("T")[0];
+          String dateReturnString = picked.toIso8601String().split("T")[0];
+          orderBooking.setOrderBooking(
+              orderBooking: orderBooking.copyWith(
+                  dateTimeReturn: picked,
+                  dateTimeReturnString: dateReturnString));
+          _model.dateReturnController.text = dateReturnString;
         });
-        if (_dateDeliveryController.text.isNotEmpty &&
-            _dateReturnController.text.isNotEmpty) {
+        if (_model.dateDeliveryController.text.isNotEmpty &&
+            _model.dateReturnController.text.isNotEmpty) {
           setState(() {
-            _diffDate = picked.difference(dateDelivery).inDays;
-            _months = (_diffDate / 30).ceil();
+            var _diffDate =
+                picked.difference(orderBooking.dateTimeDelivery).inDays;
+            var _months = (_diffDate / 30).ceil();
+            orderBooking.setOrderBooking(
+                orderBooking: orderBooking.copyWith(
+                    months: _months,
+                    diffDay: _diffDate,
+                    dateTimeReturn: picked));
           });
         }
       }
@@ -144,21 +161,31 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
     _selectDateDelivery(BuildContext context) async {
       final DateTime? picked = await showDatePicker(
         context: context,
-        initialDate: dateDelivery,
+        initialDate: orderBooking.dateTimeDelivery,
         firstDate: DateTime.now().add(const Duration(days: 1)),
         lastDate: DateTime(2025),
       );
-      if (picked != null && picked != dateDelivery) {
+      if (picked != null && picked != orderBooking.dateTimeDelivery) {
         setState(() {
-          dateDelivery = picked;
-          _dateDeliveryController.text = picked.toIso8601String().split("T")[0];
+          String dateDeliveryString = picked.toIso8601String().split("T")[0];
+          orderBooking.setOrderBooking(
+              orderBooking: orderBooking.copyWith(
+                  dateTimeDelivery: picked,
+                  dateTimeDeliveryString: dateDeliveryString));
+          _model.dateDeliveryController.text = dateDeliveryString;
         });
 
-        if (_dateDeliveryController.text.isNotEmpty &&
-            _dateReturnController.text.isNotEmpty) {
+        if (_model.dateDeliveryController.text.isNotEmpty &&
+            _model.dateReturnController.text.isNotEmpty) {
           setState(() {
-            _diffDate = dateReturn.difference(picked).inDays;
-            _months = (_diffDate / 30).ceil();
+            var _diffDate =
+                orderBooking.dateTimeReturn.difference(picked).inDays;
+            var _months = (_diffDate / 30).ceil();
+            orderBooking.setOrderBooking(
+                orderBooking: orderBooking.copyWith(
+                    months: _months,
+                    diffDay: _diffDate,
+                    dateTimeDelivery: picked));
           });
         }
       }
@@ -201,7 +228,7 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
                       width: deviceSize.width / 2.5,
                       height: deviceSize.height / 14,
                       child: TextField(
-                        controller: _dateDeliveryController,
+                        controller: _model.dateDeliveryController,
                         onTap: () {
                           _selectDateDelivery(context);
                         },
@@ -245,7 +272,7 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
                   height: deviceSize.width * 3 / 9,
                   width: deviceSize.width,
                   child: ListTimeSelect(
-                    currentIndex: _currentIndex,
+                    currentIndex: orderBooking.currentSelectTime,
                     onChangeTab: onChangeTime,
                   )),
               CustomSizedBox(
@@ -253,7 +280,9 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
                 height: 4,
               ),
               GestureDetector(
-                onTap: () => {onChangeIsCustomerDelivery(!_isCustomerDelivery)},
+                onTap: () => {
+                  onChangeIsCustomerDelivery(!orderBooking.isCustomerDelivery)
+                },
                 child: Row(
                   children: [
                     Container(
@@ -262,7 +291,7 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
                       child: Checkbox(
                         checkColor: Colors.white,
                         fillColor: MaterialStateProperty.all(CustomColor.blue),
-                        value: _isCustomerDelivery,
+                        value: orderBooking.isCustomerDelivery,
                         shape: const CircleBorder(),
                         onChanged: (bool? value) {
                           onChangeIsCustomerDelivery(value!);
@@ -298,7 +327,7 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
                       width: deviceSize.width / 2.5,
                       height: deviceSize.height / 14,
                       child: TextField(
-                        controller: _dateReturnController,
+                        controller: _model.dateReturnController,
                         onTap: () {
                           _selectDateReturn(context);
                         },
@@ -327,7 +356,8 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
                 context: context,
                 height: 16,
               ),
-              buildInfo('Tổng ngày: ', '$_diffDate ngày', CustomColor.blue),
+              buildInfo('Tổng ngày: ', '${orderBooking.diffDay} ngày',
+                  CustomColor.blue),
               CustomSizedBox(
                 context: context,
                 height: 16,
