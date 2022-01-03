@@ -6,6 +6,7 @@ import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_input_date.dart';
 import 'package:rssms/common/custom_input_with_hint.dart';
 import 'package:rssms/common/custom_sizebox.dart';
+import 'package:rssms/common/custom_snack_bar.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/models/profile_model.dart';
@@ -70,6 +71,73 @@ class _ProfileScreenState extends State<FormProfileScreen>
   final _focusNodeDistrict = FocusNode();
   String _textGender = "";
 
+  @override
+  void onChangeInput() {
+    profilePresenter.handleOnChangeInputChangePassword(
+        _model.controllerOldPassword.text,
+        _model.controllerPassword.text,
+        _model.controllerConfirmPassword.text);
+  }
+
+  @override
+  void updateStatusOfButtonChangePassword(
+      String oldPassword, String newPassword, String confirmPassword) {
+    if (oldPassword.isNotEmpty &&
+        newPassword.isNotEmpty &&
+        confirmPassword.isNotEmpty) {
+      setState(() {
+        _model.isDisableUpdatePass = false;
+      });
+    } else {
+      setState(() {
+        _model.isDisableUpdatePass = true;
+      });
+    }
+  }
+
+  @override
+  void onClickSignIn(String email, String password, String confirmPassword,
+      String firstname, String lastname, String phone) {
+    // TODO: implement onClickSignIn
+  }
+
+  @override
+  void updateLoadingPassword() {
+    setState(() {
+      profilePresenter.model.isLoadingChangePassword =
+          !profilePresenter.model.isLoadingChangePassword;
+    });
+  }
+
+  @override
+  void updateViewPasswordErrorMsg(String error) {
+    // TODO: implement updateViewErrorMsg
+    setState(() {
+      _model.errorMsgChangePassword = error;
+    });
+  }
+
+  @override
+  void onClickChangePassword(
+      String oldPassword, String newPassword, String confirmPassword) async {
+    try {
+      Users user = Provider.of<Users>(context, listen: false);
+
+      bool response = await profilePresenter.changePassword(newPassword,
+          oldPassword, confirmPassword, user.idToken!, user.userId!);
+      if (response) {
+        CustomSnackBar.buildErrorSnackbar(
+            context: context,
+            message: 'Đổi mật khẩu thành công',
+            color: CustomColor.green);
+      }
+    } catch (e) {
+      print(e.toString());
+      profilePresenter.view
+          .updateViewPasswordErrorMsg(e.toString().split(': ')[2]);
+    }
+  }
+
   Widget customRadioButton(String text, String gender, Color color) {
     return Row(
       children: [
@@ -115,7 +183,6 @@ class _ProfileScreenState extends State<FormProfileScreen>
   void initState() {
     super.initState();
     Users users = Provider.of<Users>(context, listen: false);
-    print(users.phone);
     profilePresenter = ProfilePresenter(users);
     profilePresenter.setView(this);
     _model = profilePresenter.model;
@@ -316,12 +383,14 @@ class _ProfileScreenState extends State<FormProfileScreen>
               isDisable: false,
               isSecure: true,
               focusNode: _focusNodeOldPassword,
+              nextNode: _focusNodePassword,
               controller: _model.controllerOldPassword,
             ),
             CustomOutLineInputWithHint(
               deviceSize: widget.deviceSize,
               hintText: 'Mật khẩu mới',
               isDisable: false,
+              nextNode: _focusNodeConfirmPassword,
               isSecure: true,
               focusNode: _focusNodePassword,
               controller: _model.controllerPassword,
@@ -334,53 +403,50 @@ class _ProfileScreenState extends State<FormProfileScreen>
               focusNode: _focusNodeConfirmPassword,
               controller: _model.controllerConfirmPassword,
             ),
-            if (_model.errorMsg.isNotEmpty)
-              SizedBox(
-                width: double.infinity,
-                child: CustomText(
-                  text: _model.errorMsg,
-                  color: CustomColor.red,
-                  context: context,
-                  textAlign: TextAlign.center,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
+            if (_model.errorMsgChangePassword.isNotEmpty)
+              Column(
+                children: [
+                  SizedBox(
+                    width: double.infinity,
+                    child: CustomText(
+                      text: _model.errorMsgChangePassword,
+                      maxLines: 2,
+                      color: CustomColor.red,
+                      context: context,
+                      textAlign: TextAlign.center,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  CustomSizedBox(
+                    context: context,
+                    height: 16,
+                  )
+                ],
               ),
             Center(
               child: CustomButton(
                   height: 24,
-                  isLoading: false,
+                  isLoading: _model.isLoadingChangePassword,
                   text: 'Cập Nhật',
                   width: widget.deviceSize.width / 3,
                   textColor: CustomColor.white,
-                  onPressFunction: null,
-                  buttonColor: CustomColor.blue,
+                  onPressFunction: _model.isDisableUpdatePass == true
+                      ? null
+                      : () {
+                          onClickChangePassword(
+                              _model.controllerOldPassword.text,
+                              _model.controllerPassword.text,
+                              _model.controllerConfirmPassword.text);
+                        },
+                  buttonColor: _model.isDisableUpdatePass == false
+                      ? CustomColor.blue
+                      : CustomColor.black[3],
                   borderRadius: 6),
             )
           ],
         ),
       ),
     );
-  }
-
-  @override
-  void onChangeInput() {
-    // TODO: implement onChangeInput
-  }
-
-  @override
-  void onClickSignIn(String email, String password, String confirmPassword,
-      String firstname, String lastname, String phone) {
-    // TODO: implement onClickSignIn
-  }
-
-  @override
-  void updateLoading() {
-    // TODO: implement updateLoading
-  }
-
-  @override
-  void updateViewErrorMsg(String error) {
-    // TODO: implement updateViewErrorMsg
   }
 }

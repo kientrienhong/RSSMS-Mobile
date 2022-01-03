@@ -1,7 +1,6 @@
+import 'package:rssms/api/api_services.dart';
 import 'package:rssms/models/profile_model.dart';
-import 'package:rssms/models/signup_model.dart';
 import 'package:rssms/views/profile_view.dart';
-import 'package:rssms/views/signup_view.dart';
 
 import '/models/entity/user.dart';
 
@@ -21,33 +20,37 @@ class ProfilePresenter {
     _model = ProfileModel(user);
   }
 
+  void handleOnChangeInputChangePassword(
+      String oldPassword, String newPassword, String confirmPassword) {
+    _view!.updateStatusOfButtonChangePassword(
+        oldPassword, newPassword, confirmPassword);
+  }
+
   // void handleOnChangeInput(String email, String password,
   //     String confirmPassword, String firstname, String lastname, String phone) {
   //   _view!.updateViewStatusButton(
   //       email, password, confirmPassword, firstname, lastname, phone);
   // }
 
-  Future<Users?> handleSignIn(String email, String password) async {
-    _view!.updateLoading();
+  Future<bool> changePassword(String newPassword, String oldPassword,
+      String confirmPassword, String idToken, int userId) async {
+    _view!.updateLoadingPassword();
     try {
-      // final result = await FirebaseServices.firebaseLogin(email, password);
-      // print(result);
-      // if (result == null) {
-      //   _view.updateViewErrorMsg('Invalid username / password');
-      //   throw Exception('Invalid email or password');
-      // }
-      // var response = await ApiServices.logIn(result);
-      // response = json.encode(response.data);
-      // User user = User.fromJson(json.decode(response));
-      // print(user.jwtToken);
-      // _model.user = user.copyWith(idTokenFirebase: result);
-      // return _model.user;
-      return Users.empty();
+      if (newPassword != confirmPassword) {
+        throw Exception(
+            "Vui lòng nhập mật khẩu mới trùng với xác nhận mật khẩu");
+      }
+
+      final response = await ApiServices.changePassword(
+          oldPassword, confirmPassword, newPassword, userId, idToken);
+      if (response.statusCode == 200) return true;
+
+      return false;
     } catch (e) {
-      // print(e.toString());
-      // throw Exception('Invalid email or password');
+      print(e.toString());
+      throw Exception(e.toString());
     } finally {
-      // _view.updateLoading();
+      _view!.updateLoadingPassword();
     }
   }
 }

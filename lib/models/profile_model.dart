@@ -3,9 +3,9 @@ import 'package:flutter/cupertino.dart';
 import '/models/entity/user.dart';
 
 class ProfileModel {
-  bool? _isDisableUpdate;
-  String? _errorMsg;
-  bool? _isLoading;
+  bool? _isDisableUpdatePass;
+  String? _errorMsgChangePassword;
+  bool? _isLoadingChangePassword;
   TextEditingController? _controllerFullname;
   TextEditingController? _controllerOldPassword;
   TextEditingController? _controllerPassword;
@@ -17,9 +17,9 @@ class ProfileModel {
   TextEditingController? _controllerDistrict;
 
   ProfileModel(Users user) {
-    _isDisableUpdate = true;
-    _errorMsg = '';
-    _isLoading = false;
+    _isDisableUpdatePass = true;
+    _errorMsgChangePassword = '';
+    _isLoadingChangePassword = false;
     _controllerFullname = TextEditingController(text: user.name);
     _controllerOldPassword = TextEditingController();
     _controllerPassword = TextEditingController();
@@ -31,17 +31,17 @@ class ProfileModel {
     _controllerDistrict = TextEditingController();
   }
 
-  bool get isLoading => _isLoading!;
+  bool get isLoadingChangePassword => _isLoadingChangePassword!;
 
-  set isLoading(bool value) => _isLoading = value;
+  set isLoadingChangePassword(bool value) => _isLoadingChangePassword = value;
 
-  String get errorMsg => _errorMsg!;
+  String get errorMsgChangePassword => _errorMsgChangePassword!;
 
-  set errorMsg(String value) => _errorMsg = value;
+  set errorMsgChangePassword(String value) => _errorMsgChangePassword = value;
 
-  get isDisableUpdate => _isDisableUpdate;
+  bool get isDisableUpdatePass => _isDisableUpdatePass!;
 
-  set isDisableUpdate(value) => _isDisableUpdate = value;
+  set isDisableUpdatePass(bool value) => _isDisableUpdatePass = value;
 
   get controllerFullname => _controllerFullname;
 

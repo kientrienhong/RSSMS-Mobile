@@ -33,4 +33,25 @@ class ApiServices {
       throw Exception('Log In failed');
     }
   }
+
+  static Future<dynamic> changePassword(String oldPassword,
+      String confirmPassword, String newPassword, int userId, String idToken) {
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        'Authorization': 'Bearer $idToken'
+      };
+
+      final url = Uri.parse('$_domain/api/v1/users/changepassword');
+      return http.post(url,
+          headers: headers,
+          body: jsonEncode({
+            "id": userId,
+            "password": newPassword,
+            "confirmPassword": confirmPassword
+          }));
+    } catch (e) {
+      throw Exception('Log In failed');
+    }
+  }
 }
