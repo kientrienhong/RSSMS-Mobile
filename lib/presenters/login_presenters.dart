@@ -102,9 +102,12 @@ class LoginPresenter {
     }
   }
 
-  Future<Users?> handleSignIn(String email, String password) async {
+  Future<Users?> handleSignIn(
+      String email, String password, String deviceToken) async {
     _view!.updateLoading();
     try {
+      final response =
+          await ApiServices.logInWithEmail(email, password, deviceToken);
       // final result = await FirebaseServices.firebaseLogin(email, password);
       // print(result);
       // if (result == null) {
@@ -117,10 +120,10 @@ class LoginPresenter {
       // print(user.jwtToken);
       // _model.user = user.copyWith(idTokenFirebase: result);
       // return _model.user;
-      return Users();
+      return Users.fromMap(jsonDecode(response.body));
     } catch (e) {
-      // print(e.toString());
-      // throw Exception('Invalid email or password');
+      print(e.toString());
+      throw Exception('Invalid email or password');
     } finally {
       _view!.updateLoading();
     }

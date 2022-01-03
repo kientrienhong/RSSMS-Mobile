@@ -1,99 +1,184 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:convert';
 
-enum UserRole { owner, customer }
+import 'package:flutter/foundation.dart';
+
+enum UserRole {
+  admin,
+  manager,
+  customer,
+  deliveryStaff,
+  officeStaff,
+}
 
 class Users with ChangeNotifier {
+  String? idToken;
+  String? refreshToken;
+  double? expiresIn;
+  String? tokenType;
+  int? userId;
+  int? storageId;
   String? name;
   String? email;
-  String? phone;
   String? address;
-  UserRole? role;
-  String? jwtToken;
-  String? avatar;
-  String? idTokenFirebase;
+  String? roleName;
+  String? phone;
+  List<dynamic>? images;
+  List<dynamic>? staffManageStorages;
+  Users({
+    required this.idToken,
+    required this.refreshToken,
+    required this.expiresIn,
+    required this.tokenType,
+    required this.userId,
+    required this.storageId,
+    required this.name,
+    required this.email,
+    required this.address,
+    required this.roleName,
+    required this.phone,
+    required this.images,
+    required this.staffManageStorages,
+  });
+
   Users.empty() {
+    idToken = '';
+    refreshToken = '';
+    expiresIn = -1;
+    tokenType = '';
+    userId = -1;
+    storageId = -1;
     name = '';
     email = '';
-    phone = '';
-    idTokenFirebase = '';
     address = '';
-    role = UserRole.customer;
-    jwtToken = '';
-    avatar = '';
+    roleName = '';
+    phone = '';
+    images = [];
+    staffManageStorages = [];
   }
 
-  Users(
-      {this.name,
-      this.email,
-      this.idTokenFirebase,
-      this.phone,
-      this.address,
-      this.role,
-      this.avatar,
-      this.jwtToken});
+  Users copyWith({
+    String? idToken,
+    String? refreshToken,
+    double? expiresIn,
+    String? tokenType,
+    int? userId,
+    int? storageId,
+    String? name,
+    String? email,
+    String? address,
+    String? roleName,
+    String? phone,
+    List<dynamic>? images,
+    List<dynamic>? staffManageStorages,
+  }) {
+    return Users(
+      idToken: idToken ?? this.idToken,
+      refreshToken: refreshToken ?? this.refreshToken,
+      expiresIn: expiresIn ?? this.expiresIn,
+      tokenType: tokenType ?? this.tokenType,
+      userId: userId ?? this.userId,
+      storageId: storageId ?? this.storageId,
+      name: name ?? this.name,
+      email: email ?? this.email,
+      address: address ?? this.address,
+      roleName: roleName ?? this.roleName,
+      phone: phone ?? this.phone,
+      images: images ?? this.images,
+      staffManageStorages: staffManageStorages ?? this.staffManageStorages,
+    );
+  }
 
-  Users.copyWith(
-      {String? name,
-      String? email,
-      String? phone,
-      String? address,
-      UserRole? role,
-      String? idTokenFirebase,
-      String? jwtToken,
-      String? avatar}) {
-    name = name;
-    email = email;
-    phone = phone;
-    idTokenFirebase = idTokenFirebase;
-    address = address;
-    role = role;
-    jwtToken = jwtToken;
-    avatar = avatar;
+  Map<String, dynamic> toMap() {
+    return {
+      'idToken': idToken,
+      'refreshToken': refreshToken,
+      'expiresIn': expiresIn,
+      'tokenType': tokenType,
+      'userId': userId,
+      'storageId': storageId,
+      'name': name,
+      'email': email,
+      'address': address,
+      'roleName': roleName,
+      'phone': phone,
+      'images': images,
+      'staffManageStorages': staffManageStorages,
+    };
+  }
+
+  factory Users.fromMap(Map<String, dynamic> map) {
+    return Users(
+      idToken: map['idToken'] ?? '',
+      refreshToken: map['refreshToken'] ?? '',
+      expiresIn: map['expiresIn']?.toDouble() ?? 0.0,
+      tokenType: map['tokenType'] ?? '',
+      userId: map['userId']?.toInt() ?? 0,
+      storageId: map['storageId']?.toInt() ?? 0,
+      name: map['name'] ?? '',
+      email: map['email'] ?? '',
+      address: map['address'] ?? '',
+      roleName: map['roleName'] ?? '',
+      phone: map['phone'] ?? '',
+      images: List<dynamic>.from(map['images']),
+      staffManageStorages: List<dynamic>.from(map['staffManageStorages']),
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory Users.fromJson(String source) => Users.fromMap(json.decode(source));
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is Users &&
+        other.idToken == idToken &&
+        other.refreshToken == refreshToken &&
+        other.expiresIn == expiresIn &&
+        other.tokenType == tokenType &&
+        other.userId == userId &&
+        other.storageId == storageId &&
+        other.name == name &&
+        other.email == email &&
+        other.address == address &&
+        other.roleName == roleName &&
+        other.phone == phone &&
+        listEquals(other.images, images) &&
+        listEquals(other.staffManageStorages, staffManageStorages);
+  }
+
+  @override
+  int get hashCode {
+    return idToken.hashCode ^
+        refreshToken.hashCode ^
+        expiresIn.hashCode ^
+        tokenType.hashCode ^
+        userId.hashCode ^
+        storageId.hashCode ^
+        name.hashCode ^
+        email.hashCode ^
+        address.hashCode ^
+        roleName.hashCode ^
+        phone.hashCode ^
+        images.hashCode ^
+        staffManageStorages.hashCode;
   }
 
   void setUser({required Users user}) {
-    name = user.name ?? name;
-    email = user.email ?? email;
-    phone = user.phone ?? phone;
-    idTokenFirebase = user.idTokenFirebase ?? idTokenFirebase;
-    address = user.address ?? address;
-    role = user.role ?? role;
-    jwtToken = user.jwtToken ?? jwtToken;
-    avatar = user.avatar ?? avatar;
+    address = user.address;
+    email = user.email;
+    idToken = user.idToken;
+    refreshToken = user.refreshToken;
+    expiresIn = user.expiresIn;
+    tokenType = user.tokenType;
+    userId = user.userId;
+    storageId = user.storageId;
+    name = user.name;
+    roleName = user.roleName;
+    phone = user.phone;
+    images = user.images;
+    staffManageStorages = user.staffManageStorages;
     notifyListeners();
-  }
-
-  Users copyWith(
-      {String? name,
-      String? email,
-      String? phone,
-      String? address,
-      UserRole? role,
-      String? idTokenFirebase,
-      String? jwtToken,
-      String? avatar}) {
-    return Users(
-        address: address ?? this.address,
-        email: email ?? this.email,
-        idTokenFirebase: idTokenFirebase ?? this.idTokenFirebase,
-        jwtToken: jwtToken ?? this.jwtToken,
-        name: name ?? this.name,
-        phone: phone ?? this.phone,
-        avatar: avatar ?? this.avatar,
-        role: role ?? this.role);
-  }
-
-  factory Users.fromJson(Map<String, dynamic> json) {
-    String roleString = json['roleName'];
-    UserRole userRole =
-        roleString == 'Owner' ? UserRole.owner : UserRole.customer;
-    return Users(
-        avatar: json['avatar'],
-        address: json['address'],
-        email: json['email'],
-        jwtToken: json['idToken'],
-        name: json['displayName'],
-        phone: json['phone'],
-        role: userRole);
   }
 }

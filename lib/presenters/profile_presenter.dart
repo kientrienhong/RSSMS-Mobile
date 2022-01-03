@@ -42,7 +42,7 @@ class ProfilePresenter {
       // print(user.jwtToken);
       // _model.user = user.copyWith(idTokenFirebase: result);
       // return _model.user;
-      return Users();
+      return Users.empty();
     } catch (e) {
       // print(e.toString());
       // throw Exception('Invalid email or password');
