@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:rssms/models/entity/user.dart';
 
 class ApiServices {
   ApiServices._();
@@ -31,6 +32,30 @@ class ApiServices {
           }));
     } catch (e) {
       throw Exception('Log In failed');
+    }
+  }
+
+  static Future<dynamic> signUp(
+      Users user, String password, String deviceToken) {
+    try {
+      Map<String, String> headers = {"Content-type": "application/json"};
+
+      final url = Uri.parse('$_domain/api/v1/users');
+      return http.post(url,
+          headers: headers,
+          body: jsonEncode({
+            "name": user.name,
+            'deviceToken': deviceToken,
+            "password": password,
+            "email": user.email,
+            "gender": user.gender,
+            "birthdate": user.birthDate!.toIso8601String(),
+            "address": user.address,
+            "phone": user.phone,
+            "roleId": 3,
+          }));
+    } catch (e) {
+      throw Exception(e.toString());
     }
   }
 

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
+import 'package:intl/intl.dart';
 
 enum UserRole {
   admin,
@@ -21,9 +22,21 @@ class Users with ChangeNotifier {
   String? email;
   String? address;
   String? roleName;
+  int? gender;
+  DateTime? birthDate;
   String? phone;
   List<dynamic>? images;
   List<dynamic>? staffManageStorages;
+
+  Users.register({
+    required this.address,
+    required this.birthDate,
+    required this.email,
+    required this.gender,
+    required this.name,
+    required this.phone,
+  });
+
   Users({
     required this.idToken,
     required this.refreshToken,
@@ -37,6 +50,8 @@ class Users with ChangeNotifier {
     required this.roleName,
     required this.phone,
     required this.images,
+    required this.birthDate,
+    required this.gender,
     required this.staffManageStorages,
   });
 
@@ -53,6 +68,8 @@ class Users with ChangeNotifier {
     roleName = '';
     phone = '';
     images = [];
+    gender = 0;
+    birthDate = DateTime.now();
     staffManageStorages = [];
   }
 
@@ -68,6 +85,8 @@ class Users with ChangeNotifier {
     String? address,
     String? roleName,
     String? phone,
+    int? gender,
+    DateTime? birthDate,
     List<dynamic>? images,
     List<dynamic>? staffManageStorages,
   }) {
@@ -81,6 +100,8 @@ class Users with ChangeNotifier {
       name: name ?? this.name,
       email: email ?? this.email,
       address: address ?? this.address,
+      gender: gender ?? this.gender,
+      birthDate: birthDate ?? this.birthDate,
       roleName: roleName ?? this.roleName,
       phone: phone ?? this.phone,
       images: images ?? this.images,
@@ -100,6 +121,8 @@ class Users with ChangeNotifier {
       'email': email,
       'address': address,
       'roleName': roleName,
+      'gender': gender,
+      'birthDate': birthDate,
       'phone': phone,
       'images': images,
       'staffManageStorages': staffManageStorages,
@@ -118,6 +141,10 @@ class Users with ChangeNotifier {
       email: map['email'] ?? '',
       address: map['address'] ?? '',
       roleName: map['roleName'] ?? '',
+      birthDate:
+          DateFormat('yyyy-MM-dd').parse(map['birthdate'].split('T')[0]) ??
+              DateTime.now(),
+      gender: map['gender'] ?? 0,
       phone: map['phone'] ?? '',
       images: List<dynamic>.from(map['images']),
       staffManageStorages: List<dynamic>.from(map['staffManageStorages']),
@@ -136,6 +163,8 @@ class Users with ChangeNotifier {
         other.idToken == idToken &&
         other.refreshToken == refreshToken &&
         other.expiresIn == expiresIn &&
+        other.gender == gender &&
+        other.birthDate == birthDate &&
         other.tokenType == tokenType &&
         other.userId == userId &&
         other.storageId == storageId &&
@@ -158,6 +187,8 @@ class Users with ChangeNotifier {
         storageId.hashCode ^
         name.hashCode ^
         email.hashCode ^
+        birthDate.hashCode ^
+        gender.hashCode ^
         address.hashCode ^
         roleName.hashCode ^
         phone.hashCode ^
@@ -176,6 +207,8 @@ class Users with ChangeNotifier {
     storageId = user.storageId;
     name = user.name;
     roleName = user.roleName;
+    gender = user.gender;
+    birthDate = user.birthDate;
     phone = user.phone;
     images = user.images;
     staffManageStorages = user.staffManageStorages;

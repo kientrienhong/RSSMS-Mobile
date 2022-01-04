@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:rssms/api/api_services.dart';
 import 'package:rssms/models/signup_model.dart';
 import 'package:rssms/views/signup_view.dart';
 
@@ -19,33 +22,33 @@ class SignUpPresenter {
     _model = SignUpModel();
   }
 
-  void handleOnChangeInput(String email, String password,
-      String confirmPassword, String firstname, String lastname, String phone) {
+  void handleOnChangeInput(
+      String email,
+      String password,
+      String confirmPassword,
+      String address,
+      String name,
+      String phone,
+      String birthDay) {
     _view!.updateViewStatusButton(
-        email, password, confirmPassword, firstname, lastname, phone);
+        email, password, confirmPassword, address, name, phone, birthDay);
   }
 
-  Future<Users?> handleSignIn(String email, String password) async {
+  Future<dynamic> handleSignUp(
+      Users user, String password, String deviceToken) async {
     _view!.updateLoading();
     try {
-      // final result = await FirebaseServices.firebaseLogin(email, password);
-      // print(result);
-      // if (result == null) {
-      //   _view.updateViewErrorMsg('Invalid username / password');
-      //   throw Exception('Invalid email or password');
-      // }
-      // var response = await ApiServices.logIn(result);
-      // response = json.encode(response.data);
-      // User user = User.fromJson(json.decode(response));
-      // print(user.jwtToken);
-      // _model.user = user.copyWith(idTokenFirebase: result);
-      // return _model.user;
-      return Users.empty();
+      final response = await ApiServices.signUp(user, password, deviceToken);
+
+      if (response.statusCode == 200) {
+        return Users.fromMap(jsonDecode(response.body));
+      }
+
+      throw Exception(response.body.toString());
     } catch (e) {
-      // print(e.toString());
-      // throw Exception('Invalid email or password');
+      throw Exception(e.toString());
     } finally {
-      // _view.updateLoading();
+      _view!.updateLoading();
     }
   }
 }

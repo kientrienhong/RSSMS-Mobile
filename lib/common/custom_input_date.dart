@@ -109,6 +109,7 @@ class _CustomOutLineInputState extends State<CustomOutLineInputDateTime> {
             CustomText(
                 text: widget.labelText!,
                 color: CustomColor.black,
+                fontWeight: FontWeight.bold,
                 context: context,
                 fontSize: 16),
             CustomSizedBox(context: context, height: 8),
