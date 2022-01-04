@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:rssms/models/entity/order_booking.dart';
 import 'package:rssms/pages/customers/cart/tabs/cart_tab.dart';
 import 'package:rssms/pages/customers/cart/tabs/door_to_door_tab.dart';
 import 'package:rssms/pages/customers/cart/tabs/self_storage_tab.dart';
@@ -23,7 +25,12 @@ class _CartScreenState extends State<CartScreen> implements CartScreenView {
 
   @override
   void onChangeTab(int index) {
+    OrderBooking orderBooking =
+        Provider.of<OrderBooking>(context, listen: false);
     setState(() {
+      orderBooking.setOrderBooking(
+          orderBooking: OrderBooking.empty(
+              index == 0 ? TypeOrder.doorToDoor : TypeOrder.selfStorage));
       _index = index;
     });
   }

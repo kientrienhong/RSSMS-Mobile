@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_sizebox.dart';
+import 'package:rssms/models/entity/order_booking.dart';
 import 'package:rssms/pages/customers/cart/tabs/handy_tab.dart';
 import 'package:rssms/pages/customers/cart/tabs/self_storage_tab.dart';
 import 'package:rssms/pages/customers/cart/widgets/title_tab.dart';
@@ -25,7 +27,11 @@ class _DoorToDoorTabState extends State<DoorToDoorTab>
 
   @override
   void onChangeTab(int index) {
+    OrderBooking orderBooking =
+        Provider.of<OrderBooking>(context, listen: false);
     setState(() {
+      orderBooking.setOrderBooking(
+          orderBooking: OrderBooking.empty(TypeOrder.doorToDoor));
       _index = index;
     });
   }

@@ -23,10 +23,10 @@ void main() async {
         create: (_) => Users.empty(),
       ),
       ChangeNotifierProvider<OrderBooking>(
-        create: (_) => OrderBooking.empty(),
+        create: (_) => OrderBooking.empty(TypeOrder.doorToDoor),
       ),
     ],
-    child: MyApp(),
+    child: const MyApp(),
   ));
 }
 

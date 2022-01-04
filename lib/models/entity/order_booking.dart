@@ -1,11 +1,14 @@
 import 'package:flutter/cupertino.dart';
 
+enum TypeOrder { selfStorage, doorToDoor }
+
 class OrderBooking with ChangeNotifier {
   Map<String, List<dynamic>>? _productOrder;
   DateTime? _dateTimeDelivery;
   DateTime? _dateTimeReturn;
   String? _dateTimeDeliveryString;
   String? _dateTimeReturnString;
+  TypeOrder? _typeOrder;
 
   int? _months;
   int? _diffDay;
@@ -18,11 +21,13 @@ class OrderBooking with ChangeNotifier {
     DateTime? dateTimeReturn,
     String? dateTimeDeliveryString,
     String? dateTimeReturnString,
+    TypeOrder? typeOrder,
     int? months,
     int? diffDay,
     int? currentSelectTime,
     bool? isCustomerDelivery,
   }) {
+    _typeOrder = typeOrder;
     _productOrder = productOrder;
     _dateTimeDelivery = dateTimeDelivery;
     _dateTimeReturn = dateTimeReturn;
@@ -35,12 +40,13 @@ class OrderBooking with ChangeNotifier {
     notifyListeners();
   }
 
-  OrderBooking.empty() {
+  OrderBooking.empty(TypeOrder typeOrder) {
     _productOrder = {
       'product': [],
       'accessory': [],
       'service': [],
     };
+    _typeOrder = typeOrder;
     _dateTimeDeliveryString = '';
     _dateTimeReturnString = '';
     _dateTimeDelivery = DateTime.now().add(const Duration(days: 1));
@@ -57,6 +63,7 @@ class OrderBooking with ChangeNotifier {
     DateTime? dateTimeDelivery,
     DateTime? dateTimeReturn,
     int? months,
+    TypeOrder? typeOrder,
     int? diffDay,
     int? currentSelectTime,
     bool? isCustomerDelivery,
@@ -69,6 +76,7 @@ class OrderBooking with ChangeNotifier {
       dateTimeReturn: dateTimeReturn ?? _dateTimeReturn,
       months: months ?? _months,
       diffDay: diffDay ?? _diffDay,
+      typeOrder: typeOrder ?? _typeOrder,
       currentSelectTime: currentSelectTime ?? _currentSelectTime,
       isCustomerDelivery: isCustomerDelivery ?? _isCustomerDelivery,
       dateTimeDeliveryString: dateTimeDeliveryString ?? _dateTimeDeliveryString,
@@ -86,9 +94,13 @@ class OrderBooking with ChangeNotifier {
     _isCustomerDelivery = orderBooking.isCustomerDelivery;
     _dateTimeDeliveryString = orderBooking.dateTimeDeliveryString;
     _dateTimeReturnString = orderBooking.dateTimeReturnString;
-
+    _typeOrder = orderBooking.typeOrder;
     notifyListeners();
   }
+
+  get typeOrder => _typeOrder;
+
+  set typeOrder(value) => _typeOrder = value;
 
   get dateTimeDeliveryString => _dateTimeDeliveryString;
 

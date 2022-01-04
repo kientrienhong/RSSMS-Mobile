@@ -261,6 +261,17 @@ class _ProfileScreenState extends State<FormProfileScreen>
               controller: _model.controllerPhone,
               textInputType: TextInputType.number,
             ),
+            CustomText(
+              text: 'Ngày sinh',
+              color: CustomColor.black,
+              context: context,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+            CustomSizedBox(
+              context: context,
+              height: 16,
+            ),
             SizedBox(
               width: widget.deviceSize.width / 2.5,
               child: CustomOutLineInputDateTime(
@@ -316,40 +327,10 @@ class _ProfileScreenState extends State<FormProfileScreen>
             ),
             CustomOutLineInputWithHint(
               deviceSize: widget.deviceSize,
-              hintText: "Đường",
+              hintText: "Địa chỉ",
               isDisable: false,
               focusNode: _focusNodeStreet,
               controller: _model.controllerStreet,
-            ),
-            Row(
-              children: [
-                SizedBox(
-                  width: widget.deviceSize.width / 3,
-                  child: CustomOutLineInputWithHint(
-                    deviceSize: widget.deviceSize,
-                    hintText: 'Phường',
-                    isDisable: false,
-                    textInputType: TextInputType.number,
-                    focusNode: _focusNodeWard,
-                    controller: _model.controllerWard,
-                  ),
-                ),
-                CustomSizedBox(
-                  context: context,
-                  width: 16,
-                ),
-                SizedBox(
-                  width: widget.deviceSize.width / 4,
-                  child: CustomOutLineInputWithHint(
-                    deviceSize: widget.deviceSize,
-                    hintText: 'Quận',
-                    isDisable: false,
-                    isSecure: true,
-                    focusNode: _focusNodeDistrict,
-                    controller: _model.controllerDistrict,
-                  ),
-                ),
-              ],
             ),
             Center(
               child: CustomButton(
