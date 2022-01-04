@@ -72,6 +72,7 @@ class ApiServices {
           headers: headers,
           body: jsonEncode({
             "id": userId,
+            "oldPassword": oldPassword,
             "password": newPassword,
             "confirmPassword": confirmPassword
           }));
