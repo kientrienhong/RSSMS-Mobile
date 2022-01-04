@@ -1,5 +1,10 @@
 import 'dart:convert';
 
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:flutter_login_facebook/flutter_login_facebook.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+
 import '/api/firebase_services.dart';
 
 import '/api/api_services.dart';
@@ -27,27 +32,75 @@ class LoginPresenter {
     _view!.updateViewStatusButton(email, password);
   }
 
-  Future<Users?> handleSignIn(String email, String password) async {
+  Future<Users?> handleSignInGoogle(String deviceToken) async {
+    try {
+      _view!.updateLoadingGoogle();
+
+      final googleSignin = GoogleSignIn();
+
+      final GoogleSignInAccount? googleUser = await googleSignin.signIn();
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser!.authentication;
+      final AuthCredential credential = GoogleAuthProvider.credential(
+          idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
+      //Firebase Sign in
+      final result = await _model!.auth.signInWithCredential(credential);
+      final response =
+          await ApiServices.logInThirParty(result.user!.uid, deviceToken);
+      return Users.fromMap(jsonDecode(response.body));
+    } catch (error) {
+      print(error);
+    } finally {
+      _view!.updateLoadingGoogle();
+    }
+  }
+
+  Future<Users?> handleSignInFacebook(String deviceToken) async {
+    try {
+      _view!.updateLoadingFacebook();
+
+      final res = await _model!.fb!.logIn(permissions: [
+        FacebookPermission.publicProfile,
+        FacebookPermission.email
+      ]);
+
+      // check the status of our login
+      if (res.status == FacebookLoginStatus.success) {
+        final FacebookAccessToken? fbToken = res.accessToken;
+
+        //Convert to Auth Credential
+        final AuthCredential credential =
+            FacebookAuthProvider.credential(fbToken!.token);
+
+        //User Credential to Sign in with Firebase
+        final result = await _model!.auth.signInWithCredential(credential);
+
+        final response =
+            await ApiServices.logInThirParty(result.user!.uid, deviceToken);
+
+        return Users.fromMap(jsonDecode(response.body));
+      }
+
+      return null;
+    } catch (error) {
+      print(error);
+    } finally {
+      _view!.updateLoadingFacebook();
+    }
+  }
+
+  Future<Users> handleSignIn(
+      String email, String password, String deviceToken) async {
     _view!.updateLoading();
     try {
-      // final result = await FirebaseServices.firebaseLogin(email, password);
-      // print(result);
-      // if (result == null) {
-      //   _view.updateViewErrorMsg('Invalid username / password');
-      //   throw Exception('Invalid email or password');
-      // }
-      // var response = await ApiServices.logIn(result);
-      // response = json.encode(response.data);
-      // User user = User.fromJson(json.decode(response));
-      // print(user.jwtToken);
-      // _model.user = user.copyWith(idTokenFirebase: result);
-      // return _model.user;
-      return Users();
+      final response =
+          await ApiServices.logInWithEmail(email, password, deviceToken);
+      return Users.fromMap(jsonDecode(response.body));
     } catch (e) {
-      // print(e.toString());
-      // throw Exception('Invalid email or password');
+      print(e.toString());
+      throw Exception('Invalid email or password');
     } finally {
-      // _view.updateLoading();
+      _view!.updateLoading();
     }
   }
 }

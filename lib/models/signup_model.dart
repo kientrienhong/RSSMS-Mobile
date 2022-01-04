@@ -1,21 +1,31 @@
+import 'package:flutter/cupertino.dart';
+
 import '/models/entity/user.dart';
 
 class SignUpModel {
   bool? _isDisableSignup;
   String? _errorMsg;
   bool? _isLoading;
-  Users? _user;
+  TextEditingController? _controllerEmail;
+  TextEditingController? _controllerAddress;
+  TextEditingController? _controllerPassword;
+  TextEditingController? _controllerConfirmPassword;
+  TextEditingController? _controllerPhone;
+  TextEditingController? _controllerName;
+  TextEditingController? _controllerBirthDate;
 
   SignUpModel() {
     _isDisableSignup = true;
     _errorMsg = '';
     _isLoading = false;
-    _user = Users.empty();
+    _controllerEmail = TextEditingController();
+    _controllerAddress = TextEditingController();
+    _controllerPassword = TextEditingController();
+    _controllerConfirmPassword = TextEditingController();
+    _controllerPhone = TextEditingController();
+    _controllerName = TextEditingController();
+    _controllerBirthDate = TextEditingController();
   }
-
-  get user => _user;
-
-  set user(value) => _user = value;
 
   bool get isLoading => _isLoading!;
 
@@ -28,4 +38,32 @@ class SignUpModel {
   get isDisableSignup => _isDisableSignup;
 
   set isDisableSignup(value) => _isDisableSignup = value;
+
+  get controllerEmail => _controllerEmail;
+
+  set controllerEmail(value) => _controllerEmail = value;
+
+  get controllerAddress => _controllerAddress;
+
+  set controllerAddress(value) => _controllerAddress = value;
+
+  get controllerPassword => _controllerPassword;
+
+  set controllerPassword(value) => _controllerPassword = value;
+
+  get controllerConfirmPassword => _controllerConfirmPassword;
+
+  set controllerConfirmPassword(value) => _controllerConfirmPassword = value;
+
+  get controllerPhone => _controllerPhone;
+
+  set controllerPhone(value) => _controllerPhone = value;
+
+  get controllerName => _controllerName;
+
+  set controllerName(value) => _controllerName = value;
+
+  get controllerBirthDate => _controllerBirthDate;
+
+  set controllerBirthDate(value) => _controllerBirthDate = value;
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:rssms/common/custom_sizebox.dart';
 
 class TabButton extends StatelessWidget {
   final String text;
@@ -7,11 +6,13 @@ class TabButton extends StatelessWidget {
   final int? pageNumber;
   final Function() onPressed;
 
-  TabButton(
-      {required this.text,
+  const TabButton(
+      {Key? key,
+      required this.text,
       this.selectedPage,
       this.pageNumber,
-      required this.onPressed});
+      required this.onPressed})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
     return GestureDetector(

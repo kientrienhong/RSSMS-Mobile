@@ -40,11 +40,13 @@ class ButtonIcon extends StatelessWidget {
               borderRadius: BorderRadius.circular(borderRadius!),
               color: buttonColor),
           child: isLoading == true
-              ? const SizedBox(
-                  height: 16,
-                  width: 16,
-                  child: CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+              ? const Center(
+                  child: SizedBox(
+                    height: 12,
+                    width: 12,
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                    ),
                   ),
                 )
               : Row(

@@ -62,6 +62,7 @@ class _QrScreenState extends State<QrScreen> {
         constants.LIST_INVOICE.toList();
 
     return Scaffold(
+      backgroundColor: CustomColor.white,
       body: SingleChildScrollView(
         child: Column(
           children: [

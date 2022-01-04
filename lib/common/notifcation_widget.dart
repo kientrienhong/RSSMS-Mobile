@@ -43,7 +43,7 @@ class NotificationWidget extends StatelessWidget {
               SizedBox(
                   width: 80,
                   height: 80,
-                  child: Image.asset('assets/images/truck1.png')),
+                  child: Image.asset(notification['url'])),
               CustomSizedBox(
                 context: context,
                 width: 8,

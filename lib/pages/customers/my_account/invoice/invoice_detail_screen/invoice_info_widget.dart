@@ -3,6 +3,7 @@ import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
+import 'package:rssms/pages/time_line/time_line_screen.dart';
 
 class InvoiceInfoWidget extends StatelessWidget {
   Map<String, dynamic>? invoice;
@@ -164,7 +165,12 @@ class InvoiceInfoWidget extends StatelessWidget {
               isLoading: false,
               text: 'Xem thêm',
               textColor: CustomColor.white,
-              onPressFunction: null,
+              onPressFunction: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const TimeLineScreen()));
+              },
               width: deviceSize.width / 3,
               buttonColor: CustomColor.blue,
               borderRadius: 6),

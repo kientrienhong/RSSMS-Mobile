@@ -82,7 +82,7 @@ class TimeLineElement extends StatelessWidget {
                       child: Container(
                         width: 1,
                         color: CustomColor.black[3],
-                        height: deviceSize.height / 7,
+                        height: deviceSize.height / 7.9,
                       ),
                     ),
               Container(

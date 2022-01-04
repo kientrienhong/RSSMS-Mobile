@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:group_radio_button/group_radio_button.dart';
+import 'package:provider/provider.dart';
 import 'package:rssms/common/background.dart';
 import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
-import 'package:rssms/common/custom_input.dart';
 import 'package:rssms/common/custom_input_date.dart';
 import 'package:rssms/common/custom_input_with_hint.dart';
 import 'package:rssms/common/custom_sizebox.dart';
-import 'package:rssms/common/custom_tabbutton.dart';
+import 'package:rssms/common/custom_snack_bar.dart';
 import 'package:rssms/common/custom_text.dart';
+import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/models/profile_model.dart';
 import 'package:rssms/presenters/profile_presenter.dart';
 import 'package:rssms/views/profile_view.dart';
@@ -22,19 +22,19 @@ class ProfileScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
-        child: Container(
+        child: SizedBox(
           width: deviceSize.width,
           height: deviceSize.height * 1.5,
           child: Stack(
             clipBehavior: Clip.none,
             children: [
               const Background(),
-              Container(
+              SizedBox(
                 width: deviceSize.width,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Expanded(child: FormProfileScreen(deviceSize)),
+                    Expanded(child: FormProfileScreen(deviceSize: deviceSize)),
                   ],
                 ),
               ),
@@ -48,7 +48,8 @@ class ProfileScreen extends StatelessWidget {
 
 class FormProfileScreen extends StatefulWidget {
   final Size deviceSize;
-  FormProfileScreen(this.deviceSize);
+  const FormProfileScreen({Key? key, required this.deviceSize})
+      : super(key: key);
 
   @override
   State<FormProfileScreen> createState() => _ProfileScreenState();
@@ -68,27 +69,74 @@ class _ProfileScreenState extends State<FormProfileScreen>
   final _focusNodeWard = FocusNode();
   final _focusNodeBirthDate = FocusNode();
   final _focusNodeDistrict = FocusNode();
-
-  final _controllerFullname = TextEditingController();
-  final _controllerOldPassword = TextEditingController();
-  final _controllerPassword = TextEditingController();
-  final _controllerConfirmPassword = TextEditingController();
-  final _controllerPhone = TextEditingController();
-  final _controllerStreet = TextEditingController();
-  final _controllerWard = TextEditingController();
-  final _controllerBirthDate = TextEditingController();
-  final _controllerDistrict = TextEditingController();
-
   String _textGender = "";
 
-  String get _email => _controllerFullname.text;
-  String get _password => _controllerPassword.text;
-  String get _confirmPassword => _controllerConfirmPassword.text;
-  String get _phone => _controllerPhone.text;
-  String get _street => _controllerStreet.text;
-  String get _wart => _controllerWard.text;
-  String get _district => _controllerWard.text;
-  String get _birthdate => _controllerBirthDate.text;
+  @override
+  void onChangeInput() {
+    profilePresenter.handleOnChangeInputChangePassword(
+        _model.controllerOldPassword.text,
+        _model.controllerPassword.text,
+        _model.controllerConfirmPassword.text);
+  }
+
+  @override
+  void updateStatusOfButtonChangePassword(
+      String oldPassword, String newPassword, String confirmPassword) {
+    if (oldPassword.isNotEmpty &&
+        newPassword.isNotEmpty &&
+        confirmPassword.isNotEmpty) {
+      setState(() {
+        _model.isDisableUpdatePass = false;
+      });
+    } else {
+      setState(() {
+        _model.isDisableUpdatePass = true;
+      });
+    }
+  }
+
+  @override
+  void onClickSignIn(String email, String password, String confirmPassword,
+      String firstname, String lastname, String phone) {
+    // TODO: implement onClickSignIn
+  }
+
+  @override
+  void updateLoadingPassword() {
+    setState(() {
+      profilePresenter.model.isLoadingChangePassword =
+          !profilePresenter.model.isLoadingChangePassword;
+    });
+  }
+
+  @override
+  void updateViewPasswordErrorMsg(String error) {
+    // TODO: implement updateViewErrorMsg
+    setState(() {
+      _model.errorMsgChangePassword = error;
+    });
+  }
+
+  @override
+  void onClickChangePassword(
+      String oldPassword, String newPassword, String confirmPassword) async {
+    try {
+      Users user = Provider.of<Users>(context, listen: false);
+
+      bool response = await profilePresenter.changePassword(newPassword,
+          oldPassword, confirmPassword, user.idToken!, user.userId!);
+      if (response) {
+        CustomSnackBar.buildErrorSnackbar(
+            context: context,
+            message: 'Đổi mật khẩu thành công',
+            color: CustomColor.green);
+      }
+    } catch (e) {
+      print(e.toString());
+      profilePresenter.view
+          .updateViewPasswordErrorMsg(e.toString().split(': ')[2]);
+    }
+  }
 
   Widget customRadioButton(String text, String gender, Color color) {
     return Row(
@@ -134,17 +182,18 @@ class _ProfileScreenState extends State<FormProfileScreen>
   @override
   void initState() {
     super.initState();
-    profilePresenter = ProfilePresenter();
+    Users users = Provider.of<Users>(context, listen: false);
+    profilePresenter = ProfilePresenter(users);
     profilePresenter.setView(this);
     _model = profilePresenter.model;
-    _controllerFullname.addListener(onChangeInput);
-    _controllerOldPassword.addListener(onChangeInput);
-    _controllerPassword.addListener(onChangeInput);
-    _controllerConfirmPassword.addListener(onChangeInput);
-    _controllerPhone.addListener(onChangeInput);
-    _controllerStreet.addListener(onChangeInput);
-    _controllerWard.addListener(onChangeInput);
-    _controllerBirthDate.addListener(onChangeInput);
+    _model.controllerFullname.addListener(onChangeInput);
+    _model.controllerOldPassword.addListener(onChangeInput);
+    _model.controllerPassword.addListener(onChangeInput);
+    _model.controllerConfirmPassword.addListener(onChangeInput);
+    _model.controllerPhone.addListener(onChangeInput);
+    _model.controllerStreet.addListener(onChangeInput);
+    _model.controllerWard.addListener(onChangeInput);
+    _model.controllerBirthDate.addListener(onChangeInput);
   }
 
   @override
@@ -160,15 +209,15 @@ class _ProfileScreenState extends State<FormProfileScreen>
     _focusNodeBirthDate.dispose();
     _focusNodePhone.dispose();
 
-    _controllerFullname.dispose();
-    _controllerOldPassword.dispose();
-    _controllerPassword.dispose();
-    _controllerConfirmPassword.dispose();
-    _controllerStreet.dispose();
-    _controllerWard.dispose();
-    _controllerDistrict.dispose();
-    _controllerPhone.dispose();
-    _controllerBirthDate.dispose();
+    _model.controllerFullname.dispose();
+    _model.controllerOldPassword.dispose();
+    _model.controllerPassword.dispose();
+    _model.controllerConfirmPassword.dispose();
+    _model.controllerStreet.dispose();
+    _model.controllerWard.dispose();
+    _model.controllerDistrict.dispose();
+    _model.controllerPhone.dispose();
+    _model.controllerBirthDate.dispose();
   }
 
   @override
@@ -201,7 +250,7 @@ class _ProfileScreenState extends State<FormProfileScreen>
               isDisable: false,
               focusNode: _focusNodeFullname,
               nextNode: _focusNodePhone,
-              controller: _controllerFullname,
+              controller: _model.controllerFullname,
             ),
             CustomOutLineInputWithHint(
               deviceSize: widget.deviceSize,
@@ -209,17 +258,28 @@ class _ProfileScreenState extends State<FormProfileScreen>
               isDisable: false,
               focusNode: _focusNodePhone,
               nextNode: _focusNodeBirthDate,
-              controller: _controllerBirthDate,
+              controller: _model.controllerPhone,
               textInputType: TextInputType.number,
             ),
-            Container(
+            CustomText(
+              text: 'Ngày sinh',
+              color: CustomColor.black,
+              context: context,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+            CustomSizedBox(
+              context: context,
+              height: 16,
+            ),
+            SizedBox(
               width: widget.deviceSize.width / 2.5,
               child: CustomOutLineInputDateTime(
                 deviceSize: widget.deviceSize,
                 labelText: '',
                 isDisable: false,
                 focusNode: _focusNodeBirthDate,
-                controller: _controllerBirthDate,
+                controller: _model.controllerBirthDate,
                 icon: "assets/images/calendar.png",
               ),
             ),
@@ -267,40 +327,10 @@ class _ProfileScreenState extends State<FormProfileScreen>
             ),
             CustomOutLineInputWithHint(
               deviceSize: widget.deviceSize,
-              hintText: "Đường",
+              hintText: "Địa chỉ",
               isDisable: false,
               focusNode: _focusNodeStreet,
-              controller: _controllerStreet,
-            ),
-            Row(
-              children: [
-                Container(
-                  width: widget.deviceSize.width / 3,
-                  child: CustomOutLineInputWithHint(
-                    deviceSize: widget.deviceSize,
-                    hintText: 'Phường',
-                    isDisable: false,
-                    textInputType: TextInputType.number,
-                    focusNode: _focusNodeWard,
-                    controller: _controllerWard,
-                  ),
-                ),
-                CustomSizedBox(
-                  context: context,
-                  width: 16,
-                ),
-                Container(
-                  width: widget.deviceSize.width / 4,
-                  child: CustomOutLineInputWithHint(
-                    deviceSize: widget.deviceSize,
-                    hintText: 'Quận',
-                    isDisable: false,
-                    isSecure: true,
-                    focusNode: _focusNodeDistrict,
-                    controller: _controllerDistrict,
-                  ),
-                ),
-              ],
+              controller: _model.controllerStreet,
             ),
             Center(
               child: CustomButton(
@@ -334,15 +364,17 @@ class _ProfileScreenState extends State<FormProfileScreen>
               isDisable: false,
               isSecure: true,
               focusNode: _focusNodeOldPassword,
-              controller: _controllerOldPassword,
+              nextNode: _focusNodePassword,
+              controller: _model.controllerOldPassword,
             ),
             CustomOutLineInputWithHint(
               deviceSize: widget.deviceSize,
               hintText: 'Mật khẩu mới',
               isDisable: false,
+              nextNode: _focusNodeConfirmPassword,
               isSecure: true,
               focusNode: _focusNodePassword,
-              controller: _controllerPassword,
+              controller: _model.controllerPassword,
             ),
             CustomOutLineInputWithHint(
               deviceSize: widget.deviceSize,
@@ -350,55 +382,52 @@ class _ProfileScreenState extends State<FormProfileScreen>
               isDisable: false,
               isSecure: true,
               focusNode: _focusNodeConfirmPassword,
-              controller: _controllerConfirmPassword,
+              controller: _model.controllerConfirmPassword,
             ),
-            if (_model.errorMsg.isNotEmpty)
-              Container(
-                width: double.infinity,
-                child: CustomText(
-                  text: _model.errorMsg,
-                  color: CustomColor.red,
-                  context: context,
-                  textAlign: TextAlign.center,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
+            if (_model.errorMsgChangePassword.isNotEmpty)
+              Column(
+                children: [
+                  SizedBox(
+                    width: double.infinity,
+                    child: CustomText(
+                      text: _model.errorMsgChangePassword,
+                      maxLines: 2,
+                      color: CustomColor.red,
+                      context: context,
+                      textAlign: TextAlign.center,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  CustomSizedBox(
+                    context: context,
+                    height: 16,
+                  )
+                ],
               ),
             Center(
               child: CustomButton(
                   height: 24,
-                  isLoading: false,
+                  isLoading: _model.isLoadingChangePassword,
                   text: 'Cập Nhật',
                   width: widget.deviceSize.width / 3,
                   textColor: CustomColor.white,
-                  onPressFunction: null,
-                  buttonColor: CustomColor.blue,
+                  onPressFunction: _model.isDisableUpdatePass == true
+                      ? null
+                      : () {
+                          onClickChangePassword(
+                              _model.controllerOldPassword.text,
+                              _model.controllerPassword.text,
+                              _model.controllerConfirmPassword.text);
+                        },
+                  buttonColor: _model.isDisableUpdatePass == false
+                      ? CustomColor.blue
+                      : CustomColor.black[3],
                   borderRadius: 6),
             )
           ],
         ),
       ),
     );
-  }
-
-  @override
-  void onChangeInput() {
-    // TODO: implement onChangeInput
-  }
-
-  @override
-  void onClickSignIn(String email, String password, String confirmPassword,
-      String firstname, String lastname, String phone) {
-    // TODO: implement onClickSignIn
-  }
-
-  @override
-  void updateLoading() {
-    // TODO: implement updateLoading
-  }
-
-  @override
-  void updateViewErrorMsg(String error) {
-    // TODO: implement updateViewErrorMsg
   }
 }

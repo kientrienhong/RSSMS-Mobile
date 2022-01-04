@@ -2,20 +2,16 @@ import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 
-import '/models/entity/user.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:intl/intl.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool? isHome;
   final String? name;
-  CustomAppBar({required this.isHome, this.name});
+  const CustomAppBar({Key? key, required this.isHome, this.name})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var nowParam = DateFormat('yyyyddMMHHmm').format(DateTime.now());
-
     final deviceSize = MediaQuery.of(context).size;
     return PreferredSize(
       preferredSize: const Size(double.infinity, 80),
@@ -53,5 +49,5 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(80);
+  Size get preferredSize => const Size.fromHeight(80);
 }

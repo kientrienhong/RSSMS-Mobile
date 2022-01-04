@@ -91,11 +91,12 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Map<String, dynamic?>> listProduct = constants.LIST_PRODUCT
+    final List<Map<String, dynamic>> listProduct = constants.LIST_PRODUCT
         .map<Map<String, dynamic>>((e) => {...e, 'quantity': 0})
         .toList();
     final deviceSize = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: CustomColor.white,
       body: SingleChildScrollView(
         child: Column(children: [
           CustomSizedBox(
@@ -132,6 +133,10 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
               textColor: CustomColor.white,
               buttonColor: CustomColor.blue,
               borderRadius: 6),
+          CustomSizedBox(
+            context: context,
+            height: 24,
+          ),
           ListView(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),

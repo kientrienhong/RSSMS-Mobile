@@ -233,17 +233,9 @@ class _HandleInputState extends State<HandleInput> {
           ],
         ),
         InputFormDoorToDoor(
-            onChangeDropdownDistrictButton: onChangeDropdownDistrictButton,
-            onChangeDropdownWardButton: onChangeDropdownWardButton,
             controllerAddress: _controllerAddress,
-            controllerArea: _controllerArea,
-            controllerBuilding: _controllerBuilding,
-            district: _district,
             controllerFloor: _controllerFloor,
-            ward: _ward,
             focusNodeAddress: _focusNodeAddress,
-            focusNodeArea: _focusNodeArea,
-            focusNodeBuilding: _focusNodeBuilding,
             focusNodeFloor: _focusNodeFloor),
         CustomSizedBox(
           context: context,
@@ -263,19 +255,9 @@ class _HandleInputState extends State<HandleInput> {
               ),
               currentIndex == SelectDistrict.different
                   ? InputFormDoorToDoor(
-                      onChangeDropdownDistrictButton:
-                          onChangeDropdownDistrictReturnButton,
-                      onChangeDropdownWardButton:
-                          onChangeDropdownWardReturnButton,
                       controllerAddress: _controllerAddressReturn,
-                      controllerArea: _controllerAreaReturn,
-                      controllerBuilding: _controllerBuildingReturn,
-                      district: _districtReturn,
                       controllerFloor: _controllerFloorReturn,
-                      ward: _wardReturn,
                       focusNodeAddress: _focusNodeAddressReturn,
-                      focusNodeArea: _focusNodeAreaReturn,
-                      focusNodeBuilding: _focusNodeBuildingReturn,
                       focusNodeFloor: _focusNodeFloorReturn,
                     )
                   : Container(),
@@ -355,19 +337,9 @@ class _HandleInputState extends State<HandleInput> {
               ),
               currentIndex == SelectDistrict.different
                   ? InputFormDoorToDoor(
-                      onChangeDropdownDistrictButton:
-                          onChangeDropdownDistrictReturnButton,
-                      onChangeDropdownWardButton:
-                          onChangeDropdownWardReturnButton,
                       controllerAddress: _controllerAddressReturn,
-                      controllerArea: _controllerAreaReturn,
-                      controllerBuilding: _controllerBuildingReturn,
-                      district: _districtReturn,
                       controllerFloor: _controllerFloorReturn,
-                      ward: _wardReturn,
                       focusNodeAddress: _focusNodeAddressReturn,
-                      focusNodeArea: _focusNodeAreaReturn,
-                      focusNodeBuilding: _focusNodeBuildingReturn,
                       focusNodeFloor: _focusNodeFloorReturn,
                     )
                   : Container(),

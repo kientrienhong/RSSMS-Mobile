@@ -61,18 +61,18 @@ class _StoreOrderScreenState extends State<StoreOrderScreen> {
     {'name': 'Bolo - 9', 'status': 0, 'id': 8},
   ];
 
-  void onTapBox(int index, int status) {
-    if (status == 0) {
-      controller.open();
-    }
-    setState(() {
-      _currentIndex = index;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
+    void onTapBox(int index, int status) {
+      print(status);
+      setState(() {
+        if (status == 0) {
+          controller.open();
+        }
+        _currentIndex = index;
+      });
+    }
 
     return Scaffold(
       backgroundColor: CustomColor.white,

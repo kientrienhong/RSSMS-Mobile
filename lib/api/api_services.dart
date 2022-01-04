@@ -1,0 +1,83 @@
+import 'dart:convert';
+
+import 'package:http/http.dart' as http;
+import 'package:rssms/models/entity/user.dart';
+
+class ApiServices {
+  ApiServices._();
+  static const _domain = 'https://localhost:44304';
+
+  static Future<dynamic> logInThirParty(String firebaseId, String deviceToken) {
+    try {
+      final url = Uri.parse(
+          '$_domain/api/v1/users/thirdparty?firebaseID=$firebaseId&deviceToken=$deviceToken');
+      return http.post(url);
+    } catch (e) {
+      throw Exception('Log In failed');
+    }
+  }
+
+  static Future<dynamic> logInWithEmail(
+      String email, String password, String deviceToken) {
+    try {
+      Map<String, String> headers = {"Content-type": "application/json"};
+
+      final url = Uri.parse('$_domain/api/v1/users/login');
+      return http.post(url,
+          headers: headers,
+          body: jsonEncode({
+            "email": email,
+            "password": password,
+            "deviceToken": deviceToken
+          }));
+    } catch (e) {
+      throw Exception('Log In failed');
+    }
+  }
+
+  static Future<dynamic> signUp(
+      Users user, String password, String deviceToken) {
+    try {
+      Map<String, String> headers = {"Content-type": "application/json"};
+
+      final url = Uri.parse('$_domain/api/v1/users');
+      return http.post(url,
+          headers: headers,
+          body: jsonEncode({
+            "name": user.name,
+            'deviceToken': deviceToken,
+            "password": password,
+            "email": user.email,
+            "gender": user.gender,
+            "birthdate": user.birthDate!.toIso8601String(),
+            "address": user.address,
+            "phone": user.phone,
+            "roleId": 3,
+          }));
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  static Future<dynamic> changePassword(String oldPassword,
+      String confirmPassword, String newPassword, int userId, String idToken) {
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        'Authorization': 'Bearer $idToken'
+      };
+
+      final url = Uri.parse('$_domain/api/v1/users/changepassword');
+      return http.post(url,
+          headers: headers,
+          body: jsonEncode({
+            "id": userId,
+            "oldPassword": oldPassword,
+            "password": newPassword,
+            "confirmPassword": confirmPassword
+          }));
+    } catch (e) {
+      throw Exception('Log In failed');
+    }
+  }
+}

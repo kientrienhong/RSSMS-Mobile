@@ -1,5 +1,7 @@
+import 'package:provider/provider.dart';
 import 'package:rssms/constants/constants.dart' as constant;
 import 'package:rssms/common/custom_bottom_navigation.dart';
+import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/pages/customers/cart/cart_screen.dart';
 import 'package:rssms/pages/customers/my_account/my_account.dart';
 import 'package:rssms/pages/customers/notification/notification_screen.dart';
@@ -8,8 +10,8 @@ import 'package:rssms/pages/delivery_staff/my_account/my_account_delivery.dart';
 import 'package:rssms/pages/delivery_staff/notifcation/notification_delivery.dart';
 import 'package:rssms/pages/delivery_staff/qr/qr_screen.dart';
 import 'package:rssms/pages/log_in/widget/button_icon.dart';
+import 'package:rssms/pages/no_permission/no_permission.dart';
 import 'package:rssms/pages/sign_up/sign_up_screen.dart';
-
 import '/common/background.dart';
 import '/common/custom_button.dart';
 import '/common/custom_color.dart';
@@ -20,6 +22,7 @@ import '/models/login_model.dart';
 import '/presenters/login_presenters.dart';
 import '/views/login_view.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 class LogInScreen extends StatelessWidget {
   @override
@@ -29,9 +32,9 @@ class LogInScreen extends StatelessWidget {
     return Scaffold(
         backgroundColor: CustomColor.white,
         body: SingleChildScrollView(
-          child: Container(
+          child: SizedBox(
             width: deviceSize.width,
-            height: deviceSize.height,
+            height: deviceSize.height * 1.1,
             child: Stack(
               clipBehavior: Clip.none,
               children: [
@@ -50,7 +53,7 @@ class LogInScreen extends StatelessWidget {
                         context: context,
                         height: 56,
                       ),
-                      Expanded(child: FormLogIn(deviceSize)),
+                      Expanded(child: FormLogIn(deviceSize: deviceSize)),
                       SizedBox(
                         width: deviceSize.width,
                         child: Row(
@@ -100,7 +103,7 @@ class LogInScreen extends StatelessWidget {
 
 class FormLogIn extends StatefulWidget {
   final Size deviceSize;
-  FormLogIn(this.deviceSize);
+  FormLogIn({Key? key, required this.deviceSize}) : super(key: key);
 
   @override
   _FormLogInState createState() => _FormLogInState();
@@ -108,7 +111,8 @@ class FormLogIn extends StatefulWidget {
 
 class _FormLogInState extends State<FormLogIn> implements LoginView {
   late LoginPresenter loginPresenter;
-
+  late FirebaseMessaging _firebaseMessaging;
+  late String _token;
   late LoginModel _model;
 
   final _focusNodeEmail = FocusNode();
@@ -122,11 +126,42 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
   @override
   void initState() {
     super.initState();
+    _firebaseMessaging = FirebaseMessaging.instance;
     loginPresenter = LoginPresenter();
     loginPresenter.setView(this);
     _model = loginPresenter.model;
     _controllerEmail.addListener(onChangeInput);
     _controllerPassword.addListener(onChangeInput);
+    firebaseCloudMessagingListeners();
+  }
+
+  void firebaseCloudMessagingListeners() {
+    _firebaseMessaging.getToken().then((token) {
+      _token = token!;
+    });
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      RemoteNotification notification = message.notification!;
+      AndroidNotification? android = message.notification?.android;
+    });
+  }
+
+  @override
+  void updateLoadingGoogle() {
+    if (mounted) {
+      setState(() {
+        _model.isLoadingGoogle = !_model.isLoadingGoogle;
+      });
+    }
+  }
+
+  @override
+  void updateLoadingFacebook() {
+    if (mounted) {
+      setState(() {
+        _model.isLoadingFacebook = !_model.isLoadingFacebook;
+      });
+    }
   }
 
   @override
@@ -135,29 +170,12 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
   }
 
   @override
-  void onClickSignInFaceBook() {}
-
-  @override
-  void onClickSignInGoogle() {}
-
-  @override
-  void onClickSignIn(String email, String password) async {
-    try {
-      if (email.contains('delivery')) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => const CustomBottomNavigation(
-                    listIndexStack: [
-                      MyAccountDeliveryScreen(),
-                      DeliveryScreen(),
-                      QrScreen(),
-                      NotificationDeliveryScreen(),
-                    ],
-                    listNavigator: constant.LIST_DELIVERY_BOTTOM_NAVIGATION,
-                  )),
-        );
-      } else {
+  void onClickSignInFaceBook() async {
+    final result = await loginPresenter.handleSignInFacebook(_token);
+    Users user = Provider.of<Users>(context, listen: false);
+    if (result != null) {
+      user.setUser(user: result);
+      if (user.roleName == 'Customer') {
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -170,16 +188,79 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
                     listNavigator: constant.LIST_CUSTOMER_BOTTOM_NAVIGATION,
                   )),
         );
-      }
+      } else {}
+    }
+  }
 
-      // User user = Provider.of<User>(context, listen: false);
+  @override
+  void onClickSignInGoogle() async {
+    final result = await loginPresenter.handleSignInGoogle(_token);
+    Users user = Provider.of<Users>(context, listen: false);
+    if (result != null) {
+      user.setUser(user: result);
+      if (user.roleName == 'Customer') {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => const CustomBottomNavigation(
+                    listIndexStack: [
+                      MyAccountScreen(),
+                      CartScreen(),
+                      NotificationScreen(),
+                    ],
+                    listNavigator: constant.LIST_CUSTOMER_BOTTOM_NAVIGATION,
+                  )),
+        );
+      } else {}
+    }
+  }
 
-      // final result = await loginPresenter.handleSignIn(email, password);
-      // if (result != null) {
-      //   user.setUser(user: result);
-      //   if (_model.user.role == UserRole.customer) {
-      //   } else {}
+  @override
+  void onClickSignIn(String email, String password) async {
+    try {
+      // if (email.contains('delivery')) {
+      //   Navigator.push(
+      //     context,
+      //     MaterialPageRoute(
+      //         builder: (context) => const CustomBottomNavigation(
+      //               listIndexStack: [
+      //                 MyAccountDeliveryScreen(),
+      //                 DeliveryScreen(),
+      //                 QrScreen(),
+      //                 NotificationDeliveryScreen(),
+      //               ],
+      //               listNavigator: constant.LIST_DELIVERY_BOTTOM_NAVIGATION,
+      //             )),
+      //   );
+      // } else {
+
       // }
+
+      Users user = Provider.of<Users>(context, listen: false);
+
+      final result = await loginPresenter.handleSignIn(email, password, _token);
+      if (result != null) {
+        user.setUser(user: result);
+        if (user.roleName == 'Customer') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const CustomBottomNavigation(
+                      listIndexStack: [
+                        MyAccountScreen(),
+                        CartScreen(),
+                        NotificationScreen(),
+                      ],
+                      listNavigator: constant.LIST_CUSTOMER_BOTTOM_NAVIGATION,
+                    )),
+          );
+        } else {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const NoPermissionScreen()));
+        }
+      }
     } catch (e) {
       loginPresenter.view.updateViewErrorMsg('Tài khoản / mật khẩu không đúng');
     }
@@ -187,10 +268,11 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
 
   @override
   updateLoading() {
-    if (mounted)
+    if (mounted) {
       setState(() {
         _model.isLoading = !_model.isLoading;
       });
+    }
   }
 
   @override
@@ -266,8 +348,10 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
               url: 'assets/images/google.png',
               text: 'Đăng nhập bằng Google',
               width: double.infinity,
-              onPressFunction: () {},
-              isLoading: _model.isLoading,
+              onPressFunction: () {
+                onClickSignInGoogle();
+              },
+              isLoading: _model.isLoadingGoogle,
               textColor: CustomColor.white,
               buttonColor: const Color(0xFFE16259),
               borderRadius: 6),
@@ -280,8 +364,10 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
               url: 'assets/images/facebook.png',
               text: 'Đăng nhập bằng Facebook',
               width: double.infinity,
-              onPressFunction: () {},
-              isLoading: _model.isLoading,
+              onPressFunction: () {
+                onClickSignInFaceBook();
+              },
+              isLoading: _model.isLoadingFacebook,
               textColor: CustomColor.white,
               buttonColor: const Color(0xFF1877F2),
               borderRadius: 6),

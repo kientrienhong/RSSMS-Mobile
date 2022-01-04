@@ -5,8 +5,11 @@ import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
+import 'package:rssms/models/booking_pop_up_self_storage_model.dart';
 import 'package:rssms/models/entity/order_booking.dart';
 import 'package:rssms/pages/customers/input_information_booking/input_information.dart';
+import 'package:rssms/presenters/booking_pop_up_self_storage_presenter.dart';
+import 'package:rssms/views/booking_pop_up_view_self_storage.dart';
 
 class BookingPopUpSelfStorage extends StatefulWidget {
   const BookingPopUpSelfStorage({Key? key}) : super(key: key);
@@ -16,13 +19,11 @@ class BookingPopUpSelfStorage extends StatefulWidget {
       _BookingPopUpSelfStorageState();
 }
 
-class _BookingPopUpSelfStorageState extends State<BookingPopUpSelfStorage> {
-  final oCcy = new NumberFormat("#,##0", "en_US");
-  late final _dateDeliveryController;
-  late var _dateReturn;
-  final _monthController = TextEditingController(text: '0');
-  late int _months;
-  late DateTime dateDelivery;
+class _BookingPopUpSelfStorageState extends State<BookingPopUpSelfStorage>
+    implements BookingPopUpViewSelfStorage {
+  final oCcy = NumberFormat("#,##0", "en_US");
+  late BookingPopUpSelfStoragePresenter _presenter;
+  late BookingPopUpSelfStorageModel _model;
   Widget buildInfo(String title, String value, Color valueColor) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -44,34 +45,52 @@ class _BookingPopUpSelfStorageState extends State<BookingPopUpSelfStorage> {
     );
   }
 
+  @override
   void minusQuantity() {
+    OrderBooking orderBooking =
+        Provider.of<OrderBooking>(context, listen: false);
     setState(() {
-      if (_months > 0) {
-        _months--;
-        _monthController.text = _months.toString();
-        _dateReturn = DateTime(
-            dateDelivery.year, dateDelivery.month + _months, dateDelivery.day);
+      if (orderBooking.months > 0) {
+        int month = --orderBooking.months;
+        _model.dateReturn = DateTime(_model.dateReturn.year,
+            _model.dateReturn.month - 1 as int, _model.dateReturn.day);
+
+        orderBooking.setOrderBooking(
+            orderBooking: orderBooking.copyWith(
+                months: month, dateTimeReturn: _model.dateReturn));
+        _model.monthController?.text = month.toString();
       }
     });
   }
 
+  @override
   void addQuantity() {
+    OrderBooking orderBooking =
+        Provider.of<OrderBooking>(context, listen: false);
     setState(() {
-      _months++;
-      _monthController.text = _months.toString();
-      _dateReturn = DateTime(
-          dateDelivery.year, dateDelivery.month + _months, dateDelivery.day);
+      int month = ++orderBooking.months;
+
+      orderBooking.setOrderBooking(
+          orderBooking: orderBooking.copyWith(
+              months: month, dateTimeReturn: _model.dateReturn));
+      _model.dateReturn = DateTime(
+          orderBooking.dateTimeDelivery.year,
+          orderBooking.dateTimeDelivery.month + month as int,
+          orderBooking.dateTimeDelivery.day);
+      _model.monthController?.text = month.toString();
     });
   }
 
   String totalEachPart(List<dynamic> list, String type) {
+    OrderBooking orderBooking =
+        Provider.of<OrderBooking>(context, listen: false);
     var sum = 0;
 
     list.forEach((element) {
       sum += element['price'] * element['quantity'] as int;
     });
     if (type == 'product') {
-      sum *= _months;
+      sum *= orderBooking.months as int;
     }
     return '${oCcy.format(sum)} VND';
   }
@@ -86,7 +105,7 @@ class _BookingPopUpSelfStorageState extends State<BookingPopUpSelfStorage> {
     listKeys.forEach((element) {
       if (element == 'product') {
         orderBooking.productOrder![element]!.forEach((ele) {
-          sum += ele['price'] * ele['quantity'] * _months as int;
+          sum += ele['price'] * ele['quantity'] * orderBooking.months as int;
         });
       } else {
         orderBooking.productOrder![element]!.forEach((ele) {
@@ -99,17 +118,26 @@ class _BookingPopUpSelfStorageState extends State<BookingPopUpSelfStorage> {
   }
 
   _selectDateDelivery(BuildContext context) async {
+    OrderBooking orderBooking =
+        Provider.of<OrderBooking>(context, listen: false);
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: dateDelivery,
+      initialDate: orderBooking.dateTimeDelivery,
       firstDate: DateTime.now().add(const Duration(days: 1)),
       lastDate: DateTime(2025),
     );
-    if (picked != null && picked != dateDelivery) {
+
+    if (picked != null && picked != orderBooking.dateTimeDelivery) {
       setState(() {
-        dateDelivery = picked;
-        _dateDeliveryController.text = picked.toIso8601String().split("T")[0];
-        _dateReturn = DateTime(picked.year, picked.month + _months, picked.day);
+        _model.dateDeliveryController!.text =
+            picked.toIso8601String().split("T")[0];
+        _model.dateReturn = DateTime(
+            picked.year, picked.month + orderBooking.months as int, picked.day);
+        orderBooking.setOrderBooking(
+            orderBooking: orderBooking.copyWith(
+                dateTimeDelivery: picked,
+                dateTimeDeliveryString: picked.toIso8601String().split("T")[0],
+                dateTimeReturn: _model.dateReturn));
       });
     }
   }
@@ -117,11 +145,10 @@ class _BookingPopUpSelfStorageState extends State<BookingPopUpSelfStorage> {
   @override
   void initState() {
     super.initState();
-    _months = 0;
-    _monthController;
-    _dateDeliveryController = TextEditingController();
-    dateDelivery = DateTime.now().add(const Duration(days: 1));
-    _dateReturn = '';
+    OrderBooking orderBooking =
+        Provider.of<OrderBooking>(context, listen: false);
+    _presenter = BookingPopUpSelfStoragePresenter(orderBooking);
+    _model = _presenter.model!;
   }
 
   @override
@@ -166,7 +193,7 @@ class _BookingPopUpSelfStorageState extends State<BookingPopUpSelfStorage> {
                     width: deviceSize.width / 2.5,
                     height: deviceSize.height / 14,
                     child: TextField(
-                      controller: _dateDeliveryController,
+                      controller: _model.dateDeliveryController,
                       onTap: () {
                         _selectDateDelivery(context);
                       },
@@ -226,7 +253,7 @@ class _BookingPopUpSelfStorageState extends State<BookingPopUpSelfStorage> {
                       width: deviceSize.width / 10,
                       height: 24,
                       child: TextFormField(
-                        controller: _monthController,
+                        controller: _model.monthController,
                         keyboardType: TextInputType.number,
                         textAlign: TextAlign.center,
                         decoration: InputDecoration(
@@ -266,8 +293,8 @@ class _BookingPopUpSelfStorageState extends State<BookingPopUpSelfStorage> {
               context: context,
               height: 16,
             ),
-            buildInfo('Ngày trả hàng', _dateReturn.toString().split(' ')[0],
-                CustomColor.blue),
+            buildInfo('Ngày trả hàng',
+                _model.dateReturn.toString().split(' ')[0], CustomColor.blue),
             CustomSizedBox(
               context: context,
               height: 16,

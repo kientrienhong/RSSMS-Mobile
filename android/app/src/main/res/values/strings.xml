@@ -1,0 +1,5 @@
+<resources>
+<string name="app_name">RSSMS</string>
+<string name="facebook_app_id">334943414822745</string>
+<string name="fb_login_protocol_scheme">fb334943414822745</string>
+</resources>

@@ -19,7 +19,8 @@ class CustomOutLineInput extends StatefulWidget {
   final bool? isSecure;
   final int? maxLine;
   CustomOutLineInput(
-      {this.statusTypeInput = StatusTypeInput.VALID,
+      {Key? key,
+      this.statusTypeInput = StatusTypeInput.VALID,
       required this.controller,
       this.validator,
       this.backgroundColorLabel = CustomColor.white,
@@ -29,8 +30,9 @@ class CustomOutLineInput extends StatefulWidget {
       this.nextNode,
       required this.focusNode,
       required this.deviceSize,
-      this.maxLine: 1,
-      required this.labelText});
+      this.maxLine = 1,
+      required this.labelText})
+      : super(key: key);
 
   @override
   _CustomOutLineInputState createState() => _CustomOutLineInputState();
@@ -117,7 +119,7 @@ class _CustomOutLineInputState extends State<CustomOutLineInput> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Stack(
-                  overflow: Overflow.visible,
+                  clipBehavior: Clip.none,
                   children: [
                     Container(
                         height: widget.maxLine == 1

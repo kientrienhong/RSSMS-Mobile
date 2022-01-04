@@ -6,13 +6,17 @@ class CustomMsgInput extends StatelessWidget {
   final String msg;
   final bool isError;
   final int maxLines;
-  CustomMsgInput(
-      {required this.msg, required this.isError, required this.maxLines});
+  const CustomMsgInput(
+      {Key? key,
+      required this.msg,
+      required this.isError,
+      required this.maxLines})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     if (isError) {
-      if (msg.length > 0) {
+      if (msg.isNotEmpty) {
         return CustomText(
             text: msg,
             color: CustomColor.red,

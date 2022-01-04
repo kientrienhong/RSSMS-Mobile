@@ -42,15 +42,15 @@ class SendRequestScreenState extends State<SendRequestScreen> {
               style: ButtonStyle(
                 backgroundColor:
                     MaterialStateProperty.resolveWith((states) => color),
-                shape: MaterialStateProperty.all(CircleBorder()),
+                shape: MaterialStateProperty.all(const CircleBorder()),
                 side: MaterialStateProperty.all(
                   const BorderSide(color: CustomColor.blue, width: 1.5),
                 ),
                 maximumSize: MaterialStateProperty.all(
-                  Size(50, 50),
+                  const Size(50, 50),
                 ),
                 minimumSize: MaterialStateProperty.all(
-                  Size(25, 25),
+                  const Size(25, 25),
                 ),
               ),
               onPressed: () {},
@@ -79,7 +79,7 @@ class SendRequestScreenState extends State<SendRequestScreen> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 6, vertical: 24),
+          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 24),
           color: CustomColor.white,
           width: deviceSize.width,
           child: Column(
