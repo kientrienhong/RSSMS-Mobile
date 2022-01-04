@@ -4,13 +4,14 @@ import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/models/entity/order_booking.dart';
+import 'package:rssms/models/entity/product.dart';
 import 'package:rssms/pages/customers/cart/widgets/info_pop_up.dart';
 import 'package:rssms/pages/customers/cart/widgets/quantity_widget.dart';
 import 'package:rssms/utils/size_config.dart';
 import 'package:rssms/views/item_widget_view.dart';
 
 class SelfStorageWidget extends StatefulWidget {
-  Map<String, dynamic>? product;
+  Product? product;
   String nameType;
 
   SelfStorageWidget({Key? key, required this.product, required this.nameType})
@@ -26,22 +27,22 @@ class _SelfStorageWidgetState extends State<SelfStorageWidget>
   void onAddQuantity() {
     OrderBooking orderBooking =
         Provider.of<OrderBooking>(context, listen: false);
-    Map<String, dynamic> tempProduct = {...widget.product!};
+    Product tempProduct = widget.product!.copyWith();
 
     final foundItem = orderBooking.productOrder![widget.nameType]!.indexWhere(
-      (e) => e['idOfList'].toString() == '${widget.product!['id']}',
+      (e) => e['idOfList'].toString() == '${widget.product!.id}',
     );
 
     if (foundItem != -1) {
       orderBooking.productOrder![widget.nameType]![foundItem]['quantity'] += 1;
     } else {
       orderBooking.productOrder![widget.nameType]!.add({
-        ...widget.product!,
+        ...widget.product!.toMap(),
         'quantity': 1,
-        'idOfList': '${widget.product!['id']}',
+        'idOfList': '${widget.product!.id}',
       });
     }
-    tempProduct['quantity'] += 1;
+    tempProduct = tempProduct.copyWith(quantity: tempProduct.quantity! + 1);
     setState(() {
       widget.product = tempProduct;
     });
@@ -51,12 +52,12 @@ class _SelfStorageWidgetState extends State<SelfStorageWidget>
   void onMinusQuantity() {
     OrderBooking orderBooking =
         Provider.of<OrderBooking>(context, listen: false);
-    Map<String, dynamic> tempProduct = {...widget.product!};
-    if (tempProduct['quantity'] == 0) {
+    Product tempProduct = widget.product!.copyWith();
+    if (tempProduct.quantity == 0) {
       return;
     }
     final foundItem = orderBooking.productOrder![widget.nameType]!.indexWhere(
-      (e) => e['idOfList'].toString() == '${widget.product!['id']}',
+      (e) => e['idOfList'].toString() == '${widget.product!.id}',
     );
     if (foundItem != -1) {
       final quantity =
@@ -68,7 +69,7 @@ class _SelfStorageWidgetState extends State<SelfStorageWidget>
             1;
       }
     }
-    tempProduct['quantity'] -= 1;
+    tempProduct = tempProduct.copyWith(quantity: tempProduct.quantity! - 1);
     setState(() {
       widget.product = tempProduct;
     });
@@ -101,7 +102,7 @@ class _SelfStorageWidgetState extends State<SelfStorageWidget>
             children: [
               SizedBox(
                   width: (deviceSize.width - 32) / 4 - 8,
-                  child: Image.asset(widget.product!['url']!)),
+                  child: Image.network(widget.product!.images[0]['url'])),
               const SizedBox(
                 width: 16,
               ),
@@ -115,7 +116,7 @@ class _SelfStorageWidgetState extends State<SelfStorageWidget>
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         CustomText(
-                            text: widget.product!['name']!,
+                            text: widget.product!.name,
                             color: CustomColor.black,
                             context: context,
                             fontWeight: FontWeight.bold,

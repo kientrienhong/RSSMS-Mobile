@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/models/entity/order_booking.dart';
+import 'package:rssms/models/entity/product.dart';
 import 'package:rssms/pages/customers/cart/tabs/handy_tab.dart';
 import 'package:rssms/pages/customers/cart/tabs/self_storage_tab.dart';
 import 'package:rssms/pages/customers/cart/widgets/title_tab.dart';
@@ -9,7 +10,12 @@ import 'package:rssms/views/door_to_door_view.dart';
 import '../../../../constants/constants.dart' as constants;
 
 class DoorToDoorTab extends StatefulWidget {
-  const DoorToDoorTab({Key? key}) : super(key: key);
+  final Map<int, List<Product>>? handyTab;
+  final Map<int, List<Product>>? unweildyTab;
+
+  const DoorToDoorTab(
+      {Key? key, required this.handyTab, required this.unweildyTab})
+      : super(key: key);
 
   @override
   _DoorToDoorTabState createState() => _DoorToDoorTabState();
@@ -66,7 +72,11 @@ class _DoorToDoorTabState extends State<DoorToDoorTab>
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: mapListTab(),
           ),
-          _index == 0 ? const HandyTab() : const SelfStorageTab()
+          _index == 0
+              ? HandyTab(
+                  handyTab: widget.handyTab,
+                )
+              : HandyTab(handyTab: widget.handyTab)
         ],
       ),
     );

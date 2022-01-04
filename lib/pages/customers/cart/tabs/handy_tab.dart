@@ -3,6 +3,7 @@ import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
+import 'package:rssms/models/entity/product.dart';
 import 'package:rssms/pages/customers/cart/widgets/accessory_widget.dart';
 import 'package:rssms/pages/customers/cart/widgets/booking_pop_up_door_to_door.dart';
 import 'package:rssms/pages/customers/cart/widgets/product_widget.dart';
@@ -10,7 +11,9 @@ import 'package:rssms/pages/customers/cart/widgets/service_widget.dart';
 import '../../../../constants/constants.dart' as constants;
 
 class HandyTab extends StatefulWidget {
-  const HandyTab({Key? key}) : super(key: key);
+  final Map<int, List<Product>>? handyTab;
+
+  const HandyTab({Key? key, required this.handyTab}) : super(key: key);
 
   @override
   _HandyTabState createState() => _HandyTabState();
@@ -30,15 +33,32 @@ class _HandyTabState extends State<HandyTab> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Map<String, dynamic>> listProduct = constants.LIST_PRODUCT
-        .map<Map<String, dynamic>>((e) => {...e, 'quantity': 0})
-        .toList();
-    final List<Map<String, dynamic>> listAccessory = constants.LIST_ACCESSORY
-        .map<Map<String, dynamic>>((e) => {...e, 'quantity': 0})
-        .toList();
-    final List<Map<String, dynamic>> listService = constants.LIST_SERVICES
-        .map<Map<String, dynamic>>((e) => {...e, 'quantity': 0})
-        .toList();
+    final List<Product> listProduct = widget.handyTab![constants.HANDY] == null
+        ? []
+        : widget.handyTab![constants.HANDY]!
+            .map((e) => e.copyWith(quantity: 0))
+            .toList();
+    final List<Product> listAccessory =
+        widget.handyTab![constants.ACCESSORY] == null
+            ? []
+            : widget.handyTab![constants.ACCESSORY]!
+                .map((e) => e.copyWith(quantity: 0))
+                .toList();
+    final List<Product> listService =
+        widget.handyTab![constants.SERVICES] == null
+            ? []
+            : widget.handyTab![constants.SERVICES]!
+                .map((e) => e.copyWith(quantity: 0))
+                .toList();
+    // final List<Map<String, dynamic>> listProduct = constants.LIST_PRODUCT
+    //     .map<Map<String, dynamic>>((e) => {...e, 'quantity': 0})
+    //     .toList();
+    // final List<Map<String, dynamic>> listAccessory = constants.LIST_ACCESSORY
+    //     .map<Map<String, dynamic>>((e) => {...e, 'quantity': 0})
+    //     .toList();
+    // final List<Map<String, dynamic>> listService = constants.LIST_SERVICES
+    //     .map<Map<String, dynamic>>((e) => {...e, 'quantity': 0})
+    //     .toList();
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: 16,

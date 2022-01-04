@@ -77,7 +77,24 @@ class ApiServices {
             "confirmPassword": confirmPassword
           }));
     } catch (e) {
-      throw Exception('Log In failed');
+      throw Exception(e.toString());
+    }
+  }
+
+  static Future<dynamic> getProduct(String idToken) {
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        'Authorization': 'Bearer $idToken'
+      };
+
+      final url = Uri.parse('$_domain/api/v1/products');
+      return http.get(
+        url,
+        headers: headers,
+      );
+    } catch (e) {
+      throw Exception(e.toString());
     }
   }
 }

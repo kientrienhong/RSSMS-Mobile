@@ -3,13 +3,17 @@ import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
+import 'package:rssms/models/entity/product.dart';
 import 'package:rssms/pages/customers/cart/widgets/accessory_widget.dart';
 import 'package:rssms/pages/customers/cart/widgets/booking_pop_up_self_storage.dart';
 import 'package:rssms/pages/customers/cart/widgets/self_storage_widget.dart';
 import '../../../../constants/constants.dart' as constants;
 
 class SelfStorageTab extends StatelessWidget {
-  const SelfStorageTab({Key? key}) : super(key: key);
+  final Map<int, List<Product>>? selfStorageTab;
+
+  const SelfStorageTab({Key? key, required this.selfStorageTab})
+      : super(key: key);
   List<Widget> mapProductWidget(listProduct) => listProduct
       .map<SelfStorageWidget>((e) => SelfStorageWidget(
             product: e,
@@ -18,13 +22,21 @@ class SelfStorageTab extends StatelessWidget {
       .toList();
   @override
   Widget build(BuildContext context) {
-    final List<Map<String, dynamic>> listSelfStorage = constants
-        .LIST_SELF_STORAGE
-        .map<Map<String, dynamic>>((e) => {...e, 'quantity': 0})
+    final List<Product> listSelfStorage =
+        selfStorageTab![constants.SELF_STORAGE]!
+            .map((e) => e.copyWith(quantity: 0))
+            .toList();
+    final List<Product> listAccessory = selfStorageTab![constants.ACCESSORY]!
+        .map((e) => e.copyWith(quantity: 0))
         .toList();
-    final List<Map<String, dynamic>> listAccessory = constants.LIST_ACCESSORY
-        .map<Map<String, dynamic>>((e) => {...e, 'quantity': 0})
-        .toList();
+
+    // final List<Map<String, dynamic>> listSelfStorage = constants
+    //     .LIST_SELF_STORAGE
+    //     .map<Map<String, dynamic>>((e) => {...e, 'quantity': 0})
+    //     .toList();
+    // final List<Map<String, dynamic>> listAccessory = constants.LIST_ACCESSORY
+    //     .map<Map<String, dynamic>>((e) => {...e, 'quantity': 0})
+    //     .toList();
     return SingleChildScrollView(
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16),

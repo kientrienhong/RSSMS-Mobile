@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/models/entity/order_booking.dart';
+import 'package:rssms/models/entity/product.dart';
 import 'package:rssms/pages/customers/cart/widgets/info_pop_up.dart';
 import 'package:rssms/pages/customers/cart/widgets/quantity_widget.dart';
 import 'package:rssms/views/item_widget_view.dart';
 
 class ItemWidget extends StatefulWidget {
-  Map<String, dynamic>? product;
+  Product? product;
   String nameType;
   ItemWidget({Key? key, required this.product, required this.nameType})
       : super(key: key);
@@ -19,26 +21,28 @@ class ItemWidget extends StatefulWidget {
 }
 
 class _ItemWidgetState extends State<ItemWidget> implements ItemWidgetView {
+  final oCcy = NumberFormat("#,##0", "en_US");
   @override
   void onAddQuantity() {
     OrderBooking orderBooking =
         Provider.of<OrderBooking>(context, listen: false);
-    Map<String, dynamic> tempProduct = {...widget.product!};
+    Product tempProduct = widget.product!.copyWith();
 
     final foundItem = orderBooking.productOrder![widget.nameType]!.indexWhere(
-      (e) => e['idOfList'].toString() == '${widget.product!['id']}',
+      (e) => e['idOfList'].toString() == '${widget.product!.id}',
     );
 
     if (foundItem != -1) {
       orderBooking.productOrder![widget.nameType]![foundItem]['quantity'] += 1;
     } else {
       orderBooking.productOrder![widget.nameType]!.add({
-        ...widget.product!,
+        ...widget.product!.toMap(),
         'quantity': 1,
-        'idOfList': '${widget.product!['id']}',
+        'idOfList': '${widget.product!.id}',
       });
     }
-    tempProduct['quantity'] += 1;
+    int newQuantity = tempProduct.quantity! + 1;
+    tempProduct = tempProduct.copyWith(quantity: newQuantity);
     setState(() {
       widget.product = tempProduct;
     });
@@ -48,12 +52,12 @@ class _ItemWidgetState extends State<ItemWidget> implements ItemWidgetView {
   void onMinusQuantity() {
     OrderBooking orderBooking =
         Provider.of<OrderBooking>(context, listen: false);
-    Map<String, dynamic> tempProduct = {...widget.product!};
-    if (tempProduct['quantity'] == 0) {
+    Product tempProduct = widget.product!.copyWith();
+    if (tempProduct.quantity == 0) {
       return;
     }
     final foundItem = orderBooking.productOrder![widget.nameType]!.indexWhere(
-      (e) => e['idOfList'].toString() == '${widget.product!['id']}',
+      (e) => e['idOfList'].toString() == '${widget.product!.id}',
     );
     if (foundItem != -1) {
       final quantity =
@@ -65,7 +69,7 @@ class _ItemWidgetState extends State<ItemWidget> implements ItemWidgetView {
             1;
       }
     }
-    tempProduct['quantity'] -= 1;
+    tempProduct = tempProduct.copyWith(quantity: tempProduct.quantity! - 1);
     setState(() {
       widget.product = tempProduct;
     });
@@ -73,6 +77,8 @@ class _ItemWidgetState extends State<ItemWidget> implements ItemWidgetView {
 
   @override
   Widget build(BuildContext context) {
+    String unit = widget.product!.unit == 'quantity' ? 'cái' : 'tháng';
+
     final deviceSize = MediaQuery.of(context).size;
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 16),
@@ -110,13 +116,13 @@ class _ItemWidgetState extends State<ItemWidget> implements ItemWidgetView {
           SizedBox(
               height: deviceSize.width / 8,
               width: deviceSize.width / 8,
-              child: Image.asset(widget.product!['url']!)),
+              child: Image.network(widget.product!.images[0]['url'])),
           CustomSizedBox(
             context: context,
             height: 8,
           ),
           CustomText(
-              text: widget.product!['name']!,
+              text: widget.product!.name,
               color: CustomColor.black,
               context: context,
               fontWeight: FontWeight.bold,
@@ -128,7 +134,7 @@ class _ItemWidgetState extends State<ItemWidget> implements ItemWidgetView {
             height: 8,
           ),
           CustomText(
-              text: 'Trọng lượng cho phép < 25kg',
+              text: widget.product!.description,
               color: CustomColor.black[3]!,
               context: context,
               maxLines: 2,
@@ -139,7 +145,7 @@ class _ItemWidgetState extends State<ItemWidget> implements ItemWidgetView {
             height: 8,
           ),
           CustomText(
-              text: '100.000đ / tháng',
+              text: '${oCcy.format(widget.product!.price)}đ / $unit',
               color: CustomColor.blue,
               context: context,
               fontWeight: FontWeight.bold,

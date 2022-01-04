@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 
-import 'image_entity.dart';
-
 class Product {
+  final int id;
+  int? quantity;
   final String name;
   final int price;
   final String size;
@@ -12,8 +12,11 @@ class Product {
   final int type;
   final String unit;
   final String tooltip;
-  final List<ImageEnitity> images;
+  final int status;
+  final List<dynamic> images;
   Product({
+    int? this.quantity,
+    required this.id,
     required this.name,
     required this.price,
     required this.size,
@@ -21,10 +24,13 @@ class Product {
     required this.type,
     required this.unit,
     required this.tooltip,
+    required this.status,
     required this.images,
   });
 
   Product copyWith({
+    int? quantity,
+    int? id,
     String? name,
     int? price,
     String? size,
@@ -32,9 +38,12 @@ class Product {
     int? type,
     String? unit,
     String? tooltip,
-    List<ImageEnitity>? images,
+    int? status,
+    List<Map<String, dynamic>>? images,
   }) {
     return Product(
+      id: id ?? this.id,
+      quantity: quantity ?? this.quantity,
       name: name ?? this.name,
       price: price ?? this.price,
       size: size ?? this.size,
@@ -42,12 +51,14 @@ class Product {
       type: type ?? this.type,
       unit: unit ?? this.unit,
       tooltip: tooltip ?? this.tooltip,
+      status: status ?? this.status,
       images: images ?? this.images,
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
+      'id': id,
       'name': name,
       'price': price,
       'size': size,
@@ -55,21 +66,23 @@ class Product {
       'type': type,
       'unit': unit,
       'tooltip': tooltip,
-      'images': images.map((x) => x.toMap()).toList(),
+      'status': status,
+      'images': images.toList(),
     };
   }
 
   factory Product.fromMap(Map<String, dynamic> map) {
     return Product(
-      name: map['name'],
-      price: map['price']?.toInt(),
-      size: map['size'],
-      description: map['description'],
-      type: map['type']?.toInt(),
-      unit: map['unit'],
-      tooltip: map['tooltip'],
-      images: List<ImageEnitity>.from(
-          map['images']?.map((x) => ImageEnitity.fromMap(x))),
+      id: map['id']?.toInt() ?? 0,
+      name: map['name'] ?? '',
+      price: map['price']?.toInt() ?? 0,
+      size: map['size'] ?? '',
+      description: map['description'] ?? '',
+      type: map['type']?.toInt() ?? 0,
+      unit: map['unit'] ?? '',
+      tooltip: map['tooltip'] ?? '',
+      status: map['status'] ?? 0,
+      images: map['images']?.map((x) => x).toList(),
     );
   }
 
@@ -80,7 +93,7 @@ class Product {
 
   @override
   String toString() {
-    return 'Product(name: $name, price: $price, size: $size, description: $description, type: $type, unit: $unit, tooltip: $tooltip, images: $images)';
+    return 'Product(id: $id, name: $name, price: $price, size: $size, description: $description, type: $type, unit: $unit, tooltip: $tooltip, status: $status, images: $images)';
   }
 
   @override
@@ -88,6 +101,7 @@ class Product {
     if (identical(this, other)) return true;
 
     return other is Product &&
+        other.id == id &&
         other.name == name &&
         other.price == price &&
         other.size == size &&
@@ -95,18 +109,21 @@ class Product {
         other.type == type &&
         other.unit == unit &&
         other.tooltip == tooltip &&
+        other.status == status &&
         listEquals(other.images, images);
   }
 
   @override
   int get hashCode {
-    return name.hashCode ^
+    return id.hashCode ^
+        name.hashCode ^
         price.hashCode ^
         size.hashCode ^
         description.hashCode ^
         type.hashCode ^
         unit.hashCode ^
         tooltip.hashCode ^
+        status.hashCode ^
         images.hashCode;
   }
 }
