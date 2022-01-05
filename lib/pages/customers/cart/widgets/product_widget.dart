@@ -84,7 +84,7 @@ class _ProductWidgetState extends State<ProductWidget> implements ProductView {
           ? SizeConfig.blockSizeVertical! * 18 + additionHeight
           : SizeConfig.blockSizeVertical! * 22 + additionHeight,
       width: deviceSize.width - 32,
-      padding: EdgeInsets.only(top: deviceSize.height / 45),
+      padding: EdgeInsets.only(top: deviceSize.height / 45, left: 16),
       margin: const EdgeInsets.symmetric(vertical: 16),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
@@ -101,10 +101,13 @@ class _ProductWidgetState extends State<ProductWidget> implements ProductView {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(
-                width: (deviceSize.width - 32) / 4,
+                width: (deviceSize.width - 64) / 4,
                 child: Image.network(widget.product!.images[0]['url'])),
             SizedBox(
-              width: (deviceSize.width - 32) * 3 / 4,
+              width: 16,
+            ),
+            SizedBox(
+              width: (deviceSize.width - 64) * 3 / 4,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -158,7 +161,7 @@ class _ProductWidgetState extends State<ProductWidget> implements ProductView {
                     height: 8,
                   ),
                   Container(
-                    padding: EdgeInsets.only(right: 16),
+                    padding: const EdgeInsets.only(right: 16),
                     width: (deviceSize.width - 32) / 8,
                     child: QuantityWidget(
                       product: widget.product,

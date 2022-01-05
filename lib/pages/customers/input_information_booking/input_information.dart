@@ -49,7 +49,7 @@ class InputInformation extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Column(
             children: [
-              CustomAppBar(
+              const CustomAppBar(
                 isHome: false,
                 name: '',
               ),
@@ -78,33 +78,21 @@ class HandleInput extends StatefulWidget {
 class _HandleInputState extends State<HandleInput> {
   final _focusNodeEmail = FocusNode();
   final _focusNodeFloor = FocusNode();
-  final _focusNodeArea = FocusNode();
   final _focusNodePhone = FocusNode();
   final _focusNodeName = FocusNode();
   final _focusNodeAddress = FocusNode();
-  final _focusNodeBuilding = FocusNode();
   final _controllerEmail = TextEditingController();
   final _controllerFloor = TextEditingController();
-  final _controllerArea = TextEditingController();
   final _controllerPhone = TextEditingController();
   final _controllerName = TextEditingController();
   final _controllerAddress = TextEditingController();
-  final _controllerBuilding = TextEditingController();
   final _controllerNote = TextEditingController();
 
   final _focusNodeFloorReturn = FocusNode();
-  final _focusNodeAreaReturn = FocusNode();
   final _focusNodeAddressReturn = FocusNode();
-  final _focusNodeBuildingReturn = FocusNode();
   final _controllerFloorReturn = TextEditingController();
-  final _controllerAreaReturn = TextEditingController();
   final _controllerAddressReturn = TextEditingController();
-  final _controllerBuildingReturn = TextEditingController();
 
-  late String _district;
-  late String _ward;
-  late String _districtReturn;
-  late String _wardReturn;
   SelectDistrict currentIndex = SelectDistrict.same;
   List<int> currentIndexNoteChoice = [];
 
@@ -145,38 +133,11 @@ class _HandleInputState extends State<HandleInput> {
   @override
   void initState() {
     super.initState();
-    _district = 'Quận';
-    _ward = 'Phường';
-    _districtReturn = 'Quận';
-    _wardReturn = 'Phường';
   }
 
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
-    void onChangeDropdownDistrictButton(String value) {
-      setState(() {
-        _district = value;
-      });
-    }
-
-    void onChangeDropdownWardButton(String value) {
-      setState(() {
-        _ward = value;
-      });
-    }
-
-    void onChangeDropdownDistrictReturnButton(String value) {
-      setState(() {
-        _districtReturn = value;
-      });
-    }
-
-    void onChangeDropdownWardReturnButton(String value) {
-      setState(() {
-        _wardReturn = value;
-      });
-    }
 
     void onTapChoice(int index, int indexFound) {
       if (indexFound == -1) {

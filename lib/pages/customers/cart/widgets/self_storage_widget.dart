@@ -84,7 +84,7 @@ class _SelfStorageWidgetState extends State<SelfStorageWidget>
             ? SizeConfig.blockSizeVertical! * 18
             : SizeConfig.blockSizeVertical! * 22,
         width: deviceSize.width - 32,
-        padding: EdgeInsets.only(top: deviceSize.height / 45),
+        padding: EdgeInsets.only(top: deviceSize.height / 45, left: 16),
         margin: const EdgeInsets.symmetric(vertical: 16),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
@@ -101,13 +101,13 @@ class _SelfStorageWidgetState extends State<SelfStorageWidget>
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(
-                  width: (deviceSize.width - 32) / 4 - 8,
+                  width: (deviceSize.width - 48) / 4 - 8,
                   child: Image.network(widget.product!.images[0]['url'])),
               const SizedBox(
                 width: 16,
               ),
               SizedBox(
-                width: (deviceSize.width - 32) * 3 / 4 - 8,
+                width: (deviceSize.width - 48) * 3 / 4 - 8,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisAlignment: MainAxisAlignment.center,
