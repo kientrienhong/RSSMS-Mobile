@@ -143,8 +143,7 @@ class Users with ChangeNotifier {
       roleName: map['roleName'] ?? '',
       birthDate: map['birthdate'] == null
           ? DateTime.now()
-          : DateFormat('yyyy-MM-dd').parse(map['birthdate']?.split('T')[0]) ??
-              DateTime.now(),
+          : DateFormat('yyyy-MM-dd').parse(map['birthdate'].split('T')[0]),
       gender: map['gender'] ?? 0,
       phone: map['phone'] ?? '',
       images: List<dynamic>.from(map['images']),

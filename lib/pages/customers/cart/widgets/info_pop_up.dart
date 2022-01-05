@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_text.dart';
+import 'package:rssms/models/entity/product.dart';
 
 class InfoPopUp extends StatelessWidget {
-  final Map<String, dynamic>? product;
+  final Product? product;
   const InfoPopUp({Key? key, this.product}) : super(key: key);
 
   @override
@@ -17,8 +18,7 @@ class InfoPopUp extends StatelessWidget {
           fontWeight: FontWeight.bold,
         ),
         content: CustomText(
-            text:
-                'Weight < 10kg \n\nWidth < 40cm \n\n1 person carry \n\nType Item: Small carton box / Small vali / Guitar',
+            text: product!.tooltip,
             color: CustomColor.black,
             context: context,
             maxLines: 80,

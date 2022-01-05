@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rssms/common/custom_input_with_hint.dart';
+import 'package:rssms/helpers/validator.dart';
 
 class InputFormDoorToDoor extends StatefulWidget {
   TextEditingController controllerAddress;
@@ -29,19 +30,20 @@ class _InputFormDoorToDoorState extends State<InputFormDoorToDoor> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CustomOutLineInputWithHint(
-          controller: widget.controllerAddress,
-          isDisable: false,
-          focusNode: widget.focusNodeAddress,
-          deviceSize: deviceSize,
-          hintText: 'Địa chỉ',
-          nextNode: widget.focusNodeFloor,
-        ),
+            controller: widget.controllerAddress,
+            isDisable: false,
+            focusNode: widget.focusNodeAddress,
+            deviceSize: deviceSize,
+            hintText: 'Địa chỉ',
+            nextNode: widget.focusNodeFloor,
+            validator: Validator.notEmpty),
         SizedBox(
           width: (deviceSize.width - 40) / 2.1,
           child: CustomOutLineInputWithHint(
             controller: widget.controllerFloor,
             isDisable: false,
             textInputType: TextInputType.number,
+            validator: Validator.notEmpty,
             focusNode: widget.focusNodeFloor,
             deviceSize: deviceSize,
             hintText: 'Tầng căn hộ bạn',

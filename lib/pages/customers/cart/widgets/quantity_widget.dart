@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
+import 'package:rssms/models/entity/product.dart';
 
 class QuantityWidget extends StatefulWidget {
-  final Map<String, dynamic>? product;
+  final Product? product;
   final double? width;
   final VoidCallback? addQuantity;
   final VoidCallback? minusQuantity;
@@ -31,7 +32,7 @@ class _QuantityWidgetState extends State<QuantityWidget> {
   @override
   Widget build(BuildContext context) {
     TextEditingController _controller =
-        TextEditingController(text: widget.product!['quantity'].toString());
+        TextEditingController(text: widget.product!.quantity.toString());
     return Row(
       mainAxisAlignment: widget.mainAxisAlignment!,
       children: [

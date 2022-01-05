@@ -206,13 +206,13 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
                             context: context,
                             fontWeight: FontWeight.bold,
                             fontSize: 16),
-                        QuantityWidget(
-                          product: widget.invoice,
-                          width: deviceSize.width / 10,
-                          addQuantity: () => onAddQuantity(),
-                          minusQuantity: () => onMinusQuantity(),
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        ),
+                        // QuantityWidget(
+                        //   product: widget.invoice,
+                        //   width: deviceSize.width / 10,
+                        //   addQuantity: () => onAddQuantity(),
+                        //   minusQuantity: () => onMinusQuantity(),
+                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        // ),
                       ],
                     ),
                     CustomSizedBox(

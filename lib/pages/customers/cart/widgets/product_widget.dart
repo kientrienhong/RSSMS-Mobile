@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/models/entity/order_booking.dart';
+import 'package:rssms/models/entity/product.dart';
 import 'package:rssms/pages/customers/cart/widgets/info_pop_up.dart';
 import 'package:rssms/pages/customers/cart/widgets/quantity_widget.dart';
 import 'package:rssms/utils/size_config.dart';
 import 'package:rssms/views/product_view.dart';
 
 class ProductWidget extends StatefulWidget {
-  Map<String, dynamic>? product;
+  Product? product;
   ProductWidget({Key? key, this.product}) : super(key: key);
 
   @override
@@ -19,6 +21,7 @@ class ProductWidget extends StatefulWidget {
 
 class _ProductWidgetState extends State<ProductWidget> implements ProductView {
   late double additionHeight;
+  final oCcy = NumberFormat("#,##0", "en_US");
 
   @override
   void initState() {
@@ -30,18 +33,18 @@ class _ProductWidgetState extends State<ProductWidget> implements ProductView {
   void onAddQuantity(double deviceSizeHeight) {
     OrderBooking orderBooking =
         Provider.of<OrderBooking>(context, listen: false);
-    Map<String, dynamic> tempProduct = {...widget.product!};
-    tempProduct['quantity'] += 1;
+    Product tempProduct = widget.product!.copyWith();
+    tempProduct = tempProduct.copyWith(quantity: tempProduct.quantity! + 1);
     orderBooking.productOrder!['product']!.add({
-      ...widget.product!,
+      ...widget.product!.toMap(),
       'quantity': 1,
-      'idOfList': '${widget.product!['id']}-${tempProduct['quantity']}',
+      'idOfList': '${widget.product!.id}-${tempProduct.quantity}',
       'note': '',
     });
 
     setState(() {
       widget.product = tempProduct;
-      additionHeight = tempProduct['quantity'] * deviceSizeHeight * 7;
+      additionHeight = tempProduct.quantity! * deviceSizeHeight * 7;
     });
   }
 
@@ -49,27 +52,29 @@ class _ProductWidgetState extends State<ProductWidget> implements ProductView {
   void onMinusQuantity(double deviceSizeHeight) {
     OrderBooking orderBooking =
         Provider.of<OrderBooking>(context, listen: false);
-    Map<String, dynamic> tempProduct = {...widget.product!};
-    if (tempProduct['quantity'] == 0) {
+    Product tempProduct = widget.product!.copyWith();
+    if (tempProduct.quantity == 0) {
       return;
     }
     final foundItem = orderBooking.productOrder!['product']!.indexWhere(
       (e) =>
           e['idOfList'].toString() ==
-          '${widget.product!['id']}-${tempProduct['quantity']}',
+          '${widget.product!.id}-${tempProduct.quantity}',
     );
 
     orderBooking.productOrder!['product']!.removeAt(foundItem);
 
-    tempProduct['quantity'] -= 1;
+    tempProduct = tempProduct.copyWith(quantity: tempProduct.quantity! - 1);
     setState(() {
       widget.product = tempProduct;
-      additionHeight = tempProduct['quantity'] * deviceSizeHeight * 7;
+      additionHeight = tempProduct.quantity! * deviceSizeHeight * 7;
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    String unit = widget.product!.unit == 'quantity' ? 'cái' : 'tháng';
+
     final deviceSize = MediaQuery.of(context).size;
     SizeConfig().init(context);
     return AnimatedContainer(
@@ -79,7 +84,7 @@ class _ProductWidgetState extends State<ProductWidget> implements ProductView {
           ? SizeConfig.blockSizeVertical! * 18 + additionHeight
           : SizeConfig.blockSizeVertical! * 22 + additionHeight,
       width: deviceSize.width - 32,
-      padding: EdgeInsets.only(top: deviceSize.height / 45),
+      padding: EdgeInsets.only(top: deviceSize.height / 45, left: 16),
       margin: const EdgeInsets.symmetric(vertical: 16),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
@@ -96,10 +101,13 @@ class _ProductWidgetState extends State<ProductWidget> implements ProductView {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(
-                width: (deviceSize.width - 32) / 4,
-                child: Image.asset(widget.product!['url']!)),
+                width: (deviceSize.width - 64) / 4,
+                child: Image.network(widget.product!.images[0]['url'])),
             SizedBox(
-              width: (deviceSize.width - 32) * 3 / 4,
+              width: 16,
+            ),
+            SizedBox(
+              width: (deviceSize.width - 64) * 3 / 4,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -108,7 +116,7 @@ class _ProductWidgetState extends State<ProductWidget> implements ProductView {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       CustomText(
-                          text: widget.product!['name']!,
+                          text: widget.product!.name,
                           color: CustomColor.black,
                           context: context,
                           fontWeight: FontWeight.bold,
@@ -134,7 +142,7 @@ class _ProductWidgetState extends State<ProductWidget> implements ProductView {
                     height: 8,
                   ),
                   CustomText(
-                      text: 'Trọng lượng cho phép < 25kg',
+                      text: widget.product!.name,
                       color: CustomColor.black[3]!,
                       context: context,
                       fontSize: 16),
@@ -143,7 +151,7 @@ class _ProductWidgetState extends State<ProductWidget> implements ProductView {
                     height: 8,
                   ),
                   CustomText(
-                      text: '100.000đ / tháng',
+                      text: '${oCcy.format(widget.product!.price)}đ / $unit',
                       color: CustomColor.blue,
                       context: context,
                       fontWeight: FontWeight.bold,
@@ -153,7 +161,7 @@ class _ProductWidgetState extends State<ProductWidget> implements ProductView {
                     height: 8,
                   ),
                   Container(
-                    padding: EdgeInsets.only(right: 16),
+                    padding: const EdgeInsets.only(right: 16),
                     width: (deviceSize.width - 32) / 8,
                     child: QuantityWidget(
                       product: widget.product,
@@ -194,7 +202,7 @@ class _ProductWidgetState extends State<ProductWidget> implements ProductView {
                         orderBooking.productOrder!['product']!.indexWhere(
                       (e) =>
                           e['idOfList'].toString() ==
-                          '${widget.product!['id']}-${index + 1}',
+                          '${widget.product!.id}-${index + 1}',
                     );
                     orderBooking.productOrder!['product']![foundItem]['note'] =
                         text;
@@ -211,7 +219,7 @@ class _ProductWidgetState extends State<ProductWidget> implements ProductView {
                   ),
                 ),
               ),
-              itemCount: widget.product!['quantity']!,
+              itemCount: widget.product!.quantity!,
             ),
           )
       ]),
