@@ -141,8 +141,9 @@ class Users with ChangeNotifier {
       email: map['email'] ?? '',
       address: map['address'] ?? '',
       roleName: map['roleName'] ?? '',
-      birthDate:
-          DateFormat('yyyy-MM-dd').parse(map['birthdate'].split('T')[0]) ??
+      birthDate: map['birthdate'] == null
+          ? DateTime.now()
+          : DateFormat('yyyy-MM-dd').parse(map['birthdate']?.split('T')[0]) ??
               DateTime.now(),
       gender: map['gender'] ?? 0,
       phone: map['phone'] ?? '',

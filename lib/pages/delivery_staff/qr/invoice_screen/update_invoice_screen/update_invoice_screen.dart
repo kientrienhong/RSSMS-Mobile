@@ -108,7 +108,7 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen> {
                       padding: const EdgeInsets.all(8.0),
                       child: Image.file(
                         path[index].image!,
-                        height: deviceSize.height / 6,
+                        height: deviceSize.height / 6.5,
                         width: deviceSize.width,
                       ),
                     ),

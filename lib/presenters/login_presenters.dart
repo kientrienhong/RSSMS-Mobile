@@ -89,13 +89,22 @@ class LoginPresenter {
     }
   }
 
-  Future<Users> handleSignIn(
+  Future<Users?> handleSignIn(
       String email, String password, String deviceToken) async {
     _view!.updateLoading();
     try {
       final response =
           await ApiServices.logInWithEmail(email, password, deviceToken);
-      return Users.fromMap(jsonDecode(response.body));
+
+      print(response.body);
+
+      print(response.statusCode);
+
+      if (response.statusCode == 200) {
+        return Users.fromMap(jsonDecode(response.body));
+      }
+
+      throw Exception();
     } catch (e) {
       print(e.toString());
       throw Exception('Invalid email or password');

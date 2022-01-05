@@ -13,6 +13,7 @@ class ApiServices {
           '$_domain/api/v1/users/thirdparty?firebaseID=$firebaseId&deviceToken=$deviceToken');
       return http.post(url);
     } catch (e) {
+      print(e.toString());
       throw Exception('Log In failed');
     }
   }
@@ -31,6 +32,7 @@ class ApiServices {
             "deviceToken": deviceToken
           }));
     } catch (e) {
+      print(e.toString());
       throw Exception('Log In failed');
     }
   }
@@ -75,6 +77,36 @@ class ApiServices {
             "oldPassword": oldPassword,
             "password": newPassword,
             "confirmPassword": confirmPassword
+          }));
+    } catch (e) {
+      throw Exception('Log In failed');
+    }
+  }
+
+  static Future<dynamic> updateProfile(
+      String fullname,
+      String phone,
+      DateTime birthday,
+      int gender,
+      String address,
+      String idToken,
+      int userId) {
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        'Authorization': 'Bearer $idToken'
+      };
+
+      final url = Uri.parse('$_domain/api/v1/users/$userId');
+      return http.put(url,
+          headers: headers,
+          body: jsonEncode({
+            "id": userId,
+            "name": fullname,
+            "gender": gender,
+            "birthdate": birthday,
+            "address": address,
+            "phone": phone
           }));
     } catch (e) {
       throw Exception('Log In failed');
