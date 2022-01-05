@@ -113,6 +113,10 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
       }
     }
 
+    orderBooking.setOrderBooking(
+        orderBooking:
+            orderBooking.copyWith(total: double.parse(sum.toString())));
+
     return '${oCcy.format(sum)} VND';
   }
 
