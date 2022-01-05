@@ -188,8 +188,7 @@ class _HandleInputState extends State<HandleInput>
                   isDisable: false,
                   focusNode: _focusNodePhone,
                   deviceSize: deviceSize,
-                  validator:
-                      Validator.checkPhoneNumber(_model.controllerPhone.text),
+                  // validator: Validator.checkPhoneNumber,
                   hintText: 'Số điện thoại',
                   nextNode: _focusNodeEmail,
                 ),

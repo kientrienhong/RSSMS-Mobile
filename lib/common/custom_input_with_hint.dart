@@ -11,7 +11,7 @@ class CustomOutLineInputWithHint extends StatefulWidget {
   final TextInputType? textInputType;
   final TextEditingController? controller;
   StatusTypeInput? statusTypeInput;
-  String? validator;
+  Function(String?)? validator;
   final bool? isDisable;
   final bool? isSecure;
   String? hintText;
@@ -109,8 +109,8 @@ class _CustomOutLineInputState extends State<CustomOutLineInputWithHint> {
               obscureText: widget.isSecure!,
               validator: widget.validator == null
                   ? null
-                  : (value) {
-                      return widget.validator;
+                  : (val) {
+                      return widget.validator!(widget.controller!.text);
                     },
               maxLines: 1,
               keyboardType: widget.textInputType,
@@ -149,7 +149,6 @@ class _CustomOutLineInputState extends State<CustomOutLineInputWithHint> {
                 disabledBorder: InputBorder.none,
               ),
             ),
-            // )),
           ],
         ),
       ]),

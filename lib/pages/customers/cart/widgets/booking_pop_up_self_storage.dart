@@ -58,7 +58,7 @@ class _BookingPopUpSelfStorageState extends State<BookingPopUpSelfStorage>
         orderBooking.setOrderBooking(
             orderBooking: orderBooking.copyWith(
                 months: month, dateTimeReturn: _model.dateReturn));
-        _model.monthController?.text = month.toString();
+        _model.monthController.text = month.toString();
       }
     });
   }
@@ -77,7 +77,14 @@ class _BookingPopUpSelfStorageState extends State<BookingPopUpSelfStorage>
           orderBooking.dateTimeDelivery.year,
           orderBooking.dateTimeDelivery.month + month as int,
           orderBooking.dateTimeDelivery.day);
-      _model.monthController?.text = month.toString();
+      _model.monthController.text = month.toString();
+    });
+  }
+
+  @override
+  void setError(String error) {
+    setState(() {
+      _model.error = error;
     });
   }
 
@@ -129,7 +136,7 @@ class _BookingPopUpSelfStorageState extends State<BookingPopUpSelfStorage>
 
     if (picked != null && picked != orderBooking.dateTimeDelivery) {
       setState(() {
-        _model.dateDeliveryController!.text =
+        _model.dateDeliveryController.text =
             picked.toIso8601String().split("T")[0];
         _model.dateReturn = DateTime(
             picked.year, picked.month + orderBooking.months as int, picked.day);
@@ -153,6 +160,8 @@ class _BookingPopUpSelfStorageState extends State<BookingPopUpSelfStorage>
 
   @override
   Widget build(BuildContext context) {
+    final _formKey = GlobalKey<FormState>();
+
     final deviceSize = MediaQuery.of(context).size;
     OrderBooking orderBooking =
         Provider.of<OrderBooking>(context, listen: false);
@@ -160,209 +169,250 @@ class _BookingPopUpSelfStorageState extends State<BookingPopUpSelfStorage>
       insetPadding: const EdgeInsets.all(15),
       content: SizedBox(
         width: double.infinity,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            CustomText(
-              text: 'Thời gian',
-              color: CustomColor.blue,
-              context: context,
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-            ),
-            CustomSizedBox(
-              context: context,
-              height: 8,
-            ),
-            SizedBox(
-              width: deviceSize.width,
-              height: deviceSize.height / 14,
-              child: Row(
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              CustomText(
+                text: 'Thời gian',
+                color: CustomColor.blue,
+                context: context,
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+              CustomSizedBox(
+                context: context,
+                height: 8,
+              ),
+              SizedBox(
+                width: deviceSize.width,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CustomText(
+                      text: 'Ngày lấy hàng',
+                      color: CustomColor.black,
+                      context: context,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    SizedBox(
+                      width: deviceSize.width / 2.5,
+                      child: TextFormField(
+                        validator: (value) {
+                          if (_model.dateDeliveryController.text.isEmpty) {
+                            return 'Vui lòng chọn ngày';
+                          }
+                          return null;
+                        },
+                        controller: _model.dateDeliveryController,
+                        onTap: () {
+                          _selectDateDelivery(context);
+                        },
+                        style: const TextStyle(fontSize: 12),
+                        textAlign: TextAlign.center,
+                        readOnly: true,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: (deviceSize.height - 12) / 28 -
+                                  (deviceSize.height - 12) / 56),
+                          hintText: 'yyyy-mm-dd',
+                          errorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(4),
+                              borderSide:
+                                  const BorderSide(color: CustomColor.red)),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(4),
+                              borderSide:
+                                  BorderSide(color: CustomColor.black[2]!)),
+                          suffixIcon: const ImageIcon(
+                            AssetImage('assets/images/calendar.png'),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              CustomSizedBox(
+                context: context,
+                height: 16,
+              ),
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   CustomText(
-                    text: 'Ngày lấy hàng',
-                    color: CustomColor.black,
-                    context: context,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  SizedBox(
-                    width: deviceSize.width / 2.5,
-                    height: deviceSize.height / 14,
-                    child: TextField(
-                      controller: _model.dateDeliveryController,
-                      onTap: () {
-                        _selectDateDelivery(context);
-                      },
-                      style: const TextStyle(fontSize: 12),
-                      textAlign: TextAlign.center,
-                      readOnly: true,
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(
-                            vertical: (deviceSize.height - 12) / 28 -
-                                (deviceSize.height - 12) / 56),
-                        hintText: 'yyyy-mm-dd',
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(4),
-                            borderSide:
-                                BorderSide(color: CustomColor.black[2]!)),
-                        suffixIcon: const ImageIcon(
-                          AssetImage('assets/images/calendar.png'),
+                      text: 'Tháng: ',
+                      color: CustomColor.black,
+                      context: context,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          minusQuantity();
+                        },
+                        child: SizedBox(
+                            height: 20,
+                            child: Image.asset(
+                              'assets/images/minusButton.png',
+                              fit: BoxFit.cover,
+                            )),
+                      ),
+                      CustomSizedBox(
+                        context: context,
+                        width: 8,
+                      ),
+                      SizedBox(
+                        width: deviceSize.width / 10,
+                        height: 24,
+                        child: TextFormField(
+                          controller: _model.monthController,
+                          keyboardType: TextInputType.number,
+                          textAlign: TextAlign.center,
+                          decoration: InputDecoration(
+                            contentPadding:
+                                const EdgeInsets.symmetric(vertical: 8),
+                            border: OutlineInputBorder(
+                                borderRadius: const BorderRadius.all(
+                                    Radius.circular(5.0)),
+                                borderSide:
+                                    BorderSide(color: CustomColor.black[3]!)),
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: const BorderRadius.all(
+                                    Radius.circular(5.0)),
+                                borderSide:
+                                    BorderSide(color: CustomColor.black[3]!)),
+                          ),
                         ),
                       ),
-                    ),
-                  ),
+                      CustomSizedBox(
+                        context: context,
+                        width: 8,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          addQuantity();
+                        },
+                        child: SizedBox(
+                            height: 20,
+                            child: Image.asset('assets/images/addButton.png',
+                                fit: BoxFit.cover)),
+                      ),
+                    ],
+                  )
                 ],
               ),
-            ),
-            CustomSizedBox(
-              context: context,
-              height: 16,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CustomText(
-                    text: 'Tháng: ',
-                    color: CustomColor.black,
-                    context: context,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        minusQuantity();
-                      },
-                      child: SizedBox(
-                          height: 20,
-                          child: Image.asset(
-                            'assets/images/minusButton.png',
-                            fit: BoxFit.cover,
-                          )),
-                    ),
-                    CustomSizedBox(
-                      context: context,
-                      width: 8,
-                    ),
-                    SizedBox(
-                      width: deviceSize.width / 10,
-                      height: 24,
-                      child: TextFormField(
-                        controller: _model.monthController,
-                        keyboardType: TextInputType.number,
-                        textAlign: TextAlign.center,
-                        decoration: InputDecoration(
-                          contentPadding:
-                              const EdgeInsets.symmetric(vertical: 8),
-                          border: OutlineInputBorder(
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(5.0)),
-                              borderSide:
-                                  BorderSide(color: CustomColor.black[3]!)),
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(5.0)),
-                              borderSide:
-                                  BorderSide(color: CustomColor.black[3]!)),
-                        ),
-                      ),
-                    ),
-                    CustomSizedBox(
-                      context: context,
-                      width: 8,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        addQuantity();
-                      },
-                      child: SizedBox(
-                          height: 20,
-                          child: Image.asset('assets/images/addButton.png',
-                              fit: BoxFit.cover)),
-                    ),
-                  ],
-                )
-              ],
-            ),
-            CustomSizedBox(
-              context: context,
-              height: 16,
-            ),
-            buildInfo('Ngày trả hàng',
-                _model.dateReturn.toString().split(' ')[0], CustomColor.blue),
-            CustomSizedBox(
-              context: context,
-              height: 16,
-            ),
-            CustomText(
-                text: 'Tạm tính',
-                color: CustomColor.blue,
+              CustomSizedBox(
                 context: context,
-                fontWeight: FontWeight.bold,
-                fontSize: 24),
-            CustomSizedBox(
-              context: context,
-              height: 16,
-            ),
-            buildInfo(
-                'Chi phí thuê: ',
-                totalEachPart(
-                    orderBooking.productOrder!['product']!, 'product'),
-                CustomColor.black),
-            CustomSizedBox(
-              context: context,
-              height: 8,
-            ),
-            buildInfo(
-                'Phụ kiện đóng gói: ',
-                totalEachPart(
-                    orderBooking.productOrder!['accessory']!, 'accessory'),
-                CustomColor.black),
-            CustomSizedBox(
-              context: context,
-              height: 8,
-            ),
-            Container(
-              width: double.infinity,
-              height: 1,
-              color: CustomColor.black,
-            ),
-            CustomSizedBox(
-              context: context,
-              height: 8,
-            ),
-            buildInfo('Tổng cộng ', totalBill(), CustomColor.black),
-            CustomSizedBox(
-              context: context,
-              height: 16,
-            ),
-            SizedBox(
-              width: double.infinity,
-              child: Center(
-                child: CustomButton(
-                    height: 24,
-                    text: 'Tiếp theo',
-                    width: deviceSize.width * 1.2 / 3,
-                    onPressFunction: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const InputInformation(
-                                    isSelfStorageOrder: true,
-                                  )));
-                    },
-                    isLoading: false,
-                    textColor: CustomColor.white,
-                    buttonColor: CustomColor.blue,
-                    borderRadius: 6),
+                height: 16,
               ),
-            ),
-          ],
+              buildInfo('Ngày trả hàng',
+                  _model.dateReturn.toString().split(' ')[0], CustomColor.blue),
+              CustomSizedBox(
+                context: context,
+                height: 16,
+              ),
+              CustomText(
+                  text: 'Tạm tính',
+                  color: CustomColor.blue,
+                  context: context,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 24),
+              CustomSizedBox(
+                context: context,
+                height: 16,
+              ),
+              buildInfo(
+                  'Chi phí thuê: ',
+                  totalEachPart(
+                      orderBooking.productOrder!['product']!, 'product'),
+                  CustomColor.black),
+              CustomSizedBox(
+                context: context,
+                height: 8,
+              ),
+              buildInfo(
+                  'Phụ kiện đóng gói: ',
+                  totalEachPart(
+                      orderBooking.productOrder!['accessory']!, 'accessory'),
+                  CustomColor.black),
+              CustomSizedBox(
+                context: context,
+                height: 8,
+              ),
+              Container(
+                width: double.infinity,
+                height: 1,
+                color: CustomColor.black,
+              ),
+              CustomSizedBox(
+                context: context,
+                height: 8,
+              ),
+              buildInfo('Tổng cộng ', totalBill(), CustomColor.black),
+              CustomSizedBox(
+                context: context,
+                height: 16,
+              ),
+              if (_model.error.isNotEmpty)
+                SizedBox(
+                  width: double.infinity,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      CustomText(
+                        text: _model.error,
+                        textAlign: TextAlign.center,
+                        color: CustomColor.red,
+                        context: context,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      CustomSizedBox(
+                        context: context,
+                        height: 8,
+                      )
+                    ],
+                  ),
+                ),
+              SizedBox(
+                width: double.infinity,
+                child: Center(
+                  child: CustomButton(
+                      height: 24,
+                      text: 'Tiếp theo',
+                      width: deviceSize.width * 1.2 / 3,
+                      onPressFunction: () {
+                        if (!_formKey.currentState!.validate()) {
+                          return;
+                        }
+
+                        if (_model.monthController.text == '0') {
+                          setError('Vui lòng chọn tháng!');
+                          return;
+                        }
+
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const InputInformation(
+                                      isSelfStorageOrder: true,
+                                    )));
+                      },
+                      isLoading: false,
+                      textColor: CustomColor.white,
+                      buttonColor: CustomColor.blue,
+                      borderRadius: 6),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

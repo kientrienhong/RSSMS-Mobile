@@ -2,10 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:rssms/models/entity/order_booking.dart';
 
 class BookingPopUpSelfStorageModel {
-  TextEditingController? dateDeliveryController;
-  TextEditingController? monthController;
+  late String error;
+  late TextEditingController dateDeliveryController;
+  late TextEditingController monthController;
   var dateReturn;
   BookingPopUpSelfStorageModel(OrderBooking orderBooking) {
+    error = '';
     dateDeliveryController =
         TextEditingController(text: orderBooking.dateTimeDeliveryString ?? '');
     monthController =
