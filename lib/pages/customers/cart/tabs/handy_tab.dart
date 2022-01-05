@@ -50,15 +50,7 @@ class _HandyTabState extends State<HandyTab> {
             : widget.handyTab![constants.SERVICES]!
                 .map((e) => e.copyWith(quantity: 0))
                 .toList();
-    // final List<Map<String, dynamic>> listProduct = constants.LIST_PRODUCT
-    //     .map<Map<String, dynamic>>((e) => {...e, 'quantity': 0})
-    //     .toList();
-    // final List<Map<String, dynamic>> listAccessory = constants.LIST_ACCESSORY
-    //     .map<Map<String, dynamic>>((e) => {...e, 'quantity': 0})
-    //     .toList();
-    // final List<Map<String, dynamic>> listService = constants.LIST_SERVICES
-    //     .map<Map<String, dynamic>>((e) => {...e, 'quantity': 0})
-    //     .toList();
+
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: 16,

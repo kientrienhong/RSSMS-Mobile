@@ -23,20 +23,18 @@ class SelfStorageTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<Product> listSelfStorage =
-        selfStorageTab![constants.SELF_STORAGE]!
-            .map((e) => e.copyWith(quantity: 0))
-            .toList();
-    final List<Product> listAccessory = selfStorageTab![constants.ACCESSORY]!
-        .map((e) => e.copyWith(quantity: 0))
-        .toList();
+        selfStorageTab![constants.SELF_STORAGE] == null
+            ? []
+            : selfStorageTab![constants.SELF_STORAGE]!
+                .map((e) => e.copyWith(quantity: 0))
+                .toList();
+    final List<Product> listAccessory =
+        selfStorageTab![constants.ACCESSORY] == null
+            ? []
+            : selfStorageTab![constants.ACCESSORY]!
+                .map((e) => e.copyWith(quantity: 0))
+                .toList();
 
-    // final List<Map<String, dynamic>> listSelfStorage = constants
-    //     .LIST_SELF_STORAGE
-    //     .map<Map<String, dynamic>>((e) => {...e, 'quantity': 0})
-    //     .toList();
-    // final List<Map<String, dynamic>> listAccessory = constants.LIST_ACCESSORY
-    //     .map<Map<String, dynamic>>((e) => {...e, 'quantity': 0})
-    //     .toList();
     return SingleChildScrollView(
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16),
