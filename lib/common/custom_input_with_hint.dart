@@ -143,8 +143,8 @@ class _CustomOutLineInputState extends State<CustomOutLineInputWithHint> {
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: colorBorder, width: 1),
                 ),
-                errorBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: colorBorder, width: 1),
+                errorBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: CustomColor.red, width: 1),
                 ),
                 disabledBorder: InputBorder.none,
               ),

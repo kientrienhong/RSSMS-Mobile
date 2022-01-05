@@ -176,8 +176,9 @@ class _CustomOutLineInputState extends State<CustomOutLineInputDateTime> {
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: colorBorder, width: 1),
                       ),
-                      errorBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: colorBorder, width: 1),
+                      errorBorder: const OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: CustomColor.red, width: 1),
                       ),
                       disabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: colorBorder, width: 1),
