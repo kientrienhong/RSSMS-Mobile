@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_app_bar.dart';
 import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
@@ -6,9 +7,14 @@ import 'package:rssms/common/custom_input_with_hint.dart';
 import 'package:rssms/common/custom_radio_button.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
+import 'package:rssms/helpers/validator.dart';
+import 'package:rssms/models/entity/user.dart';
+import 'package:rssms/models/input_information_model.dart';
 import 'package:rssms/pages/customers/input_information_booking/widgets/input_form_door_to_door.dart';
 import 'package:rssms/pages/customers/input_information_booking/widgets/note_select.dart';
 import 'package:rssms/pages/customers/payment_method_booking/payment_method_booking_screen.dart';
+import 'package:rssms/presenters/input_information_presenter.dart';
+import 'package:rssms/views/input_information_view.dart';
 import '../../../constants/constants.dart' as constants;
 
 enum SelectDistrict { same, different, notYet }
@@ -75,23 +81,17 @@ class HandleInput extends StatefulWidget {
   _HandleInputState createState() => _HandleInputState();
 }
 
-class _HandleInputState extends State<HandleInput> {
+class _HandleInputState extends State<HandleInput>
+    implements InputInformationView {
+  late InputInformationPresenter _presenter;
+  late InputInformationModel _model;
   final _focusNodeEmail = FocusNode();
   final _focusNodeFloor = FocusNode();
   final _focusNodePhone = FocusNode();
   final _focusNodeName = FocusNode();
   final _focusNodeAddress = FocusNode();
-  final _controllerEmail = TextEditingController();
-  final _controllerFloor = TextEditingController();
-  final _controllerPhone = TextEditingController();
-  final _controllerName = TextEditingController();
-  final _controllerAddress = TextEditingController();
-  final _controllerNote = TextEditingController();
-
   final _focusNodeFloorReturn = FocusNode();
   final _focusNodeAddressReturn = FocusNode();
-  final _controllerFloorReturn = TextEditingController();
-  final _controllerAddressReturn = TextEditingController();
 
   SelectDistrict currentIndex = SelectDistrict.same;
   List<int> currentIndexNoteChoice = [];
@@ -133,23 +133,31 @@ class _HandleInputState extends State<HandleInput> {
   @override
   void initState() {
     super.initState();
+    Users users = Provider.of<Users>(context, listen: false);
+    _presenter = InputInformationPresenter(users);
+    _model = _presenter.model!;
+    _presenter.view = this;
+  }
+
+  @override
+  void onClickOnContinue() {}
+
+  @override
+  void onTapChoice(int index, int indexFound) {
+    if (indexFound == -1) {
+      setState(() {
+        currentIndexNoteChoice.add(index);
+      });
+    } else {
+      setState(() {
+        currentIndexNoteChoice.remove(index);
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
-
-    void onTapChoice(int index, int indexFound) {
-      if (indexFound == -1) {
-        setState(() {
-          currentIndexNoteChoice.add(index);
-        });
-      } else {
-        setState(() {
-          currentIndexNoteChoice.remove(index);
-        });
-      }
-    }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -159,7 +167,7 @@ class _HandleInputState extends State<HandleInput> {
           height: 16,
         ),
         CustomOutLineInputWithHint(
-          controller: _controllerName,
+          controller: _model.controllerName,
           isDisable: false,
           focusNode: _focusNodeName,
           deviceSize: deviceSize,
@@ -172,10 +180,12 @@ class _HandleInputState extends State<HandleInput> {
             SizedBox(
               width: (deviceSize.width - 48) / 2.1,
               child: CustomOutLineInputWithHint(
-                controller: _controllerPhone,
+                controller: _model.controllerPhone,
                 isDisable: false,
                 focusNode: _focusNodePhone,
                 deviceSize: deviceSize,
+                validator:
+                    Validator.checkPhoneNumber(_model.controllerPhone.text),
                 hintText: 'Số điện thoại',
                 nextNode: _focusNodeEmail,
               ),
@@ -183,7 +193,7 @@ class _HandleInputState extends State<HandleInput> {
             SizedBox(
               width: (deviceSize.width - 48) / 2.1,
               child: CustomOutLineInputWithHint(
-                controller: _controllerEmail,
+                controller: _model.controllerEmail,
                 isDisable: false,
                 focusNode: _focusNodeEmail,
                 deviceSize: deviceSize,
@@ -194,8 +204,8 @@ class _HandleInputState extends State<HandleInput> {
           ],
         ),
         InputFormDoorToDoor(
-            controllerAddress: _controllerAddress,
-            controllerFloor: _controllerFloor,
+            controllerAddress: _model.controllerAddress,
+            controllerFloor: _model.controllerFloor,
             focusNodeAddress: _focusNodeAddress,
             focusNodeFloor: _focusNodeFloor),
         CustomSizedBox(
@@ -216,8 +226,8 @@ class _HandleInputState extends State<HandleInput> {
               ),
               currentIndex == SelectDistrict.different
                   ? InputFormDoorToDoor(
-                      controllerAddress: _controllerAddressReturn,
-                      controllerFloor: _controllerFloorReturn,
+                      controllerAddress: _model.controllerAddressReturn,
+                      controllerFloor: _model.controllerFloorReturn,
                       focusNodeAddress: _focusNodeAddressReturn,
                       focusNodeFloor: _focusNodeFloorReturn,
                     )
@@ -278,7 +288,7 @@ class _HandleInputState extends State<HandleInput> {
                     border: Border.all(color: CustomColor.black[3]!, width: 1)),
                 child: TextFormField(
                   minLines: 6,
-                  controller: _controllerNote,
+                  controller: _model.controllerNote,
                   keyboardType: TextInputType.multiline,
                   maxLines: null,
                 ),
@@ -298,8 +308,8 @@ class _HandleInputState extends State<HandleInput> {
               ),
               currentIndex == SelectDistrict.different
                   ? InputFormDoorToDoor(
-                      controllerAddress: _controllerAddressReturn,
-                      controllerFloor: _controllerFloorReturn,
+                      controllerAddress: _model.controllerAddressReturn,
+                      controllerFloor: _model.controllerFloorReturn,
                       focusNodeAddress: _focusNodeAddressReturn,
                       focusNodeFloor: _focusNodeFloorReturn,
                     )

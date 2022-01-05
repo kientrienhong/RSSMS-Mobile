@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rssms/common/custom_input_with_hint.dart';
+import 'package:rssms/helpers/validator.dart';
 
 class InputFormDoorToDoor extends StatefulWidget {
   TextEditingController controllerAddress;
@@ -42,6 +43,7 @@ class _InputFormDoorToDoorState extends State<InputFormDoorToDoor> {
             controller: widget.controllerFloor,
             isDisable: false,
             textInputType: TextInputType.number,
+            validator: Validator.checkPhoneNumber(widget.controllerFloor.text),
             focusNode: widget.focusNodeFloor,
             deviceSize: deviceSize,
             hintText: 'Tầng căn hộ bạn',
