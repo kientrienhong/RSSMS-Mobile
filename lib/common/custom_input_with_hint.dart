@@ -98,58 +98,61 @@ class _CustomOutLineInputState extends State<CustomOutLineInputWithHint> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      SizedBox(
-        height: widget.deviceSize!.height / 9.5,
-        width: widget.deviceSize!.width,
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Stack(
-            clipBehavior: Clip.none,
-            children: [
-              Container(
-                  height: widget.deviceSize!.height / 15,
-                  padding: const EdgeInsets.only(left: 16, top: 4, bottom: 2),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(4),
-                      border: Border.all(color: colorBorder, width: 1)),
-                  child: Center(
-                    child: TextFormField(
-                      obscureText: widget.isSecure!,
-                      validator: widget.validator == null
-                          ? null
-                          : (value) {
-                              return widget.validator;
-                            },
-                      maxLines: 1,
-                      keyboardType: widget.textInputType,
-                      style: TextStyle(color: colorLabel, fontSize: 16),
-                      enabled: !widget.isDisable!,
-                      textInputAction: widget.nextNode != null
-                          ? TextInputAction.next
-                          : TextInputAction.done,
-                      onFieldSubmitted: (term) {
-                        widget.focusNode!.unfocus();
-                        if (widget.nextNode != null) {
-                          FocusScope.of(context).requestFocus(widget.nextNode);
-                        }
-                      },
-                      controller: widget.controller,
-                      focusNode: widget.focusNode,
-                      cursorColor: CustomColor.blue,
-                      decoration: InputDecoration(
-                        hintText: widget.hintText,
-                        border: InputBorder.none,
-                        focusedBorder: InputBorder.none,
-                        enabledBorder: InputBorder.none,
-                        errorBorder: InputBorder.none,
-                        disabledBorder: InputBorder.none,
-                      ),
-                    ),
-                  )),
-            ],
-          ),
-        ]),
-      ),
-    ]);
+    return Container(
+      margin: const EdgeInsets.only(bottom: 16),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Stack(
+          clipBehavior: Clip.none,
+          children: [
+            TextFormField(
+              textAlignVertical: TextAlignVertical.center,
+              obscureText: widget.isSecure!,
+              validator: widget.validator == null
+                  ? null
+                  : (value) {
+                      return widget.validator;
+                    },
+              maxLines: 1,
+              keyboardType: widget.textInputType,
+              style: TextStyle(color: colorLabel, fontSize: 16),
+              enabled: !widget.isDisable!,
+              textInputAction: widget.nextNode != null
+                  ? TextInputAction.next
+                  : TextInputAction.done,
+              onFieldSubmitted: (term) {
+                widget.focusNode!.unfocus();
+                if (widget.nextNode != null) {
+                  FocusScope.of(context).requestFocus(widget.nextNode);
+                }
+              },
+              controller: widget.controller,
+              focusNode: widget.focusNode,
+              cursorColor: CustomColor.blue,
+              decoration: InputDecoration(
+                contentPadding:
+                    const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+                isCollapsed: true,
+                hintText: widget.hintText,
+                hintStyle: const TextStyle(height: 1),
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(color: colorBorder, width: 1),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: colorBorder, width: 1),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: colorBorder, width: 1),
+                ),
+                errorBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: colorBorder, width: 1),
+                ),
+                disabledBorder: InputBorder.none,
+              ),
+            ),
+            // )),
+          ],
+        ),
+      ]),
+    );
   }
 }

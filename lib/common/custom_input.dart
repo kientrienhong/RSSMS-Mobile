@@ -121,47 +121,54 @@ class _CustomOutLineInputState extends State<CustomOutLineInput> {
                 Stack(
                   clipBehavior: Clip.none,
                   children: [
-                    Container(
-                        height: widget.maxLine == 1
-                            ? widget.deviceSize!.height / 15
-                            : null,
-                        padding:
-                            const EdgeInsets.only(left: 16, top: 4, bottom: 2),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(4),
-                            border: Border.all(color: colorBorder, width: 1)),
-                        child: Center(
-                          child: TextFormField(
-                            obscureText: widget.isSecure!,
-                            validator: widget.validator == null
-                                ? null
-                                : widget.validator!(),
-                            maxLines: widget.maxLine,
-                            keyboardType: widget.textInputType,
-                            style: TextStyle(color: colorLabel, fontSize: 16),
-                            enabled: !widget.isDisable!,
-                            textInputAction: widget.nextNode != null
-                                ? TextInputAction.next
-                                : TextInputAction.done,
-                            onFieldSubmitted: (term) {
-                              widget.focusNode!.unfocus();
-                              if (widget.nextNode != null) {
-                                FocusScope.of(context)
-                                    .requestFocus(widget.nextNode);
-                              }
-                            },
-                            controller: widget.controller,
-                            focusNode: widget.focusNode,
-                            cursorColor: CustomColor.blue,
-                            decoration: const InputDecoration(
-                              border: InputBorder.none,
-                              focusedBorder: InputBorder.none,
-                              enabledBorder: InputBorder.none,
-                              errorBorder: InputBorder.none,
-                              disabledBorder: InputBorder.none,
-                            ),
-                          ),
-                        )),
+                    // SizedBox(
+                    //     height: widget.maxLine == 1
+                    //         ? widget.deviceSize!.height / 15
+                    //         : null,
+                    //     child: Center(
+                    //       child: TextFormField(
+                    TextFormField(
+                      obscureText: widget.isSecure!,
+                      validator:
+                          widget.validator == null ? null : widget.validator!(),
+                      maxLines: widget.maxLine,
+                      keyboardType: widget.textInputType,
+                      style: TextStyle(color: colorLabel, fontSize: 16),
+                      enabled: !widget.isDisable!,
+                      textInputAction: widget.nextNode != null
+                          ? TextInputAction.next
+                          : TextInputAction.done,
+                      onFieldSubmitted: (term) {
+                        widget.focusNode!.unfocus();
+                        if (widget.nextNode != null) {
+                          FocusScope.of(context).requestFocus(widget.nextNode);
+                        }
+                      },
+                      controller: widget.controller,
+                      focusNode: widget.focusNode,
+                      cursorColor: CustomColor.blue,
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.symmetric(
+                            vertical: 16, horizontal: 12),
+                        isCollapsed: true,
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(color: colorBorder, width: 1),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: colorBorder, width: 1),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: colorBorder, width: 1),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: colorBorder, width: 1),
+                        ),
+                        disabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: colorBorder, width: 1),
+                        ),
+                      ),
+                    ),
+                    // )),
                   ],
                 ),
                 if (widget.statusTypeInput == StatusTypeInput.INVALID)

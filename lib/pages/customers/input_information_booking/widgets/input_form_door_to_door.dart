@@ -30,13 +30,13 @@ class _InputFormDoorToDoorState extends State<InputFormDoorToDoor> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CustomOutLineInputWithHint(
-          controller: widget.controllerAddress,
-          isDisable: false,
-          focusNode: widget.focusNodeAddress,
-          deviceSize: deviceSize,
-          hintText: 'Địa chỉ',
-          nextNode: widget.focusNodeFloor,
-        ),
+            controller: widget.controllerAddress,
+            isDisable: false,
+            focusNode: widget.focusNodeAddress,
+            deviceSize: deviceSize,
+            hintText: 'Địa chỉ',
+            nextNode: widget.focusNodeFloor,
+            validator: Validator.notEmpty(widget.controllerAddress.text)),
         SizedBox(
           width: (deviceSize.width - 40) / 2.1,
           child: CustomOutLineInputWithHint(

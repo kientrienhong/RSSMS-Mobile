@@ -83,6 +83,8 @@ class HandleInput extends StatefulWidget {
 
 class _HandleInputState extends State<HandleInput>
     implements InputInformationView {
+  final _formKey = GlobalKey<FormState>();
+
   late InputInformationPresenter _presenter;
   late InputInformationModel _model;
   final _focusNodeEmail = FocusNode();
@@ -159,192 +161,200 @@ class _HandleInputState extends State<HandleInput>
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        CustomSizedBox(
-          context: context,
-          height: 16,
-        ),
-        CustomOutLineInputWithHint(
-          controller: _model.controllerName,
-          isDisable: false,
-          focusNode: _focusNodeName,
-          deviceSize: deviceSize,
-          hintText: 'Tên của bạn',
-          nextNode: _focusNodePhone,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            SizedBox(
-              width: (deviceSize.width - 48) / 2.1,
-              child: CustomOutLineInputWithHint(
-                controller: _model.controllerPhone,
-                isDisable: false,
-                focusNode: _focusNodePhone,
-                deviceSize: deviceSize,
-                validator:
-                    Validator.checkPhoneNumber(_model.controllerPhone.text),
-                hintText: 'Số điện thoại',
-                nextNode: _focusNodeEmail,
-              ),
-            ),
-            SizedBox(
-              width: (deviceSize.width - 48) / 2.1,
-              child: CustomOutLineInputWithHint(
-                controller: _model.controllerEmail,
-                isDisable: false,
-                focusNode: _focusNodeEmail,
-                deviceSize: deviceSize,
-                hintText: 'Email',
-                nextNode: _focusNodeAddress,
-              ),
-            ),
-          ],
-        ),
-        InputFormDoorToDoor(
-            controllerAddress: _model.controllerAddress,
-            controllerFloor: _model.controllerFloor,
-            focusNodeAddress: _focusNodeAddress,
-            focusNodeFloor: _focusNodeFloor),
-        CustomSizedBox(
-          context: context,
-          height: 8,
-        ),
-        if (widget.isSelfStorageOrder == false)
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return Form(
+      key: _formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          CustomSizedBox(
+            context: context,
+            height: 16,
+          ),
+          CustomOutLineInputWithHint(
+            controller: _model.controllerName,
+            isDisable: false,
+            focusNode: _focusNodeName,
+            deviceSize: deviceSize,
+            hintText: 'Tên của bạn',
+            nextNode: _focusNodePhone,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              buildTitle('ĐỊA CHỈ VÀ THỜI GIAN CHÚNG TÔI TRẢ ĐỒ ĐẠC', context),
-              CustomSizedBox(
-                context: context,
-                height: 16,
+              SizedBox(
+                width: (deviceSize.width - 48) / 2.1,
+                child: CustomOutLineInputWithHint(
+                  controller: _model.controllerPhone,
+                  isDisable: false,
+                  focusNode: _focusNodePhone,
+                  deviceSize: deviceSize,
+                  validator:
+                      Validator.checkPhoneNumber(_model.controllerPhone.text),
+                  hintText: 'Số điện thoại',
+                  nextNode: _focusNodeEmail,
+                ),
               ),
-              Column(
-                children: _buildListReceivedAddress(),
-              ),
-              currentIndex == SelectDistrict.different
-                  ? InputFormDoorToDoor(
-                      controllerAddress: _model.controllerAddressReturn,
-                      controllerFloor: _model.controllerFloorReturn,
-                      focusNodeAddress: _focusNodeAddressReturn,
-                      focusNodeFloor: _focusNodeFloorReturn,
-                    )
-                  : Container(),
-              CustomSizedBox(
-                context: context,
-                height: 8,
-              ),
-              CustomText(
-                text: 'Lưu ý với nhân viên chúng tôi',
-                color: CustomColor.blue,
-                context: context,
-                fontSize: 24,
-                textAlign: TextAlign.start,
-                fontWeight: FontWeight.bold,
-              ),
-              CustomSizedBox(
-                context: context,
-                height: 8,
-              ),
-              GridView.count(
-                shrinkWrap: true,
-                crossAxisCount: 2,
-                childAspectRatio: 1,
-                mainAxisSpacing: 8,
-                crossAxisSpacing: 8,
-                padding: const EdgeInsets.all(4),
-                physics: const NeverScrollableScrollPhysics(),
-                children: List.generate(
-                    constants.LIST_CHOICE_NOTED_BOOKING.length,
-                    (index) => NoteSelect(
-                        onTapChoice: onTapChoice,
-                        url: constants.LIST_CHOICE_NOTED_BOOKING[index]['url'],
-                        name: constants.LIST_CHOICE_NOTED_BOOKING[index]
-                            ['name'],
-                        currentIndex: currentIndexNoteChoice,
-                        index: index)),
-              ),
-              CustomSizedBox(
-                context: context,
-                height: 16,
-              ),
-              CustomText(
-                text: 'Ghi chú',
-                color: CustomColor.blue,
-                context: context,
-                fontSize: 24,
-                textAlign: TextAlign.start,
-                fontWeight: FontWeight.bold,
-              ),
-              CustomSizedBox(
-                context: context,
-                height: 8,
-              ),
-              Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(4),
-                    border: Border.all(color: CustomColor.black[3]!, width: 1)),
-                child: TextFormField(
-                  minLines: 6,
-                  controller: _model.controllerNote,
-                  keyboardType: TextInputType.multiline,
-                  maxLines: null,
+              SizedBox(
+                width: (deviceSize.width - 48) / 2.1,
+                child: CustomOutLineInputWithHint(
+                  controller: _model.controllerEmail,
+                  isDisable: false,
+                  focusNode: _focusNodeEmail,
+                  deviceSize: deviceSize,
+                  hintText: 'Email',
+                  nextNode: _focusNodeAddress,
                 ),
               ),
             ],
           ),
-        if (widget.isSelfStorageOrder)
-          Column(
-            children: [
-              buildTitle('ĐỊA CHỈ NHẬN PHỤ KIỆN ĐÓNG GÓI (NẾU CÓ)', context),
-              CustomSizedBox(
-                context: context,
-                height: 16,
-              ),
-              Column(
-                children: _buildListPackagingAddress(),
-              ),
-              currentIndex == SelectDistrict.different
-                  ? InputFormDoorToDoor(
-                      controllerAddress: _model.controllerAddressReturn,
-                      controllerFloor: _model.controllerFloorReturn,
-                      focusNodeAddress: _focusNodeAddressReturn,
-                      focusNodeFloor: _focusNodeFloorReturn,
-                    )
-                  : Container(),
-            ],
+          InputFormDoorToDoor(
+              controllerAddress: _model.controllerAddress,
+              controllerFloor: _model.controllerFloor,
+              focusNodeAddress: _focusNodeAddress,
+              focusNodeFloor: _focusNodeFloor),
+          CustomSizedBox(
+            context: context,
+            height: 8,
           ),
-        CustomSizedBox(
-          context: context,
-          height: 24,
-        ),
-        SizedBox(
-          width: double.infinity,
-          child: Center(
-            child: CustomButton(
-                height: 24,
-                text: 'Tiếp theo',
-                width: deviceSize.width * 1.2 / 3,
-                onPressFunction: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              const PaymentMethodBookingScreen()));
-                },
-                isLoading: false,
-                textColor: CustomColor.white,
-                buttonColor: CustomColor.blue,
-                borderRadius: 6),
+          if (widget.isSelfStorageOrder == false)
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                buildTitle(
+                    'ĐỊA CHỈ VÀ THỜI GIAN CHÚNG TÔI TRẢ ĐỒ ĐẠC', context),
+                CustomSizedBox(
+                  context: context,
+                  height: 16,
+                ),
+                Column(
+                  children: _buildListReceivedAddress(),
+                ),
+                currentIndex == SelectDistrict.different
+                    ? InputFormDoorToDoor(
+                        controllerAddress: _model.controllerAddressReturn,
+                        controllerFloor: _model.controllerFloorReturn,
+                        focusNodeAddress: _focusNodeAddressReturn,
+                        focusNodeFloor: _focusNodeFloorReturn,
+                      )
+                    : Container(),
+                CustomSizedBox(
+                  context: context,
+                  height: 8,
+                ),
+                CustomText(
+                  text: 'Lưu ý với nhân viên chúng tôi',
+                  color: CustomColor.blue,
+                  context: context,
+                  fontSize: 24,
+                  textAlign: TextAlign.start,
+                  fontWeight: FontWeight.bold,
+                ),
+                CustomSizedBox(
+                  context: context,
+                  height: 8,
+                ),
+                GridView.count(
+                  shrinkWrap: true,
+                  crossAxisCount: 2,
+                  childAspectRatio: 1,
+                  mainAxisSpacing: 8,
+                  crossAxisSpacing: 8,
+                  padding: const EdgeInsets.all(4),
+                  physics: const NeverScrollableScrollPhysics(),
+                  children: List.generate(
+                      constants.LIST_CHOICE_NOTED_BOOKING.length,
+                      (index) => NoteSelect(
+                          onTapChoice: onTapChoice,
+                          url: constants.LIST_CHOICE_NOTED_BOOKING[index]
+                              ['url'],
+                          name: constants.LIST_CHOICE_NOTED_BOOKING[index]
+                              ['name'],
+                          currentIndex: currentIndexNoteChoice,
+                          index: index)),
+                ),
+                CustomSizedBox(
+                  context: context,
+                  height: 16,
+                ),
+                CustomText(
+                  text: 'Ghi chú',
+                  color: CustomColor.blue,
+                  context: context,
+                  fontSize: 24,
+                  textAlign: TextAlign.start,
+                  fontWeight: FontWeight.bold,
+                ),
+                CustomSizedBox(
+                  context: context,
+                  height: 8,
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(4),
+                      border:
+                          Border.all(color: CustomColor.black[3]!, width: 1)),
+                  child: TextFormField(
+                    minLines: 6,
+                    controller: _model.controllerNote,
+                    keyboardType: TextInputType.multiline,
+                    maxLines: null,
+                  ),
+                ),
+              ],
+            ),
+          if (widget.isSelfStorageOrder)
+            Column(
+              children: [
+                buildTitle('ĐỊA CHỈ NHẬN PHỤ KIỆN ĐÓNG GÓI (NẾU CÓ)', context),
+                CustomSizedBox(
+                  context: context,
+                  height: 16,
+                ),
+                Column(
+                  children: _buildListPackagingAddress(),
+                ),
+                currentIndex == SelectDistrict.different
+                    ? InputFormDoorToDoor(
+                        controllerAddress: _model.controllerAddressReturn,
+                        controllerFloor: _model.controllerFloorReturn,
+                        focusNodeAddress: _focusNodeAddressReturn,
+                        focusNodeFloor: _focusNodeFloorReturn,
+                      )
+                    : Container(),
+              ],
+            ),
+          CustomSizedBox(
+            context: context,
+            height: 24,
           ),
-        ),
-        CustomSizedBox(
-          context: context,
-          height: 24,
-        ),
-      ],
+          SizedBox(
+            width: double.infinity,
+            child: Center(
+              child: CustomButton(
+                  height: 24,
+                  text: 'Tiếp theo',
+                  width: deviceSize.width * 1.2 / 3,
+                  onPressFunction: () {
+                    if (_formKey.currentState!.validate()) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  const PaymentMethodBookingScreen()));
+                    }
+                  },
+                  isLoading: false,
+                  textColor: CustomColor.white,
+                  buttonColor: CustomColor.blue,
+                  borderRadius: 6),
+            ),
+          ),
+          CustomSizedBox(
+            context: context,
+            height: 24,
+          ),
+        ],
+      ),
     );
   }
 }
