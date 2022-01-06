@@ -6,14 +6,18 @@ import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_radio_button.dart';
 import 'package:rssms/common/custom_sizebox.dart';
+import 'package:rssms/common/custom_snack_bar.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/models/entity/order_booking.dart';
 import 'package:rssms/models/entity/user.dart';
+import 'package:rssms/models/payment_method_booking_screen_model.dart';
 import 'package:rssms/pages/customers/cart/cart_screen.dart';
 import 'package:rssms/pages/customers/my_account/my_account.dart';
 import 'package:rssms/pages/delivery_staff/notifcation/notification_delivery.dart';
+import 'package:rssms/presenters/payment_method_booking_screen_presenter.dart';
 import 'package:rssms/views/payment_method_booking_screen_view.dart';
 import '../../../constants/constants.dart' as constants;
+import 'package:flutter_braintree/flutter_braintree.dart';
 
 enum PAYMENT_METHOD { cash, paypal }
 
@@ -27,39 +31,71 @@ class PaymentMethodBookingScreen extends StatefulWidget {
 
 class _PaymentMethodBookingScreenState extends State<PaymentMethodBookingScreen>
     implements PaymentMethodBookingScreenView {
-  final _controllerNote = TextEditingController();
-  PAYMENT_METHOD currentIndexPaymentMethod = PAYMENT_METHOD.cash;
+  late PaymentMethodBookingScreenPresenter _presenter;
+  late PaymentMethodBookingScreenModel _model;
 
   @override
-  void onClickPayment() {
-    OrderBooking orderBooking =
-        Provider.of<OrderBooking>(context, listen: false);
-    Users users = Provider.of<Users>(context, listen: false);
-    if (currentIndexPaymentMethod == PAYMENT_METHOD.cash) {
-      orderBooking.setOrderBooking(
-          orderBooking: orderBooking.copyWith(isPaid: false));
-    } else {
-      orderBooking.setOrderBooking(
-          orderBooking: orderBooking.copyWith(isPaid: true));
+  void initState() {
+    super.initState();
+    _presenter = PaymentMethodBookingScreenPresenter();
+    _model = _presenter.model;
+    _presenter.view = this;
+  }
+
+  @override
+  void updateLoading() {
+    setState(() {
+      _model.isLoading = !_model.isLoading;
+    });
+  }
+
+  @override
+  void onClickPayment() async {
+    try {
+      OrderBooking orderBooking =
+          Provider.of<OrderBooking>(context, listen: false);
+
+      Users users = Provider.of<Users>(context, listen: false);
+      if (_model.currentIndexPaymentMethod == PAYMENT_METHOD.cash) {
+        orderBooking.setOrderBooking(
+            orderBooking: orderBooking.copyWith(isPaid: false));
+      } else {
+        orderBooking.setOrderBooking(
+            orderBooking: orderBooking.copyWith(isPaid: true));
+        var request = BraintreeDropInRequest(
+            tokenizationKey: 'sandbox_x62jjpjk_n5rdrcwx7kv3ppb7',
+            collectDeviceData: true,
+            paypalRequest: BraintreePayPalRequest(
+                currencyCode: 'VND',
+                amount: orderBooking.totalPrice,
+                displayName: users.name));
+        BraintreeDropInResult? result = await BraintreeDropIn.start(request);
+        if (result != null) {
+          bool isSuccess = await _presenter.createOrder(orderBooking, users);
+
+          if (isSuccess) {
+            CustomSnackBar.buildErrorSnackbar(
+                context: context,
+                message: 'Create order success',
+                color: CustomColor.green);
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(
+                    builder: (context) => const CustomBottomNavigation(
+                          listIndexStack: [
+                            MyAccountScreen(),
+                            CartScreen(),
+                            NotificationDeliveryScreen(),
+                          ],
+                          listNavigator:
+                              constants.LIST_CUSTOMER_BOTTOM_NAVIGATION,
+                        )),
+                (Route<dynamic> route) => false);
+          }
+        }
+      }
+    } catch (e) {
+      print(e.toString());
     }
-    // var request = BraintreeDropInRequest(
-    //     tokenizationKey: 'sandbox_x62jjpjk_n5rdrcwx7kv3ppb7',
-    //     collectDeviceData: true,
-    //     paypalRequest: BraintreePayPalRequest(
-    //         currencyCode: 'VND',
-    //         // amount: presenter.model.totalPrice.toString(),
-    //         displayName: users.name));
-    // Navigator.of(context).pushAndRemoveUntil(
-    //     MaterialPageRoute(
-    //         builder: (context) => const CustomBottomNavigation(
-    //               listIndexStack: [
-    //                 MyAccountScreen(),
-    //                 CartScreen(),
-    //                 NotificationDeliveryScreen(),
-    //               ],
-    //               listNavigator: constants.LIST_CUSTOMER_BOTTOM_NAVIGATION,
-    //             )),
-    //     (Route<dynamic> route) => false);
   }
 
   List<Widget> _buildListDropDownPaymentMethods() {
@@ -67,14 +103,14 @@ class _PaymentMethodBookingScreenState extends State<PaymentMethodBookingScreen>
         .map((e) => CustomRadioButton(
             function: () {
               setState(() {
-                currentIndexPaymentMethod = e['value'];
+                _model.currentIndexPaymentMethod = e['value'];
               });
             },
             text: e['name'],
-            color: currentIndexPaymentMethod == e['value']
+            color: _model.currentIndexPaymentMethod == e['value']
                 ? CustomColor.blue
                 : CustomColor.white,
-            state: currentIndexPaymentMethod,
+            state: _model.currentIndexPaymentMethod,
             value: e['value']))
         .toList();
   }
@@ -131,7 +167,7 @@ class _PaymentMethodBookingScreenState extends State<PaymentMethodBookingScreen>
                     border: Border.all(color: CustomColor.black[3]!, width: 1)),
                 child: TextFormField(
                   minLines: 6,
-                  controller: _controllerNote,
+                  controller: _model.controllerNote,
                   keyboardType: TextInputType.multiline,
                   maxLines: null,
                 ),
@@ -150,7 +186,7 @@ class _PaymentMethodBookingScreenState extends State<PaymentMethodBookingScreen>
                       onPressFunction: () {
                         onClickPayment();
                       },
-                      isLoading: false,
+                      isLoading: _model.isLoading,
                       textColor: CustomColor.white,
                       buttonColor: CustomColor.blue,
                       borderRadius: 6),
