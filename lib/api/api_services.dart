@@ -109,7 +109,6 @@ class ApiServices {
       };
 
       final typeOrder = orderBooking.typeOrder == TypeOrder.selfStorage ? 0 : 1;
-
       final url = Uri.parse('$_domain/api/v1/orders');
       return http.post(
         url,

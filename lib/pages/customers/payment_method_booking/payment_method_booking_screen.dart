@@ -59,6 +59,26 @@ class _PaymentMethodBookingScreenState extends State<PaymentMethodBookingScreen>
       if (_model.currentIndexPaymentMethod == PAYMENT_METHOD.cash) {
         orderBooking.setOrderBooking(
             orderBooking: orderBooking.copyWith(isPaid: false));
+        bool isSuccess = await _presenter.createOrder(orderBooking, users);
+
+        if (isSuccess) {
+          CustomSnackBar.buildErrorSnackbar(
+              context: context,
+              message: 'Create order success',
+              color: CustomColor.green);
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                  builder: (context) => const CustomBottomNavigation(
+                        listIndexStack: [
+                          MyAccountScreen(),
+                          CartScreen(),
+                          NotificationDeliveryScreen(),
+                        ],
+                        listNavigator:
+                            constants.LIST_CUSTOMER_BOTTOM_NAVIGATION,
+                      )),
+              (Route<dynamic> route) => false);
+        }
       } else {
         orderBooking.setOrderBooking(
             orderBooking: orderBooking.copyWith(isPaid: true));
@@ -67,7 +87,7 @@ class _PaymentMethodBookingScreenState extends State<PaymentMethodBookingScreen>
             collectDeviceData: true,
             paypalRequest: BraintreePayPalRequest(
                 currencyCode: 'VND',
-                amount: orderBooking.totalPrice,
+                amount: orderBooking.totalPrice.toString(),
                 displayName: users.name));
         BraintreeDropInResult? result = await BraintreeDropIn.start(request);
         if (result != null) {

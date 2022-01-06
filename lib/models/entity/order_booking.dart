@@ -40,6 +40,7 @@ class OrderBooking with ChangeNotifier {
       String? nameCustomer,
       String? addressDelivery,
       String? addressReturn,
+      double? totalPrice,
       bool? isPaid,
       String? floorAddressDelivery,
       String? floorAddressReturn,
@@ -65,6 +66,7 @@ class OrderBooking with ChangeNotifier {
     _emailCustomer = emailCustomer;
     _selectDistrict = selectDistrict;
     _isPaid = isPaid;
+    _totalPrice = totalPrice;
     notifyListeners();
   }
 
@@ -92,6 +94,7 @@ class OrderBooking with ChangeNotifier {
     _emailCustomer = '';
     _selectDistrict = SelectDistrict.same;
     _isPaid = false;
+    _totalPrice = 0;
     notifyListeners();
   }
 
@@ -100,7 +103,6 @@ class OrderBooking with ChangeNotifier {
       DateTime? dateTimeDelivery,
       DateTime? dateTimeReturn,
       int? months,
-      double? total,
       TypeOrder? typeOrder,
       int? diffDay,
       int? currentSelectTime,
@@ -113,6 +115,7 @@ class OrderBooking with ChangeNotifier {
       String? floorAddressDelivery,
       String? floorAddressReturn,
       String? phoneCustomer,
+      double? totalPrice,
       String? emailCustomer,
       bool? isPaid,
       SelectDistrict? selectDistrict}) {
@@ -136,6 +139,7 @@ class OrderBooking with ChangeNotifier {
         floorAddressReturn: floorAddressReturn ?? _floorAddressReturn,
         phoneCustomer: phoneCustomer ?? _phoneCustomer,
         emailCustomer: emailCustomer ?? _emailCustomer,
+        totalPrice: totalPrice ?? _totalPrice,
         selectDistrict: selectDistrict ?? _selectDistrict);
   }
 
@@ -159,6 +163,8 @@ class OrderBooking with ChangeNotifier {
     _typeOrder = orderBooking.typeOrder;
     _selectDistrict = orderBooking.selectDistrict;
     _isPaid = orderBooking.isPaid;
+    _totalPrice = orderBooking.totalPrice;
+
     notifyListeners();
   }
 
