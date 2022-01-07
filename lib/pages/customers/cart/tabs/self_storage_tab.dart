@@ -17,7 +17,6 @@ class SelfStorageTab extends StatelessWidget {
   List<Widget> mapProductWidget(listProduct) => listProduct
       .map<SelfStorageWidget>((e) => SelfStorageWidget(
             product: e,
-            nameType: 'product',
           ))
       .toList();
   @override

@@ -29,11 +29,15 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
   @override
   void initState() {
     super.initState();
-    OrderBooking orderBooking =
-        Provider.of<OrderBooking>(context, listen: false);
-    _presenter = BookingPopUpDoorToDoorPresenters(orderBooking);
-    _presenter.view = this;
-    _model = _presenter.models;
+    try {
+      OrderBooking orderBooking =
+          Provider.of<OrderBooking>(context, listen: false);
+      _presenter = BookingPopUpDoorToDoorPresenters(orderBooking);
+      _presenter.view = this;
+      _model = _presenter.models;
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   @override
@@ -94,8 +98,8 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
     return '${oCcy.format(sum)} VND';
   }
 
-  String totalBill() {
-    var sum = 0;
+  double totalBill() {
+    double sum = 0;
     OrderBooking orderBooking =
         Provider.of<OrderBooking>(context, listen: false);
 
@@ -112,8 +116,8 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
         }
       }
     }
-
-    return '${oCcy.format(sum)} VND';
+    return sum;
+    // return '${oCcy.format(sum)} VND';
   }
 
   @override
@@ -152,6 +156,7 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
                 orderBooking: orderBooking.copyWith(
                     months: _months,
                     diffDay: _diffDate,
+                    totalPrice: totalBill(),
                     dateTimeReturn: picked));
           });
         }
@@ -185,6 +190,7 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
                 orderBooking: orderBooking.copyWith(
                     months: _months,
                     diffDay: _diffDate,
+                    totalPrice: totalBill(),
                     dateTimeDelivery: picked));
           });
         }
@@ -229,9 +235,7 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
                       height: deviceSize.height / 14,
                       child: TextField(
                         controller: _model.dateDeliveryController,
-                        onTap: () {
-                          _selectDateDelivery(context);
-                        },
+                        onTap: () => _selectDateDelivery(context),
                         style: const TextStyle(fontSize: 12),
                         textAlign: TextAlign.center,
                         readOnly: true,
@@ -280,9 +284,8 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
                 height: 4,
               ),
               GestureDetector(
-                onTap: () => {
-                  onChangeIsCustomerDelivery(!orderBooking.isCustomerDelivery)
-                },
+                onTap: () => onChangeIsCustomerDelivery(
+                    !orderBooking.isCustomerDelivery),
                 child: Row(
                   children: [
                     Container(
@@ -328,9 +331,7 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
                       height: deviceSize.height / 14,
                       child: TextField(
                         controller: _model.dateReturnController,
-                        onTap: () {
-                          _selectDateReturn(context);
-                        },
+                        onTap: () => _selectDateReturn(context),
                         style: const TextStyle(fontSize: 12),
                         textAlign: TextAlign.center,
                         readOnly: true,
@@ -409,7 +410,8 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
                 context: context,
                 height: 8,
               ),
-              buildInfo('Tổng cộng ', totalBill(), CustomColor.black),
+              buildInfo('Tổng cộng ', '${oCcy.format(totalBill())} VND',
+                  CustomColor.black),
               CustomSizedBox(
                 context: context,
                 height: 16,

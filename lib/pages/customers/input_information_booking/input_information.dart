@@ -8,6 +8,7 @@ import 'package:rssms/common/custom_radio_button.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/helpers/validator.dart';
+import 'package:rssms/models/entity/order_booking.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/models/input_information_model.dart';
 import 'package:rssms/pages/customers/input_information_booking/widgets/input_form_door_to_door.dart';
@@ -142,7 +143,57 @@ class _HandleInputState extends State<HandleInput>
   }
 
   @override
-  void onClickOnContinue() {}
+  void onClickOnContinue() {
+    if (_formKey.currentState!.validate()) {
+      OrderBooking orderBooking =
+          Provider.of<OrderBooking>(context, listen: false);
+
+      if (widget.isSelfStorageOrder) {
+        if (currentIndex == SelectDistrict.different) {
+          orderBooking.setOrderBooking(
+              orderBooking: orderBooking.copyWith(
+                  typeOrder: TypeOrder.selfStorage,
+                  selectDistrict: currentIndex,
+                  addressDelivery: _model.controllerAddress.text,
+                  nameCustomer: _model.controllerName.text,
+                  phoneCustomer: _model.controllerPhone.text,
+                  floorAddressDelivery: _model.controllerFloor.text,
+                  emailCustomer: _model.controllerEmail.text,
+                  addressReturn: _model.controllerAddress.text,
+                  floorAddressReturn: _model.controllerFloorReturn.text));
+        } else if (currentIndex == SelectDistrict.same) {
+          orderBooking.setOrderBooking(
+              orderBooking: orderBooking.copyWith(
+                  typeOrder: TypeOrder.selfStorage,
+                  selectDistrict: currentIndex,
+                  addressDelivery: _model.controllerAddress.text,
+                  nameCustomer: _model.controllerName.text,
+                  phoneCustomer: _model.controllerPhone.text,
+                  floorAddressDelivery: _model.controllerFloor.text,
+                  emailCustomer: _model.controllerEmail.text,
+                  addressReturn: _model.controllerAddress.text,
+                  floorAddressReturn: _model.controllerFloor.text));
+        } else {
+          orderBooking.setOrderBooking(
+              orderBooking: orderBooking.copyWith(
+                  typeOrder: TypeOrder.selfStorage,
+                  selectDistrict: currentIndex,
+                  addressDelivery: _model.controllerAddress.text,
+                  nameCustomer: _model.controllerName.text,
+                  phoneCustomer: _model.controllerPhone.text,
+                  floorAddressDelivery: _model.controllerFloor.text,
+                  emailCustomer: _model.controllerEmail.text,
+                  addressReturn: '',
+                  floorAddressReturn: '0'));
+        }
+      }
+
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => const PaymentMethodBookingScreen()));
+    }
+  }
 
   @override
   void onTapChoice(int index, int indexFound) {
@@ -188,7 +239,7 @@ class _HandleInputState extends State<HandleInput>
                   isDisable: false,
                   focusNode: _focusNodePhone,
                   deviceSize: deviceSize,
-                  // validator: Validator.checkPhoneNumber,
+                  validator: Validator.checkPhoneNumber,
                   hintText: 'Số điện thoại',
                   nextNode: _focusNodeEmail,
                 ),
@@ -334,13 +385,7 @@ class _HandleInputState extends State<HandleInput>
                   text: 'Tiếp theo',
                   width: deviceSize.width * 1.2 / 3,
                   onPressFunction: () {
-                    if (_formKey.currentState!.validate()) {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  const PaymentMethodBookingScreen()));
-                    }
+                    onClickOnContinue();
                   },
                   isLoading: false,
                   textColor: CustomColor.white,

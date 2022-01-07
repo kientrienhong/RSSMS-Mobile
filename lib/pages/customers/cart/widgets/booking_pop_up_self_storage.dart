@@ -49,6 +49,9 @@ class _BookingPopUpSelfStorageState extends State<BookingPopUpSelfStorage>
   void minusQuantity() {
     OrderBooking orderBooking =
         Provider.of<OrderBooking>(context, listen: false);
+    if (_model.dateReturn is String) {
+      return;
+    }
     setState(() {
       if (orderBooking.months > 0) {
         int month = --orderBooking.months;
@@ -57,7 +60,9 @@ class _BookingPopUpSelfStorageState extends State<BookingPopUpSelfStorage>
 
         orderBooking.setOrderBooking(
             orderBooking: orderBooking.copyWith(
-                months: month, dateTimeReturn: _model.dateReturn));
+                totalPrice: totalBill(),
+                months: month,
+                dateTimeReturn: _model.dateReturn));
         _model.monthController.text = month.toString();
       }
     });
@@ -67,12 +72,19 @@ class _BookingPopUpSelfStorageState extends State<BookingPopUpSelfStorage>
   void addQuantity() {
     OrderBooking orderBooking =
         Provider.of<OrderBooking>(context, listen: false);
+
+    if (_model.dateReturn is String) {
+      return;
+    }
+
     setState(() {
       int month = ++orderBooking.months;
 
       orderBooking.setOrderBooking(
           orderBooking: orderBooking.copyWith(
-              months: month, dateTimeReturn: _model.dateReturn));
+              totalPrice: totalBill(),
+              months: month,
+              dateTimeReturn: _model.dateReturn));
       _model.dateReturn = DateTime(
           orderBooking.dateTimeDelivery.year,
           orderBooking.dateTimeDelivery.month + month as int,
@@ -102,8 +114,8 @@ class _BookingPopUpSelfStorageState extends State<BookingPopUpSelfStorage>
     return '${oCcy.format(sum)} VND';
   }
 
-  String totalBill() {
-    var sum = 0;
+  double totalBill() {
+    double sum = 0;
     OrderBooking orderBooking =
         Provider.of<OrderBooking>(context, listen: false);
 
@@ -120,8 +132,8 @@ class _BookingPopUpSelfStorageState extends State<BookingPopUpSelfStorage>
         });
       }
     });
-
-    return '${oCcy.format(sum)} VND';
+    return sum;
+    // return '${oCcy.format(sum)} VND';
   }
 
   _selectDateDelivery(BuildContext context) async {
@@ -143,6 +155,7 @@ class _BookingPopUpSelfStorageState extends State<BookingPopUpSelfStorage>
         orderBooking.setOrderBooking(
             orderBooking: orderBooking.copyWith(
                 dateTimeDelivery: picked,
+                totalPrice: totalBill(),
                 dateTimeDeliveryString: picked.toIso8601String().split("T")[0],
                 dateTimeReturn: _model.dateReturn));
       });
@@ -156,6 +169,7 @@ class _BookingPopUpSelfStorageState extends State<BookingPopUpSelfStorage>
         Provider.of<OrderBooking>(context, listen: false);
     _presenter = BookingPopUpSelfStoragePresenter(orderBooking);
     _model = _presenter.model!;
+    _presenter.view = this;
   }
 
   @override
@@ -355,7 +369,8 @@ class _BookingPopUpSelfStorageState extends State<BookingPopUpSelfStorage>
                 context: context,
                 height: 8,
               ),
-              buildInfo('Tổng cộng ', totalBill(), CustomColor.black),
+              buildInfo('Tổng cộng ', '${oCcy.format(totalBill())} VND',
+                  CustomColor.black),
               CustomSizedBox(
                 context: context,
                 height: 16,

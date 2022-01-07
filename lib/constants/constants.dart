@@ -87,64 +87,6 @@ const List<Map<String, dynamic>> LIST_PRODUCT = [
   },
 ];
 
-const List<Map<String, dynamic>> LIST_SELF_STORAGE = [
-  {
-    'url': 'assets/images/8m2.png',
-    'name': 'Kho 8m2',
-    'id': 10,
-    'price': 10000,
-    'type': SELF_STORAGE
-  },
-  {
-    'url': 'assets/images/16m2.png',
-    'name': 'Kho 16m2',
-    'id': 11,
-    'price': 20000,
-    'type': SELF_STORAGE
-  },
-];
-
-const List<Map<String, dynamic>> LIST_ACCESSORY = [
-  {
-    'url': 'assets/images/tape.png',
-    'name': 'Băng keo trong',
-    'id': 5,
-    'price': 20000,
-    'type': ACCESSORY
-  },
-  {
-    'url': 'assets/images/locker.png',
-    'name': 'Ổ khóa cao cấp',
-    'id': 6,
-    'price': 20000,
-    'type': ACCESSORY
-  },
-  {
-    'url': 'assets/images/peFoam.png',
-    'name': 'Xốp hơi, xốp foam',
-    'id': 7,
-    'price': 20000,
-    'type': ACCESSORY
-  },
-  {
-    'url': 'assets/images/PEstretchfilm.png',
-    'name': 'Màn quấn PE',
-    'id': 8,
-    'price': 20000,
-    'type': ACCESSORY
-  },
-];
-
-const List<Map<String, dynamic>> LIST_SERVICES = [
-  {
-    'url': 'assets/images/packaging.png',
-    'name': 'Đóng gói dễ vỡ',
-    'id': 9,
-    'price': 20000,
-    'type': SERVICES
-  },
-];
-
 const List<String> LIST_TIME_PICK_UP = [
   "8am - 10am",
   "10am - 12pm",
@@ -461,27 +403,21 @@ const List<Map<String, dynamic>> LIST_CHOICE_NOTED_BOOKING = [
 
 const List<Map<String, dynamic>> LIST_PAYMENT_METHOD_CHOICES = [
   {'name': 'Thanh toán tiền mặt', 'value': PAYMENT_METHOD.cash},
-  {
-    'name': 'Ứng dụng Mobile Banking quét mã VNPAY QR',
-    'value': PAYMENT_METHOD.mobileBanking
-  },
-  {'name': 'Thẻ ATM và tài khoản ngân hàng', 'value': PAYMENT_METHOD.ATM},
-  {'name': 'Thẻ thanh toán quốc tế', 'value': PAYMENT_METHOD.visa},
-  {'name': 'Ví điện tử', 'value': PAYMENT_METHOD.eWallet},
+  {'name': 'Thánh toán thông qua paypal', 'value': PAYMENT_METHOD.paypal},
 ];
 
-const List<Map<String, dynamic>> LIST_PAYMENT_EACH_MONTH_CHOICES = [
-  {
-    'name':
-        'Thanh toán toàn bộ đơn hàng\n\n- Đối với đơn hàng dưới 1 tháng\n\n-Giảm 10% đối với đơn hàng trên 1 tháng',
-    'value': PAYMENT_EACH_MONTHS_METHODS.YES
-  },
-  {
-    'name':
-        'Thanh toán theo từng tháng\n\n- Không áp dụng với đơn hàng dưới 1 tháng\n\n- Thanh toán ngay: chi phí tháng đầu tiên + chi phí khác: nếu có\n\n- Các tháng sau, chi phí sẽ thanh toán theo từng tháng vào ngày thứ 30 của tháng gửi giữ',
-    'value': PAYMENT_EACH_MONTHS_METHODS.NO
-  },
-];
+// const List<Map<String, dynamic>> LIST_PAYMENT_EACH_MONTH_CHOICES = [
+//   {
+//     'name':
+//         'Thanh toán toàn bộ đơn hàng\n\n- Đối với đơn hàng dưới 1 tháng\n\n-Giảm 10% đối với đơn hàng trên 1 tháng',
+//     'value': PAYMENT_EACH_MONTHS_METHODS.YES
+//   },
+//   {
+//     'name':
+//         'Thanh toán theo từng tháng\n\n- Không áp dụng với đơn hàng dưới 1 tháng\n\n- Thanh toán ngay: chi phí tháng đầu tiên + chi phí khác: nếu có\n\n- Các tháng sau, chi phí sẽ thanh toán theo từng tháng vào ngày thứ 30 của tháng gửi giữ',
+//     'value': PAYMENT_EACH_MONTHS_METHODS.NO
+//   },
+// ];
 
 const List<Map<String, dynamic>> LIST_SCHEDULE_DELIVERY = [
   {

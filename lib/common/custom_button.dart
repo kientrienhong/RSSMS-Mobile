@@ -32,7 +32,7 @@ class CustomButton extends StatelessWidget {
     const widthMockUp = 414;
 
     return GestureDetector(
-      onTap: onPressFunction,
+      onTap: isLoading == false ? onPressFunction : () {},
       child: Container(
         height: MediaQuery.of(context).size.height * (height! / widthMockUp),
         width: width,
