@@ -4,6 +4,7 @@ import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/models/entity/order_booking.dart';
 import 'package:rssms/models/entity/product.dart';
 import 'package:rssms/pages/customers/cart/tabs/handy_tab.dart';
+import 'package:rssms/pages/customers/cart/tabs/handy_tab_unwidely.dart';
 import 'package:rssms/pages/customers/cart/tabs/self_storage_tab.dart';
 import 'package:rssms/pages/customers/cart/widgets/title_tab.dart';
 import 'package:rssms/views/door_to_door_view.dart';
@@ -76,7 +77,7 @@ class _DoorToDoorTabState extends State<DoorToDoorTab>
               ? HandyTab(
                   handyTab: widget.handyTab,
                 )
-              : HandyTab(handyTab: widget.handyTab)
+              : HandyTabUnwidely(handyTab: widget.unweildyTab)
         ],
       ),
     );

@@ -43,14 +43,13 @@ class ProfilePresenter {
     try {
       final response = await ApiServices.updateProfile(
           name, phone, birthday, gender, address, idToken, userId);
-
       if (response.statusCode == 200) return true;
       return false;
     } catch (e) {
       print(e.toString());
       throw Exception(e.toString());
     } finally {
-      _view!.updateLoadingPassword();
+      _view!.updateLoadingProfile();
     }
   }
 

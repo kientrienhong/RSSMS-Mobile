@@ -100,6 +100,23 @@ class ApiServices {
     }
   }
 
+  static Future<dynamic> getInvoice(String idToken) {
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        'Authorization': 'Bearer $idToken'
+      };
+
+      final url = Uri.parse('$_domain/api/v1/orders');
+      return http.get(
+        url,
+        headers: headers,
+      );
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
   static Future<dynamic> updateProfile(
       String fullname,
       String phone,
@@ -121,12 +138,13 @@ class ApiServices {
             "id": userId,
             "name": fullname,
             "gender": gender,
-            "birthdate": birthday,
+            "birthdate": birthday.toIso8601String(),
             "address": address,
             "phone": phone
           }));
     } catch (e) {
-      throw Exception('Log In failed');
+      print(e.toString());
+      throw Exception('Update Failed');
     }
   }
 }

@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
+import 'package:rssms/models/entity/user.dart';
+import 'package:rssms/models/invoice_model.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoice_widget.dart';
+import 'package:rssms/presenters/invoice_presenter.dart';
+import 'package:rssms/views/invoice_view.dart';
 import '../../../../constants/constants.dart' as constants;
 
 class InvoiceScreen extends StatefulWidget {
@@ -12,13 +17,31 @@ class InvoiceScreen extends StatefulWidget {
   State<InvoiceScreen> createState() => _InvoiceScreenState();
 }
 
-class _InvoiceScreenState extends State<InvoiceScreen> {
+class _InvoiceScreenState extends State<InvoiceScreen> implements InvoiceView {
+  late InvoicePresenter _presenter;
+  late InvoiceModel _model;
+
+  @override
+  void initState() {
+    super.initState();
+    Users user = Provider.of<Users>(context, listen: false);
+    _presenter = InvoicePresenter();
+    _presenter.view = this;
+    _model = _presenter.model!;
+    _presenter.loadInvoice(user.idToken!);
+  }
+
   List<Widget> mapInvoiceWidget(listInvoice) => listInvoice
       .map<InvoiceWidget>((e) => InvoiceWidget(
             invoice: e,
           ))
       .toList();
   var filterIndex = "0";
+
+  @override
+  void setChangeList() {
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +122,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
             Expanded(
                 child: ListView(
               padding: const EdgeInsets.all(0),
-              children: mapInvoiceWidget(listInvoice),
+              children: mapInvoiceWidget(_model.listInvoice),
             ))
           ],
         ),

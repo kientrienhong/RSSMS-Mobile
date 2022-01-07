@@ -254,6 +254,20 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
                       listNavigator: constant.LIST_CUSTOMER_BOTTOM_NAVIGATION,
                     )),
           );
+        } else if (user.roleName == 'Delivery Staff') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const CustomBottomNavigation(
+                      listIndexStack: [
+                        MyAccountDeliveryScreen(),
+                        DeliveryScreen(),
+                        QrScreen(),
+                        NotificationDeliveryScreen(),
+                      ],
+                      listNavigator: constant.LIST_DELIVERY_BOTTOM_NAVIGATION,
+                    )),
+          );
         } else {
           Navigator.push(
               context,

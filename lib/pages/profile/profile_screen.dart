@@ -205,6 +205,9 @@ class _ProfileScreenState extends State<FormProfileScreen>
   @override
   void onClickUpdateProfile(String fullname, String phone, String birthdate,
       String gender, String address) async {
+    _focusNodeStreet.unfocus();
+    _focusNodePhone.unfocus();
+    _focusNodeFullname.unfocus();
     int genderCode;
     switch (gender) {
       case "Nam":
@@ -276,6 +279,7 @@ class _ProfileScreenState extends State<FormProfileScreen>
 
   @override
   Widget build(BuildContext context) {
+    print(_model.isLoadingUpdateProfile);
     return Scaffold(
       backgroundColor: CustomColor.white,
       body: Padding(
@@ -389,7 +393,7 @@ class _ProfileScreenState extends State<FormProfileScreen>
             Center(
               child: CustomButton(
                   height: 24,
-                  isLoading: false,
+                  isLoading: _model.isLoadingUpdateProfile,
                   text: 'Cập Nhật',
                   width: widget.deviceSize.width / 3,
                   textColor: CustomColor.white,

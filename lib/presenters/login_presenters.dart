@@ -47,6 +47,8 @@ class LoginPresenter {
       final result = await _model!.auth.signInWithCredential(credential);
       final response =
           await ApiServices.logInThirParty(result.user!.uid, deviceToken);
+      print("####################" + result.user!.email!);
+
       return Users.fromMap(jsonDecode(response.body));
     } catch (error) {
       print(error);
@@ -95,10 +97,6 @@ class LoginPresenter {
     try {
       final response =
           await ApiServices.logInWithEmail(email, password, deviceToken);
-
-      print(response.body);
-
-      print(response.statusCode);
 
       if (response.statusCode == 200) {
         return Users.fromMap(jsonDecode(response.body));

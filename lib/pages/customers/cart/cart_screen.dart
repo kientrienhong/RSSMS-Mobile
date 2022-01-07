@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:rssms/api/api_services.dart';
 import 'package:rssms/models/cart_screen_model.dart';
 import 'package:rssms/models/entity/order_booking.dart';
-import 'package:rssms/models/entity/product.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/pages/customers/cart/tabs/cart_tab.dart';
 import 'package:rssms/pages/customers/cart/tabs/door_to_door_tab.dart';

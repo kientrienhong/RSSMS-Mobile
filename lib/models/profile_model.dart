@@ -47,7 +47,6 @@ class ProfileModel {
         _textGender = "Nam";
         break;
     }
-    print(_textGender);
   }
 
   bool get isLoadingChangePassword => _isLoadingChangePassword!;
