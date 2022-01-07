@@ -148,44 +148,48 @@ class _HandleInputState extends State<HandleInput>
       OrderBooking orderBooking =
           Provider.of<OrderBooking>(context, listen: false);
 
-      if (widget.isSelfStorageOrder) {
-        if (currentIndex == SelectDistrict.different) {
-          orderBooking.setOrderBooking(
-              orderBooking: orderBooking.copyWith(
-                  typeOrder: TypeOrder.selfStorage,
-                  selectDistrict: currentIndex,
-                  addressDelivery: _model.controllerAddress.text,
-                  nameCustomer: _model.controllerName.text,
-                  phoneCustomer: _model.controllerPhone.text,
-                  floorAddressDelivery: _model.controllerFloor.text,
-                  emailCustomer: _model.controllerEmail.text,
-                  addressReturn: _model.controllerAddress.text,
-                  floorAddressReturn: _model.controllerFloorReturn.text));
-        } else if (currentIndex == SelectDistrict.same) {
-          orderBooking.setOrderBooking(
-              orderBooking: orderBooking.copyWith(
-                  typeOrder: TypeOrder.selfStorage,
-                  selectDistrict: currentIndex,
-                  addressDelivery: _model.controllerAddress.text,
-                  nameCustomer: _model.controllerName.text,
-                  phoneCustomer: _model.controllerPhone.text,
-                  floorAddressDelivery: _model.controllerFloor.text,
-                  emailCustomer: _model.controllerEmail.text,
-                  addressReturn: _model.controllerAddress.text,
-                  floorAddressReturn: _model.controllerFloor.text));
-        } else {
-          orderBooking.setOrderBooking(
-              orderBooking: orderBooking.copyWith(
-                  typeOrder: TypeOrder.selfStorage,
-                  selectDistrict: currentIndex,
-                  addressDelivery: _model.controllerAddress.text,
-                  nameCustomer: _model.controllerName.text,
-                  phoneCustomer: _model.controllerPhone.text,
-                  floorAddressDelivery: _model.controllerFloor.text,
-                  emailCustomer: _model.controllerEmail.text,
-                  addressReturn: '',
-                  floorAddressReturn: '0'));
-        }
+      if (currentIndex == SelectDistrict.different) {
+        orderBooking.setOrderBooking(
+            orderBooking: orderBooking.copyWith(
+                typeOrder: widget.isSelfStorageOrder
+                    ? TypeOrder.selfStorage
+                    : TypeOrder.doorToDoor,
+                selectDistrict: currentIndex,
+                addressDelivery: _model.controllerAddress.text,
+                nameCustomer: _model.controllerName.text,
+                phoneCustomer: _model.controllerPhone.text,
+                floorAddressDelivery: _model.controllerFloor.text,
+                emailCustomer: _model.controllerEmail.text,
+                addressReturn: _model.controllerAddress.text,
+                floorAddressReturn: _model.controllerFloorReturn.text));
+      } else if (currentIndex == SelectDistrict.same) {
+        orderBooking.setOrderBooking(
+            orderBooking: orderBooking.copyWith(
+                typeOrder: widget.isSelfStorageOrder
+                    ? TypeOrder.selfStorage
+                    : TypeOrder.doorToDoor,
+                selectDistrict: currentIndex,
+                addressDelivery: _model.controllerAddress.text,
+                nameCustomer: _model.controllerName.text,
+                phoneCustomer: _model.controllerPhone.text,
+                floorAddressDelivery: _model.controllerFloor.text,
+                emailCustomer: _model.controllerEmail.text,
+                addressReturn: _model.controllerAddress.text,
+                floorAddressReturn: _model.controllerFloor.text));
+      } else {
+        orderBooking.setOrderBooking(
+            orderBooking: orderBooking.copyWith(
+                typeOrder: widget.isSelfStorageOrder
+                    ? TypeOrder.selfStorage
+                    : TypeOrder.doorToDoor,
+                selectDistrict: currentIndex,
+                addressDelivery: _model.controllerAddress.text,
+                nameCustomer: _model.controllerName.text,
+                phoneCustomer: _model.controllerPhone.text,
+                floorAddressDelivery: _model.controllerFloor.text,
+                emailCustomer: _model.controllerEmail.text,
+                addressReturn: '',
+                floorAddressReturn: '0'));
       }
 
       Navigator.push(
