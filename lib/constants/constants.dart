@@ -95,6 +95,11 @@ const List<String> LIST_TIME_PICK_UP = [
   "4pm - 6pm",
 ];
 
+const Map<String, String> ICON_INVOICE = {
+  "box": "assets/images/delivery-box1.png",
+  "warehose": "assets/images/warehouse1.png"
+};
+
 const List<Map<String, dynamic>> LIST_INVOICE = [
   {
     "url": "assets/images/delivery-box1.png",

@@ -10,38 +10,54 @@ import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/common/update_image_invoice.dart';
 import 'package:rssms/models/entity/add_image.dart';
+import 'package:rssms/models/entity/invoice.dart';
+import 'package:rssms/models/entity/user.dart';
+import 'package:rssms/models/invoice_update_model.dart';
 import 'package:rssms/pages/log_in/widget/button_icon.dart';
+import 'package:rssms/presenters/invoice_update_presenter.dart';
+import 'package:rssms/views/invoice_update_view.dart';
 
 class UpdateInvoiceScreen extends StatefulWidget {
-  Map<String, dynamic>? invoice;
+  Invoice? invoice;
   UpdateInvoiceScreen({Key? key, required this.invoice}) : super(key: key);
 
   @override
   _UpdateInvoiceScreenState createState() => _UpdateInvoiceScreenState();
 }
 
-enum STATUS_INVOICE { dadat, luukho, yeucautra, datra }
+class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
+    implements UpdateInvoiceView {
+  late InvoiceUpdatePresenter _presenter;
+  late InvoiceUpdateModel _model;
 
-class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen> {
   final _focusNodeFullname = FocusNode();
   final _focusNodePhone = FocusNode();
-  final _controllerFullname = TextEditingController();
-  final _controllerPhone = TextEditingController();
 
-  String get _fullname => _controllerFullname.text;
-  String get _phone => _controllerPhone.text;
-  STATUS_INVOICE? status;
   File? image;
   List<AddedImage>? listImage = [];
-  bool? isPaid = false;
+
+  @override
+  void initState() {
+    Users users = Provider.of<Users>(context, listen: false);
+    _presenter = InvoiceUpdatePresenter(users, widget.invoice!);
+    _presenter.setView(this);
+    _model = _presenter.model;
+    super.initState();
+  }
+
   @override
   void dispose() {
     super.dispose();
     _focusNodeFullname.dispose();
     _focusNodePhone.dispose();
+  }
 
-    _controllerFullname.dispose();
-    _controllerPhone.dispose();
+  @override
+  updateLoadingProfile() {
+    setState(() {
+      _presenter.model.isLoadingUpdateInvoice =
+          !_presenter.model.isLoadingUpdateInvoice;
+    });
   }
 
   _buildGridView({
@@ -53,7 +69,7 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen> {
           path.length >= 2 ? deviceSize.height / 1.8 : deviceSize.height / 4,
       child: GridView.builder(
           padding: const EdgeInsets.all(0),
-          physics: NeverScrollableScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
               crossAxisSpacing: 8,
@@ -204,13 +220,13 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen> {
                 height: 16,
               ),
               CustomOutLineInputWithHint(
-                  controller: _controllerFullname,
+                  controller: _model.controllerFullname,
                   isDisable: false,
                   hintText: "Họ và Tên",
                   focusNode: _focusNodeFullname,
                   deviceSize: deviceSize),
               CustomOutLineInputWithHint(
-                  controller: _controllerPhone,
+                  controller: _model.controllerPhone,
                   isDisable: false,
                   hintText: "Phone",
                   focusNode: _focusNodePhone,
@@ -246,43 +262,43 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen> {
               CustomRadioButton(
                   function: () {
                     setState(() {
-                      status = STATUS_INVOICE.dadat;
+                      _model.txtStatus = "Đã đặt";
                     });
                   },
                   text: "Đã đặt",
                   color: Colors.black,
-                  state: status,
-                  value: STATUS_INVOICE.dadat),
+                  state: _model.txtStatus,
+                  value: "Đã đặt"),
               CustomRadioButton(
                   function: () {
                     setState(() {
-                      status = STATUS_INVOICE.luukho;
+                      _model.txtStatus = "Đang lưu kho";
                     });
                   },
                   text: "Đang lưu kho",
                   color: CustomColor.black,
-                  state: status,
-                  value: STATUS_INVOICE.luukho),
+                  state: _model.txtStatus,
+                  value: "Đang lưu kho"),
               CustomRadioButton(
                   function: () {
                     setState(() {
-                      status = STATUS_INVOICE.yeucautra;
+                      _model.txtStatus = "Yêu cầu trả";
                     });
                   },
                   text: "Yêu cầu trả",
                   color: CustomColor.black,
-                  state: status,
-                  value: STATUS_INVOICE.yeucautra),
+                  state: _model.txtStatus,
+                  value: "Yêu cầu trả"),
               CustomRadioButton(
                   function: () {
                     setState(() {
-                      status = STATUS_INVOICE.datra;
+                      _model.txtStatus = "Đã trả";
                     });
                   },
                   text: "Đã trả",
                   color: CustomColor.black,
-                  state: status,
-                  value: STATUS_INVOICE.datra),
+                  state: _model.txtStatus,
+                  value: "Đã trả"),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -295,10 +311,10 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen> {
                   ),
                   Checkbox(
                       fillColor: MaterialStateProperty.all(CustomColor.blue),
-                      value: isPaid,
+                      value: _model.getIsPaid,
                       onChanged: (value) {
                         setState(() {
-                          isPaid = value;
+                          _model.setIsPaid = value;
                         });
                       })
                 ],
@@ -306,7 +322,7 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen> {
               Center(
                 child: CustomButton(
                     height: 24,
-                    isLoading: false,
+                    isLoading: _model.isLoadingUpdateInvoice,
                     text: 'Cập nhật đơn',
                     textColor: CustomColor.white,
                     onPressFunction: null,

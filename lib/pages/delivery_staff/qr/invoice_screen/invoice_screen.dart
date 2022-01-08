@@ -3,13 +3,14 @@ import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
+import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/invoice_product_widget.dart';
 import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_screen/update_invoice_screen.dart';
 import 'package:rssms/pages/delivery_staff/qr/invoice_screen/widget/invoice_info_widget.dart';
 import 'package:rssms/pages/delivery_staff/store_order/store_order_screen.dart';
 
 class InvoiceDetailsScreen extends StatelessWidget {
-  Map<String, dynamic>? invoice;
+  Invoice? invoice;
   final Size deviceSize;
 
   InvoiceDetailsScreen({Key? key, this.invoice, required this.deviceSize})
@@ -101,7 +102,8 @@ class InvoiceDetailsScreen extends StatelessWidget {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => StoreOrderScreen()),
+                                      builder: (context) =>
+                                          StoreOrderScreen(invoice: invoice)),
                                 );
                               },
                               width: deviceSize.width / 2.5,

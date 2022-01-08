@@ -5,11 +5,13 @@ import 'package:rssms/common/custom_app_bar.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
+import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/pages/delivery_staff/store_order/widgets/box_widget.dart';
 import 'package:rssms/pages/delivery_staff/store_order/widgets/custom_bottom_sheet.dart';
 
 class StoreOrderScreen extends StatefulWidget {
-  const StoreOrderScreen({Key? key}) : super(key: key);
+  Invoice? invoice;
+   StoreOrderScreen({Key? key, required this.invoice}) : super(key: key);
 
   @override
   _StoreOrderScreenState createState() => _StoreOrderScreenState();
@@ -193,7 +195,7 @@ class _StoreOrderScreenState extends State<StoreOrderScreen> {
             ),
           ),
         ),
-        CustomBottomSheet(controller: controller),
+        CustomBottomSheet(controller: controller, invoice: widget.invoice,),
       ]),
     );
   }

@@ -6,11 +6,15 @@ import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/constants/constants.dart' as constants;
 import 'package:collection/collection.dart';
+import 'package:rssms/models/entity/invoice.dart';
+import 'package:rssms/models/entity/order_detail.dart';
 import 'package:rssms/pages/delivery_staff/store_order/widgets/item_radio_widget.dart';
 
 class CustomBottomSheet extends StatefulWidget {
   final BottomDrawerController controller;
-  CustomBottomSheet({Key? key, required this.controller}) : super(key: key);
+  Invoice? invoice;
+  CustomBottomSheet({Key? key, required this.controller, required this.invoice})
+      : super(key: key);
 
   @override
   _CustomBottomSheetState createState() => _CustomBottomSheetState();
@@ -20,7 +24,9 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
-
+    List<OrderDetail> listProduct = widget.invoice!.orderDetails
+        .where((element) => element.productType == 2)
+        .toList();
     Widget buildBottomDrawer(BuildContext context) {
       return BottomDrawer(
         header: Container(
@@ -35,13 +41,14 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               CustomText(
-                  text: 'Order #3',
+                  text: 'Order #' + widget.invoice!.id.toString(),
                   color: CustomColor.black,
                   context: context,
                   fontWeight: FontWeight.bold,
                   fontSize: 16),
               CustomText(
-                  text: 'Remaining: 2',
+                  text: 'Remaining: ' +
+                      widget.invoice!.orderDetails.length.toString(),
                   color: CustomColor.black,
                   context: context,
                   fontWeight: FontWeight.bold,
@@ -75,10 +82,10 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
                   ),
                   itemBuilder: (ctx, i) {
                     return ItemRadioWidget(
-                      product: constants.LIST_INVOICE[0]['item'][i],
+                      product: listProduct[i],
                     );
                   },
-                  itemCount: constants.LIST_INVOICE[0]['item'].length,
+                  itemCount: listProduct.length,
                 ),
               ),
               CustomSizedBox(

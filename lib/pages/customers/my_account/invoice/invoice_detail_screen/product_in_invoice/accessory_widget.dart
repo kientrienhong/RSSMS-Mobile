@@ -3,9 +3,10 @@ import 'package:intl/intl.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
+import 'package:rssms/models/entity/order_detail.dart';
 
 class AccessoryInvoiceWidget extends StatelessWidget {
-  Map<String, dynamic>? product;
+  OrderDetail? product;
 
   AccessoryInvoiceWidget({Key? key, this.product}) : super(key: key);
   @override
@@ -14,71 +15,51 @@ class AccessoryInvoiceWidget extends StatelessWidget {
     final oCcy = NumberFormat("#,##0", "en_US");
 
     return SizedBox(
-      child: Table(
-        defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-        columnWidths: const {0: FractionColumnWidth(.6)},
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          TableRow(
+          Row(
             children: [
-              Row(
+              Image.network(
+                product!.images[0].url,
+                height: 50,
+                width: 50,
+              ),
+              CustomSizedBox(
+                context: context,
+                width: 10,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(
-                    height: 50,
-                    width: 40,
-                    child: Image.asset(
-                      product!["url"],
-                      scale: 1.5,
-                    ),
-                  ),
+                  CustomText(
+                      text: product!.productName,
+                      color: CustomColor.black,
+                      fontWeight: FontWeight.bold,
+                      maxLines: 1,
+                      textOverflow: TextOverflow.ellipsis,
+                      context: context,
+                      fontSize: 14),
                   CustomSizedBox(
                     context: context,
-                    width: 10,
+                    height: 6,
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        width: deviceSize.width * 2 / 8,
-                        child: CustomText(
-                            text: product!["name"],
-                            color: CustomColor.black,
-                            fontWeight: FontWeight.bold,
-                            maxLines: 1,
-                            textOverflow: TextOverflow.ellipsis,
-                            context: context,
-                            fontSize: 14),
-                      ),
-                      CustomSizedBox(
-                        context: context,
-                        height: 6,
-                      ),
-                      CustomText(
-                          text: oCcy.format(product!["price"]) + "đ / tháng",
-                          color: CustomColor.blue,
-                          fontWeight: FontWeight.bold,
-                          context: context,
-                          fontSize: 14),
-                    ],
-                  ),
+                  CustomText(
+                      text: oCcy.format(product!.price) + "đ",
+                      color: CustomColor.blue,
+                      fontWeight: FontWeight.bold,
+                      context: context,
+                      fontSize: 14),
                 ],
               ),
-              CustomText(
-                  text: "x " + product!["quantity"].toString(),
-                  color: CustomColor.black,
-                  fontWeight: FontWeight.bold,
-                  textAlign: TextAlign.center,
-                  context: context,
-                  fontSize: 20),
-              CustomText(
-                  text: oCcy.format(product!["quantity"] * product!["price"]) +
-                      " đ",
-                  color: CustomColor.blue,
-                  textAlign: TextAlign.center,
-                  fontWeight: FontWeight.bold,
-                  context: context,
-                  fontSize: 16),
             ],
-          )
+          ),
+          CustomText(
+              text: "x " + product!.amount.toString(),
+              color: CustomColor.black,
+              textAlign: TextAlign.right,
+              context: context,
+              fontSize: 16),
         ],
       ),
     );

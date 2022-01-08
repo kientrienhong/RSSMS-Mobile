@@ -119,6 +119,23 @@ class ApiServices {
     }
   }
 
+    static Future<dynamic> getInvoicebyId(String idToken, String id) {
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        'Authorization': 'Bearer $idToken'
+      };
+
+      final url = Uri.parse('$_domain/api/v1/orders/'+ id.toString());
+      return http.get(
+        url,
+        headers: headers,
+      );
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
   static Future<dynamic> createOrder(List<Map<String, dynamic>> listProduct,
       OrderBooking orderBooking, Users user) {
     try {
