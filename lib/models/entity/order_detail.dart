@@ -62,7 +62,8 @@ class OrderDetail {
 
   String toJson() => json.encode(toMap());
 
-  factory OrderDetail.fromJson(String source) => OrderDetail.fromMap(json.decode(source));
+  factory OrderDetail.fromJson(String source) =>
+      OrderDetail.fromMap(json.decode(source));
 
   @override
   String toString() {
@@ -72,23 +73,23 @@ class OrderDetail {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-  
+
     return other is OrderDetail &&
-      other.productId == productId &&
-      other.productName == productName &&
-      other.price == price &&
-      other.amount == amount &&
-      other.productType == productType &&
-      listEquals(other.images, images);
+        other.productId == productId &&
+        other.productName == productName &&
+        other.price == price &&
+        other.amount == amount &&
+        other.productType == productType &&
+        listEquals(other.images, images);
   }
 
   @override
   int get hashCode {
     return productId.hashCode ^
-      productName.hashCode ^
-      price.hashCode ^
-      amount.hashCode ^
-      productType.hashCode ^
-      images.hashCode;
+        productName.hashCode ^
+        price.hashCode ^
+        amount.hashCode ^
+        productType.hashCode ^
+        images.hashCode;
   }
 }

@@ -47,8 +47,7 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
                   fontWeight: FontWeight.bold,
                   fontSize: 16),
               CustomText(
-                  text: 'Remaining: ' +
-                      widget.invoice!.orderDetails.length.toString(),
+                  text: 'Remaining: ' + listProduct.length.toString(),
                   color: CustomColor.black,
                   context: context,
                   fontWeight: FontWeight.bold,

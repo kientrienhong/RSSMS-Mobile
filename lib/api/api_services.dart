@@ -102,6 +102,24 @@ class ApiServices {
     }
   }
 
+  static Future<dynamic> getShelf(String idToken) {
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        'Authorization': 'Bearer $idToken'
+      };
+
+      final url = Uri.parse('$_domain/api/v1/shelves?page=1&size=250');
+      return http.get(
+        url,
+        headers: headers,
+      );
+    } catch (e) {
+      print(e);
+      throw Exception(e.toString());
+    }
+  }
+
   static Future<dynamic> getInvoice(String idToken) {
     try {
       Map<String, String> headers = {
@@ -119,14 +137,14 @@ class ApiServices {
     }
   }
 
-    static Future<dynamic> getInvoicebyId(String idToken, String id) {
+  static Future<dynamic> getInvoicebyId(String idToken, String id) {
     try {
       Map<String, String> headers = {
         "Content-type": "application/json",
         'Authorization': 'Bearer $idToken'
       };
 
-      final url = Uri.parse('$_domain/api/v1/orders/'+ id.toString());
+      final url = Uri.parse('$_domain/api/v1/orders/' + id.toString());
       return http.get(
         url,
         headers: headers,

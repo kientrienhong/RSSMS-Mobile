@@ -6,12 +6,10 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
-import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/pages/delivery_staff/qr/invoice_screen/invoice_screen.dart';
 import 'package:rssms/presenters/qr_scan_presenter.dart';
 import 'package:rssms/views/qr_invoice_view.dart';
-import '../../../../constants/constants.dart' as constants;
 
 class QrScreen extends StatefulWidget {
   const QrScreen({Key? key}) : super(key: key);

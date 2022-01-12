@@ -75,12 +75,7 @@ class InvoiceProductWidget extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                       context: context,
                       fontSize: 14),
-                  // CustomText(
-                  //     text: "Số lượng",
-                  //     color: CustomColor.black,
-                  //     fontWeight: FontWeight.bold,
-                  //     context: context,
-                  //     fontSize: 14),
+                 
                   CustomText(
                       text: "Số lượng",
                       color: CustomColor.black,

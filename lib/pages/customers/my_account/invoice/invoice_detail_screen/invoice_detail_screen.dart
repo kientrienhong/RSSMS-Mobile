@@ -115,13 +115,13 @@ class InvoiceDetailScreen extends StatelessWidget {
                           text: 'Gửi yêu cầu',
                           textColor: CustomColor.white,
                           onPressFunction: () {
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //       builder: (context) => SendRequestScreen(
-                            //             invoice: invoice,
-                            //           )),
-                            // );
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SendRequestScreen(
+                                        invoice: invoice,
+                                      )),
+                            );
                           },
                           width: deviceSize.width / 2.5,
                           buttonColor: CustomColor.blue,

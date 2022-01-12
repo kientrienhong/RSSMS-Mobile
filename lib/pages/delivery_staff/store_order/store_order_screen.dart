@@ -1,17 +1,24 @@
+import 'dart:math';
+
 import 'package:bottom_drawer/bottom_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_app_bar.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/models/entity/invoice.dart';
+import 'package:rssms/models/entity/shelf.dart';
+import 'package:rssms/models/entity/user.dart';
+import 'package:rssms/models/store_order_model.dart';
 import 'package:rssms/pages/delivery_staff/store_order/widgets/box_widget.dart';
 import 'package:rssms/pages/delivery_staff/store_order/widgets/custom_bottom_sheet.dart';
+import 'package:rssms/presenters/store_order_presenter.dart';
 
 class StoreOrderScreen extends StatefulWidget {
   Invoice? invoice;
-   StoreOrderScreen({Key? key, required this.invoice}) : super(key: key);
+  StoreOrderScreen({Key? key, required this.invoice}) : super(key: key);
 
   @override
   _StoreOrderScreenState createState() => _StoreOrderScreenState();
@@ -19,6 +26,8 @@ class StoreOrderScreen extends StatefulWidget {
 
 class _StoreOrderScreenState extends State<StoreOrderScreen> {
   BottomDrawerController controller = BottomDrawerController();
+  StoreOrderPresenter? _presenter;
+  StoreOrderModel? _model;
 
   List<Map<String, dynamic>> listShelves = [
     {
@@ -64,12 +73,21 @@ class _StoreOrderScreenState extends State<StoreOrderScreen> {
   ];
 
   @override
+  void initState() {
+    _presenter = StoreOrderPresenter();
+    Users user = Provider.of<Users>(context, listen: false);
+    _presenter!.loadShelf(user.idToken!);
+    _model = _presenter!.model;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
+
     void onTapBox(int index, int status) {
-      print(status);
       setState(() {
-        if (status == 0) {
+        if (status != null) {
           controller.open();
         }
         _currentIndex = index;
@@ -102,23 +120,24 @@ class _StoreOrderScreenState extends State<StoreOrderScreen> {
                 ),
                 TypeAheadField(
                   textFieldConfiguration: TextFieldConfiguration(
-                      decoration: InputDecoration(
-                    border: const OutlineInputBorder(),
-                    prefixIcon: ImageIcon(
-                      const AssetImage('assets/images/search.png'),
-                      color: CustomColor.black[2]!,
+                    controller: _model!.searchValue,
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(),
+                      prefixIcon: ImageIcon(
+                        const AssetImage('assets/images/search.png'),
+                        color: CustomColor.black[2]!,
+                      ),
                     ),
-                  )),
+                  ),
                   suggestionsCallback: (pattern) async {
-                    return listShelves
-                        .where((element) => element['name'].contains(pattern))
+                    return _model!.listShelf!
+                        .where((element) => element.name.contains(pattern))
                         .toList();
                   },
                   itemBuilder: (context, suggestion) {
-                    Map<String, dynamic> shelf =
-                        suggestion! as Map<String, dynamic>;
+                    Shelf shelf = suggestion! as Shelf;
                     return ListTile(
-                      title: Text(shelf['name']),
+                      title: Text(shelf.name),
                     );
                   },
                   noItemsFoundBuilder: (context) => Center(
@@ -131,6 +150,8 @@ class _StoreOrderScreenState extends State<StoreOrderScreen> {
                   onSuggestionSelected: (suggestion) {
                     setState(() {
                       _isFound = true;
+                      _model!.selectedShelf = suggestion as Shelf;
+                      _model!.searchValue.text = suggestion.name;
                     });
                   },
                 ),
@@ -181,13 +202,13 @@ class _StoreOrderScreenState extends State<StoreOrderScreen> {
                         ),
                         itemBuilder: (ctx, i) {
                           return BoxWidget(
-                            box: listBoxes[i],
+                            box: _model!.selectedShelf!.boxes[i],
                             currentIndex: _currentIndex,
                             index: i,
                             onTap: onTapBox,
                           );
                         },
-                        itemCount: listBoxes.length,
+                        itemCount: _model!.selectedShelf!.boxes.length,
                       ),
                     ],
                   ),
@@ -195,7 +216,10 @@ class _StoreOrderScreenState extends State<StoreOrderScreen> {
             ),
           ),
         ),
-        CustomBottomSheet(controller: controller, invoice: widget.invoice,),
+        CustomBottomSheet(
+          controller: controller,
+          invoice: widget.invoice,
+        ),
       ]),
     );
   }

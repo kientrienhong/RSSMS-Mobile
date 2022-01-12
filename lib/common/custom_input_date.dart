@@ -163,6 +163,7 @@ class _CustomOutLineInputState extends State<CustomOutLineInputDateTime> {
                       contentPadding: const EdgeInsets.symmetric(
                           vertical: 16, horizontal: 12),
                       isCollapsed: true,
+                      hintStyle: TextStyle(fontSize: 14),
                       hintText: "dd/mm/yyyy",
                       suffixIcon: Image.asset(
                         widget.icon,
