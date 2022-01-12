@@ -9,10 +9,12 @@ import 'package:rssms/common/custom_radio_button.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/common/update_image_invoice.dart';
+import 'package:rssms/constants/constants.dart';
 import 'package:rssms/models/entity/add_image.dart';
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/models/invoice_update_model.dart';
+import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_screen/image_widget.dart';
 import 'package:rssms/pages/log_in/widget/button_icon.dart';
 import 'package:rssms/presenters/invoice_update_presenter.dart';
 import 'package:rssms/views/invoice_update_view.dart';
@@ -35,9 +37,13 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
 
   File? image;
   List<AddedImage>? listImage = [];
+  List<bool>? _isOpen;
+  List<Map<String, dynamic>>? listBox;
 
   @override
   void initState() {
+    listBox = LIST_IMAGE_INVOICE;
+    _isOpen = List<bool>.generate(listBox!.length, (index) => false);
     Users users = Provider.of<Users>(context, listen: false);
     _presenter = InvoiceUpdatePresenter(users, widget.invoice!);
     _presenter.setView(this);
@@ -165,6 +171,13 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
     );
   }
 
+  List<Widget> mapInvoiceWidget(List<Map<String, dynamic>> listImage) =>
+      listImage
+          .map<ImageWidget>((e) => ImageWidget(
+                image: e,
+              ))
+          .toList();
+
   @override
   Widget build(BuildContext context) {
     var deviceSize = MediaQuery.of(context).size;
@@ -174,7 +187,6 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
         child: Container(
           color: CustomColor.white,
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
-          width: deviceSize.width,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -242,11 +254,8 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                 context: context,
                 height: 16,
               ),
-              Consumer<AddedImage>(
-                builder: (context, image, child) {
-                  return _buildGridView(
-                      deviceSize: deviceSize, path: listImage!);
-                },
+              Column(
+                children: mapInvoiceWidget(LIST_IMAGE_INVOICE),
               ),
               CustomText(
                 text: "Tình trạng đơn hàng",

@@ -13,6 +13,7 @@ class CustomButton extends StatelessWidget {
   final String? text;
   final bool isLoading;
   final bool? isCancelButton;
+  final int? textSize;
   const CustomButton(
       {required this.height,
       required this.text,
@@ -22,6 +23,7 @@ class CustomButton extends StatelessWidget {
       required this.textColor,
       required this.buttonColor,
       required this.borderRadius,
+      this.textSize,
       this.isCancelButton = false,
       Key? key})
       : super(key: key);
@@ -48,7 +50,7 @@ class CustomButton extends StatelessWidget {
             text: text!,
             isLoading: isLoading,
             textColor: textColor!,
-            fontSize: 16,
+            fontSize: textSize ?? 16,
           ),
         ),
       ),
