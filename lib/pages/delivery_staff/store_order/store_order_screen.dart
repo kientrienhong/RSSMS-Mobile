@@ -103,7 +103,7 @@ class _StoreOrderScreenState extends State<StoreOrderScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CustomAppBar(
+               const CustomAppBar(
                   isHome: false,
                   name: '',
                 ),
