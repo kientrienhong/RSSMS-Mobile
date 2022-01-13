@@ -8,6 +8,7 @@ import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/order_detail.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/product_in_invoice/accessory_widget.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/product_in_invoice/product_widget.dart';
+import 'package:rssms/constants/constants.dart' as constants;
 
 class InvoiceProductWidget extends StatelessWidget {
   Invoice? invoice;
@@ -32,8 +33,11 @@ class InvoiceProductWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<OrderDetail> listTemp = invoice!.orderDetails;
-    List<OrderDetail> listProduct =
-        listTemp.where((element) => element.productType == 2).toList();
+    List<OrderDetail> listProduct = listTemp
+        .where((element) =>
+            element.productType == constants.HANDY ||
+            element.productType == constants.UNWEILDY)
+        .toList();
     List<OrderDetail> listAccessory =
         listTemp.where((element) => element.productType == 1).toList();
     if (listProduct.isEmpty) {
@@ -75,7 +79,6 @@ class InvoiceProductWidget extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                       context: context,
                       fontSize: 14),
-                 
                   CustomText(
                       text: "Số lượng",
                       color: CustomColor.black,

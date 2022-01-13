@@ -10,12 +10,14 @@ class OrderDetail {
   final int price;
   final int amount;
   final int productType;
+  final String note;
   final List<Image> images;
   OrderDetail({
     required this.productId,
     required this.productName,
     required this.price,
     required this.amount,
+    required this.note,
     required this.productType,
     required this.images,
   });
@@ -27,8 +29,10 @@ class OrderDetail {
     int? amount,
     int? productType,
     List<Image>? images,
+    String? note,
   }) {
     return OrderDetail(
+      note: note ?? this.note,
       productId: productId ?? this.productId,
       productName: productName ?? this.productName,
       price: price ?? this.price,
@@ -44,6 +48,7 @@ class OrderDetail {
       'productName': productName,
       'price': price,
       'amount': amount,
+      'note': note,
       'productType': productType,
       'images': images.map((x) => x.toMap()).toList(),
     };
@@ -51,6 +56,7 @@ class OrderDetail {
 
   factory OrderDetail.fromMap(Map<String, dynamic> map) {
     return OrderDetail(
+      note: map['note'] ?? '',
       productId: map['productId']?.toInt() ?? 0,
       productName: map['productName'] ?? '',
       price: map['price']?.toInt() ?? 0,
@@ -79,6 +85,7 @@ class OrderDetail {
         other.productName == productName &&
         other.price == price &&
         other.amount == amount &&
+        other.note == note &&
         other.productType == productType &&
         listEquals(other.images, images);
   }
@@ -89,6 +96,7 @@ class OrderDetail {
         productName.hashCode ^
         price.hashCode ^
         amount.hashCode ^
+        note.hashCode ^
         productType.hashCode ^
         images.hashCode;
   }
