@@ -8,6 +8,7 @@ import 'package:rssms/pages/customers/cart/widgets/accessory_widget.dart';
 import 'package:rssms/pages/customers/cart/widgets/booking_pop_up_door_to_door.dart';
 import 'package:rssms/pages/customers/cart/widgets/booking_pop_up_self_storage.dart';
 import 'package:rssms/pages/customers/cart/widgets/door_to_door_product_widget.dart';
+import 'package:rssms/pages/customers/cart/widgets/main_product_widget.dart';
 import 'package:rssms/pages/customers/cart/widgets/product_widget.dart';
 import 'package:rssms/pages/customers/cart/widgets/service_widget.dart';
 import '../../../../constants/constants.dart' as constants;
@@ -23,7 +24,7 @@ class HandyTab extends StatefulWidget {
 
 class _HandyTabState extends State<HandyTab> {
   List<Widget> mapProductWidget(listProduct) => listProduct
-      .map<DoorToDoorProductWidget>((e) => DoorToDoorProductWidget(
+      .map<ProductWidget>((e) => ProductWidget(
             product: e,
           ))
       .toList();
