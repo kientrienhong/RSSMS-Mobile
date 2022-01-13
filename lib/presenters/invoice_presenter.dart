@@ -13,6 +13,10 @@ class InvoicePresenter {
     model = InvoiceModel();
   }
 
+  void handleOnChangeInput(String searchValue) {
+    view!.refreshList(searchValue);
+  }
+
   void loadInvoice(String idToken) async {
     final response = await ApiServices.getInvoice(idToken);
     final decodedReponse = jsonDecode(response.body);
@@ -20,7 +24,7 @@ class InvoicePresenter {
         .map<Invoice>((e) => Invoice.fromMap(e))
         .toList();
     List<Invoice>? listInvoice = listTemp!.reversed.toList();
-    model!.listInvoice = listInvoice;
+    model!.listInvoiceFull = listInvoice;
     view!.setChangeList();
   }
 }
