@@ -6,23 +6,25 @@ import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/models/entity/product.dart';
 import 'package:rssms/pages/customers/cart/widgets/accessory_widget.dart';
 import 'package:rssms/pages/customers/cart/widgets/booking_pop_up_door_to_door.dart';
-import 'package:rssms/pages/customers/cart/widgets/booking_pop_up_self_storage.dart';
-import 'package:rssms/pages/customers/cart/widgets/door_to_door_product_widget.dart';
-import 'package:rssms/pages/customers/cart/widgets/main_product_widget.dart';
 import 'package:rssms/pages/customers/cart/widgets/product_widget.dart';
 import 'package:rssms/pages/customers/cart/widgets/service_widget.dart';
 import '../../../../constants/constants.dart' as constants;
 
-class HandyTab extends StatefulWidget {
+class HandyTabUnwidely extends StatefulWidget {
   final Map<int, List<Product>>? handyTab;
 
-  const HandyTab({Key? key, required this.handyTab}) : super(key: key);
+  const HandyTabUnwidely({Key? key, required this.handyTab}) : super(key: key);
 
   @override
   _HandyTabState createState() => _HandyTabState();
 }
 
-class _HandyTabState extends State<HandyTab> {
+class _HandyTabState extends State<HandyTabUnwidely> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   List<Widget> mapProductWidget(listProduct) => listProduct
       .map<ProductWidget>((e) => ProductWidget(
             product: e,
@@ -31,11 +33,12 @@ class _HandyTabState extends State<HandyTab> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Product> listProduct = widget.handyTab![constants.HANDY] == null
-        ? []
-        : widget.handyTab![constants.HANDY]!
-            .map((e) => e.copyWith(quantity: 0))
-            .toList();
+    final List<Product> listProduct =
+        widget.handyTab![constants.UNWEILDY] == null
+            ? []
+            : widget.handyTab![constants.UNWEILDY]!
+                .map((e) => e.copyWith(quantity: 0))
+                .toList();
     final List<Product> listAccessory =
         widget.handyTab![constants.ACCESSORY] == null
             ? []
@@ -101,45 +104,6 @@ class _HandyTabState extends State<HandyTab> {
         CustomSizedBox(
           context: context,
           height: 8,
-        ),
-        Row(
-          children: [
-            CustomText(
-                text: 'Dịch vụ ',
-                color: CustomColor.blue,
-                fontWeight: FontWeight.bold,
-                context: context,
-                fontSize: 24),
-            CustomText(
-                text: 'hỗ trợ ',
-                color: CustomColor.black[3]!,
-                context: context,
-                fontWeight: FontWeight.bold,
-                fontSize: 24)
-          ],
-        ),
-        CustomSizedBox(
-          context: context,
-          height: 8,
-        ),
-        GridView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            childAspectRatio: 0.6,
-            crossAxisSpacing: 16.0,
-          ),
-          itemBuilder: (ctx, i) {
-            return ServiceWidget(
-              product: listService[i],
-            );
-          },
-          itemCount: listService.length,
-        ),
-        CustomSizedBox(
-          context: context,
-          height: 16,
         ),
         CustomButton(
             height: 24,

@@ -1,4 +1,3 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
@@ -7,12 +6,12 @@ import 'package:rssms/common/custom_input_with_hint.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/common/list_time_select.dart';
-import 'package:rssms/common/invoice_image_widget.dart';
+import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoive_update/widgets/image_select.dart';
 import 'package:collection/collection.dart';
 
 class ChangeItemWidget extends StatefulWidget {
-  Map<String, dynamic>? invoice;
+  Invoice? invoice;
 
   ChangeItemWidget({Key? key, required this.invoice}) : super(key: key);
 
@@ -110,7 +109,8 @@ class _ChangeItemWidgetState extends State<ChangeItemWidget> {
                 ),
               ),
               CustomText(
-                  text: widget.invoice!["returnnDate"],
+                  text: widget.invoice!.returnDate
+                      .substring(0, widget.invoice!.returnDate.indexOf("T")),
                   color: Colors.black,
                   context: context,
                   fontWeight: FontWeight.bold,
@@ -213,7 +213,7 @@ class _ChangeItemWidgetState extends State<ChangeItemWidget> {
               ),
             ],
           ),
-          if (widget.invoice!["type"] == 0)
+          if (widget.invoice!.typeOrder == 1)
             CustomText(
               text: "Danh sách đồ",
               color: CustomColor.black,
@@ -221,21 +221,22 @@ class _ChangeItemWidgetState extends State<ChangeItemWidget> {
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
-          if (widget.invoice!["type"] == 0)
+          if (widget.invoice!.typeOrder == 1)
             CustomSizedBox(
               context: context,
               height: 14,
             ),
-          if (widget.invoice!["type"] == 0)
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 12.0),
-                child: Row(
-                  children: mapImageWidget(widget.invoice!["image"]),
-                ),
-              ),
-            ),
+          // if (widget.invoice!.typeOrder == 1)
+          // SingleChildScrollView(
+          //   scrollDirection: Axis.horizontal,
+          //   child: Padding(
+          //     padding: const EdgeInsets.symmetric(vertical: 12.0),
+          //     child:
+          //     Row(
+          //       children: mapImageWidget(widget.invoice!["image"]),
+          //     ),
+          //   ),
+          // ),
           CustomSizedBox(
             context: context,
             height: 14,

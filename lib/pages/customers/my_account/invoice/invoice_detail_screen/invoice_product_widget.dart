@@ -4,11 +4,14 @@ import 'package:intl/intl.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
+import 'package:rssms/models/entity/invoice.dart';
+import 'package:rssms/models/entity/order_detail.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/product_in_invoice/accessory_widget.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/product_in_invoice/product_widget.dart';
+import 'package:rssms/constants/constants.dart' as constants;
 
 class InvoiceProductWidget extends StatelessWidget {
-  Map<String, dynamic>? invoice;
+  Invoice? invoice;
   final Size deviceSize;
   final oCcy = NumberFormat("#,##0", "en_US");
 
@@ -29,8 +32,26 @@ class InvoiceProductWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Map<String, dynamic>> listProduct = invoice!["item"];
-    List<Map<String, dynamic>> listAccessory = invoice!["accessory"];
+    List<OrderDetail> listTemp = invoice!.orderDetails;
+    List<OrderDetail> listProduct = listTemp
+        .where((element) =>
+            element.productType == constants.HANDY ||
+            element.productType == constants.UNWEILDY)
+        .toList();
+    List<OrderDetail> listAccessory =
+        listTemp.where((element) => element.productType == 1).toList();
+    if (listProduct.isEmpty) {
+      listProduct =
+          listTemp.where((element) => element.productType == 0).toList();
+    }
+    int totalProduct = 0;
+    int totalAccessory = 0;
+    listAccessory.forEach((element) {
+      totalAccessory += (element.price * element.amount);
+    });
+    listProduct.forEach((element) {
+      totalProduct += (element.price * element.amount);
+    });
     return Container(
       decoration:
           BoxDecoration(border: Border.all(color: CustomColor.blue, width: 2)),
@@ -50,7 +71,6 @@ class InvoiceProductWidget extends StatelessWidget {
               height: 16,
             ),
             Table(
-              columnWidths: {0: FractionColumnWidth(.55)},
               children: [
                 TableRow(children: [
                   CustomText(
@@ -62,12 +82,7 @@ class InvoiceProductWidget extends StatelessWidget {
                   CustomText(
                       text: "Số lượng",
                       color: CustomColor.black,
-                      fontWeight: FontWeight.bold,
-                      context: context,
-                      fontSize: 14),
-                  CustomText(
-                      text: "Tổng tiền",
-                      color: CustomColor.black,
+                      textAlign: TextAlign.right,
                       fontWeight: FontWeight.bold,
                       context: context,
                       fontSize: 14)
@@ -102,7 +117,7 @@ class InvoiceProductWidget extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     fontSize: 16),
                 CustomText(
-                    text: oCcy.format(invoice!["totalItem"]),
+                    text: oCcy.format(totalProduct),
                     color: Colors.black,
                     context: context,
                     fontWeight: FontWeight.bold,
@@ -123,7 +138,7 @@ class InvoiceProductWidget extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     fontSize: 16),
                 CustomText(
-                    text: "x" + invoice!["month"].toString(),
+                    text: "x" + invoice!.durationMonths.toString(),
                     color: Colors.black,
                     context: context,
                     fontWeight: FontWeight.bold,
@@ -155,9 +170,8 @@ class InvoiceProductWidget extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     fontSize: 16),
                 CustomText(
-                    text:
-                        oCcy.format(invoice!["month"] * invoice!["totalItem"]) +
-                            " đ",
+                    text: oCcy.format(totalProduct * invoice!.durationMonths) +
+                        " đ",
                     color: CustomColor.blue,
                     context: context,
                     fontWeight: FontWeight.bold,
@@ -179,7 +193,6 @@ class InvoiceProductWidget extends StatelessWidget {
               height: 16,
             ),
             Table(
-              columnWidths: {0: FractionColumnWidth(.57)},
               children: [
                 TableRow(children: [
                   CustomText(
@@ -188,15 +201,16 @@ class InvoiceProductWidget extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                       context: context,
                       fontSize: 14),
+                  // CustomText(
+                  //     text: "Số lượng",
+                  //     color: CustomColor.black,
+                  //     fontWeight: FontWeight.bold,
+                  //     context: context,
+                  //     fontSize: 14),
                   CustomText(
                       text: "Số lượng",
                       color: CustomColor.black,
-                      fontWeight: FontWeight.bold,
-                      context: context,
-                      fontSize: 14),
-                  CustomText(
-                      text: "Tổng tiền",
-                      color: CustomColor.black,
+                      textAlign: TextAlign.right,
                       fontWeight: FontWeight.bold,
                       context: context,
                       fontSize: 14)
@@ -231,9 +245,7 @@ class InvoiceProductWidget extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     fontSize: 16),
                 CustomText(
-                    text: oCcy.format(
-                            invoice!["totalPrice"] - invoice!["totalItem"]) +
-                        " đ",
+                    text: oCcy.format(totalAccessory) + " đ",
                     color: CustomColor.blue,
                     context: context,
                     fontWeight: FontWeight.bold,
@@ -263,9 +275,11 @@ class InvoiceProductWidget extends StatelessWidget {
                     color: Colors.black,
                     context: context,
                     fontWeight: FontWeight.bold,
-                    fontSize: 16),
+                    fontSize: 15),
                 CustomText(
-                    text: oCcy.format(invoice!["totalPrice"]) + " đ",
+                    text: oCcy.format(totalProduct * invoice!.durationMonths +
+                            totalAccessory) +
+                        " đ",
                     color: CustomColor.blue,
                     context: context,
                     fontWeight: FontWeight.bold,
@@ -284,7 +298,7 @@ class InvoiceProductWidget extends StatelessWidget {
                     color: Colors.black,
                     context: context,
                     fontWeight: FontWeight.bold,
-                    fontSize: 16),
+                    fontSize: 15),
                 CustomText(
                     text: "0 đ",
                     color: CustomColor.black,
@@ -318,7 +332,9 @@ class InvoiceProductWidget extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     fontSize: 19),
                 CustomText(
-                    text: oCcy.format(invoice!["totalPrice"]) + " đ",
+                    text: oCcy.format(totalProduct * invoice!.durationMonths +
+                            totalAccessory) +
+                        " đ",
                     color: CustomColor.blue,
                     context: context,
                     fontWeight: FontWeight.bold,

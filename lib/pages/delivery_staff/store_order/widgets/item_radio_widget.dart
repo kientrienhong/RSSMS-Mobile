@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_text.dart';
+import 'package:rssms/models/entity/order_detail.dart';
 
 class ItemRadioWidget extends StatelessWidget {
-  final Map<String, dynamic> product;
+  final OrderDetail product;
 
   const ItemRadioWidget({Key? key, required this.product}) : super(key: key);
 
@@ -25,13 +26,13 @@ class ItemRadioWidget extends StatelessWidget {
           SizedBox(
               height: deviceSize.height / 9,
               width: deviceSize.width / 9,
-              child: Image.asset(product['url'])),
+              child: Image.network(product.images[0].url)),
           CustomText(
-              text: '${product['name']} x ${product['quantity']}',
+              text: '${product.productName} x ${product.amount}',
               color: CustomColor.black,
               context: context,
               fontSize: 16),
-          Radio(value: '${product['name']}', groupValue: 1, onChanged: (val) {})
+          Radio(value: product.productName, groupValue: 1, onChanged: (val) {})
         ],
       ),
     );

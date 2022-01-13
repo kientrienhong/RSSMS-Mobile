@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:rssms/common/background.dart';
 import 'package:rssms/common/custom_button.dart';
@@ -69,7 +70,6 @@ class _ProfileScreenState extends State<FormProfileScreen>
   final _focusNodeWard = FocusNode();
   final _focusNodeBirthDate = FocusNode();
   final _focusNodeDistrict = FocusNode();
-  String _textGender = "";
 
   @override
   void onChangeInput() {
@@ -77,6 +77,12 @@ class _ProfileScreenState extends State<FormProfileScreen>
         _model.controllerOldPassword.text,
         _model.controllerPassword.text,
         _model.controllerConfirmPassword.text);
+  }
+
+  @override
+  void onChangeInputProfile() {
+    profilePresenter.handleOnChangeInputProfile(_model.controllerFullname.text,
+        _model.controllerPhone.text, _model.controllerStreet.text);
   }
 
   @override
@@ -96,9 +102,17 @@ class _ProfileScreenState extends State<FormProfileScreen>
   }
 
   @override
-  void onClickSignIn(String email, String password, String confirmPassword,
-      String firstname, String lastname, String phone) {
-    // TODO: implement onClickSignIn
+  void updateStatusOfButtonUpdateProfile(
+      String fullname, String phone, String address) {
+    if (fullname.isNotEmpty && phone.isNotEmpty && address.isNotEmpty) {
+      setState(() {
+        _model.isDisableUpdateProfile = false;
+      });
+    } else {
+      setState(() {
+        _model.isDisableUpdateProfile = true;
+      });
+    }
   }
 
   @override
@@ -106,6 +120,14 @@ class _ProfileScreenState extends State<FormProfileScreen>
     setState(() {
       profilePresenter.model.isLoadingChangePassword =
           !profilePresenter.model.isLoadingChangePassword;
+    });
+  }
+
+  @override
+  void updateLoadingProfile() {
+    setState(() {
+      profilePresenter.model.isLoadingUpdateProfile =
+          !profilePresenter.model.isLoadingUpdateProfile;
     });
   }
 
@@ -158,7 +180,7 @@ class _ProfileScreenState extends State<FormProfileScreen>
           ),
           onPressed: () {
             setState(() {
-              _textGender = gender;
+              _model.txtGender = gender;
             });
           },
           child: const Icon(
@@ -172,11 +194,46 @@ class _ProfileScreenState extends State<FormProfileScreen>
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w500,
-            color: (_textGender == gender) ? CustomColor.blue : Colors.black,
+            color:
+                (_model.txtGender == gender) ? CustomColor.blue : Colors.black,
           ),
         ),
       ],
     );
+  }
+
+  @override
+  void onClickUpdateProfile(String fullname, String phone, String birthdate,
+      String gender, String address) async {
+    _focusNodeStreet.unfocus();
+    _focusNodePhone.unfocus();
+    _focusNodeFullname.unfocus();
+    int genderCode;
+    switch (gender) {
+      case "Nam":
+        genderCode = 0;
+        break;
+      case "Nữ":
+        genderCode = 1;
+        break;
+      default:
+        genderCode = 2;
+        break;
+    }
+    DateTime tempDate = DateFormat("dd/MM/yyyy").parse(birthdate);
+    try {
+      Users user = Provider.of<Users>(context, listen: false);
+      bool response = await profilePresenter.updateProfile(fullname, genderCode,
+          tempDate, address, phone, user.idToken!, user.userId!);
+      if (response) {
+        CustomSnackBar.buildErrorSnackbar(
+            context: context,
+            message: 'Cập nhật thông tin thành công',
+            color: CustomColor.green);
+      }
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   @override
@@ -186,12 +243,12 @@ class _ProfileScreenState extends State<FormProfileScreen>
     profilePresenter = ProfilePresenter(users);
     profilePresenter.setView(this);
     _model = profilePresenter.model;
-    _model.controllerFullname.addListener(onChangeInput);
+    _model.controllerFullname.addListener(onChangeInputProfile);
     _model.controllerOldPassword.addListener(onChangeInput);
     _model.controllerPassword.addListener(onChangeInput);
     _model.controllerConfirmPassword.addListener(onChangeInput);
-    _model.controllerPhone.addListener(onChangeInput);
-    _model.controllerStreet.addListener(onChangeInput);
+    _model.controllerPhone.addListener(onChangeInputProfile);
+    _model.controllerStreet.addListener(onChangeInputProfile);
     _model.controllerWard.addListener(onChangeInput);
     _model.controllerBirthDate.addListener(onChangeInput);
   }
@@ -222,6 +279,7 @@ class _ProfileScreenState extends State<FormProfileScreen>
 
   @override
   Widget build(BuildContext context) {
+    print(_model.isLoadingUpdateProfile);
     return Scaffold(
       backgroundColor: CustomColor.white,
       body: Padding(
@@ -297,13 +355,13 @@ class _ProfileScreenState extends State<FormProfileScreen>
                     customRadioButton(
                         "Nam",
                         "Nam",
-                        _textGender == "Nam"
+                        _model.txtGender == "Nam"
                             ? CustomColor.blue
                             : CustomColor.white),
                     customRadioButton(
                         "Nữ",
                         "Nữ",
-                        _textGender == "Nữ"
+                        _model.txtGender == "Nữ"
                             ? CustomColor.blue
                             : CustomColor.white),
                   ],
@@ -335,12 +393,23 @@ class _ProfileScreenState extends State<FormProfileScreen>
             Center(
               child: CustomButton(
                   height: 24,
-                  isLoading: false,
+                  isLoading: _model.isLoadingUpdateProfile,
                   text: 'Cập Nhật',
                   width: widget.deviceSize.width / 3,
                   textColor: CustomColor.white,
-                  onPressFunction: null,
-                  buttonColor: CustomColor.blue,
+                  onPressFunction: _model.isDisableUpdateProfile == true
+                      ? null
+                      : () {
+                          onClickUpdateProfile(
+                              _model.controllerFullname.text,
+                              _model.controllerPhone.text,
+                              _model.controllerBirthDate.text,
+                              _model.txtGender,
+                              _model.controllerStreet.text);
+                        },
+                  buttonColor: _model.isDisableUpdateProfile == false
+                      ? CustomColor.blue
+                      : CustomColor.black[3],
                   borderRadius: 6),
             ),
             CustomSizedBox(

@@ -26,11 +26,32 @@ class ProfilePresenter {
         oldPassword, newPassword, confirmPassword);
   }
 
+  void handleOnChangeInputProfile(
+      String fullname, String phone, String address) {
+    _view!.updateStatusOfButtonUpdateProfile(fullname, phone, address);
+  }
   // void handleOnChangeInput(String email, String password,
   //     String confirmPassword, String firstname, String lastname, String phone) {
   //   _view!.updateViewStatusButton(
   //       email, password, confirmPassword, firstname, lastname, phone);
   // }
+
+  Future<bool> updateProfile(String name, int gender, DateTime birthday,
+      String address, String phone, String idToken, int userId) async {
+    _view!.updateLoadingProfile();
+
+    try {
+      final response = await ApiServices.updateProfile(
+          name, phone, birthday, gender, address, idToken, userId);
+      if (response.statusCode == 200) return true;
+      return false;
+    } catch (e) {
+      print(e.toString());
+      throw Exception(e.toString());
+    } finally {
+      _view!.updateLoadingProfile();
+    }
+  }
 
   Future<bool> changePassword(String newPassword, String oldPassword,
       String confirmPassword, String idToken, int userId) async {

@@ -2,14 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
+import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/invoice_detail_screen.dart';
+import '../../../../constants/constants.dart' as constants;
 
 class InvoiceWidget extends StatelessWidget {
-  Map<String, dynamic>? invoice;
+  Invoice? invoice;
   InvoiceWidget({Key? key, this.invoice}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final Map<String, String> icon = constants.ICON_INVOICE;
     final deviceSize = MediaQuery.of(context).size;
     return GestureDetector(
       onTap: () {
@@ -44,7 +47,9 @@ class InvoiceWidget extends StatelessWidget {
             children: [
               SizedBox(
                   width: (deviceSize.width - 32) / 4,
-                  child: Image.asset(invoice!['url']!)),
+                  child: invoice!.typeOrder == 1
+                      ? Image.asset(icon['box']!)
+                      : Image.asset(icon['warehose']!)),
               SizedBox(
                 width: (deviceSize.width - 50) * 3 / 4,
                 child: Container(
@@ -57,16 +62,20 @@ class InvoiceWidget extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           CustomText(
-                              text: "#" + invoice!['id']!,
+                              text: "#" + invoice!.id.toString(),
                               color: CustomColor.black,
                               context: context,
                               fontWeight: FontWeight.bold,
                               fontSize: 20),
                           CustomText(
-                              text: invoice!['status']!,
-                              color: invoice!['statusCode']! == 1
+                              text: invoice!.status == 1
+                                  ? "Đã thanh toán"
+                                  : invoice!.status == 2
+                                      ? "Sắp hết hạn"
+                                      : "Đã hết hạn",
+                              color: invoice!.status == 1
                                   ? CustomColor.blue
-                                  : invoice!['statusCode']! == 2
+                                  : invoice!.status == 2
                                       ? const Color.fromRGBO(249, 168, 37, 1)
                                       : CustomColor.red,
                               context: context,
@@ -87,7 +96,8 @@ class InvoiceWidget extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                               fontSize: 14),
                           CustomText(
-                              text: invoice!["getDate"]!,
+                              text: invoice!.deliveryDate.substring(
+                                  0, invoice!.deliveryDate.indexOf("T")),
                               color: CustomColor.black,
                               fontWeight: FontWeight.w100,
                               context: context,
@@ -107,7 +117,8 @@ class InvoiceWidget extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                               fontSize: 14),
                           CustomText(
-                              text: invoice!["returnnDate"]!,
+                              text: invoice!.returnDate.substring(
+                                  0, invoice!.returnDate.indexOf("T")),
                               color: CustomColor.black[2]!,
                               context: context,
                               fontWeight: FontWeight.w500,

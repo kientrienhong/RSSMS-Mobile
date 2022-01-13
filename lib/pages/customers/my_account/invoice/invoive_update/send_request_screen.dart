@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
+import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoive_update/invoice_cancel_widget.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoive_update/invoive_change_item_widget.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoive_update/invoive_extend_widget.dart';
 
 class SendRequestScreen extends StatefulWidget {
-  Map<String, dynamic>? invoice;
+  Invoice? invoice;
 
   SendRequestScreen({Key? key, required this.invoice}) : super(key: key);
 
@@ -112,14 +113,14 @@ class SendRequestScreenState extends State<SendRequestScreen> {
                   _state == CurrentRadioState.extendOrder
                       ? CustomColor.blue
                       : CustomColor.white),
-              if (widget.invoice!["type"] == 0)
+              if (widget.invoice!.typeOrder == 1)
                 customRadioButton(
                     "Đặt lịch thay đổi đồ dùng đang được giữ",
                     CurrentRadioState.modifyItem,
                     _state == CurrentRadioState.modifyItem
                         ? CustomColor.blue
                         : CustomColor.white),
-              if (widget.invoice!["type"] == 1)
+              if (widget.invoice!.typeOrder == 0)
                 customRadioButton(
                     "Dời lịch nhận kho",
                     CurrentRadioState.modifyItem,

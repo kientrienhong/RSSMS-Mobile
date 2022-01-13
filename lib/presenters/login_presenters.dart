@@ -47,6 +47,8 @@ class LoginPresenter {
       final result = await _model!.auth.signInWithCredential(credential);
       final response =
           await ApiServices.logInThirParty(result.user!.uid, deviceToken);
+      print("####################" + result.user!.email!);
+
       return Users.fromMap(jsonDecode(response.body));
     } catch (error) {
       print(error);
@@ -89,13 +91,18 @@ class LoginPresenter {
     }
   }
 
-  Future<Users> handleSignIn(
+  Future<Users?> handleSignIn(
       String email, String password, String deviceToken) async {
     _view!.updateLoading();
     try {
       final response =
           await ApiServices.logInWithEmail(email, password, deviceToken);
-      return Users.fromMap(jsonDecode(response.body));
+
+      if (response.statusCode == 200) {
+        return Users.fromMap(jsonDecode(response.body));
+      }
+
+      throw Exception();
     } catch (e) {
       print(e.toString());
       throw Exception('Invalid email or password');

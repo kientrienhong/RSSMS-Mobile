@@ -3,9 +3,10 @@ import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
+import 'package:rssms/models/entity/invoice.dart';
 
 class InvoiceInfoWidget extends StatelessWidget {
-  Map<String, dynamic>? invoice;
+  Invoice? invoice;
   final Size deviceSize;
 
   InvoiceInfoWidget({Key? key, required this.invoice, required this.deviceSize})
@@ -24,7 +25,7 @@ class InvoiceInfoWidget extends StatelessWidget {
               fontWeight: FontWeight.bold,
               fontSize: 17),
           CustomText(
-              text: "#" + invoice!["id"],
+              text: "#" + invoice!.id.toString(),
               color: Colors.black,
               context: context,
               fontWeight: FontWeight.bold,
@@ -45,10 +46,14 @@ class InvoiceInfoWidget extends StatelessWidget {
               fontWeight: FontWeight.bold,
               fontSize: 17),
           CustomText(
-              text: invoice!["status"],
-              color: invoice!['statusCode']! == 1
+              text: invoice!.status == 1
+                  ? "Đã thanh toán"
+                  : invoice!.status == 2
+                      ? "Sắp hết hạn"
+                      : "Đã hết hạn",
+              color: invoice!.status == 1
                   ? CustomColor.blue
-                  : invoice!['statusCode']! == 2
+                  : invoice!.status == 2
                       ? const Color.fromRGBO(249, 168, 37, 1)
                       : CustomColor.red,
               context: context,
@@ -70,7 +75,8 @@ class InvoiceInfoWidget extends StatelessWidget {
               fontWeight: FontWeight.bold,
               fontSize: 17),
           CustomText(
-              text: invoice!["getDate"],
+              text: invoice!.deliveryDate
+                  .substring(0, invoice!.deliveryDate.indexOf("T")),
               color: Colors.black,
               context: context,
               fontWeight: FontWeight.bold,
@@ -91,7 +97,8 @@ class InvoiceInfoWidget extends StatelessWidget {
               fontWeight: FontWeight.bold,
               fontSize: 17),
           CustomText(
-              text: invoice!["returnnDate"],
+              text:invoice!.returnDate
+                  .substring(0, invoice!.returnDate.indexOf("T")),
               color: Colors.black,
               context: context,
               fontWeight: FontWeight.bold,
@@ -114,7 +121,7 @@ class InvoiceInfoWidget extends StatelessWidget {
           SizedBox(
             width: deviceSize.width * 1.5 / 3,
             child: CustomText(
-              text: invoice!["address"],
+              text: invoice!.deliveryAddress,
               color: CustomColor.black,
               textAlign: TextAlign.right,
               context: context,
@@ -140,7 +147,7 @@ class InvoiceInfoWidget extends StatelessWidget {
               fontWeight: FontWeight.bold,
               fontSize: 17),
           CustomText(
-              text: invoice!["discount"],
+              text: "Không có",
               color: Colors.black38,
               context: context,
               fontSize: 16)

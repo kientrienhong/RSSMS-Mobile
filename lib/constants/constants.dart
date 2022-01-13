@@ -95,6 +95,11 @@ const List<String> LIST_TIME_PICK_UP = [
   "4pm - 6pm",
 ];
 
+const Map<String, String> ICON_INVOICE = {
+  "box": "assets/images/delivery-box1.png",
+  "warehose": "assets/images/warehouse1.png"
+};
+
 const List<Map<String, dynamic>> LIST_INVOICE = [
   {
     "url": "assets/images/delivery-box1.png",
@@ -495,5 +500,116 @@ const List<Map<String, dynamic>> LIST_REQUEST_DELIVERY = [
     'date': '10/01/2022',
     'reason': 'Bận việc gia đình',
     'status': StatusRequestDelivery.reject
+  },
+];
+
+const List<Map<String, dynamic>> LIST_IMAGE_INVOICE = [
+  {
+    "name": "Bolo 1",
+    "quantityImage": "6 hình ảnh",
+    "image": [
+      {
+        "url": "assets/images/image28.png",
+        "name": "Box Bolo 1",
+        "description": "2 cuốn sách \n10 cuốn tập\n1 đống viết\n1 nghìn cục tẩy"
+      },
+      {
+        "url": "assets/images/image28.png",
+        "name": "Box Bolo 2",
+        "description": "2 cuốn sách \n10 cuốn tập\n1 đống viết\n1 nghìn cục tẩy"
+      },
+      {
+        "url": "assets/images/image28.png",
+        "name": "Box Bolo 3",
+        "description": "2 cuốn sách \n10 cuốn tập\n1 đống viết\n1 nghìn cục tẩy"
+      },
+      {
+        "url": "assets/images/image28.png",
+        "name": "Box Bolo 4",
+        "description": "2 cuốn sách \n10 cuốn tập\n1 đống viết\n1 nghìn cục tẩy"
+      },
+      {
+        "url": "assets/images/image28.png",
+        "name": "Box Bolo 5",
+        "description": "2 cuốn sách \n10 cuốn tập\n1 đống viết\n1 nghìn cục tẩy"
+      },
+      {
+        "url": "assets/images/image28.png",
+        "name": "Box Bolo 6",
+        "description": "2 cuốn sách \n10 cuốn tập\n1 đống viết\n1 nghìn cục tẩy"
+      },
+    ]
+  },
+  {
+    "name": "Size S",
+    "quantityImage": "6 hình ảnh",
+    "image": [
+            {
+        "url": "assets/images/image28.png",
+        "name": "Size S 1",
+        "description": "2 cuốn sách \n10 cuốn tập\n1 đống viết\n1 nghìn cục tẩy"
+      },
+      {
+        "url": "assets/images/image28.png",
+        "name": "Size S 2",
+        "description": "2 cuốn sách \n10 cuốn tập\n1 đống viết\n1 nghìn cục tẩy"
+      },
+      {
+        "url": "assets/images/image28.png",
+        "name": "Size S 3",
+        "description": "2 cuốn sách \n10 cuốn tập\n1 đống viết\n1 nghìn cục tẩy"
+      },
+      {
+        "url": "assets/images/image28.png",
+        "name": "Size S 4",
+        "description": "2 cuốn sách \n10 cuốn tập\n1 đống viết\n1 nghìn cục tẩy"
+      },
+      {
+        "url": "assets/images/image28.png",
+        "name": "Size S 5",
+        "description": "2 cuốn sách \n10 cuốn tập\n1 đống viết\n1 nghìn cục tẩy"
+      },
+      {
+        "url": "assets/images/image28.png",
+        "name": "Size S 6",
+        "description": "2 cuốn sách \n10 cuốn tập\n1 đống viết\n1 nghìn cục tẩy"
+      },
+    ]
+  },
+  {
+    "name": "Size L",
+    "quantityImage": "6 hình ảnh",
+    "image": [
+           {
+        "url": "assets/images/image28.png",
+        "name": "Size L 1",
+        "description": "2 cuốn sách \n10 cuốn tập\n1 đống viết\n1 nghìn cục tẩy"
+      },
+      {
+        "url": "assets/images/image28.png",
+        "name": "Size L 2",
+        "description": "2 cuốn sách \n10 cuốn tập\n1 đống viết\n1 nghìn cục tẩy"
+      },
+      {
+        "url": "assets/images/image28.png",
+        "name": "Size L 3",
+        "description": "2 cuốn sách \n10 cuốn tập\n1 đống viết\n1 nghìn cục tẩy"
+      },
+      {
+        "url": "assets/images/image28.png",
+        "name": "Size L 4",
+        "description": "2 cuốn sách \n10 cuốn tập\n1 đống viết\n1 nghìn cục tẩy"
+      },
+      {
+        "url": "assets/images/image28.png",
+        "name": "Size L 5",
+        "description": "2 cuốn sách \n10 cuốn tập\n1 đống viết\n1 nghìn cục tẩy"
+      },
+      {
+        "url": "assets/images/image28.png",
+        "name": "Size L 6",
+        "description": "2 cuốn sách \n10 cuốn tập\n1 đống viết\n1 nghìn cục tẩy"
+      },
+    ]
   },
 ];

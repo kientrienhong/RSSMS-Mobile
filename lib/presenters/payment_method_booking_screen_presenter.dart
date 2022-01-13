@@ -26,7 +26,8 @@ class PaymentMethodBookingScreenPresenter {
             "productName": ele['name'],
             "price": ele['price'],
             "type": ele['type'],
-            "amount": ele['quantity']
+            "amount": ele['quantity'],
+            'note': ele['note']
           });
         }
       }

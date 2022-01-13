@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/constants/constants.dart' as constants;
+import 'package:rssms/models/entity/boxe.dart';
 
 class BoxWidget extends StatelessWidget {
-  final Map<String, dynamic> box;
+  final Boxe box;
   final int index;
   final int currentIndex;
   final Function onTap;
@@ -18,27 +19,31 @@ class BoxWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color currentColor =
-        constants.LIST_NOTE_STATUS_BOX[box['status'] as int]['color'] as Color;
+    // Color currentColor =
+    //     constants.LIST_NOTE_STATUS_BOX[box['status'] as int]['color'] as Color;
 
     return GestureDetector(
       onTap: () {
-        onTap(index, box['status']);
+        onTap(index, box.orderId);
       },
       child: Container(
         margin: const EdgeInsets.only(bottom: 16),
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: currentIndex != index ? currentColor : CustomColor.green,
+          color: currentIndex != index
+              ? (box.orderId != null
+                  ? CustomColor.brightBlue
+                  : CustomColor.blue)
+              : CustomColor.green,
           borderRadius: BorderRadius.circular(8.0),
         ),
         child: Center(
           child: CustomText(
-              text: box['name'],
+              text: box.sizeType + " " + box.id.toString(),
               color: CustomColor.black,
               fontWeight: FontWeight.bold,
               context: context,
-              fontSize: 24),
+              fontSize: 16),
         ),
       ),
     );

@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
+import 'package:rssms/models/entity/invoice.dart';
+import 'package:rssms/models/entity/user.dart';
+import 'package:rssms/models/invoice_model.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoice_widget.dart';
+import 'package:rssms/presenters/invoice_presenter.dart';
+import 'package:rssms/views/invoice_view.dart';
 import '../../../../constants/constants.dart' as constants;
 
 class InvoiceScreen extends StatefulWidget {
@@ -12,7 +19,22 @@ class InvoiceScreen extends StatefulWidget {
   State<InvoiceScreen> createState() => _InvoiceScreenState();
 }
 
-class _InvoiceScreenState extends State<InvoiceScreen> {
+class _InvoiceScreenState extends State<InvoiceScreen> implements InvoiceView {
+  late InvoicePresenter _presenter;
+  late InvoiceModel _model;
+  late bool _isFound;
+
+  @override
+  void initState() {
+    super.initState();
+    _isFound = false;
+    Users user = Provider.of<Users>(context, listen: false);
+    _presenter = InvoicePresenter();
+    _presenter.view = this;
+    _model = _presenter.model!;
+    _presenter.loadInvoice(user.idToken!);
+  }
+
   List<Widget> mapInvoiceWidget(listInvoice) => listInvoice
       .map<InvoiceWidget>((e) => InvoiceWidget(
             invoice: e,
@@ -21,10 +43,13 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
   var filterIndex = "0";
 
   @override
+  void setChangeList() {
+    setState(() {});
+  }
+
+  @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
-    final List<Map<String, dynamic>> listInvoice =
-        constants.LIST_INVOICE.toList();
 
     return SizedBox(
       width: deviceSize.width,
@@ -53,6 +78,54 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                 CustomSizedBox(
                   context: context,
                   width: 16,
+                ),
+                TypeAheadField(
+                  textFieldConfiguration: TextFieldConfiguration(
+                    controller: _model.searchValue,
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(),
+                      prefixIcon: ImageIcon(
+                        const AssetImage('assets/images/search.png'),
+                        color: CustomColor.black[2]!,
+                      ),
+                    ),
+                  ),
+                  suggestionsCallback: (pattern) async {
+                    if (pattern.isEmpty) {
+                      setState(() {
+                        _isFound = false;
+                      });
+                      return _model.listInvoice!
+                          .where((element) =>
+                              element.id.toString().contains(pattern))
+                          .toList();
+                    } else {
+                      return _model.listInvoice!
+                          .where((element) =>
+                              element.id.toString().contains(pattern))
+                          .toList();
+                    }
+                  },
+                  itemBuilder: (context, suggestion) {
+                    Invoice shelf = suggestion! as Invoice;
+                    return ListTile(
+                      title: Text(shelf.id.toString()),
+                    );
+                  },
+                  noItemsFoundBuilder: (context) => Center(
+                    child: CustomText(
+                        text: 'No invoice found!',
+                        color: CustomColor.black,
+                        context: context,
+                        fontSize: 16),
+                  ),
+                  onSuggestionSelected: (suggestion) {
+                    setState(() {
+                      _isFound = true;
+                      _model.searchInvoice = suggestion as Invoice;
+                      _model.searchValue.text = suggestion.id;
+                    });
+                  },
                 ),
                 Container(
                   decoration: BoxDecoration(
@@ -96,11 +169,13 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                 ),
               ],
             ),
-            Expanded(
-                child: ListView(
-              padding: const EdgeInsets.all(0),
-              children: mapInvoiceWidget(listInvoice),
-            ))
+            if (!false)
+              Expanded(
+                  child: ListView(
+                padding: const EdgeInsets.all(0),
+                children: mapInvoiceWidget(_model.listInvoice),
+              )),
+            if (false) InvoiceWidget(invoice: _model.searchInvoice)
           ],
         ),
       ),

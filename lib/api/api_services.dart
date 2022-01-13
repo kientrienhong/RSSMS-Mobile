@@ -15,6 +15,7 @@ class ApiServices {
           '$_domain/api/v1/users/thirdparty?firebaseID=$firebaseId&deviceToken=$deviceToken');
       return http.post(url);
     } catch (e) {
+      print(e.toString());
       throw Exception('Log In failed');
     }
   }
@@ -33,6 +34,7 @@ class ApiServices {
             "deviceToken": deviceToken
           }));
     } catch (e) {
+      print(e.toString());
       throw Exception('Log In failed');
     }
   }
@@ -100,6 +102,58 @@ class ApiServices {
     }
   }
 
+  static Future<dynamic> getShelf(String idToken) {
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        'Authorization': 'Bearer $idToken'
+      };
+
+      final url = Uri.parse('$_domain/api/v1/shelves?page=1&size=250');
+      return http.get(
+        url,
+        headers: headers,
+      );
+    } catch (e) {
+      print(e);
+      throw Exception(e.toString());
+    }
+  }
+
+  static Future<dynamic> getInvoice(String idToken) {
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        'Authorization': 'Bearer $idToken'
+      };
+
+      final url = Uri.parse('$_domain/api/v1/orders');
+      return http.get(
+        url,
+        headers: headers,
+      );
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  static Future<dynamic> getInvoicebyId(String idToken, String id) {
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        'Authorization': 'Bearer $idToken'
+      };
+
+      final url = Uri.parse('$_domain/api/v1/orders/' + id.toString());
+      return http.get(
+        url,
+        headers: headers,
+      );
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
   static Future<dynamic> createOrder(List<Map<String, dynamic>> listProduct,
       OrderBooking orderBooking, Users user) {
     try {
@@ -133,6 +187,37 @@ class ApiServices {
       );
     } catch (e) {
       throw Exception(e.toString());
+    }
+  }
+
+  static Future<dynamic> updateProfile(
+      String fullname,
+      String phone,
+      DateTime birthday,
+      int gender,
+      String address,
+      String idToken,
+      int userId) {
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        'Authorization': 'Bearer $idToken'
+      };
+
+      final url = Uri.parse('$_domain/api/v1/users/$userId');
+      return http.put(url,
+          headers: headers,
+          body: jsonEncode({
+            "id": userId,
+            "name": fullname,
+            "gender": gender,
+            "birthdate": birthday.toIso8601String(),
+            "address": address,
+            "phone": phone
+          }));
+    } catch (e) {
+      print(e.toString());
+      throw Exception('Update Failed');
     }
   }
 }

@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
+import 'package:rssms/common/custom_radio_button.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
+import 'package:rssms/models/entity/invoice.dart';
+import 'package:rssms/models/entity/order_detail.dart';
 import 'package:rssms/pages/customers/cart/widgets/quantity_widget.dart';
+import 'package:rssms/pages/customers/cart/widgets/quantity_widget_custom.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/product_in_invoice/product_widget.dart';
 import 'package:rssms/views/extend_invoice_view.dart';
 import 'package:rssms/constants/constants.dart' as constants;
 
 class InvoiveExtendWidget extends StatefulWidget {
-  Map<String, dynamic>? invoice;
+  Invoice? invoice;
 
   InvoiveExtendWidget({Key? key, required this.invoice}) : super(key: key);
 
@@ -21,6 +25,7 @@ enum PaymentMethod { tienmat, mbanking, theatm, quocte, vidientu }
 
 class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
     implements ExtendInvoiceView {
+  int? durationMonth;
   PaymentMethod? _state;
 
   List<Widget> mapProductWidget(listProduct) => listProduct
@@ -31,72 +36,32 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
 
   @override
   void onAddQuantity() {
-    Map<String, dynamic> tempProduct = {...widget.invoice!};
-    tempProduct['quantity'] += 1;
     setState(() {
-      widget.invoice = tempProduct;
+      durationMonth = durationMonth! + 1;
     });
   }
 
   @override
   void onMinusQuantity() {
-    Map<String, dynamic> tempProduct = {...widget.invoice!};
-    if (tempProduct['quantity'] > 0) {
-      tempProduct['quantity'] -= 1;
+    if (durationMonth! > 1) {
+      setState(() {
+        durationMonth = durationMonth! - 1;
+      });
     }
-    setState(() {
-      widget.invoice = tempProduct;
-    });
   }
 
-  Widget customRadioButton(String text, PaymentMethod index, Color color) {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          _state = index;
-        });
-      },
-      child: Row(
-        children: [
-          OutlinedButton(
-            style: ButtonStyle(
-              backgroundColor:
-                  MaterialStateProperty.resolveWith((states) => color),
-              shape: MaterialStateProperty.all(const CircleBorder()),
-              side: MaterialStateProperty.all(
-                const BorderSide(color: CustomColor.blue, width: 1.5),
-              ),
-              maximumSize: MaterialStateProperty.all(
-                const Size(70, 70),
-              ),
-              minimumSize: MaterialStateProperty.all(
-                const Size(25, 25),
-              ),
-            ),
-            onPressed: () {},
-            child: const Icon(
-              Icons.check,
-              size: 15,
-              color: CustomColor.white,
-            ),
-          ),
-          Text(
-            text,
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-              color: (_state == index) ? CustomColor.blue : Colors.black,
-            ),
-          ),
-        ],
-      ),
-    );
+  @override
+  void initState() {
+    durationMonth = 0;
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
-    List<Map<String, dynamic>> listProduct = widget.invoice!["item"];
+
+    List<OrderDetail> listProduct = widget.invoice!.orderDetails;
+
     return Column(
       children: [
         Container(
@@ -133,7 +98,6 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
                       height: 16,
                     ),
                     Table(
-                      columnWidths: {0: FractionColumnWidth(.55)},
                       children: [
                         TableRow(children: [
                           CustomText(
@@ -145,15 +109,10 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
                           CustomText(
                               text: "Số lượng",
                               color: CustomColor.black,
+                              textAlign: TextAlign.right,
                               fontWeight: FontWeight.bold,
                               context: context,
                               fontSize: 14),
-                          CustomText(
-                              text: "Tổng tiền",
-                              color: CustomColor.black,
-                              fontWeight: FontWeight.bold,
-                              context: context,
-                              fontSize: 14)
                         ])
                       ],
                     ),
@@ -185,8 +144,7 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
                             fontWeight: FontWeight.bold,
                             fontSize: 16),
                         CustomText(
-                            text:
-                                widget.invoice!["totalItem"].toString() + " đ",
+                            text: widget.invoice!.totalPrice.toString() + " đ",
                             color: Colors.black,
                             context: context,
                             fontWeight: FontWeight.bold,
@@ -206,13 +164,13 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
                             context: context,
                             fontWeight: FontWeight.bold,
                             fontSize: 16),
-                        // QuantityWidget(
-                        //   product: widget.invoice,
-                        //   width: deviceSize.width / 10,
-                        //   addQuantity: () => onAddQuantity(),
-                        //   minusQuantity: () => onMinusQuantity(),
-                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        // ),
+                        QuantityWidgetCustom(
+                          quantity: durationMonth,
+                          width: deviceSize.width / 10,
+                          addQuantity: () => onAddQuantity(),
+                          minusQuantity: () => onMinusQuantity(),
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        ),
                       ],
                     ),
                     CustomSizedBox(
@@ -236,10 +194,7 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
                             fontWeight: FontWeight.bold,
                             fontSize: 16),
                         CustomText(
-                            text: (widget.invoice!["totalItem"] *
-                                        widget.invoice!["quantity"])
-                                    .toString() +
-                                " đ",
+                            text: widget.invoice!.totalPrice.toString() + " đ",
                             color: CustomColor.blue,
                             context: context,
                             fontWeight: FontWeight.bold,
@@ -263,7 +218,8 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
                       fontWeight: FontWeight.bold,
                       fontSize: 18),
                   CustomText(
-                      text: widget.invoice!["returnnDate"],
+                      text: widget.invoice!.returnDate.substring(
+                          0, widget.invoice!.returnDate.indexOf("T")),
                       color: CustomColor.black,
                       context: context,
                       fontWeight: FontWeight.bold,
@@ -290,7 +246,8 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
                     ),
                   ),
                   CustomText(
-                      text: widget.invoice!["returnnDate"],
+                      text: widget.invoice!.returnDate.substring(
+                          0, widget.invoice!.returnDate.indexOf("T")),
                       color: CustomColor.black,
                       context: context,
                       fontWeight: FontWeight.bold,
@@ -318,36 +275,68 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
           padding: EdgeInsets.symmetric(horizontal: 14),
           child: Column(
             children: [
-              customRadioButton(
-                  "Thanh toán tiền mặt",
-                  PaymentMethod.tienmat,
-                  _state == PaymentMethod.tienmat
+              CustomRadioButton(
+                  function: () {
+                    setState(() {
+                      _state = PaymentMethod.tienmat;
+                    });
+                  },
+                  text: "Thanh toán tiền mặt",
+                  color: _state == PaymentMethod.tienmat
                       ? CustomColor.blue
-                      : CustomColor.white),
-              customRadioButton(
-                  "Ứng dụng Mobile Banking",
-                  PaymentMethod.mbanking,
-                  _state == PaymentMethod.mbanking
+                      : CustomColor.white,
+                  state: PaymentMethod.tienmat,
+                  value: _state),
+              CustomRadioButton(
+                  function: () {
+                    setState(() {
+                      _state = PaymentMethod.mbanking;
+                    });
+                  },
+                  text: "Ứng dụng Mobile Banking",
+                  color: _state == PaymentMethod.mbanking
                       ? CustomColor.blue
-                      : CustomColor.white),
-              customRadioButton(
-                  "Thẻ ATM và tài khoản ngân hàng",
-                  PaymentMethod.theatm,
-                  _state == PaymentMethod.theatm
+                      : CustomColor.white,
+                  state: PaymentMethod.mbanking,
+                  value: _state),
+              CustomRadioButton(
+                  function: () {
+                    setState(() {
+                      _state = PaymentMethod.theatm;
+                    });
+                  },
+                  text: "Thẻ ATM và tài khoản ngân hàng",
+                  color: _state == PaymentMethod.theatm
                       ? CustomColor.blue
-                      : CustomColor.white),
-              customRadioButton(
-                  "Thẻ thanh toán quốc tế",
-                  PaymentMethod.quocte,
-                  _state == PaymentMethod.quocte
-                      ? CustomColor.blue
-                      : CustomColor.white),
-              customRadioButton(
-                  "Ví điện tử",
-                  PaymentMethod.vidientu,
-                  _state == PaymentMethod.vidientu
-                      ? CustomColor.blue
-                      : CustomColor.white),
+                      : CustomColor.white,
+                  state: PaymentMethod.theatm,
+                  value: _state),
+              CustomRadioButton(
+                function: () {
+                  setState(() {
+                    _state = PaymentMethod.quocte;
+                  });
+                },
+                text: "Thẻ thanh toán quốc tế",
+                color: _state == PaymentMethod.quocte
+                    ? CustomColor.blue
+                    : CustomColor.white,
+                state: PaymentMethod.quocte,
+                value: _state,
+              ),
+              CustomRadioButton(
+                function: () {
+                  setState(() {
+                    _state = PaymentMethod.vidientu;
+                  });
+                },
+                text: "Ví điện tử",
+                color: _state == PaymentMethod.vidientu
+                    ? CustomColor.blue
+                    : CustomColor.white,
+                state: PaymentMethod.vidientu,
+                value: _state,
+              ),
             ],
           ),
         ),

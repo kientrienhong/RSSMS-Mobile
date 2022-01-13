@@ -5,12 +5,13 @@ import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/common/invoice_image_widget.dart';
+import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/invoice_info_widget.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/invoice_product_widget.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoive_update/send_request_screen.dart';
 
 class InvoiceDetailScreen extends StatelessWidget {
-  Map<String, dynamic>? invoice;
+  Invoice? invoice;
   final Size deviceSize;
 
   InvoiceDetailScreen({Key? key, this.invoice, required this.deviceSize})
@@ -24,7 +25,7 @@ class InvoiceDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Map<String, dynamic>> listImage = invoice!["image"];
+    // List<Map<String, dynamic>> listImage = invoice!["image"];
 
     return Scaffold(
       backgroundColor: CustomColor.white,
@@ -68,24 +69,24 @@ class InvoiceDetailScreen extends StatelessWidget {
                       context: context,
                       height: 16,
                     ),
-                    if (invoice!["type"] == 0)
-                      CustomText(
-                          text: "Hình ảnh",
-                          color: CustomColor.blue,
-                          context: context,
-                          textAlign: TextAlign.right,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16),
-                    if (invoice!["type"] == 0)
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 12.0),
-                          child: Row(
-                            children: mapImageWidget(listImage),
-                          ),
-                        ),
-                      ),
+                    // if (invoice!.typeOrder== 0)
+                    //   CustomText(
+                    //       text: "Hình ảnh",
+                    //       color: CustomColor.blue,
+                    //       context: context,
+                    //       textAlign: TextAlign.right,
+                    //       fontWeight: FontWeight.bold,
+                    //       fontSize: 16),
+                    // if (invoice!.typeOrder == 0)
+                    //   SingleChildScrollView(
+                    //     scrollDirection: Axis.horizontal,
+                    //     child: Padding(
+                    //       padding: const EdgeInsets.symmetric(vertical: 12.0),
+                    //       child: Row(
+                    //         children: mapImageWidget(listImage),
+                    //       ),
+                    //     ),
+                    //   ),
                     CustomText(
                         text: "QR code",
                         color: CustomColor.blue,
@@ -97,7 +98,7 @@ class InvoiceDetailScreen extends StatelessWidget {
                       width: double.infinity,
                       child: Center(
                         child: QrImage(
-                          data: '1',
+                          data: invoice!.id.toString(),
                           size: 88.0,
                           version: 2,
                         ),

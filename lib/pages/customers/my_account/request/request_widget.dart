@@ -98,20 +98,12 @@ class RequestWidget extends StatelessWidget {
                               ),
                             ],
                           ),
-                        Row(
-                          children: [
-                            CustomText(
-                                text: 'Trạng thái: ' + request!["status"],
-                                color: CustomColor.black,
-                                context: context,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16),
-                          ],
-                        ),
-                        CustomSizedBox(
-                          context: context,
-                          height: 8,
-                        ),
+                        CustomText(
+                            text: 'Trạng thái: ' + request!["status"],
+                            color: CustomColor.black,
+                            context: context,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15),
                       ],
                     ),
                   ),
