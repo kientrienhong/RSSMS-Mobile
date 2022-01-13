@@ -13,7 +13,6 @@ class ProductInvoiceWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
     final oCcy = NumberFormat("#,##0", "en_US");
-
     return SizedBox(
         child: Table(
       defaultVerticalAlignment: TableCellVerticalAlignment.middle,
