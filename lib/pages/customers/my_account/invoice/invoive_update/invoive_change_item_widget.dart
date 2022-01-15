@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_input_date.dart';
@@ -7,6 +8,7 @@ import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/common/list_time_select.dart';
 import 'package:rssms/models/entity/invoice.dart';
+import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoive_update/widgets/image_select.dart';
 import 'package:collection/collection.dart';
 
@@ -21,22 +23,25 @@ class ChangeItemWidget extends StatefulWidget {
 
 class _ChangeItemWidgetState extends State<ChangeItemWidget> {
   final _focusNodeBirthDate = FocusNode();
-  final _focusNodeDistrict = FocusNode();
+
   final _focusNodeStreet = FocusNode();
-  final _focusNodeWard = FocusNode();
 
   final _controllerBirthDate = TextEditingController();
   final _controllerStreet = TextEditingController();
-  final _controllerWard = TextEditingController();
-  final _controllerDistrict = TextEditingController();
 
   String get _birthdate => _controllerBirthDate.text;
   String get _street => _controllerStreet.text;
-  String get _wart => _controllerWard.text;
-  String get _district => _controllerWard.text;
   List<Map<String, dynamic>> currentIndexNoteChoice = [];
 
   late int _currentIndex;
+
+  @override
+  void initState() {
+    Users users = Provider.of<Users>(context, listen: false);
+    _controllerStreet.text = users.address!;
+    _currentIndex = -1;
+    super.initState();
+  }
 
   void onChangeTime(int index) {
     setState(() {
@@ -57,23 +62,13 @@ class _ChangeItemWidgetState extends State<ChangeItemWidget> {
   }
 
   @override
-  void initState() {
-    _currentIndex = -1;
-    super.initState();
-  }
-
-  @override
   void dispose() {
     super.dispose();
     _focusNodeBirthDate.dispose();
     _focusNodeStreet.dispose();
-    _focusNodeWard.dispose();
-    _focusNodeDistrict.dispose();
 
     _controllerBirthDate.dispose();
     _controllerStreet.dispose();
-    _controllerWard.dispose();
-    _controllerDistrict.dispose();
   }
 
   List<Widget> mapImageWidget(List<Map<String, dynamic>> listImage) => listImage
@@ -89,7 +84,6 @@ class _ChangeItemWidgetState extends State<ChangeItemWidget> {
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 18),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -178,41 +172,12 @@ class _ChangeItemWidgetState extends State<ChangeItemWidget> {
           ),
           CustomOutLineInputWithHint(
             deviceSize: deviceSize,
-            hintText: "Đường",
+            hintText: "Địa chỉ nhận hàng",
             isDisable: false,
             focusNode: _focusNodeStreet,
             controller: _controllerStreet,
           ),
-          Row(
-            children: [
-              SizedBox(
-                width: deviceSize.width / 3,
-                child: CustomOutLineInputWithHint(
-                  deviceSize: deviceSize,
-                  hintText: 'Phường',
-                  isDisable: false,
-                  textInputType: TextInputType.number,
-                  focusNode: _focusNodeWard,
-                  controller: _controllerWard,
-                ),
-              ),
-              CustomSizedBox(
-                context: context,
-                width: 16,
-              ),
-              SizedBox(
-                width: deviceSize.width / 4,
-                child: CustomOutLineInputWithHint(
-                  deviceSize: deviceSize,
-                  hintText: 'Quận',
-                  isDisable: false,
-                  isSecure: true,
-                  focusNode: _focusNodeDistrict,
-                  controller: _controllerDistrict,
-                ),
-              ),
-            ],
-          ),
+
           if (widget.invoice!.typeOrder == 1)
             CustomText(
               text: "Danh sách đồ",

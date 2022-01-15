@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rssms/common/custom_color.dart';
+import 'package:rssms/common/custom_radio_button.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/models/entity/invoice.dart';
@@ -80,62 +81,85 @@ class SendRequestScreenState extends State<SendRequestScreen> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 24),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
           color: CustomColor.white,
           width: deviceSize.width,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 24, horizontal: 24),
+                padding: const EdgeInsets.symmetric(vertical: 24),
                 child: GestureDetector(
                   onTap: () => {Navigator.of(context).pop()},
                   child: Image.asset('assets/images/arrowLeft.png'),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 20),
-                child: CustomText(
-                    text: "Các loại yêu cầu",
-                    color: CustomColor.blue,
-                    context: context,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 24),
-              ),
-              CustomSizedBox(
-                context: context,
-                height: 8,
-              ),
-              customRadioButton(
-                  "Gia hạn đơn",
-                  CurrentRadioState.extendOrder,
-                  _state == CurrentRadioState.extendOrder
-                      ? CustomColor.blue
-                      : CustomColor.white),
-              if (widget.invoice!.typeOrder == 1)
-                customRadioButton(
-                    "Đặt lịch thay đổi đồ dùng đang được giữ",
-                    CurrentRadioState.modifyItem,
-                    _state == CurrentRadioState.modifyItem
-                        ? CustomColor.blue
-                        : CustomColor.white),
-              if (widget.invoice!.typeOrder == 0)
-                customRadioButton(
-                    "Dời lịch nhận kho",
-                    CurrentRadioState.modifyItem,
-                    _state == CurrentRadioState.modifyItem
-                        ? CustomColor.blue
-                        : CustomColor.white),
-              customRadioButton(
-                  "Hủy đơn",
-                  CurrentRadioState.cancelOrder,
-                  _state == CurrentRadioState.cancelOrder
-                      ? CustomColor.blue
-                      : CustomColor.white),
+              CustomText(
+                  text: "Các loại yêu cầu",
+                  color: CustomColor.blue,
+                  context: context,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 24),
               CustomSizedBox(
                 context: context,
                 height: 24,
+              ),
+              CustomRadioButton(
+                  function: () {
+                    setState(() {
+                      _state = CurrentRadioState.extendOrder;
+                    });
+                  },
+                  text: "Gia hạn đơn",
+                  color: _state == CurrentRadioState.extendOrder
+                      ? CustomColor.blue
+                      : CustomColor.white,
+                  state: _state,
+                  value: CurrentRadioState.extendOrder),
+              if (widget.invoice!.typeOrder == 1)
+                CustomRadioButton(
+                    function: () {
+                      setState(() {
+                        _state = CurrentRadioState.modifyItem;
+                      });
+                    },
+                    text: "Đặt lịch thay đổi đồ dùng đang được giữ",
+                    color: _state == CurrentRadioState.modifyItem
+                        ? CustomColor.blue
+                        : CustomColor.white,
+                    state: _state,
+                    value: CurrentRadioState.modifyItem),
+              if (widget.invoice!.typeOrder == 0)
+                CustomRadioButton(
+                    function: () {
+                      setState(() {
+                        _state = CurrentRadioState.modifyItem;
+                      });
+                    },
+                    text: "Dời lịch nhận kho",
+                    color: _state == CurrentRadioState.modifyItem
+                        ? CustomColor.blue
+                        : CustomColor.white,
+                    state: _state,
+                    value: CurrentRadioState.modifyItem),
+              CustomRadioButton(
+                  function: () {
+                    setState(() {
+                      _state = CurrentRadioState.cancelOrder;
+                    });
+                  },
+                  text: "Hủy đơn",
+                  color: _state == CurrentRadioState.cancelOrder
+                      ? CustomColor.blue
+                      : CustomColor.white,
+                  state: _state,
+                  value: CurrentRadioState.cancelOrder),
+              const SizedBox(
+                child: Divider(color: CustomColor.black, thickness: 0.5),
+              ),
+              CustomSizedBox(
+                context: context,
+                height: 20,
               ),
               if (_state == CurrentRadioState.extendOrder)
                 InvoiveExtendWidget(

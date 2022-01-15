@@ -27,7 +27,7 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
     implements ExtendInvoiceView {
   int? durationMonth;
   PaymentMethod? _state;
-
+  DateTime? returnDateNew;
   List<Widget> mapProductWidget(listProduct) => listProduct
       .map<ProductInvoiceWidget>((p) => ProductInvoiceWidget(
             product: p,
@@ -38,6 +38,8 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
   void onAddQuantity() {
     setState(() {
       durationMonth = durationMonth! + 1;
+      returnDateNew = DateTime(
+          returnDateNew!.year, returnDateNew!.month + 1, returnDateNew!.day);
     });
   }
 
@@ -46,6 +48,8 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
     if (durationMonth! > 1) {
       setState(() {
         durationMonth = durationMonth! - 1;
+        returnDateNew = DateTime(
+            returnDateNew!.year, returnDateNew!.month - 1, returnDateNew!.day);
       });
     }
   }
@@ -53,6 +57,8 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
   @override
   void initState() {
     durationMonth = 0;
+    returnDateNew = DateTime.parse(widget.invoice!.returnDate
+        .substring(0, widget.invoice!.returnDate.indexOf("T")));
     super.initState();
   }
 
@@ -65,7 +71,6 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
     return Column(
       children: [
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -246,8 +251,9 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
                     ),
                   ),
                   CustomText(
-                      text: widget.invoice!.returnDate.substring(
-                          0, widget.invoice!.returnDate.indexOf("T")),
+                      text: returnDateNew
+                          .toString()
+                          .substring(0, returnDateNew.toString().indexOf(" ")),
                       color: CustomColor.black,
                       context: context,
                       fontWeight: FontWeight.bold,
@@ -272,7 +278,6 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
           ),
         ),
         Container(
-          padding: EdgeInsets.symmetric(horizontal: 14),
           child: Column(
             children: [
               CustomRadioButton(
