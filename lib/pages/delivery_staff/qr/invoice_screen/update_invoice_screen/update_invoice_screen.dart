@@ -12,6 +12,7 @@ import 'package:rssms/common/update_image_invoice.dart';
 import 'package:rssms/constants/constants.dart';
 import 'package:rssms/models/entity/add_image.dart';
 import 'package:rssms/models/entity/invoice.dart';
+import 'package:rssms/models/entity/order_detail.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/models/invoice_update_model.dart';
 import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_screen/image_widget.dart';
@@ -20,8 +21,7 @@ import 'package:rssms/presenters/invoice_update_presenter.dart';
 import 'package:rssms/views/invoice_update_view.dart';
 
 class UpdateInvoiceScreen extends StatefulWidget {
-  Invoice? invoice;
-  UpdateInvoiceScreen({Key? key, required this.invoice}) : super(key: key);
+  UpdateInvoiceScreen({Key? key}) : super(key: key);
 
   @override
   _UpdateInvoiceScreenState createState() => _UpdateInvoiceScreenState();
@@ -36,16 +36,16 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
   final _focusNodePhone = FocusNode();
 
   File? image;
-  List<AddedImage>? listImage = [];
   List<bool>? _isOpen;
-  List<Map<String, dynamic>>? listBox;
 
   @override
   void initState() {
-    listBox = LIST_IMAGE_INVOICE;
-    _isOpen = List<bool>.generate(listBox!.length, (index) => false);
+    Invoice invoice = Provider.of<Invoice>(context, listen: false);
+
     Users users = Provider.of<Users>(context, listen: false);
-    _presenter = InvoiceUpdatePresenter(users, widget.invoice!);
+    _presenter = InvoiceUpdatePresenter(users, invoice);
+    _isOpen =
+        List<bool>.generate(invoice.orderDetails.length, (index) => false);
     _presenter.setView(this);
     _model = _presenter.model;
     super.initState();
@@ -147,9 +147,7 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                 alignment: Alignment.topRight,
                 child: ElevatedButton(
                   onPressed: () {
-                    setState(() {
-                      listImage!.removeAt(index);
-                    });
+                    setState(() {});
                   },
                   child: const Icon(
                     Icons.close,
@@ -171,17 +169,18 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
     );
   }
 
-  List<Widget> mapInvoiceWidget(List<Map<String, dynamic>> listImage) =>
-      listImage
+  List<Widget> mapInvoiceWidget(List<OrderDetail> listOrderDetail) =>
+      listOrderDetail
           .map<ImageWidget>((e) => ImageWidget(
-                image: e,
+                orderDetail: e,
               ))
           .toList();
 
   @override
   Widget build(BuildContext context) {
     var deviceSize = MediaQuery.of(context).size;
-    listImage = Provider.of<AddedImage>(context).listImage;
+    Invoice invoice = Provider.of<Invoice>(context, listen: false);
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -254,8 +253,20 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                 context: context,
                 height: 16,
               ),
-              Column(
-                children: mapInvoiceWidget(LIST_IMAGE_INVOICE),
+              Consumer<Invoice>(
+                builder: (context, invoiceLocal, child) {
+                  return Column(
+                    children: mapInvoiceWidget(invoiceLocal.orderDetails
+                        .where((element) =>
+                            element.productType != SERVICES &&
+                            element.productType != ACCESSORY)
+                        .toList()),
+                  );
+                },
+              ),
+              CustomSizedBox(
+                context: context,
+                height: 16,
               ),
               CustomText(
                 text: "Tình trạng đơn hàng",

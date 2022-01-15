@@ -24,7 +24,20 @@ class ImageItem extends StatefulWidget {
 class _ImageItemState extends State<ImageItem> {
   @override
   Widget build(BuildContext context) {
-    print(widget.index);
+    Widget _buildImage(Size deviceSize) {
+      if (widget.image['file'] != null) {
+        return Image.file(
+          widget.image["file"],
+          width: (deviceSize.width - 32) / 3,
+        );
+      } else {
+        return Image.asset(
+          widget.image["url"],
+          width: (deviceSize.width - 32) / 3,
+        );
+      }
+    }
+
     var deviceSize = MediaQuery.of(context).size;
     return Padding(
       padding: const EdgeInsets.only(left: 8.0, right: 8, bottom: 18),
@@ -32,10 +45,7 @@ class _ImageItemState extends State<ImageItem> {
         children: [
           Row(
             children: [
-              Image.asset(
-                widget.image["url"],
-                width: (deviceSize.width - 32) / 3,
-              ),
+              _buildImage(deviceSize),
               CustomSizedBox(
                 context: context,
                 width: 12,
@@ -76,7 +86,6 @@ class _ImageItemState extends State<ImageItem> {
                           text: 'Xóa',
                           textColor: CustomColor.white,
                           onPressFunction: widget.onPressDelete,
-
                           width: deviceSize.width / 6,
                           buttonColor: CustomColor.red,
                           borderRadius: 6),

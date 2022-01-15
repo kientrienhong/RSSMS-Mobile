@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'image.dart';
 
 class OrderDetail {
+  final int id;
   final int productId;
   final String productName;
   final int price;
@@ -12,7 +13,9 @@ class OrderDetail {
   final int productType;
   final String note;
   final List<Image> images;
+  List<Map<String, dynamic>>? listImageUpdate = [];
   OrderDetail({
+    required this.id,
     required this.productId,
     required this.productName,
     required this.price,
@@ -20,6 +23,7 @@ class OrderDetail {
     required this.note,
     required this.productType,
     required this.images,
+    this.listImageUpdate,
   });
 
   OrderDetail copyWith({
@@ -30,8 +34,11 @@ class OrderDetail {
     int? productType,
     List<Image>? images,
     String? note,
+    int? id,
+    List<Map<String, dynamic>>? listImageUpdate,
   }) {
     return OrderDetail(
+      id: id ?? this.id,
       note: note ?? this.note,
       productId: productId ?? this.productId,
       productName: productName ?? this.productName,
@@ -39,11 +46,13 @@ class OrderDetail {
       amount: amount ?? this.amount,
       productType: productType ?? this.productType,
       images: images ?? this.images,
+      listImageUpdate: listImageUpdate ?? this.listImageUpdate,
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
+      'id': id,
       'productId': productId,
       'productName': productName,
       'price': price,
@@ -56,14 +65,15 @@ class OrderDetail {
 
   factory OrderDetail.fromMap(Map<String, dynamic> map) {
     return OrderDetail(
-      note: map['note'] ?? '',
-      productId: map['productId']?.toInt() ?? 0,
-      productName: map['productName'] ?? '',
-      price: map['price']?.toInt() ?? 0,
-      amount: map['amount']?.toInt() ?? 0,
-      productType: map['productType']?.toInt() ?? 0,
-      images: List<Image>.from(map['images']?.map((x) => Image.fromMap(x))),
-    );
+        id: map['id']?.toInt() ?? 0,
+        note: map['note'] ?? '',
+        productId: map['productId']?.toInt() ?? 0,
+        productName: map['productName'] ?? '',
+        price: map['price']?.toInt() ?? 0,
+        amount: map['amount']?.toInt() ?? 0,
+        productType: map['productType']?.toInt() ?? 0,
+        images: List<Image>.from(map['images']?.map((x) => Image.fromMap(x))),
+        listImageUpdate: map['listImageUpdate'] ?? []);
   }
 
   String toJson() => json.encode(toMap());
@@ -73,7 +83,7 @@ class OrderDetail {
 
   @override
   String toString() {
-    return 'OrderDetail(productId: $productId, productName: $productName, price: $price, amount: $amount, productType: $productType, images: $images)';
+    return 'OrderDetail(productId: $productId, productName: $productName, price: $price, amount: $amount, productType: $productType, images: $images, listUpdate: $listImageUpdate)';
   }
 
   @override
@@ -82,6 +92,7 @@ class OrderDetail {
 
     return other is OrderDetail &&
         other.productId == productId &&
+        other.id == id &&
         other.productName == productName &&
         other.price == price &&
         other.amount == amount &&
@@ -95,6 +106,7 @@ class OrderDetail {
     return productId.hashCode ^
         productName.hashCode ^
         price.hashCode ^
+        id.hashCode ^
         amount.hashCode ^
         note.hashCode ^
         productType.hashCode ^

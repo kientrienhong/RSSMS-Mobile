@@ -4,26 +4,26 @@ import 'package:flutter/foundation.dart';
 
 import 'order_detail.dart';
 
-class Invoice {
-  final int id;
-  final String customerName;
-  final String customerPhone;
-  final String deliveryAddress;
-  final String addressReturn;
-  final int totalPrice;
-  final String rejectedReason;
-  final int typeOrder;
-  final bool isUserDelivery;
-  final String deliveryDate;
-  final String deliveryTime;
-  final String returnDate;
-  final String returnTime;
-  final int paymentMethod;
-  final int durationDays;
-  final int durationMonths;
-  final int status;
-  final bool isPaid;
-  final List<OrderDetail> orderDetails;
+class Invoice with ChangeNotifier {
+  late int id;
+  late String customerName;
+  late String customerPhone;
+  late String deliveryAddress;
+  late String addressReturn;
+  late int totalPrice;
+  late String rejectedReason;
+  late int typeOrder;
+  late bool isUserDelivery;
+  late String deliveryDate;
+  late String deliveryTime;
+  late String returnDate;
+  late String returnTime;
+  late int paymentMethod;
+  late int durationDays;
+  late int durationMonths;
+  late int status;
+  late bool isPaid;
+  late List<OrderDetail> orderDetails;
   Invoice({
     required this.id,
     required this.customerName,
@@ -45,6 +45,28 @@ class Invoice {
     required this.isPaid,
     required this.orderDetails,
   });
+
+  Invoice.empty() {
+    id = -1;
+    customerName = '';
+    customerPhone = '';
+    deliveryAddress = '';
+    addressReturn = '';
+    totalPrice = -1;
+    rejectedReason = '';
+    typeOrder = -1;
+    isUserDelivery = false;
+    deliveryDate = '';
+    deliveryTime = '';
+    returnDate = '';
+    returnTime = '';
+    paymentMethod = -1;
+    durationDays = -1;
+    durationMonths = -1;
+    status = -1;
+    isPaid = false;
+    orderDetails = [];
+  }
 
   Invoice copyWith({
     int? id,
@@ -134,13 +156,45 @@ class Invoice {
       durationMonths: map['durationMonths']?.toInt() ?? 0,
       status: map['status']?.toInt() ?? 0,
       isPaid: map['isPaid'] ?? false,
-      orderDetails: List<OrderDetail>.from(map['orderDetails']?.map((x) => OrderDetail.fromMap(x))),
+      orderDetails: List<OrderDetail>.from(
+          map['orderDetails']?.map((x) => OrderDetail.fromMap(x))),
     );
+  }
+
+  void setInvoice({required Invoice invoice}) {
+    id = invoice.id;
+    customerName = invoice.customerName;
+    customerPhone = invoice.customerPhone;
+    deliveryAddress = invoice.deliveryAddress;
+    addressReturn = invoice.addressReturn;
+    totalPrice = invoice.totalPrice;
+    rejectedReason = invoice.rejectedReason;
+    typeOrder = invoice.typeOrder;
+    isUserDelivery = invoice.isUserDelivery;
+    deliveryDate = invoice.deliveryDate;
+    deliveryTime = invoice.deliveryTime;
+    returnDate = invoice.returnDate;
+    returnTime = invoice.returnTime;
+    paymentMethod = invoice.paymentMethod;
+    durationDays = invoice.durationDays;
+    durationMonths = invoice.durationMonths;
+    status = invoice.status;
+    isPaid = invoice.isPaid;
+    orderDetails = invoice.orderDetails;
+    notifyListeners();
+  }
+
+  void updateOrderDetail(OrderDetail orderDetail) {
+    int indexFoundOrderDetail =
+        orderDetails.indexWhere((e) => e.id == orderDetail.id);
+    orderDetails[indexFoundOrderDetail] = orderDetail;
+    notifyListeners();
   }
 
   String toJson() => json.encode(toMap());
 
-  factory Invoice.fromJson(String source) => Invoice.fromMap(json.decode(source));
+  factory Invoice.fromJson(String source) =>
+      Invoice.fromMap(json.decode(source));
 
   @override
   String toString() {
@@ -150,49 +204,49 @@ class Invoice {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-  
+
     return other is Invoice &&
-      other.id == id &&
-      other.customerName == customerName &&
-      other.customerPhone == customerPhone &&
-      other.deliveryAddress == deliveryAddress &&
-      other.addressReturn == addressReturn &&
-      other.totalPrice == totalPrice &&
-      other.rejectedReason == rejectedReason &&
-      other.typeOrder == typeOrder &&
-      other.isUserDelivery == isUserDelivery &&
-      other.deliveryDate == deliveryDate &&
-      other.deliveryTime == deliveryTime &&
-      other.returnDate == returnDate &&
-      other.returnTime == returnTime &&
-      other.paymentMethod == paymentMethod &&
-      other.durationDays == durationDays &&
-      other.durationMonths == durationMonths &&
-      other.status == status &&
-      other.isPaid == isPaid &&
-      listEquals(other.orderDetails, orderDetails);
+        other.id == id &&
+        other.customerName == customerName &&
+        other.customerPhone == customerPhone &&
+        other.deliveryAddress == deliveryAddress &&
+        other.addressReturn == addressReturn &&
+        other.totalPrice == totalPrice &&
+        other.rejectedReason == rejectedReason &&
+        other.typeOrder == typeOrder &&
+        other.isUserDelivery == isUserDelivery &&
+        other.deliveryDate == deliveryDate &&
+        other.deliveryTime == deliveryTime &&
+        other.returnDate == returnDate &&
+        other.returnTime == returnTime &&
+        other.paymentMethod == paymentMethod &&
+        other.durationDays == durationDays &&
+        other.durationMonths == durationMonths &&
+        other.status == status &&
+        other.isPaid == isPaid &&
+        listEquals(other.orderDetails, orderDetails);
   }
 
   @override
   int get hashCode {
     return id.hashCode ^
-      customerName.hashCode ^
-      customerPhone.hashCode ^
-      deliveryAddress.hashCode ^
-      addressReturn.hashCode ^
-      totalPrice.hashCode ^
-      rejectedReason.hashCode ^
-      typeOrder.hashCode ^
-      isUserDelivery.hashCode ^
-      deliveryDate.hashCode ^
-      deliveryTime.hashCode ^
-      returnDate.hashCode ^
-      returnTime.hashCode ^
-      paymentMethod.hashCode ^
-      durationDays.hashCode ^
-      durationMonths.hashCode ^
-      status.hashCode ^
-      isPaid.hashCode ^
-      orderDetails.hashCode;
+        customerName.hashCode ^
+        customerPhone.hashCode ^
+        deliveryAddress.hashCode ^
+        addressReturn.hashCode ^
+        totalPrice.hashCode ^
+        rejectedReason.hashCode ^
+        typeOrder.hashCode ^
+        isUserDelivery.hashCode ^
+        deliveryDate.hashCode ^
+        deliveryTime.hashCode ^
+        returnDate.hashCode ^
+        returnTime.hashCode ^
+        paymentMethod.hashCode ^
+        durationDays.hashCode ^
+        durationMonths.hashCode ^
+        status.hashCode ^
+        isPaid.hashCode ^
+        orderDetails.hashCode;
   }
 }

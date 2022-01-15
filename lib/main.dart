@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:rssms/models/entity/add_image.dart';
+import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/order_booking.dart';
 import 'package:rssms/models/entity/user.dart';
 
@@ -29,6 +30,9 @@ void main() async {
       ),
       ChangeNotifierProvider<AddedImage>(
         create: (_) => AddedImage.empty(),
+      ),
+      ChangeNotifierProvider<Invoice>(
+        create: (_) => Invoice.empty(),
       ),
     ],
     child: const MyApp(),

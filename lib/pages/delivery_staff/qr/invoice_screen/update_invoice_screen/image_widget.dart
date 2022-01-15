@@ -1,29 +1,32 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/common/image_details.dart';
+import 'package:rssms/models/entity/invoice.dart';
+import 'package:rssms/models/entity/order_detail.dart';
+import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_screen/add_image_pop_up.dart';
 import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_screen/image_item.dart';
 import 'package:rssms/pages/log_in/widget/button_icon.dart';
 
 class ImageWidget extends StatefulWidget {
-  Map<String, dynamic> image;
-
-  ImageWidget({Key? key, required this.image}) : super(key: key);
+  OrderDetail orderDetail;
+  ImageWidget({Key? key, required this.orderDetail}) : super(key: key);
 
   @override
   _ImageWidgetState createState() => _ImageWidgetState();
 }
 
 class _ImageWidgetState extends State<ImageWidget> {
-  List<Map<String, dynamic>>? listImage;
-
   onPressDeleteImage(BuildContext context, int index) {
     Widget cancelButton = TextButton(
       child: const Text("Có"),
       onPressed: () {
         setState(() {
-          listImage!.removeAt(index);
+          widget.orderDetail.listImageUpdate!.removeAt(index);
+          Invoice invoice = Provider.of<Invoice>(context, listen: false);
+          invoice.updateOrderDetail(widget.orderDetail);
         });
         Navigator.of(context).pop();
       },
@@ -65,7 +68,6 @@ class _ImageWidgetState extends State<ImageWidget> {
 
   @override
   void initState() {
-    listImage = [...widget.image["image"]];
     super.initState();
   }
 
@@ -88,32 +90,35 @@ class _ImageWidgetState extends State<ImageWidget> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             CustomText(
-                text: widget.image["name"],
+                text: widget.orderDetail.productName,
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
                 context: context,
                 fontSize: 14),
             CustomText(
-                text: widget.image["quantityImage"],
+                text: widget.orderDetail.listImageUpdate!.length.toString() +
+                    ' hình ảnh',
                 color: Colors.black38,
                 context: context,
                 fontSize: 14)
           ],
         ),
         children: [
-          for (var i = 0; i < listImage!.length; i++)
-            if (i != listImage!.length - 1)
-              ImageItem(
-                onPressDelete: () {
-                  onPressDeleteImage(context, i);
-                },
-                onPressDetails: () {
-                  onPressDetailImage(listImage![i]);
-                },
-                index: i,
-                image: listImage![i],
-              )
-            else
+          Column(
+            children: [
+              for (var i = 0;
+                  i < widget.orderDetail.listImageUpdate!.length;
+                  i++)
+                ImageItem(
+                  onPressDelete: () {
+                    onPressDeleteImage(context, i);
+                  },
+                  onPressDetails: () {
+                    onPressDetailImage(widget.orderDetail.listImageUpdate![i]);
+                  },
+                  index: i,
+                  image: widget.orderDetail.listImageUpdate![i],
+                ),
               Container(
                   padding:
                       const EdgeInsets.only(left: 8.0, right: 8, bottom: 18),
@@ -126,7 +131,16 @@ class _ImageWidgetState extends State<ImageWidget> {
                         dashPattern: const [8, 4],
                         child: Center(
                           child: TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (ctx) {
+                                    return AddImagePopUp(
+                                      isView: false,
+                                      orderDetail: widget.orderDetail,
+                                    );
+                                  });
+                            },
                             clipBehavior: Clip.none,
                             autofocus: false,
                             style: ButtonStyle(
@@ -143,6 +157,8 @@ class _ImageWidgetState extends State<ImageWidget> {
                           ),
                         )),
                   )),
+            ],
+          )
         ],
       ),
     );

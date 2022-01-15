@@ -6,6 +6,7 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
+import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/pages/delivery_staff/qr/invoice_screen/invoice_screen.dart';
 import 'package:rssms/presenters/qr_scan_presenter.dart';
@@ -49,12 +50,13 @@ class _QrScreenState extends State<QrScreen> implements QRInvoiceView {
     });
     Users user = Provider.of<Users>(context, listen: false);
     bool result = await _presenter?.loadInvoice(user.idToken!, qrCode) as bool;
+    Invoice invoice = Provider.of<Invoice>(context, listen: false);
+    invoice.setInvoice(invoice: _presenter!.model!.invoice!);
     if (result) {
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => InvoiceDetailsScreen(
-            invoice: _presenter!.model!.invoice,
             deviceSize: deviceSize,
           ),
         ),

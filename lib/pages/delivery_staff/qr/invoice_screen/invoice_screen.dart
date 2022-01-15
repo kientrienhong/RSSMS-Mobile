@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
@@ -10,14 +11,13 @@ import 'package:rssms/pages/delivery_staff/qr/invoice_screen/widget/invoice_info
 import 'package:rssms/pages/delivery_staff/store_order/store_order_screen.dart';
 
 class InvoiceDetailsScreen extends StatelessWidget {
-  Invoice? invoice;
   final Size deviceSize;
 
-  InvoiceDetailsScreen({Key? key, this.invoice, required this.deviceSize})
-      : super(key: key);
+  InvoiceDetailsScreen({Key? key, required this.deviceSize}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    Invoice invoice = Provider.of<Invoice>(context, listen: false);
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -85,9 +85,8 @@ class InvoiceDetailsScreen extends StatelessWidget {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => UpdateInvoiceScreen(
-                                            invoice: invoice,
-                                          )),
+                                      builder: (context) =>
+                                          UpdateInvoiceScreen()),
                                 );
                               },
                               width: deviceSize.width / 2.5,
