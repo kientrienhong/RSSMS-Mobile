@@ -1,4 +1,5 @@
 import 'package:rssms/api/api_services.dart';
+import 'package:rssms/helpers/firebase_storage_helper.dart';
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/invoice_update_model.dart';
 import 'package:rssms/views/invoice_update_view.dart';
@@ -21,22 +22,11 @@ class InvoiceUpdatePresenter {
     _model = InvoiceUpdateModel(user, invoice);
   }
 
+  Future<bool?> updateOrder(Invoice invoice) async {
+    // invoice.orderDetails.forEach((element) async {
+    //         await FirebaseStorageHelper.uploadImage(type, image, task, email, orderId);
 
-  Future<bool> updateProfile(String name, int gender, DateTime birthday,
-      String address, String phone, String idToken, int userId) async {
-    _view!.updateLoadingProfile();
-
-    try {
-      final response = await ApiServices.updateProfile(
-          name, phone, birthday, gender, address, idToken, userId);
-      if (response.statusCode == 200) return true;
-      return false;
-    } catch (e) {
-      print(e.toString());
-      throw Exception(e.toString());
-    } finally {
-      _view!.updateLoadingProfile();
-    }
+    // });
+    return null;
   }
-
 }

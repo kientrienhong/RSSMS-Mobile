@@ -1,3 +1,5 @@
+import 'package:rssms/models/entity/order_detail.dart';
+
 import '../api/firebase_services.dart';
 import 'package:firebase_storage/firebase_storage.dart' as FirebaseStorage;
 import 'package:flutter/services.dart';
@@ -55,30 +57,27 @@ class FirebaseStorageHelper {
     });
   }
 
-  static Future<List<Map<String, dynamic>?>> uploadImage(
-      String type,
-      List<dynamic> image,
-      FirebaseStorage.UploadTask? task,
-      String email,
-      int orderId) async {
-    return Future.wait(image.map((element) async {
-      if (element['file'] != null) {
-        // String location = locations[index].toString();
-        // index++;
-        // String destination =
-        //     '$email/${orderId.toString()}/$type/$location.png';
-        // task = FirebaseServices.uploadFile(destination, element['file']);
-        // if (task == null) return null;
-        // final snapshot = await task!.whenComplete(() {});
-        // final urlDownload = await snapshot.ref.getDownloadURL();
-        // return {
-        //   'imageUrl': urlDownload,
-        //   'id': element['id'],
-        //   'type': typeInt,
-        //   'location': location
-        // };
-      }
-      return element;
-    }));
+  static Future<List<Map<String, dynamic>>?> uploadImage(
+      List<OrderDetail> listOrderDetail, int orderId) async {
+    // return Future.wait(image.map((element) async {
+    //   if (element['file'] != null) {
+    //     String location = locations[index].toString();
+    //     index++;
+    //     String destination =
+    //         '$email/${orderId.toString()}/$type/$location.png';
+    //     task = FirebaseServices.uploadFile(destination, element['file']);
+    //     if (task == null) return null;
+    //     final snapshot = await task!.whenComplete(() {});
+    //     final urlDownload = await snapshot.ref.getDownloadURL();
+    //     return {
+    //       'imageUrl': urlDownload,
+    //       'id': element['id'],
+    //       'type': typeInt,
+    //       'location': location
+    //     };
+    //   }
+    //   return element;
+    // }));
+    return null;
   }
 }
