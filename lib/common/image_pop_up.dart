@@ -15,17 +15,22 @@ import 'package:rssms/models/entity/order_detail.dart';
 import 'package:rssms/presenters/add_image_pop_up_presenter.dart';
 import 'package:rssms/views/add_image_pop_up_view.dart';
 
-class AddImagePopUp extends StatefulWidget {
+class ImageDetailPopUp extends StatefulWidget {
   final bool isView;
   OrderDetail orderDetail;
-  AddImagePopUp({Key? key, required this.isView, required this.orderDetail})
+  Map<String, dynamic>? imageUpdate;
+  ImageDetailPopUp(
+      {Key? key,
+      required this.isView,
+      required this.orderDetail,
+      this.imageUpdate})
       : super(key: key);
 
   @override
-  _AddImagePopUpState createState() => _AddImagePopUpState();
+  _ImageDetailPopUpState createState() => _ImageDetailPopUpState();
 }
 
-class _AddImagePopUpState extends State<AddImagePopUp>
+class _ImageDetailPopUpState extends State<ImageDetailPopUp>
     implements AddImagePopUpView {
   late AddImagePopUpPresenter _presenter;
   late AddImagePopUpModel _model;
@@ -74,7 +79,7 @@ class _AddImagePopUpState extends State<AddImagePopUp>
   @override
   void initState() {
     super.initState();
-    _presenter = AddImagePopUpPresenter();
+    _presenter = AddImagePopUpPresenter(widget.imageUpdate);
     _model = _presenter.model;
     _presenter.view = this;
     _nameFocusNode = FocusNode();

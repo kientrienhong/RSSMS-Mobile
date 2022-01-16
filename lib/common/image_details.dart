@@ -42,27 +42,27 @@ class _InvoiceImageDetailState extends State<ImageDetailsInvoice> {
     super.initState();
   }
 
-  // void _pickedImage() {
-  //   showDialog<ImageSource>(
-  //     context: context,
-  //     builder: (context) =>
-  //         AlertDialog(content: Text("Choose image source"), actions: [
-  //       TextButton(
-  //         child: Text("Camera"),
-  //         onPressed: () => Navigator.pop(context, ImageSource.camera),
-  //       ),
-  //       TextButton(
-  //         child: Text("Gallery"),
-  //         onPressed: () => Navigator.pop(context, ImageSource.gallery),
-  //       ),
-  //     ]),
-  //   ).then((source) async {
-  //     if (source != null) {
-  //       final pickedFile = await ImagePicker().pickImage(source: source);
-  //       setState(() => imageAdd = File(pickedFile!.path));
-  //     }
-  //   });
-  // }
+  void _pickedImage() {
+    showDialog<ImageSource>(
+      context: context,
+      builder: (context) =>
+          AlertDialog(content: Text("Choose image source"), actions: [
+        TextButton(
+          child: Text("Camera"),
+          onPressed: () => Navigator.pop(context, ImageSource.camera),
+        ),
+        TextButton(
+          child: Text("Gallery"),
+          onPressed: () => Navigator.pop(context, ImageSource.gallery),
+        ),
+      ]),
+    ).then((source) async {
+      if (source != null) {
+        final pickedFile = await ImagePicker().pickImage(source: source);
+        setState(() => imageAdd = File(pickedFile!.path));
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

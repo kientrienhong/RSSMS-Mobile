@@ -3,12 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_text.dart';
-import 'package:rssms/common/image_details.dart';
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/order_detail.dart';
-import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_screen/add_image_pop_up.dart';
+import 'package:rssms/common/image_pop_up.dart';
 import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_screen/image_item.dart';
-import 'package:rssms/pages/log_in/widget/button_icon.dart';
 
 class ImageWidget extends StatefulWidget {
   OrderDetail orderDetail;
@@ -59,9 +57,10 @@ class _ImageWidgetState extends State<ImageWidget> {
     showDialog(
         context: context,
         builder: (ctx) {
-          return ImageDetailsInvoice(
-            isDisable: false,
-            image: image,
+          return ImageDetailPopUp(
+            isView: false,
+            orderDetail: widget.orderDetail,
+            imageUpdate: image,
           );
         });
   }
@@ -135,9 +134,10 @@ class _ImageWidgetState extends State<ImageWidget> {
                               showDialog(
                                   context: context,
                                   builder: (ctx) {
-                                    return AddImagePopUp(
+                                    return ImageDetailPopUp(
                                       isView: false,
                                       orderDetail: widget.orderDetail,
+                                      imageUpdate: null,
                                     );
                                   });
                             },
