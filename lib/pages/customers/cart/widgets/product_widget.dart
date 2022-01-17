@@ -186,6 +186,7 @@ class _ProductWidgetState extends State<ProductWidget> implements ProductView {
         if (additionHeight > 0)
           Expanded(
             child: ListView.builder(
+              physics: const NeverScrollableScrollPhysics(),
               padding: const EdgeInsets.all(0),
               itemBuilder: (ctx, index) => Container(
                 alignment: Alignment.center,
