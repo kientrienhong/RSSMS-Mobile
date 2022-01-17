@@ -60,25 +60,29 @@ class FirebaseStorageHelper {
 
   static Future<List<Map<String, dynamic>?>> uploadImage(
       OrderDetail orderDetail, int orderId, Users user) async {
-    return Future.wait(orderDetail.listImageUpdate!.map((ele) async {
+    return Future.wait(orderDetail.images.map((ele) async {
       int i = 0;
 
-      if (ele['file'] != null) {
+      if (ele.file != null) {
         String destination =
-            '${user.email}/${orderId.toString()}/${ele['id']}/${i++}.png';
+            '${user.email}/${orderId.toString()}/${orderDetail.id}/${i++}.png';
         FirebaseStorage.UploadTask? task =
-            FirebaseServices.uploadFile(destination, ele['file']);
+            FirebaseServices.uploadFile(destination, ele.file!);
         if (task == null) return null;
         final snapshot = await task.whenComplete(() {});
         final urlDownload = await snapshot.ref.getDownloadURL();
         return {
           'imageUrl': urlDownload,
-          'id': ele['id'],
+          'id': ele.id,
+          'name': ele.name,
+          'note': ele.note
         };
       } else {
         return {
-          'imageUrl': ele['imageUrl'],
-          'id': ele['id'],
+          'imageUrl': ele.url,
+          'id': ele.id,
+          'name': ele.name,
+          'note': ele.note
         };
       }
     }));

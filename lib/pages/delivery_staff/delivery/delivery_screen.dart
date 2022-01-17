@@ -5,8 +5,11 @@ import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:collection/collection.dart';
+import 'package:rssms/models/delivery_screen_model.dart';
 import 'package:rssms/pages/customers/cart/widgets/product_widget.dart';
 import 'package:rssms/pages/delivery_staff/delivery/widgets/schedule_widget.dart';
+import 'package:rssms/presenters/delivery_presenter.dart';
+import 'package:rssms/views/delivery_screen_view.dart';
 import '../../../constants/constants.dart' as constants;
 
 enum ORDER_STATUS { notYet, completed }
@@ -18,12 +21,19 @@ class DeliveryScreen extends StatefulWidget {
   _DeliveryScreenState createState() => _DeliveryScreenState();
 }
 
-class _DeliveryScreenState extends State<DeliveryScreen> {
+class _DeliveryScreenState extends State<DeliveryScreen>
+    implements DeliveryScreenView {
+  late DeliveryPresenter _presenter;
+  late DeliveryScreenModel _model;
   late int _currentIndex;
   late List<DateTime> listDateTime;
+
   @override
   void initState() {
     super.initState();
+    _presenter = DeliveryPresenter();
+    _model = _presenter.model;
+    _presenter.view = this;
     listDateTime = [];
     DateTime now = DateTime.now();
     var firstDay = now.subtract(Duration(days: now.weekday - 1));
@@ -91,9 +101,6 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Map<String, dynamic>> listProduct = constants.LIST_PRODUCT
-        .map<Map<String, dynamic>>((e) => {...e, 'quantity': 0})
-        .toList();
     final deviceSize = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: CustomColor.white,

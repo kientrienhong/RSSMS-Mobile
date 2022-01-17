@@ -137,6 +137,25 @@ class ApiServices {
     }
   }
 
+  static Future<dynamic> getInvoiceInRangeTime(
+      String idToken, DateTime startOfWeek, DateTime endOfWeek) {
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        'Authorization': 'Bearer $idToken'
+      };
+
+      final url = Uri.parse(
+          '$_domain/api/v1/orders?dateFrom=${startOfWeek.toIso8601String()}dateTo=${endOfWeek.toIso8601String()}&page=1&size=250');
+      return http.get(
+        url,
+        headers: headers,
+      );
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
   static Future<dynamic> getInvoicebyId(String idToken, String id) {
     try {
       Map<String, String> headers = {
@@ -218,6 +237,25 @@ class ApiServices {
     } catch (e) {
       print(e.toString());
       throw Exception('Update Failed');
+    }
+  }
+
+  static Future<dynamic> getScheduleOrder(
+      DateTime firstDay, DateTime endDay, String idToken) {
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        'Authorization': 'Bearer $idToken'
+      };
+
+      final url = Uri.parse(
+          '$_domain/api/v1/schedules?DateFrom=$firstDay&DateTo=$endDay&page=1&size=-1');
+      return http.get(
+        url,
+        headers: headers,
+      );
+    } catch (e) {
+      throw Exception(e.toString());
     }
   }
 }
