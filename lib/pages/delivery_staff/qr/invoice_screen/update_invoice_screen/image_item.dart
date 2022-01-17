@@ -3,9 +3,10 @@ import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
+import 'package:rssms/models/entity/imageEntity.dart';
 
 class ImageItem extends StatefulWidget {
-  Map<String, dynamic> image;
+  ImageEntity image;
   Function()? onPressDelete;
   Function()? onPressDetails;
   int? index;
@@ -25,14 +26,14 @@ class _ImageItemState extends State<ImageItem> {
   @override
   Widget build(BuildContext context) {
     Widget _buildImage(Size deviceSize) {
-      if (widget.image['file'] != null) {
+      if (widget.image.file != null) {
         return Image.file(
-          widget.image["file"],
+          widget.image.file!,
           width: (deviceSize.width - 32) / 3,
         );
       } else {
         return Image.asset(
-          widget.image["url"],
+          widget.image.url!,
           width: (deviceSize.width - 32) / 3,
         );
       }
@@ -54,7 +55,7 @@ class _ImageItemState extends State<ImageItem> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomText(
-                      text: widget.image["name"],
+                      text: widget.image.name!,
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
                       context: context,

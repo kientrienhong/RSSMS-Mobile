@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_text.dart';
+import 'package:rssms/models/entity/imageEntity.dart';
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/order_detail.dart';
 import 'package:rssms/common/image_pop_up.dart';
@@ -53,7 +54,7 @@ class _ImageWidgetState extends State<ImageWidget> {
     );
   }
 
-  onPressDetailImage(Map<String, dynamic> image) {
+  onPressDetailImage(ImageEntity image) {
     showDialog(
         context: context,
         builder: (ctx) {
@@ -95,7 +96,7 @@ class _ImageWidgetState extends State<ImageWidget> {
                 context: context,
                 fontSize: 14),
             CustomText(
-                text: widget.orderDetail.listImageUpdate!.length.toString() +
+                text: (widget.orderDetail.images.length - 1).toString() +
                     ' hình ảnh',
                 color: Colors.black38,
                 context: context,
@@ -105,18 +106,16 @@ class _ImageWidgetState extends State<ImageWidget> {
         children: [
           Column(
             children: [
-              for (var i = 0;
-                  i < widget.orderDetail.listImageUpdate!.length;
-                  i++)
+              for (var i = 1; i < widget.orderDetail.images.length; i++)
                 ImageItem(
                   onPressDelete: () {
                     onPressDeleteImage(context, i);
                   },
                   onPressDetails: () {
-                    onPressDetailImage(widget.orderDetail.listImageUpdate![i]);
+                    onPressDetailImage(widget.orderDetail.images[i]);
                   },
                   index: i,
-                  image: widget.orderDetail.listImageUpdate![i],
+                  image: widget.orderDetail.images[i],
                 ),
               Container(
                   padding:

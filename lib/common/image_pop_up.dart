@@ -10,6 +10,7 @@ import 'package:rssms/common/custom_input.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/models/add_image_pop_up_model.dart';
+import 'package:rssms/models/entity/imageEntity.dart';
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/order_detail.dart';
 import 'package:rssms/presenters/add_image_pop_up_presenter.dart';
@@ -18,7 +19,7 @@ import 'package:rssms/views/add_image_pop_up_view.dart';
 class ImageDetailPopUp extends StatefulWidget {
   final bool isView;
   OrderDetail orderDetail;
-  Map<String, dynamic>? imageUpdate;
+  ImageEntity? imageUpdate;
   ImageDetailPopUp(
       {Key? key,
       required this.isView,
@@ -62,17 +63,24 @@ class _ImageDetailPopUpState extends State<ImageDetailPopUp>
 
   @override
   void onClickSubmit() {
-    var listImageUpdateTemp = [...widget.orderDetail.listImageUpdate!];
+    var listImage = [...widget.orderDetail.images];
 
-    listImageUpdateTemp.add({
-      'name': _model.name.text,
-      'note': _model.note.text,
-      'file': _model.file
-    });
+    listImage.add(ImageEntity(
+        file: _model.file, name: _model.name.text, note: _model.note.text));
     OrderDetail orderDetailtemp =
-        widget.orderDetail.copyWith(listImageUpdate: listImageUpdateTemp);
+        widget.orderDetail.copyWith(images: listImage);
     Invoice invoice = Provider.of<Invoice>(context, listen: false);
     invoice.updateOrderDetail(orderDetailtemp);
+    // var listImageUpdateTemp = [...widget.orderDetail.listImageUpdate!];
+
+    // listImageUpdateTemp.add({
+    //   'name': _model.name.text,
+    //   'note': _model.note.text,
+    //   'file': _model.file
+    // });
+    // OrderDetail orderDetailtemp =
+    //     widget.orderDetail.copyWith(listImageUpdate: listImageUpdateTemp);
+
     Navigator.of(context).pop();
   }
 

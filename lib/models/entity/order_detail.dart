@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 
-import 'image.dart';
+import 'imageEntity.dart';
 
 class OrderDetail {
   final int id;
@@ -12,7 +12,7 @@ class OrderDetail {
   final int amount;
   final int productType;
   final String note;
-  final List<Image> images;
+  final List<ImageEntity> images;
   List<Map<String, dynamic>>? listImageUpdate = [];
   OrderDetail({
     required this.id,
@@ -32,7 +32,7 @@ class OrderDetail {
     int? price,
     int? amount,
     int? productType,
-    List<Image>? images,
+    List<ImageEntity>? images,
     String? note,
     int? id,
     List<Map<String, dynamic>>? listImageUpdate,
@@ -72,7 +72,8 @@ class OrderDetail {
         price: map['price']?.toInt() ?? 0,
         amount: map['amount']?.toInt() ?? 0,
         productType: map['productType']?.toInt() ?? 0,
-        images: List<Image>.from(map['images']?.map((x) => Image.fromMap(x))),
+        images: List<ImageEntity>.from(
+            map['images']?.map((x) => ImageEntity.fromMap(x))),
         listImageUpdate: map['listImageUpdate'] ?? []);
   }
 

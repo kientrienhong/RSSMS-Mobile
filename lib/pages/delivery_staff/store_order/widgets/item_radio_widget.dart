@@ -26,7 +26,7 @@ class ItemRadioWidget extends StatelessWidget {
           SizedBox(
               height: deviceSize.height / 9,
               width: deviceSize.width / 9,
-              child: Image.network(product.images[0].url)),
+              child: Image.network(product.images[0].url!)),
           CustomText(
               text: '${product.productName} x ${product.amount}',
               color: CustomColor.black,
