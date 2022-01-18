@@ -241,7 +241,7 @@ class ApiServices {
   }
 
   static Future<dynamic> getScheduleOrder(
-      DateTime firstDay, DateTime endDay, String idToken) {
+      String idToken, DateTime firstDay, DateTime endDay) {
     try {
       Map<String, String> headers = {
         "Content-type": "application/json",
@@ -249,7 +249,7 @@ class ApiServices {
       };
 
       final url = Uri.parse(
-          '$_domain/api/v1/schedules?DateFrom=$firstDay&DateTo=$endDay&page=1&size=-1');
+          '$_domain/api/v1/schedules?DateFrom=${firstDay.toIso8601String()}&DateTo=${endDay.toIso8601String()}&page=1&size=-1');
       return http.get(
         url,
         headers: headers,

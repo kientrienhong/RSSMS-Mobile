@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:collection/collection.dart';
 import 'package:rssms/models/delivery_screen_model.dart';
+import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/pages/customers/cart/widgets/product_widget.dart';
 import 'package:rssms/pages/delivery_staff/delivery/widgets/schedule_widget.dart';
 import 'package:rssms/presenters/delivery_presenter.dart';
@@ -25,25 +27,16 @@ class _DeliveryScreenState extends State<DeliveryScreen>
     implements DeliveryScreenView {
   late DeliveryPresenter _presenter;
   late DeliveryScreenModel _model;
-  late int _currentIndex;
-  late List<DateTime> listDateTime;
 
   @override
   void initState() {
     super.initState();
+    Users user = Provider.of<Users>(context, listen: false);
+
     _presenter = DeliveryPresenter();
     _model = _presenter.model;
     _presenter.view = this;
-    listDateTime = [];
-    DateTime now = DateTime.now();
-    var firstDay = now.subtract(Duration(days: now.weekday - 1));
-    for (int i = 0; i < 7; i++) {
-      listDateTime.add(firstDay);
-      if (firstDay.isAtSameMomentAs(now)) {
-        _currentIndex = i;
-      }
-      firstDay = firstDay.add(const Duration(days: 1));
-    }
+    _presenter.init(user);
   }
 
   List<Widget> mapListSchedule() {
@@ -60,11 +53,11 @@ class _DeliveryScreenState extends State<DeliveryScreen>
     final day = splitedDay[0];
     final splitedDate = splitedDay[1].split('/');
     Color color =
-        index == _currentIndex ? CustomColor.blue : CustomColor.black[3]!;
+        index == _model.currentIndex ? CustomColor.blue : CustomColor.black[3]!;
     return GestureDetector(
       onTap: () {
         setState(() {
-          _currentIndex = index;
+          _model.currentIndex = index;
         });
       },
       child: Container(
@@ -126,7 +119,7 @@ class _DeliveryScreenState extends State<DeliveryScreen>
             child: ListView(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               scrollDirection: Axis.horizontal,
-              children: listDateTime
+              children: _model.listDateTime
                   .mapIndexed((index, e) => formatDate(e, index))
                   .toList(),
             ),
