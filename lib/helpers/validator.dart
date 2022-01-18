@@ -1,7 +1,7 @@
 class Validator {
   static dynamic notEmpty(String? value) {
     if (value!.isEmpty) {
-      return '* Required';
+      return '* Vui lòng nhập';
     }
     return null;
   }
@@ -10,9 +10,9 @@ class Validator {
     String patttern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
     RegExp regExp = RegExp(patttern);
     if (value!.isEmpty) {
-      return '* Required';
+      return '* Vui lòng nhập';
     } else if (!regExp.hasMatch(value)) {
-      return 'Please enter valid mobile number';
+      return '* Vui lòng nhập đúng số điện thoại';
     }
     return null;
   }
