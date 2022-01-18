@@ -62,6 +62,8 @@ class _PaymentMethodBookingScreenState extends State<PaymentMethodBookingScreen>
         bool isSuccess = await _presenter.createOrder(orderBooking, users);
 
         if (isSuccess) {
+          orderBooking.setOrderBooking(
+              orderBooking: OrderBooking.empty(TypeOrder.doorToDoor));
           CustomSnackBar.buildErrorSnackbar(
               context: context,
               message: 'Create order success',

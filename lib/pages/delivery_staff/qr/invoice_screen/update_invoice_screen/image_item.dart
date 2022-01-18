@@ -31,6 +31,11 @@ class _ImageItemState extends State<ImageItem> {
           widget.image.file!,
           width: (deviceSize.width - 32) / 3,
         );
+      } else if (widget.image.url != null) {
+        return Image.network(
+          widget.image.url!,
+          width: (deviceSize.width - 32) / 3,
+        );
       } else {
         return Image.asset(
           widget.image.url!,

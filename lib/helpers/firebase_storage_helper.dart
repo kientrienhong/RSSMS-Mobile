@@ -1,3 +1,4 @@
+import 'package:rssms/models/entity/imageEntity.dart';
 import 'package:rssms/models/entity/order_detail.dart';
 import 'package:rssms/models/entity/user.dart';
 
@@ -58,7 +59,7 @@ class FirebaseStorageHelper {
     });
   }
 
-  static Future<List<Map<String, dynamic>?>> uploadImage(
+  static Future<List<ImageEntity>> uploadImage(
       OrderDetail orderDetail, int orderId, Users user) async {
     return Future.wait(orderDetail.images.map((ele) async {
       int i = 0;
@@ -68,22 +69,14 @@ class FirebaseStorageHelper {
             '${user.email}/${orderId.toString()}/${orderDetail.id}/${i++}.png';
         FirebaseStorage.UploadTask? task =
             FirebaseServices.uploadFile(destination, ele.file!);
-        if (task == null) return null;
+        if (task == null) return throw Exception('Can not upload image');
         final snapshot = await task.whenComplete(() {});
         final urlDownload = await snapshot.ref.getDownloadURL();
-        return {
-          'imageUrl': urlDownload,
-          'id': ele.id,
-          'name': ele.name,
-          'note': ele.note
-        };
+        return ImageEntity(
+            url: urlDownload, id: ele.id, name: ele.name, note: ele.note);
       } else {
-        return {
-          'imageUrl': ele.url,
-          'id': ele.id,
-          'name': ele.name,
-          'note': ele.note
-        };
+        return ImageEntity(
+            url: ele.url, id: ele.id, name: ele.name, note: ele.note);
       }
     }));
   }

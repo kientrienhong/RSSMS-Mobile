@@ -6,6 +6,7 @@ import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_input_with_hint.dart';
 import 'package:rssms/common/custom_radio_button.dart';
 import 'package:rssms/common/custom_sizebox.dart';
+import 'package:rssms/common/custom_snack_bar.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/constants/constants.dart';
 import 'package:rssms/models/entity/invoice.dart';
@@ -55,7 +56,7 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
   }
 
   @override
-  void updateLoadingProfile() {
+  void updateLoadingUpdate() {
     setState(() {
       _presenter.model.isLoadingUpdateInvoice =
           !_presenter.model.isLoadingUpdateInvoice;
@@ -63,7 +64,22 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
   }
 
   @override
-  void onClickUpdateOrder() {}
+  void onClickUpdateOrder() async {
+    try {
+      Invoice invoice = Provider.of<Invoice>(context, listen: false);
+
+      Users user = Provider.of<Users>(context, listen: false);
+      var response = await _presenter.updateOrder(user, invoice);
+      if (response == true) {
+        CustomSnackBar.buildErrorSnackbar(
+            context: context,
+            message: 'Send successful',
+            color: CustomColor.green);
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
 
   List<Widget> mapInvoiceWidget(List<OrderDetail> listOrderDetail) =>
       listOrderDetail
