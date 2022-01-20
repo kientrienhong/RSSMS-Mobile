@@ -38,20 +38,27 @@ class InvoiceProductWidget extends StatelessWidget {
             element.productType == constants.HANDY ||
             element.productType == constants.UNWEILDY)
         .toList();
-    List<OrderDetail> listAccessory =
-        listTemp.where((element) => element.productType == 1).toList();
     if (listProduct.isEmpty) {
       listProduct =
           listTemp.where((element) => element.productType == 0).toList();
     }
+    List<OrderDetail> listAccessory =
+        listTemp.where((element) => element.productType == 1).toList();
+    List<OrderDetail> listPackaging =
+        listTemp.where((element) => element.productType == 3).toList();
     int totalProduct = 0;
     int totalAccessory = 0;
+    int totalPackaging = 0;
     listAccessory.forEach((element) {
       totalAccessory += (element.price * element.amount);
     });
     listProduct.forEach((element) {
       totalProduct += (element.price * element.amount);
     });
+    listPackaging.forEach((element) {
+      totalPackaging += element.amount * element.price;
+    });
+    print(invoice!.durationMonths);
     return Container(
       decoration:
           BoxDecoration(border: Border.all(color: CustomColor.blue, width: 2)),
@@ -294,6 +301,28 @@ class InvoiceProductWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CustomText(
+                    text: "Chi phí đóng gói: ",
+                    color: Colors.black,
+                    context: context,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15),
+                CustomText(
+                    text: oCcy.format(totalPackaging) +
+                        " đ",
+                    color: CustomColor.blue,
+                    context: context,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16),
+              ],
+            ),
+            CustomSizedBox(
+              context: context,
+              height: 10,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CustomText(
                     text: "Giảm Giá: ",
                     color: Colors.black,
                     context: context,
@@ -333,7 +362,7 @@ class InvoiceProductWidget extends StatelessWidget {
                     fontSize: 19),
                 CustomText(
                     text: oCcy.format(totalProduct * invoice!.durationMonths +
-                            totalAccessory) +
+                            totalAccessory + totalPackaging) +
                         " đ",
                     color: CustomColor.blue,
                     context: context,

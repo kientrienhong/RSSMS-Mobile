@@ -35,7 +35,7 @@ class ApiServices {
           }));
     } catch (e) {
       print(e.toString());
-      throw Exception('Log In failed');
+      throw Exception('Log In failedd');
     }
   }
 

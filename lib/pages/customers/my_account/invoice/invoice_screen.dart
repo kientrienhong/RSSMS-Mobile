@@ -47,6 +47,11 @@ class _InvoiceScreenState extends State<InvoiceScreen> implements InvoiceView {
   }
 
   @override
+  void updateIsLoadingInvoice() {
+    _model.isLoadingInvoice = !_model.isLoadingInvoice!;
+  }
+
+  @override
   void onHandleChangeInput() {
     _presenter.handleOnChangeInput(_model.searchValue.text);
   }
@@ -57,6 +62,18 @@ class _InvoiceScreenState extends State<InvoiceScreen> implements InvoiceView {
       setState(() {
         _isFound = false;
       });
+    }
+  }
+
+  Widget invoiceWidget() {
+    if (!_isFound) {
+      return Expanded(
+          child: ListView(
+        padding: const EdgeInsets.all(0),
+        children: mapInvoiceWidget(_model.getListInvoice()),
+      ));
+    } else {
+      return InvoiceWidget(invoice: _model.searchInvoice);
     }
   }
 
@@ -77,6 +94,9 @@ class _InvoiceScreenState extends State<InvoiceScreen> implements InvoiceView {
                   child: TypeAheadField(
                     textFieldConfiguration: TextFieldConfiguration(
                       controller: _model.searchValue,
+                      onEditingComplete: (){
+                        _presenter.handleOnChangeInput(_model.searchValue.text);
+                      },
                       decoration: InputDecoration(
                         border: const OutlineInputBorder(),
                         prefixIcon: ImageIcon(
@@ -166,13 +186,17 @@ class _InvoiceScreenState extends State<InvoiceScreen> implements InvoiceView {
                 ),
               ],
             ),
-            if (!_isFound)
-              Expanded(
-                  child: ListView(
-                padding: const EdgeInsets.all(0),
-                children: mapInvoiceWidget(_model.getListInvoice()),
-              )),
-            if (_isFound) InvoiceWidget(invoice: _model.searchInvoice)
+            
+            if (!_model.isLoadingInvoice!)
+              invoiceWidget()
+            else
+              const SizedBox(
+                height: 16,
+                width: 16,
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.black45),
+                ),
+              )
           ],
         ),
       ),

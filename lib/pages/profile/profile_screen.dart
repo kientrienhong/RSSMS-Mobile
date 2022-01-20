@@ -279,7 +279,6 @@ class _ProfileScreenState extends State<FormProfileScreen>
 
   @override
   Widget build(BuildContext context) {
-    print(_model.isLoadingUpdateProfile);
     return Scaffold(
       backgroundColor: CustomColor.white,
       body: Padding(
