@@ -10,7 +10,6 @@ class InvoiceUpdateModel {
   TextEditingController? _controllerPhone;
   String? _txtStatus;
   bool? _isPaid;
-
   InvoiceUpdateModel(Users user, Invoice invoice) {
     _isDisableUpdateInvoice = true;
     _isLoadingUpdateInvoice = false;

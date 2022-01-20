@@ -9,6 +9,7 @@ import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_input.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
+import 'package:rssms/helpers/validator.dart';
 import 'package:rssms/models/add_image_pop_up_model.dart';
 import 'package:rssms/models/entity/imageEntity.dart';
 import 'package:rssms/models/entity/invoice.dart';
@@ -37,6 +38,7 @@ class _ImageDetailPopUpState extends State<ImageDetailPopUp>
   late AddImagePopUpModel _model;
   late FocusNode _nameFocusNode;
   late FocusNode _noteFocusNode;
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void onClickImage() {
@@ -56,13 +58,14 @@ class _ImageDetailPopUpState extends State<ImageDetailPopUp>
     ).then((source) async {
       if (source != null) {
         final pickedFile = await ImagePicker().pickImage(source: source);
-        setState(() => _model.file = File(pickedFile!.path));
+        if (pickedFile != null) {
+          setState(() => _model.file = File(pickedFile.path));
+        }
       }
     });
   }
 
-  @override
-  void onClickSubmit() {
+  void addImage() {
     var listImage = [...widget.orderDetail.images];
 
     listImage.add(ImageEntity(
@@ -71,17 +74,34 @@ class _ImageDetailPopUpState extends State<ImageDetailPopUp>
         widget.orderDetail.copyWith(images: listImage);
     Invoice invoice = Provider.of<Invoice>(context, listen: false);
     invoice.updateOrderDetail(orderDetailtemp);
-    // var listImageUpdateTemp = [...widget.orderDetail.listImageUpdate!];
+  }
 
-    // listImageUpdateTemp.add({
-    //   'name': _model.name.text,
-    //   'note': _model.note.text,
-    //   'file': _model.file
-    // });
-    // OrderDetail orderDetailtemp =
-    //     widget.orderDetail.copyWith(listImageUpdate: listImageUpdateTemp);
+  void editImage() {
+    var listImage = [...widget.orderDetail.images];
 
-    Navigator.of(context).pop();
+    int indexFound =
+        listImage.indexWhere((element) => element.id == widget.imageUpdate!.id);
+    listImage[indexFound] = listImage[indexFound].copyWith(
+      file: _model.file,
+      name: _model.name.text,
+      note: _model.note.text,
+    );
+    OrderDetail orderDetailtemp =
+        widget.orderDetail.copyWith(images: listImage);
+    Invoice invoice = Provider.of<Invoice>(context, listen: false);
+    invoice.updateOrderDetail(orderDetailtemp);
+  }
+
+  @override
+  void onClickSubmit() {
+    if (_formKey.currentState!.validate()) {
+      if (widget.imageUpdate == null) {
+        addImage();
+      } else {
+        editImage();
+      }
+      Navigator.of(context).pop();
+    }
   }
 
   @override
@@ -106,6 +126,28 @@ class _ImageDetailPopUpState extends State<ImageDetailPopUp>
             _model.file!,
           ),
         );
+      } else if (widget.imageUpdate != null) {
+        if (widget.imageUpdate!.url != null) {
+          return Image.network(
+            widget.imageUpdate!.url!,
+          );
+        }
+        return DottedBorder(
+            color: CustomColor.black,
+            strokeWidth: 1,
+            dashPattern: const [8, 4],
+            child: Center(
+              child: TextButton(
+                  onPressed: () {
+                    onClickImage();
+                  },
+                  clipBehavior: Clip.none,
+                  autofocus: false,
+                  style: ButtonStyle(
+                      minimumSize: MaterialStateProperty.all(
+                          Size(deviceSize.width, deviceSize.width * 1 / 3))),
+                  child: Image.asset('assets/images/plus.png')),
+            ));
       } else {
         return DottedBorder(
             color: CustomColor.black,
@@ -132,48 +174,53 @@ class _ImageDetailPopUpState extends State<ImageDetailPopUp>
       child: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(
-                  height: deviceSize.width * 2 / 3,
-                  child: ClipRRect(
-                      borderRadius: BorderRadius.circular(4),
-                      child: _buildImageWidget(deviceSize))),
-              CustomSizedBox(
-                context: context,
-                height: 24,
-              ),
-              CustomOutLineInput(
-                  controller: _model.name,
-                  isDisable: widget.isView,
-                  focusNode: _nameFocusNode,
-                  deviceSize: deviceSize,
-                  nextNode: _noteFocusNode,
-                  labelText: 'Tên'),
-              CustomOutLineInput(
-                  controller: _model.note,
-                  isDisable: widget.isView,
-                  focusNode: _noteFocusNode,
-                  maxLine: 8,
-                  deviceSize: deviceSize,
-                  labelText: 'Ghi chú'),
-              CustomSizedBox(
-                context: context,
-                height: 8,
-              ),
-              CustomButton(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(
+                    height: deviceSize.width * 2 / 3,
+                    child: ClipRRect(
+                        borderRadius: BorderRadius.circular(4),
+                        child: _buildImageWidget(deviceSize))),
+                CustomSizedBox(
+                  context: context,
                   height: 24,
-                  text: 'Xác nhận',
-                  width: deviceSize.width * 1.2 / 3,
-                  onPressFunction: () {
-                    onClickSubmit();
-                  },
-                  isLoading: false,
-                  textColor: CustomColor.white,
-                  buttonColor: CustomColor.blue,
-                  borderRadius: 6),
-            ],
+                ),
+                CustomOutLineInput(
+                    validator: Validator.notEmpty,
+                    controller: _model.name,
+                    isDisable: widget.isView,
+                    focusNode: _nameFocusNode,
+                    deviceSize: deviceSize,
+                    nextNode: _noteFocusNode,
+                    labelText: 'Tên'),
+                CustomOutLineInput(
+                    validator: Validator.notEmpty,
+                    controller: _model.note,
+                    isDisable: widget.isView,
+                    focusNode: _noteFocusNode,
+                    maxLine: 8,
+                    deviceSize: deviceSize,
+                    labelText: 'Ghi chú'),
+                CustomSizedBox(
+                  context: context,
+                  height: 8,
+                ),
+                CustomButton(
+                    height: 24,
+                    text: 'Xác nhận',
+                    width: deviceSize.width * 1.2 / 3,
+                    onPressFunction: () {
+                      onClickSubmit();
+                    },
+                    isLoading: false,
+                    textColor: CustomColor.white,
+                    buttonColor: CustomColor.blue,
+                    borderRadius: 6),
+              ],
+            ),
           ),
         ),
       ),

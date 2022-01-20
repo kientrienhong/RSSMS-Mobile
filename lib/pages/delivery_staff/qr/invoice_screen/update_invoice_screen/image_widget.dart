@@ -11,7 +11,9 @@ import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_scre
 
 class ImageWidget extends StatefulWidget {
   OrderDetail orderDetail;
-  ImageWidget({Key? key, required this.orderDetail}) : super(key: key);
+  final bool isView;
+  ImageWidget({Key? key, required this.orderDetail, required this.isView})
+      : super(key: key);
 
   @override
   _ImageWidgetState createState() => _ImageWidgetState();
@@ -59,7 +61,7 @@ class _ImageWidgetState extends State<ImageWidget> {
         context: context,
         builder: (ctx) {
           return ImageDetailPopUp(
-            isView: false,
+            isView: widget.isView,
             orderDetail: widget.orderDetail,
             imageUpdate: image,
           );
@@ -108,6 +110,7 @@ class _ImageWidgetState extends State<ImageWidget> {
             children: [
               for (var i = 1; i < widget.orderDetail.images.length; i++)
                 ImageItem(
+                  isView: widget.isView,
                   onPressDelete: () {
                     onPressDeleteImage(context, i);
                   },

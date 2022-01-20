@@ -6,6 +6,7 @@ import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_input_with_hint.dart';
 import 'package:rssms/common/custom_radio_button.dart';
 import 'package:rssms/common/custom_sizebox.dart';
+import 'package:rssms/common/custom_snack_bar.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/constants/constants.dart';
 import 'package:rssms/models/entity/invoice.dart';
@@ -17,7 +18,8 @@ import 'package:rssms/presenters/invoice_update_presenter.dart';
 import 'package:rssms/views/invoice_update_view.dart';
 
 class UpdateInvoiceScreen extends StatefulWidget {
-  UpdateInvoiceScreen({Key? key}) : super(key: key);
+  final bool? isView;
+  UpdateInvoiceScreen({Key? key, this.isView}) : super(key: key);
 
   @override
   _UpdateInvoiceScreenState createState() => _UpdateInvoiceScreenState();
@@ -55,7 +57,7 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
   }
 
   @override
-  void updateLoadingProfile() {
+  void updateLoadingUpdate() {
     setState(() {
       _presenter.model.isLoadingUpdateInvoice =
           !_presenter.model.isLoadingUpdateInvoice;
@@ -63,12 +65,28 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
   }
 
   @override
-  void onClickUpdateOrder() {}
+  void onClickUpdateOrder() async {
+    try {
+      Invoice invoice = Provider.of<Invoice>(context, listen: false);
+
+      Users user = Provider.of<Users>(context, listen: false);
+      var response = await _presenter.updateOrder(user, invoice);
+      if (response == true) {
+        CustomSnackBar.buildErrorSnackbar(
+            context: context,
+            message: 'Send successful',
+            color: CustomColor.green);
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
 
   List<Widget> mapInvoiceWidget(List<OrderDetail> listOrderDetail) =>
       listOrderDetail
           .map<ImageWidget>((e) => ImageWidget(
                 orderDetail: e,
+                isView: widget.isView ?? false,
               ))
           .toList();
 

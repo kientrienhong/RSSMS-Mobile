@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:collection/collection.dart';
+import 'package:rssms/models/delivery_screen_model.dart';
+import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/pages/customers/cart/widgets/product_widget.dart';
 import 'package:rssms/pages/delivery_staff/delivery/widgets/schedule_widget.dart';
+import 'package:rssms/presenters/delivery_presenter.dart';
+import 'package:rssms/views/delivery_screen_view.dart';
 import '../../../constants/constants.dart' as constants;
 
 enum ORDER_STATUS { notYet, completed }
@@ -18,30 +23,44 @@ class DeliveryScreen extends StatefulWidget {
   _DeliveryScreenState createState() => _DeliveryScreenState();
 }
 
-class _DeliveryScreenState extends State<DeliveryScreen> {
-  late int _currentIndex;
-  late List<DateTime> listDateTime;
+class _DeliveryScreenState extends State<DeliveryScreen>
+    implements DeliveryScreenView {
+  late DeliveryPresenter _presenter;
+  late DeliveryScreenModel _model;
+
+  void init() async {
+    Users user = Provider.of<Users>(context, listen: false);
+
+    _presenter.init(user);
+    await _presenter.loadListShedule(
+        user.idToken!, _model.firstDayOfWeek, _model.endDayOfWeek);
+    setState(() {});
+  }
+
   @override
   void initState() {
     super.initState();
-    listDateTime = [];
-    DateTime now = DateTime.now();
-    var firstDay = now.subtract(Duration(days: now.weekday - 1));
-    for (int i = 0; i < 7; i++) {
-      listDateTime.add(firstDay);
-      if (firstDay.isAtSameMomentAs(now)) {
-        _currentIndex = i;
-      }
-      firstDay = firstDay.add(const Duration(days: 1));
-    }
+
+    _presenter = DeliveryPresenter();
+    _model = _presenter.model;
+    _presenter.view = this;
+    init();
   }
 
-  List<Widget> mapListSchedule() {
-    return constants.LIST_SCHEDULE_DELIVERY
-        .mapIndexed((index, element) => ScheduleWidget(
-            schedule: element,
+  List<Widget>? mapListSchedule() {
+    if (_model.currentIndex == -1) {
+      return null;
+    }
+    String getCurrentDateTime = _model.listDateTime[_model.currentIndex]
+        .toIso8601String()
+        .split('T')[0];
+    return _model.listInvoice[getCurrentDateTime]
+        ?.mapIndexed((index, element) => ScheduleWidget(
+            schedule: element.toMap(),
             currentIndex: index,
-            listLength: constants.LIST_SCHEDULE_DELIVERY.length))
+            endDayOfWeek: _model.endDayOfWeek,
+            firstDayOfWeek: _model.firstDayOfWeek,
+            listLength: _model.listInvoice[getCurrentDateTime]!.length))
         .toList();
   }
 
@@ -50,11 +69,11 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
     final day = splitedDay[0];
     final splitedDate = splitedDay[1].split('/');
     Color color =
-        index == _currentIndex ? CustomColor.blue : CustomColor.black[3]!;
+        index == _model.currentIndex ? CustomColor.blue : CustomColor.black[3]!;
     return GestureDetector(
       onTap: () {
         setState(() {
-          _currentIndex = index;
+          _model.currentIndex = index;
         });
       },
       child: Container(
@@ -91,9 +110,6 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Map<String, dynamic>> listProduct = constants.LIST_PRODUCT
-        .map<Map<String, dynamic>>((e) => {...e, 'quantity': 0})
-        .toList();
     final deviceSize = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: CustomColor.white,
@@ -119,7 +135,7 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
             child: ListView(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               scrollDirection: Axis.horizontal,
-              children: listDateTime
+              children: _model.listDateTime
                   .mapIndexed((index, e) => formatDate(e, index))
                   .toList(),
             ),
@@ -140,7 +156,7 @@ class _DeliveryScreenState extends State<DeliveryScreen> {
           ListView(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            children: mapListSchedule(),
+            children: mapListSchedule() ?? [Container()],
           ),
         ]),
       ),

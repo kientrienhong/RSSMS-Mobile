@@ -1,3 +1,5 @@
+import 'package:rssms/helpers/validator.dart';
+
 import '/common/custom_color.dart';
 import '/common/custom_sizebox.dart';
 import '/common/custom_text.dart';
@@ -129,8 +131,11 @@ class _CustomOutLineInputState extends State<CustomOutLineInput> {
                     //       child: TextFormField(
                     TextFormField(
                       obscureText: widget.isSecure!,
-                      validator:
-                          widget.validator == null ? null : widget.validator!(),
+                      validator: widget.validator == null
+                          ? null
+                          : (val) {
+                              return widget.validator!(widget.controller!.text);
+                            },
                       maxLines: widget.maxLine,
                       keyboardType: widget.textInputType,
                       style: TextStyle(color: colorLabel, fontSize: 16),

@@ -1,7 +1,9 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:rssms/api/api_services.dart';
 import 'package:rssms/helpers/firebase_storage_helper.dart';
+import 'package:rssms/models/entity/imageEntity.dart';
 import 'package:rssms/models/entity/invoice.dart';
+import 'package:rssms/models/entity/order_detail.dart';
 import 'package:rssms/models/invoice_update_model.dart';
 import 'package:rssms/views/invoice_update_view.dart';
 
@@ -23,10 +25,45 @@ class InvoiceUpdatePresenter {
     _model = InvoiceUpdateModel(user, invoice);
   }
 
-  Future<bool?> updateOrder(Invoice invoice, Users user) async {
-    invoice.orderDetails.forEach((element) {
-      FirebaseStorageHelper.uploadImage(element, invoice.id, user);
-    });
-    return null;
+  Future<List<OrderDetail>?> formatListImageEntity(
+      Invoice invoice, Users user) async {
+    List<OrderDetail> listOrderDetailNew = [];
+    try {
+      listOrderDetailNew =
+          await Future.wait(invoice.orderDetails.map((element) async {
+        List<ImageEntity> listImageEntity =
+            await FirebaseStorageHelper.uploadImage(element, invoice.id, user);
+        return element.copyWith(images: listImageEntity);
+      }).toList());
+    } catch (e) {
+      throw Exception(e);
+    }
+
+    return listOrderDetailNew;
+  }
+
+  Future<bool?> updateOrder(Users user, Invoice invoice) async {
+    try {
+      view.updateLoadingUpdate();
+
+      List<OrderDetail>? listOrderDetail =
+          await formatListImageEntity(invoice, user);
+
+      if (listOrderDetail != null) {
+        invoice.setInvoice(
+            invoice: invoice.copyWith(orderDetails: listOrderDetail));
+        var response =
+            await ApiServices.sendNotification(invoice, user.idToken!);
+        if (response.statusCode == 200) {
+          return true;
+        }
+      }
+    } catch (e) {
+      throw Exception(e);
+    } finally {
+      view.updateLoadingUpdate();
+    }
+
+    return false;
   }
 }
