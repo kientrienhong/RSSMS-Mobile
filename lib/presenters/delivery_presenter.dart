@@ -27,10 +27,11 @@ class DeliveryPresenter {
       }
       firstDay = firstDay.add(const Duration(days: 1));
     }
-    loadListShedule(user.idToken!, firstDayOfWeek, endDayOfWeek);
+    model.firstDayOfWeek = firstDayOfWeek;
+    model.endDayOfWeek = endDayOfWeek;
   }
 
-  void loadListShedule(
+  Future<void> loadListShedule(
       String idToken, DateTime firstDayOfWeek, DateTime endDayOfWeek) async {
     try {
       final response = await ApiServices.getScheduleOrder(
@@ -38,16 +39,17 @@ class DeliveryPresenter {
       if (response.statusCode == 200) {
         final decodedReponse = jsonDecode(response.body);
         model.listDateTime.forEach((e) {
-          model.listInvoice.putIfAbsent(e, () => []);
+          String date = e.toIso8601String().split('T')[0];
+          model.listInvoice.putIfAbsent(date, () => []);
         });
-        List<Invoice> listInvoice = decodedReponse['data']
-            .map<Invoice>((e) => Invoice.fromMap(e['order']))
-            .toList();
-
-        print(listInvoice);
+        decodedReponse['data'].forEach((e) {
+          String scheduleDay = e['scheduleDay'].split('T')[0];
+          for (int i = 0; i < e['orders'].length; i++) {
+            Invoice invoice = Invoice.fromMap(e['orders'][i]);
+            model.listInvoice[scheduleDay]!.add(invoice);
+          }
+        });
       }
-      // model.listInvoice =
-      //     decodedReponse.map<Invoice>((e) => Invoice.fromMap(e)).toList();
     } catch (e) {
       print(e);
     }

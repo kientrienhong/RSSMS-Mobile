@@ -10,11 +10,13 @@ class ImageItem extends StatefulWidget {
   Function()? onPressDelete;
   Function()? onPressDetails;
   int? index;
+  bool? isView;
   ImageItem(
       {Key? key,
       required this.image,
       required this.onPressDelete,
       required this.onPressDetails,
+      required this.isView,
       required this.index})
       : super(key: key);
 
@@ -85,16 +87,18 @@ class _ImageItemState extends State<ImageItem> {
                         context: context,
                         width: 12,
                       ),
-                      CustomButton(
-                          textSize: 15,
-                          height: 20,
-                          isLoading: false,
-                          text: 'Xóa',
-                          textColor: CustomColor.white,
-                          onPressFunction: widget.onPressDelete,
-                          width: deviceSize.width / 6,
-                          buttonColor: CustomColor.red,
-                          borderRadius: 6),
+                      widget.isView == false
+                          ? CustomButton(
+                              textSize: 15,
+                              height: 20,
+                              isLoading: false,
+                              text: 'Xóa',
+                              textColor: CustomColor.white,
+                              onPressFunction: widget.onPressDelete,
+                              width: deviceSize.width / 6,
+                              buttonColor: CustomColor.red,
+                              borderRadius: 6)
+                          : Container(),
                     ],
                   )
                 ],

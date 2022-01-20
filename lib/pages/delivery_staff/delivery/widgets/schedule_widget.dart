@@ -8,8 +8,12 @@ class ScheduleWidget extends StatelessWidget {
   final Map<String, dynamic> schedule;
   final int listLength;
   final int currentIndex;
+  final DateTime? firstDayOfWeek;
+  final DateTime? endDayOfWeek;
   const ScheduleWidget(
       {Key? key,
+      required this.firstDayOfWeek,
+      required this.endDayOfWeek,
       required this.schedule,
       required this.currentIndex,
       required this.listLength})
@@ -47,8 +51,11 @@ class ScheduleWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
     Color status = CustomColor.black[3]!;
+    DateTime deliveryDateTime = DateTime.parse(schedule['deliveryDate']);
+    bool isDelivery = deliveryDateTime.isAfter(firstDayOfWeek!) &&
+        deliveryDateTime.isBefore(endDayOfWeek!);
     String statusString = '';
-    switch (schedule['order']['status']) {
+    switch (schedule['status']) {
       case ORDER_STATUS.notYet:
         {
           status = CustomColor.black[3]!;
@@ -103,7 +110,10 @@ class ScheduleWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CustomText(
-                    text: schedule['time'],
+                    // text: schedule['time'],
+                    text: isDelivery
+                        ? schedule['deliveryTime']
+                        : schedule['returnTime'],
                     color: CustomColor.black,
                     context: context,
                     fontWeight: FontWeight.bold,
@@ -154,19 +164,23 @@ class ScheduleWidget extends StatelessWidget {
                         height: 8,
                       ),
                       buildInfo(
-                          'Address: ', schedule['order']['address'], context),
+                          'Address: ',
+                          isDelivery
+                              ? schedule['deliveryAddress']
+                              : schedule['returnAddress'],
+                          context),
                       CustomSizedBox(
                         context: context,
                         height: 8,
                       ),
-                      buildInfo('Customer Name: ',
-                          schedule['order']['customerName'], context),
+                      buildInfo(
+                          'Customer Name: ', schedule['customerName'], context),
                       CustomSizedBox(
                         context: context,
                         height: 8,
                       ),
-                      buildInfo('Customer Phone: ',
-                          schedule['order']['customerPhone'], context),
+                      buildInfo('Customer Phone: ', schedule['customerPhone'],
+                          context),
                     ],
                   ),
                 )

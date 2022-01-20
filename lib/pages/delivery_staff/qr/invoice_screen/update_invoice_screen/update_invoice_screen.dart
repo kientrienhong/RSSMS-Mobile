@@ -18,7 +18,8 @@ import 'package:rssms/presenters/invoice_update_presenter.dart';
 import 'package:rssms/views/invoice_update_view.dart';
 
 class UpdateInvoiceScreen extends StatefulWidget {
-  UpdateInvoiceScreen({Key? key}) : super(key: key);
+  final bool? isView;
+  UpdateInvoiceScreen({Key? key, this.isView}) : super(key: key);
 
   @override
   _UpdateInvoiceScreenState createState() => _UpdateInvoiceScreenState();
@@ -85,6 +86,7 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
       listOrderDetail
           .map<ImageWidget>((e) => ImageWidget(
                 orderDetail: e,
+                isView: widget.isView ?? false,
               ))
           .toList();
 

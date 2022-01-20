@@ -3,7 +3,10 @@ import 'dart:convert';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_color.dart';
+import 'package:rssms/models/entity/invoice.dart';
+import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_screen/update_invoice_screen.dart';
 import 'package:rssms/views/custom_bottom_navigation_view.dart';
 
 class CustomBottomNavigation extends StatefulWidget {
@@ -22,8 +25,20 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation>
   int _index = 0;
 
   void onClickNotification(String? payload) {
-    String tesyt = payload!;
-    print(payload);
+    try {
+      Invoice invoice = Provider.of<Invoice>(context, listen: false);
+      // print(json.decode(payload!));
+      Invoice invoiceTemp = Invoice.fromJson(json.decode(payload!)['data']);
+      invoice.setInvoice(invoice: invoiceTemp);
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => UpdateInvoiceScreen(
+                    isView: true,
+                  )));
+    } catch (e) {
+      print(e);
+    }
   }
 
   void init() async {

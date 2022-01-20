@@ -126,6 +126,28 @@ class _ImageDetailPopUpState extends State<ImageDetailPopUp>
             _model.file!,
           ),
         );
+      } else if (widget.imageUpdate != null) {
+        if (widget.imageUpdate!.url != null) {
+          return Image.network(
+            widget.imageUpdate!.url!,
+          );
+        }
+        return DottedBorder(
+            color: CustomColor.black,
+            strokeWidth: 1,
+            dashPattern: const [8, 4],
+            child: Center(
+              child: TextButton(
+                  onPressed: () {
+                    onClickImage();
+                  },
+                  clipBehavior: Clip.none,
+                  autofocus: false,
+                  style: ButtonStyle(
+                      minimumSize: MaterialStateProperty.all(
+                          Size(deviceSize.width, deviceSize.width * 1 / 3))),
+                  child: Image.asset('assets/images/plus.png')),
+            ));
       } else {
         return DottedBorder(
             color: CustomColor.black,

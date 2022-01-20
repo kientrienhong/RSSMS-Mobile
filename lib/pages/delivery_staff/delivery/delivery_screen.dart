@@ -28,23 +28,39 @@ class _DeliveryScreenState extends State<DeliveryScreen>
   late DeliveryPresenter _presenter;
   late DeliveryScreenModel _model;
 
+  void init() async {
+    Users user = Provider.of<Users>(context, listen: false);
+
+    _presenter.init(user);
+    await _presenter.loadListShedule(
+        user.idToken!, _model.firstDayOfWeek, _model.endDayOfWeek);
+    setState(() {});
+  }
+
   @override
   void initState() {
     super.initState();
-    Users user = Provider.of<Users>(context, listen: false);
 
     _presenter = DeliveryPresenter();
     _model = _presenter.model;
     _presenter.view = this;
-    _presenter.init(user);
+    init();
   }
 
-  List<Widget> mapListSchedule() {
-    return constants.LIST_SCHEDULE_DELIVERY
-        .mapIndexed((index, element) => ScheduleWidget(
-            schedule: element,
+  List<Widget>? mapListSchedule() {
+    if (_model.currentIndex == -1) {
+      return null;
+    }
+    String getCurrentDateTime = _model.listDateTime[_model.currentIndex]
+        .toIso8601String()
+        .split('T')[0];
+    return _model.listInvoice[getCurrentDateTime]
+        ?.mapIndexed((index, element) => ScheduleWidget(
+            schedule: element.toMap(),
             currentIndex: index,
-            listLength: constants.LIST_SCHEDULE_DELIVERY.length))
+            endDayOfWeek: _model.endDayOfWeek,
+            firstDayOfWeek: _model.firstDayOfWeek,
+            listLength: _model.listInvoice[getCurrentDateTime]!.length))
         .toList();
   }
 
@@ -140,7 +156,7 @@ class _DeliveryScreenState extends State<DeliveryScreen>
           ListView(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            children: mapListSchedule(),
+            children: mapListSchedule() ?? [Container()],
           ),
         ]),
       ),
