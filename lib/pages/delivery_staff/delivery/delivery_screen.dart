@@ -56,6 +56,7 @@ class _DeliveryScreenState extends State<DeliveryScreen>
         .split('T')[0];
     return _model.listInvoice[getCurrentDateTime]
         ?.mapIndexed((index, element) => ScheduleWidget(
+            invoice: element,
             schedule: element.toMap(),
             currentIndex: index,
             endDayOfWeek: _model.endDayOfWeek,

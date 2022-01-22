@@ -64,8 +64,24 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
     });
   }
 
-  @override
-  void onClickUpdateOrder() async {
+  void sendNoti() async {
+    try {
+      Invoice invoice = Provider.of<Invoice>(context, listen: false);
+
+      Users user = Provider.of<Users>(context, listen: false);
+      var response = await _presenter.sendNoti(user, invoice);
+      if (response == true) {
+        CustomSnackBar.buildErrorSnackbar(
+            context: context,
+            message: 'Gửi thông báo thành công',
+            color: CustomColor.green);
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void updateOrder() async {
     try {
       Invoice invoice = Provider.of<Invoice>(context, listen: false);
 
@@ -74,11 +90,20 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
       if (response == true) {
         CustomSnackBar.buildErrorSnackbar(
             context: context,
-            message: 'Send successful',
+            message: 'Cập nhật đơn thành công',
             color: CustomColor.green);
       }
     } catch (e) {
       print(e);
+    }
+  }
+
+  @override
+  void onClickUpdateOrder() async {
+    if (widget.isView == null) {
+      sendNoti();
+    } else {
+      updateOrder();
     }
   }
 
