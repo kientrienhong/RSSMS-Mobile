@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 
-import 'boxe.dart';
+import 'box.dart';
 
 class Shelf {
   final int id;
@@ -14,7 +14,7 @@ class Shelf {
   final int boxesInHeight;
   final int productId;
   final String sizeType;
-  final List<Boxe> boxes;
+  final List<Box> boxes;
   Shelf({
     required this.id,
     required this.areaId,
@@ -38,7 +38,7 @@ class Shelf {
     int? boxesInHeight,
     int? productId,
     String? sizeType,
-    List<Boxe>? boxes,
+    List<Box>? boxes,
   }) {
     return Shelf(
       id: id ?? this.id,
@@ -80,7 +80,7 @@ class Shelf {
       boxesInHeight: map['boxesInHeight']?.toInt() ?? 0,
       productId: map['productId']?.toInt() ?? 0,
       sizeType: map['sizeType'] ?? '',
-      boxes: List<Boxe>.from(map['boxes']?.map((x) => Boxe.fromMap(x))),
+      boxes: List<Box>.from(map['boxes']?.map((x) => Box.fromMap(x))),
     );
   }
 

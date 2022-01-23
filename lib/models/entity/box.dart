@@ -1,24 +1,24 @@
 import 'dart:convert';
 
-class Boxe {
+class Box {
   final int id;
   final int orderId;
   final int shelfId;
   final String sizeType;
-  Boxe({
+  Box({
     required this.id,
     required this.orderId,
     required this.shelfId,
     required this.sizeType,
   });
 
-  Boxe copyWith({
+  Box copyWith({
     int? id,
     int? orderId,
     int? shelfId,
     String? sizeType,
   }) {
-    return Boxe(
+    return Box(
       id: id ?? this.id,
       orderId: orderId ?? this.orderId,
       shelfId: shelfId ?? this.shelfId,
@@ -35,8 +35,8 @@ class Boxe {
     };
   }
 
-  factory Boxe.fromMap(Map<String, dynamic> map) {
-    return Boxe(
+  factory Box.fromMap(Map<String, dynamic> map) {
+    return Box(
       id: map['id']?.toInt() ?? 0,
       orderId: map['orderId']?.toInt() ?? 0,
       shelfId: map['shelfId']?.toInt() ?? 0,
@@ -46,29 +46,29 @@ class Boxe {
 
   String toJson() => json.encode(toMap());
 
-  factory Boxe.fromJson(String source) => Boxe.fromMap(json.decode(source));
+  factory Box.fromJson(String source) => Box.fromMap(json.decode(source));
 
   @override
   String toString() {
-    return 'Boxe(id: $id, orderId: $orderId, shelfId: $shelfId, sizeType: $sizeType)';
+    return 'Box(id: $id, orderId: $orderId, shelfId: $shelfId, sizeType: $sizeType)';
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-  
-    return other is Boxe &&
-      other.id == id &&
-      other.orderId == orderId &&
-      other.shelfId == shelfId &&
-      other.sizeType == sizeType;
+
+    return other is Box &&
+        other.id == id &&
+        other.orderId == orderId &&
+        other.shelfId == shelfId &&
+        other.sizeType == sizeType;
   }
 
   @override
   int get hashCode {
     return id.hashCode ^
-      orderId.hashCode ^
-      shelfId.hashCode ^
-      sizeType.hashCode;
+        orderId.hashCode ^
+        shelfId.hashCode ^
+        sizeType.hashCode;
   }
 }

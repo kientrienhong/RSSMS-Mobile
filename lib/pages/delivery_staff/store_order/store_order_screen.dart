@@ -29,48 +29,8 @@ class _StoreOrderScreenState extends State<StoreOrderScreen> {
   StoreOrderPresenter? _presenter;
   StoreOrderModel? _model;
 
-  List<Map<String, dynamic>> listShelves = [
-    {
-      'name': 'Shelf - 1 (Bolo)',
-    },
-    {
-      'name': 'Shelf - 2 (Bolo)',
-    },
-    {
-      'name': 'Shelf - 3 (Bolo)',
-    },
-    {
-      'name': 'Shelf - 4 (Size S)',
-    },
-    {
-      'name': 'Shelf - 5 (Size XL)',
-    },
-    {
-      'name': 'Shelf - 6 (Bolo)',
-    },
-    {
-      'name': 'Shelf - 7 (Bolo)',
-    },
-    {
-      'name': 'Shelf - 8 (Bolo)',
-    },
-    {
-      'name': 'Shelf - 9 (Bolo)',
-    },
-  ];
   bool _isFound = false;
   int _currentIndex = -1;
-  List<Map<String, dynamic>> listBoxes = [
-    {'name': 'Bolo - 1', 'status': 0, 'id': 0},
-    {'name': 'Bolo - 2', 'status': 0, 'id': 1},
-    {'name': 'Bolo - 3', 'status': 1, 'id': 2},
-    {'name': 'Bolo - 4', 'status': 2, 'id': 3},
-    {'name': 'Bolo - 5', 'status': 3, 'id': 4},
-    {'name': 'Bolo - 6', 'status': 0, 'id': 5},
-    {'name': 'Bolo - 7', 'status': 0, 'id': 6},
-    {'name': 'Bolo - 8', 'status': 0, 'id': 7},
-    {'name': 'Bolo - 9', 'status': 0, 'id': 8},
-  ];
 
   @override
   void initState() {
@@ -103,7 +63,7 @@ class _StoreOrderScreenState extends State<StoreOrderScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-               const CustomAppBar(
+                const CustomAppBar(
                   isHome: false,
                   name: '',
                 ),
@@ -137,7 +97,7 @@ class _StoreOrderScreenState extends State<StoreOrderScreen> {
                   itemBuilder: (context, suggestion) {
                     Shelf shelf = suggestion! as Shelf;
                     return ListTile(
-                      title: Text(shelf.name),
+                      title: Text("${shelf.name} (${shelf.sizeType})"),
                     );
                   },
                   noItemsFoundBuilder: (context) => Center(
