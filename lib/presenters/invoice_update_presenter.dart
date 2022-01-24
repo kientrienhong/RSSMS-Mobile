@@ -32,7 +32,7 @@ class InvoiceUpdatePresenter {
       listOrderDetailNew =
           await Future.wait(invoice.orderDetails.map((element) async {
         List<ImageEntity> listImageEntity =
-            await FirebaseStorageHelper.uploadImage(element, invoice.id, user);
+            await FirebaseStorageHelper.convertImageToBase64(element);
         return element.copyWith(images: listImageEntity);
       }).toList());
     } catch (e) {
@@ -42,7 +42,23 @@ class InvoiceUpdatePresenter {
     return listOrderDetailNew;
   }
 
-  Future<bool?> updateOrder(Users user, Invoice invoice) async {
+  Future<bool> updateOrder(Users user, Invoice invoice) async {
+    try {
+      view.updateLoadingUpdate();
+      var response = await ApiServices.updateOrder(invoice, user.idToken!);
+      if (response.statusCode == 200) {
+        return true;
+      }
+    } catch (e) {
+      throw Exception(e);
+    } finally {
+      view.updateLoadingUpdate();
+    }
+
+    return false;
+  }
+
+  Future<bool?> sendNoti(Users user, Invoice invoice) async {
     try {
       view.updateLoadingUpdate();
 

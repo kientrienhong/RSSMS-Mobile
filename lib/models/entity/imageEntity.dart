@@ -8,20 +8,28 @@ class ImageEntity {
   final String? note;
   final String? name;
   final File? file;
-  ImageEntity({this.id, this.url, this.name, this.note, this.file});
+  final String? base64;
+  ImageEntity(
+      {this.id, this.url, this.name, this.note, this.file, this.base64});
 
   ImageEntity copyWith(
-      {int? id, String? url, String? name, String? note, File? file}) {
+      {int? id,
+      String? url,
+      String? name,
+      String? note,
+      File? file,
+      String? base64}) {
     return ImageEntity(
         id: id ?? this.id,
         url: url ?? this.url,
         file: file ?? this.file,
         name: name ?? this.name,
+        base64: base64 ?? this.base64,
         note: note ?? this.note);
   }
 
   Map<String, dynamic> toMap() {
-    return {'id': id, 'url': url, 'note': note, 'name': name};
+    return {'id': id, 'url': url, 'note': note, 'name': name, 'file': base64};
   }
 
   factory ImageEntity.fromMap(Map<String, dynamic> map) {

@@ -25,7 +25,7 @@ class _ImageWidgetState extends State<ImageWidget> {
       child: const Text("Có"),
       onPressed: () {
         setState(() {
-          widget.orderDetail.listImageUpdate!.removeAt(index);
+          widget.orderDetail.images.removeAt(index);
           Invoice invoice = Provider.of<Invoice>(context, listen: false);
           invoice.updateOrderDetail(widget.orderDetail);
         });

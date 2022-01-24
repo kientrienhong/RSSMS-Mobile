@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
+import 'package:rssms/models/entity/box.dart';
 
 import 'imageEntity.dart';
 
@@ -13,7 +14,7 @@ class OrderDetail {
   final int productType;
   final String note;
   final List<ImageEntity> images;
-  List<Map<String, dynamic>>? listImageUpdate = [];
+  final Box? currentBox;
   OrderDetail({
     required this.id,
     required this.productId,
@@ -23,7 +24,7 @@ class OrderDetail {
     required this.note,
     required this.productType,
     required this.images,
-    this.listImageUpdate,
+    this.currentBox,
   });
 
   OrderDetail copyWith({
@@ -46,7 +47,7 @@ class OrderDetail {
       amount: amount ?? this.amount,
       productType: productType ?? this.productType,
       images: images ?? this.images,
-      listImageUpdate: listImageUpdate ?? this.listImageUpdate,
+      currentBox: currentBox ?? this.currentBox,
     );
   }
 
@@ -74,7 +75,7 @@ class OrderDetail {
         productType: map['productType']?.toInt() ?? 0,
         images: List<ImageEntity>.from(
             map['images']?.map((x) => ImageEntity.fromMap(x))),
-        listImageUpdate: map['listImageUpdate'] ?? []);
+        currentBox: map['listImageUpdate'] ?? []);
   }
 
   String toJson() => json.encode(toMap());
@@ -84,7 +85,7 @@ class OrderDetail {
 
   @override
   String toString() {
-    return 'OrderDetail(productId: $productId, productName: $productName, price: $price, amount: $amount, productType: $productType, images: $images, listUpdate: $listImageUpdate)';
+    return 'OrderDetail(productId: $productId, productName: $productName, price: $price, amount: $amount, productType: $productType, images: $images, currentBox: $currentBox)';
   }
 
   @override

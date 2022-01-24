@@ -22,6 +22,7 @@ class InvoicePresenter {
   }
 
   void loadInvoice(String idToken) async {
+    try{
       final response = await ApiServices.getInvoice(idToken);
       final decodedReponse = jsonDecode(response.body);
       List<Invoice>? listInvoice;
@@ -42,3 +43,4 @@ class InvoicePresenter {
       view!.setChangeList();
     }
   }
+}

@@ -50,6 +50,15 @@ const LIST_NOTE_STATUS_BOX = [
   {'color': CustomColor.green, 'name': 'Placing'},
 ];
 
+const LIST_STATUS_ORDER = [
+  {'color': CustomColor.red, 'name': 'Canceled'},
+  {'color': CustomColor.blue, 'name': 'Booked'},
+  {'color': CustomColor.purple, 'name': 'Assigned'},
+  {'color': CustomColor.blue, 'name': 'Delivery'},
+  {'color': CustomColor.green, 'name': 'Stored'},
+  {'color': CustomColor.red, 'name': 'Expired'},
+];
+
 const List<Map<String, String>> TAB_DOOR_TO_DOOR = [
   {"name": "Ít đồ"},
   {"name": "Nhiều đồ"}
@@ -411,44 +420,6 @@ const List<Map<String, dynamic>> LIST_PAYMENT_METHOD_CHOICES = [
   {'name': 'Thánh toán thông qua paypal', 'value': PAYMENT_METHOD.paypal},
 ];
 
-// const List<Map<String, dynamic>> LIST_PAYMENT_EACH_MONTH_CHOICES = [
-//   {
-//     'name':
-//         'Thanh toán toàn bộ đơn hàng\n\n- Đối với đơn hàng dưới 1 tháng\n\n-Giảm 10% đối với đơn hàng trên 1 tháng',
-//     'value': PAYMENT_EACH_MONTHS_METHODS.YES
-//   },
-//   {
-//     'name':
-//         'Thanh toán theo từng tháng\n\n- Không áp dụng với đơn hàng dưới 1 tháng\n\n- Thanh toán ngay: chi phí tháng đầu tiên + chi phí khác: nếu có\n\n- Các tháng sau, chi phí sẽ thanh toán theo từng tháng vào ngày thứ 30 của tháng gửi giữ',
-//     'value': PAYMENT_EACH_MONTHS_METHODS.NO
-//   },
-// ];
-
-const List<Map<String, dynamic>> LIST_SCHEDULE_DELIVERY = [
-  {
-    'id': 0,
-    'time': '8 a.m - 10 a.m',
-    'order': {
-      'id': 321,
-      'status': ORDER_STATUS.notYet,
-      'address': '12 An Bình, phường 13, quận 9, TP. HCM',
-      'customerName': 'Trần Văn A',
-      'customerPhone': '0777457890'
-    }
-  },
-  {
-    'id': 1,
-    'time': '10 a.m - 12 a.m',
-    'order': {
-      'id': 322,
-      'status': ORDER_STATUS.completed,
-      'address': '12 An Bình, phường 13, quận 9, TP. HCM',
-      'customerName': 'Trần Văn B',
-      'customerPhone': '0777457259'
-    }
-  }
-];
-
 const List<Map<String, dynamic>> LIST_REQUEST_MODIFY_IMAGE = [
   {
     'id': 1,
@@ -476,140 +447,5 @@ const List<Map<String, dynamic>> LIST_NOTIFICATION_DELIVERY = [
     'content': 'Đơn hàng #1233 của bạn sắp hết hạn',
     'timeRemaining': '10m',
     'url': 'assets/images/dangerCircle.png'
-  },
-];
-
-const List<Map<String, dynamic>> LIST_SCHELVES = [
-  {
-    'name': '',
-  }
-];
-
-const List<Map<String, dynamic>> LIST_REQUEST_DELIVERY = [
-  {
-    'date': '01/01/2022',
-    'reason': 'Đi chơi Tết',
-    'status': StatusRequestDelivery.processing
-  },
-  {
-    'date': '04/01/2022',
-    'reason': 'Bận việc gia đình',
-    'status': StatusRequestDelivery.approved
-  },
-  {
-    'date': '10/01/2022',
-    'reason': 'Bận việc gia đình',
-    'status': StatusRequestDelivery.reject
-  },
-];
-
-const List<Map<String, dynamic>> LIST_IMAGE_INVOICE = [
-  {
-    "name": "Bolo 1",
-    "quantityImage": "6 hình ảnh",
-    "image": [
-      {
-        "url": "assets/images/image28.png",
-        "name": "Box Bolo 1",
-        "description": "2 cuốn sách \n10 cuốn tập\n1 đống viết\n1 nghìn cục tẩy"
-      },
-      {
-        "url": "assets/images/image28.png",
-        "name": "Box Bolo 2",
-        "description": "2 cuốn sách \n10 cuốn tập\n1 đống viết\n1 nghìn cục tẩy"
-      },
-      {
-        "url": "assets/images/image28.png",
-        "name": "Box Bolo 3",
-        "description": "2 cuốn sách \n10 cuốn tập\n1 đống viết\n1 nghìn cục tẩy"
-      },
-      {
-        "url": "assets/images/image28.png",
-        "name": "Box Bolo 4",
-        "description": "2 cuốn sách \n10 cuốn tập\n1 đống viết\n1 nghìn cục tẩy"
-      },
-      {
-        "url": "assets/images/image28.png",
-        "name": "Box Bolo 5",
-        "description": "2 cuốn sách \n10 cuốn tập\n1 đống viết\n1 nghìn cục tẩy"
-      },
-      {
-        "url": "assets/images/image28.png",
-        "name": "Box Bolo 6",
-        "description": "2 cuốn sách \n10 cuốn tập\n1 đống viết\n1 nghìn cục tẩy"
-      },
-    ]
-  },
-  {
-    "name": "Size S",
-    "quantityImage": "6 hình ảnh",
-    "image": [
-            {
-        "url": "assets/images/image28.png",
-        "name": "Size S 1",
-        "description": "2 cuốn sách \n10 cuốn tập\n1 đống viết\n1 nghìn cục tẩy"
-      },
-      {
-        "url": "assets/images/image28.png",
-        "name": "Size S 2",
-        "description": "2 cuốn sách \n10 cuốn tập\n1 đống viết\n1 nghìn cục tẩy"
-      },
-      {
-        "url": "assets/images/image28.png",
-        "name": "Size S 3",
-        "description": "2 cuốn sách \n10 cuốn tập\n1 đống viết\n1 nghìn cục tẩy"
-      },
-      {
-        "url": "assets/images/image28.png",
-        "name": "Size S 4",
-        "description": "2 cuốn sách \n10 cuốn tập\n1 đống viết\n1 nghìn cục tẩy"
-      },
-      {
-        "url": "assets/images/image28.png",
-        "name": "Size S 5",
-        "description": "2 cuốn sách \n10 cuốn tập\n1 đống viết\n1 nghìn cục tẩy"
-      },
-      {
-        "url": "assets/images/image28.png",
-        "name": "Size S 6",
-        "description": "2 cuốn sách \n10 cuốn tập\n1 đống viết\n1 nghìn cục tẩy"
-      },
-    ]
-  },
-  {
-    "name": "Size L",
-    "quantityImage": "6 hình ảnh",
-    "image": [
-           {
-        "url": "assets/images/image28.png",
-        "name": "Size L 1",
-        "description": "2 cuốn sách \n10 cuốn tập\n1 đống viết\n1 nghìn cục tẩy"
-      },
-      {
-        "url": "assets/images/image28.png",
-        "name": "Size L 2",
-        "description": "2 cuốn sách \n10 cuốn tập\n1 đống viết\n1 nghìn cục tẩy"
-      },
-      {
-        "url": "assets/images/image28.png",
-        "name": "Size L 3",
-        "description": "2 cuốn sách \n10 cuốn tập\n1 đống viết\n1 nghìn cục tẩy"
-      },
-      {
-        "url": "assets/images/image28.png",
-        "name": "Size L 4",
-        "description": "2 cuốn sách \n10 cuốn tập\n1 đống viết\n1 nghìn cục tẩy"
-      },
-      {
-        "url": "assets/images/image28.png",
-        "name": "Size L 5",
-        "description": "2 cuốn sách \n10 cuốn tập\n1 đống viết\n1 nghìn cục tẩy"
-      },
-      {
-        "url": "assets/images/image28.png",
-        "name": "Size L 6",
-        "description": "2 cuốn sách \n10 cuốn tập\n1 đống viết\n1 nghìn cục tẩy"
-      },
-    ]
   },
 ];

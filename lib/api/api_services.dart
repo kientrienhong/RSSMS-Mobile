@@ -266,6 +266,7 @@ class ApiServices {
         "Content-type": "application/json",
         'Authorization': 'Bearer $idToken'
       };
+      print(invoice.toMap());
       final url = Uri.parse('$_domain/api/v1/orders/${invoice.id}');
       return http.post(url,
           headers: headers, body: jsonEncode(invoice.toMap()));
@@ -275,27 +276,18 @@ class ApiServices {
     }
   }
 
-  // static Future<dynamic> updateOrder(Invoice invoice, String idToken) {
-  //   try {
-  //     Map<String, String> headers = {
-  //       "Content-type": "application/json",
-  //       'Authorization': 'Bearer $idToken'
-  //     };
+  static Future<dynamic> updateOrder(Invoice invoice, String idToken) {
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        'Authorization': 'Bearer $idToken'
+      };
 
-  //     // final url = Uri.parse('$_domain/api/v1/users/$userId');
-  //     // return http.put(url,
-  //     //     headers: headers,
-  //     //     body: jsonEncode({
-  //     //       "id": userId,
-  //     //       "name": fullname,
-  //     //       "gender": gender,
-  //     //       "birthdate": birthday.toIso8601String(),
-  //     //       "address": address,
-  //     //       "phone": phone
-  //     //     }));
-  //   } catch (e) {
-  //     print(e.toString());
-  //     throw Exception('Update Failed');
-  //   }
-  // }
+      final url = Uri.parse('$_domain/api/v1/orders/${invoice.id}');
+      return http.put(url, headers: headers, body: jsonEncode(invoice.toMap()));
+    } catch (e) {
+      print(e.toString());
+      throw Exception('Update Failed');
+    }
+  }
 }
