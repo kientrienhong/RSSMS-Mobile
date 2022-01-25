@@ -6,6 +6,7 @@ import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_input_date.dart';
 import 'package:rssms/common/custom_input_with_hint.dart';
+import 'package:rssms/common/custom_radio_button.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_snack_bar.dart';
 import 'package:rssms/common/custom_text.dart';
@@ -25,7 +26,7 @@ class ProfileScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: SizedBox(
           width: deviceSize.width,
-          height: deviceSize.height * 1.5,
+          height: deviceSize.height * 1.2,
           child: Stack(
             clipBehavior: Clip.none,
             children: [
@@ -81,8 +82,11 @@ class _ProfileScreenState extends State<FormProfileScreen>
 
   @override
   void onChangeInputProfile() {
-    profilePresenter.handleOnChangeInputProfile(_model.controllerFullname.text,
-        _model.controllerPhone.text, _model.controllerStreet.text);
+    profilePresenter.handleOnChangeInputProfile(
+        _model.controllerFullname.text,
+        _model.controllerPhone.text,
+        _model.controllerStreet.text,
+        _model.controllerBirthDate.text);
   }
 
   @override
@@ -103,12 +107,14 @@ class _ProfileScreenState extends State<FormProfileScreen>
 
   @override
   void updateStatusOfButtonUpdateProfile(
-      String fullname, String phone, String address) {
+      String fullname, String phone, String address, String birthDay) {
     if (fullname.isNotEmpty && phone.isNotEmpty && address.isNotEmpty) {
       Users user = Provider.of<Users>(context, listen: false);
+      String birth = DateFormat("dd/MM/yyyy").format(user.birthDate!);
       if (user.name != fullname ||
           user.phone != phone ||
-          user.address != address) {
+          user.address != address ||
+          birth != birthDay) {
         setState(() {
           _model.isDisableUpdateProfile = false;
         });
@@ -168,46 +174,18 @@ class _ProfileScreenState extends State<FormProfileScreen>
     }
   }
 
-  Widget customRadioButton(String text, String gender, Color color) {
-    return Row(
-      children: [
-        OutlinedButton(
-          style: ButtonStyle(
-            backgroundColor:
-                MaterialStateProperty.resolveWith((states) => color),
-            shape: MaterialStateProperty.all(const CircleBorder()),
-            side: MaterialStateProperty.all(
-              const BorderSide(color: CustomColor.blue, width: 1.5),
-            ),
-            maximumSize: MaterialStateProperty.all(
-              const Size(70, 70),
-            ),
-            minimumSize: MaterialStateProperty.all(
-              const Size(25, 25),
-            ),
-          ),
-          onPressed: () {
-            setState(() {
-              _model.txtGender = gender;
-            });
-          },
-          child: const Icon(
-            Icons.check,
-            size: 15,
-            color: CustomColor.white,
-          ),
-        ),
-        Text(
-          text,
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
-            color:
-                (_model.txtGender == gender) ? CustomColor.blue : Colors.black,
-          ),
-        ),
-      ],
-    );
+  void onChangeGender(String value) {
+    if (_model.txtGender == value) {
+      setState(() {
+        _model.isDisableUpdateProfile = true;
+        _model.txtGender = value;
+      });
+    } else  {
+      setState(() {
+        _model.isDisableUpdateProfile = false;
+        _model.txtGender = value;
+      });
+    }
   }
 
   @override
@@ -258,7 +236,7 @@ class _ProfileScreenState extends State<FormProfileScreen>
     _model.controllerPhone.addListener(onChangeInputProfile);
     _model.controllerStreet.addListener(onChangeInputProfile);
     _model.controllerWard.addListener(onChangeInput);
-    _model.controllerBirthDate.addListener(onChangeInput);
+    _model.controllerBirthDate.addListener(onChangeInputProfile);
   }
 
   @override
@@ -359,18 +337,30 @@ class _ProfileScreenState extends State<FormProfileScreen>
                 CustomSizedBox(context: context, height: 8),
                 Row(
                   children: [
-                    customRadioButton(
-                        "Nam",
-                        "Nam",
-                        _model.txtGender == "Nam"
-                            ? CustomColor.blue
-                            : CustomColor.white),
-                    customRadioButton(
-                        "Nữ",
-                        "Nữ",
-                        _model.txtGender == "Nữ"
-                            ? CustomColor.blue
-                            : CustomColor.white),
+                    Expanded(
+                      child: CustomRadioButton(
+                          function: () {
+                            onChangeGender("Nam");
+                          },
+                          text: "Nam",
+                          color: _model.txtGender == "Nam"
+                              ? CustomColor.blue
+                              : CustomColor.white,
+                          state: _model.txtGender,
+                          value: "Nam"),
+                    ),
+                    Expanded(
+                      child: CustomRadioButton(
+                          function: () {
+                            onChangeGender("Nữ");
+                          },
+                          text: "Nữ",
+                          color: _model.txtGender == "Nữ"
+                              ? CustomColor.blue
+                              : CustomColor.white,
+                          state: _model.txtGender,
+                          value: "Nữ"),
+                    ),
                   ],
                 )
               ],

@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/cupertino.dart';
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/order_detail.dart';
@@ -146,33 +148,39 @@ class OrderBooking with ChangeNotifier {
         selectDistrict: selectDistrict ?? _selectDistrict);
   }
 
-  void fromInvoice(
+  OrderBooking fromInvoice(
       {required Invoice invoice,
       required DateTime returnDateTimeNew,
       required int durationMonth,
-      required Users user}) {
-
-    //  _productOrder = orderBooking.productOrder;
-    _dateTimeDelivery = DateTime.parse(invoice.deliveryDate);
-    _dateTimeReturn = returnDateTimeNew;
-    _months = durationMonth;
-    _diffDay = returnDateTimeNew.difference(returnDateTimeNew).inDays;
-    _currentSelectTime = 0;
-    _isCustomerDelivery = invoice.isUserDelivery;
-    _dateTimeDeliveryString = invoice.deliveryTime;
-    _dateTimeReturnString = invoice.returnTime;
-    _nameCustomer = invoice.customerName;
-    _addressDelivery = invoice.deliveryAddress;
-    _addressReturn = invoice.addressReturn;
-    _floorAddressDelivery = "0";
-    _floorAddressReturn = "0";
-    _phoneCustomer = user.phone;
-    _emailCustomer = user.email;
-    _typeOrder =
-        invoice.typeOrder == 0 ? TypeOrder.selfStorage : TypeOrder.doorToDoor;
-    _selectDistrict = SelectDistrict.same;
-    _isPaid = true;
-    _totalPrice = (invoice.totalPrice * durationMonth) as double;
+      required Users user,
+      required bool isPaid,
+      required int totalPrice}) {
+    print(returnDateTimeNew);
+    DateTime returnDateOld = DateTime.parse(invoice.returnDate
+        .substring(0, invoice.returnDate.indexOf("T")));
+    return OrderBooking(
+        productOrder: productOrder ?? _productOrder,
+        dateTimeDelivery: DateTime.parse(invoice.returnDate),
+        dateTimeReturn: returnDateTimeNew,
+        months: durationMonth,
+        diffDay: returnDateTimeNew.difference(returnDateOld).inDays,
+        typeOrder: invoice.typeOrder == 0
+            ? TypeOrder.selfStorage
+            : TypeOrder.doorToDoor,
+        isPaid: isPaid,
+        currentSelectTime: currentSelectTime ?? _currentSelectTime,
+        isCustomerDelivery: invoice.isUserDelivery,
+        dateTimeDeliveryString: invoice.deliveryTime,
+        dateTimeReturnString: invoice.returnTime,
+        nameCustomer: invoice.customerName,
+        addressDelivery: invoice.deliveryAddress,
+        addressReturn: invoice.addressReturn,
+        floorAddressDelivery: "0",
+        floorAddressReturn: "0",
+        phoneCustomer: user.phone,
+        emailCustomer: user.email,
+        totalPrice: double.parse(totalPrice.toString()),
+        selectDistrict: SelectDistrict.same);
   }
 
   void setOrderBooking({required OrderBooking orderBooking}) {

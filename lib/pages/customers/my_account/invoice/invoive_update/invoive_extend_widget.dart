@@ -1,17 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_braintree/flutter_braintree.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:rssms/common/custom_bottom_navigation.dart';
 import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_radio_button.dart';
 import 'package:rssms/common/custom_sizebox.dart';
+import 'package:rssms/common/custom_snack_bar.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/order_booking.dart';
 import 'package:rssms/models/entity/order_detail.dart';
 import 'package:rssms/models/entity/user.dart';
+import 'package:rssms/models/invoice_extends_model.dart';
+import 'package:rssms/pages/customers/cart/cart_screen.dart';
 import 'package:rssms/pages/customers/cart/widgets/quantity_widget_custom.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/product_in_invoice/product_widget.dart';
+import 'package:rssms/pages/customers/my_account/my_account.dart';
+import 'package:rssms/pages/delivery_staff/notifcation/notification_delivery.dart';
+import 'package:rssms/presenters/invoice_extend_presenter.dart';
 import 'package:rssms/views/extend_invoice_view.dart';
 import 'package:rssms/constants/constants.dart' as constants;
 
@@ -24,16 +32,19 @@ class InvoiveExtendWidget extends StatefulWidget {
   State<InvoiveExtendWidget> createState() => _InvoiveExtendWidgetState();
 }
 
-enum PaymentMethod { tienmat, mbanking, theatm, quocte, vidientu }
+enum PaymentMethod { tienmat, mbanking, trong }
 
 class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
     implements ExtendInvoiceView {
   final oCcy = NumberFormat("#,##0", "en_US");
   int? durationMonth;
   int totalProduct = 0;
+  late InvoiceExtendPresenter _presenter;
+  late InvoiceExtendsModel _model;
   PaymentMethod? _state;
   List<OrderDetail>? listProduct;
   DateTime? returnDateNew;
+  DateTime? returnDateOld;
   List<Widget> mapProductWidget(listProduct) => listProduct
       .map<ProductInvoiceWidget>((p) => ProductInvoiceWidget(
             product: p,
@@ -72,90 +83,101 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
       totalProduct += (element.price * element.amount);
     });
     durationMonth = 1;
-    returnDateNew = DateTime.parse(widget.invoice!.returnDate
+    returnDateOld = DateTime.parse(widget.invoice!.returnDate
         .substring(0, widget.invoice!.returnDate.indexOf("T")));
     returnDateNew = DateTime(
-        returnDateNew!.year, returnDateNew!.month + 1, returnDateNew!.day);
+        returnDateOld!.year, returnDateOld!.month + 1, returnDateOld!.day);
+
+    _presenter = InvoiceExtendPresenter();
+    _model = _presenter.model!;
+    _presenter.view = this;
     super.initState();
   }
 
   @override
-  void onClickPayment() {
+  void onClickPayment() async {
     try {
-      // OrderBooking orderBooking =
-      //     Provider.of<OrderBooking>(context, listen: false);
+      Map<String, dynamic> extendInvoice = {
+        "oldReturnDate": returnDateOld,
+        "newReturnDate": returnDateNew,
+        "cancelDay": returnDateNew,
+        "orderId": widget.invoice!.id,
+        "type": 1,
+        "status": 1,
+        "note": "",
+        "totalProduct": totalProduct * durationMonth!
+      };
+      Users users = Provider.of<Users>(context, listen: false);
+      if (_model.currentIndexPaymentMethod == PaymentMethod.tienmat) {
+        bool isSuccess = await _presenter.createRequest(
+            extendInvoice, users, widget.invoice!);
+        if (isSuccess) {
+          CustomSnackBar.buildErrorSnackbar(
+              context: context,
+              message: 'Gia hạn đơn hàng thành công',
+              color: CustomColor.green);
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                  builder: (context) => const CustomBottomNavigation(
+                        listIndexStack: [
+                          MyAccountScreen(),
+                          CartScreen(),
+                          NotificationDeliveryScreen(),
+                        ],
+                        listNavigator:
+                            constants.LIST_CUSTOMER_BOTTOM_NAVIGATION,
+                      )),
+              (Route<dynamic> route) => false);
+        }
+      } else if (_model.currentIndexPaymentMethod == PaymentMethod.mbanking) {
+        var request = BraintreeDropInRequest(
+            tokenizationKey: 'sandbox_x62jjpjk_n5rdrcwx7kv3ppb7',
+            collectDeviceData: true,
+            paypalRequest: BraintreePayPalRequest(
+                currencyCode: 'VND',
+                amount: (totalProduct * durationMonth!).toString(),
+                displayName: users.name));
+        BraintreeDropInResult? result = await BraintreeDropIn.start(request);
+        if (result != null) {
+          bool isSuccess = await _presenter.createRequest(
+              extendInvoice, users, widget.invoice!);
 
-      // Users users = Provider.of<Users>(context, listen: false);
-      // if (_model.currentIndexPaymentMethod == PAYMENT_METHOD.cash) {
-      //   orderBooking.setOrderBooking(
-      //       orderBooking: orderBooking.copyWith(isPaid: false));
-      //   bool isSuccess = await _presenter.createOrder(orderBooking, users);
-
-      //   if (isSuccess) {
-      //     orderBooking.setOrderBooking(
-      //         orderBooking: OrderBooking.empty(TypeOrder.doorToDoor));
-      //     CustomSnackBar.buildErrorSnackbar(
-      //         context: context,
-      //         message: 'Create order success',
-      //         color: CustomColor.green);
-      //     Navigator.of(context).pushAndRemoveUntil(
-      //         MaterialPageRoute(
-      //             builder: (context) => const CustomBottomNavigation(
-      //                   listIndexStack: [
-      //                     MyAccountScreen(),
-      //                     CartScreen(),
-      //                     NotificationDeliveryScreen(),
-      //                   ],
-      //                   listNavigator:
-      //                       constants.LIST_CUSTOMER_BOTTOM_NAVIGATION,
-      //                 )),
-      //         (Route<dynamic> route) => false);
-      //   }
-      // } else {
-      //   orderBooking.setOrderBooking(
-      //       orderBooking: orderBooking.copyWith(isPaid: true));
-      //   var request = BraintreeDropInRequest(
-      //       tokenizationKey: 'sandbox_x62jjpjk_n5rdrcwx7kv3ppb7',
-      //       collectDeviceData: true,
-      //       paypalRequest: BraintreePayPalRequest(
-      //           currencyCode: 'VND',
-      //           amount: orderBooking.totalPrice.toString(),
-      //           displayName: users.name));
-      //   BraintreeDropInResult? result = await BraintreeDropIn.start(request);
-      //   if (result != null) {
-      //     bool isSuccess = await _presenter.createOrder(orderBooking, users);
-
-      //     if (isSuccess) {
-      //       orderBooking.setOrderBooking(
-      //           orderBooking: OrderBooking.empty(TypeOrder.doorToDoor));
-      //       CustomSnackBar.buildErrorSnackbar(
-      //           context: context,
-      //           message: 'Create order success',
-      //           color: CustomColor.green);
-      //       Navigator.of(context).pushAndRemoveUntil(
-      //           MaterialPageRoute(
-      //               builder: (context) => const CustomBottomNavigation(
-      //                     listIndexStack: [
-      //                       MyAccountScreen(),
-      //                       CartScreen(),
-      //                       NotificationDeliveryScreen(),
-      //                     ],
-      //                     listNavigator:
-      //                         constants.LIST_CUSTOMER_BOTTOM_NAVIGATION,
-      //                   )),
-      //           (Route<dynamic> route) => false);
-      //     }
-      //   }
-      // }
+          if (isSuccess) {
+            CustomSnackBar.buildErrorSnackbar(
+                context: context,
+                message: 'Gia hạn đơn hàng thành công',
+                color: CustomColor.green);
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(
+                    builder: (context) => const CustomBottomNavigation(
+                          listIndexStack: [
+                            MyAccountScreen(),
+                            CartScreen(),
+                            NotificationDeliveryScreen(),
+                          ],
+                          listNavigator:
+                              constants.LIST_CUSTOMER_BOTTOM_NAVIGATION,
+                        )),
+                (Route<dynamic> route) => false);
+          }
+        }
+      }
     } catch (e) {
-      print(e.toString());
+      print(e);
     }
+  }
+
+  @override
+  void updateLoading() {
+    setState(() {
+      _model.isLoading = !_model.isLoading;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
-
+    print(returnDateNew!.difference(returnDateOld!).inDays);
     return Column(
       children: [
         Container(
@@ -368,71 +390,35 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
             ],
           ),
         ),
-        Container(
+        SizedBox(
           child: Column(
             children: [
               CustomRadioButton(
                   function: () {
                     setState(() {
-                      _state = PaymentMethod.tienmat;
+                      _model.currentIndexPaymentMethod = PaymentMethod.tienmat;
                     });
                   },
                   text: "Thanh toán tiền mặt",
-                  color: _state == PaymentMethod.tienmat
-                      ? CustomColor.blue
-                      : CustomColor.white,
+                  color:
+                      _model.currentIndexPaymentMethod == PaymentMethod.tienmat
+                          ? CustomColor.blue
+                          : CustomColor.white,
                   state: PaymentMethod.tienmat,
-                  value: _state),
+                  value: _model.currentIndexPaymentMethod),
               CustomRadioButton(
                   function: () {
                     setState(() {
-                      _state = PaymentMethod.mbanking;
+                      _model.currentIndexPaymentMethod = PaymentMethod.mbanking;
                     });
                   },
-                  text: "Ứng dụng Mobile Banking",
-                  color: _state == PaymentMethod.mbanking
-                      ? CustomColor.blue
-                      : CustomColor.white,
+                  text: "Thanh toán thông qua paypal",
+                  color:
+                      _model.currentIndexPaymentMethod == PaymentMethod.mbanking
+                          ? CustomColor.blue
+                          : CustomColor.white,
                   state: PaymentMethod.mbanking,
-                  value: _state),
-              CustomRadioButton(
-                  function: () {
-                    setState(() {
-                      _state = PaymentMethod.theatm;
-                    });
-                  },
-                  text: "Thẻ ATM và tài khoản ngân hàng",
-                  color: _state == PaymentMethod.theatm
-                      ? CustomColor.blue
-                      : CustomColor.white,
-                  state: PaymentMethod.theatm,
-                  value: _state),
-              CustomRadioButton(
-                function: () {
-                  setState(() {
-                    _state = PaymentMethod.quocte;
-                  });
-                },
-                text: "Thẻ thanh toán quốc tế",
-                color: _state == PaymentMethod.quocte
-                    ? CustomColor.blue
-                    : CustomColor.white,
-                state: PaymentMethod.quocte,
-                value: _state,
-              ),
-              CustomRadioButton(
-                function: () {
-                  setState(() {
-                    _state = PaymentMethod.vidientu;
-                  });
-                },
-                text: "Ví điện tử",
-                color: _state == PaymentMethod.vidientu
-                    ? CustomColor.blue
-                    : CustomColor.white,
-                state: PaymentMethod.vidientu,
-                value: _state,
-              ),
+                  value: _model.currentIndexPaymentMethod),
             ],
           ),
         ),
@@ -444,10 +430,12 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: CustomButton(
               height: 24,
-              isLoading: false,
+              isLoading: _model.isLoading,
               text: 'Thanh toán',
               textColor: CustomColor.white,
-              onPressFunction: null,
+              onPressFunction: () {
+                onClickPayment();
+              },
               width: deviceSize.width,
               buttonColor: CustomColor.blue,
               borderRadius: 6),

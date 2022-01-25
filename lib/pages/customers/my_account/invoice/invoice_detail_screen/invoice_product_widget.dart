@@ -57,7 +57,8 @@ class InvoiceProductWidget extends StatelessWidget {
     listPackaging.forEach((element) {
       totalPackaging += element.amount * element.price;
     });
-    print(invoice!.durationMonths);
+    DateTime deliveryDate = DateTime.parse(invoice!.deliveryDate);
+    DateTime returnDate = DateTime.parse(invoice!.returnDate);
     return Container(
       decoration:
           BoxDecoration(border: Border.all(color: CustomColor.blue, width: 2)),
@@ -134,23 +135,43 @@ class InvoiceProductWidget extends StatelessWidget {
               context: context,
               height: 14,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CustomText(
-                    text: "Tháng",
-                    color: Colors.black,
-                    context: context,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16),
-                CustomText(
-                    text: "x" + invoice!.durationMonths.toString(),
-                    color: Colors.black,
-                    context: context,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16),
-              ],
-            ),
+            if (invoice!.typeOrder == 0)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  CustomText(
+                      text: "Tháng",
+                      color: Colors.black,
+                      context: context,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16),
+                  CustomText(
+                      text: "x" + invoice!.durationMonths.toString(),
+                      color: Colors.black,
+                      context: context,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16),
+                ],
+              ),
+            if (invoice!.typeOrder == 1)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  CustomText(
+                      text: "Số ngày",
+                      color: Colors.black,
+                      context: context,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16),
+                  CustomText(
+                      text: "x" +
+                          returnDate.difference(deliveryDate).inDays.toString(),
+                      color: Colors.black,
+                      context: context,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16),
+                ],
+              ),
             CustomSizedBox(
               context: context,
               height: 10,
@@ -227,9 +248,17 @@ class InvoiceProductWidget extends StatelessWidget {
               context: context,
               height: 16,
             ),
-            Column(
-              children: mapAccessoryWidget(listAccessory),
-            ),
+            if (listAccessory.isNotEmpty)
+              Column(
+                children: mapAccessoryWidget(listAccessory),
+              ),
+            if (listAccessory.isEmpty)
+              Center(
+                  child: CustomText(
+                      text: "(Trống)",
+                      color: Colors.black45,
+                      context: context,
+                      fontSize: 14)),
             Container(
               color: CustomColor.white,
               child: const Divider(
@@ -306,8 +335,7 @@ class InvoiceProductWidget extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     fontSize: 15),
                 CustomText(
-                    text: oCcy.format(totalPackaging) +
-                        " đ",
+                    text: oCcy.format(totalPackaging) + " đ",
                     color: CustomColor.blue,
                     context: context,
                     fontWeight: FontWeight.bold,
@@ -361,7 +389,8 @@ class InvoiceProductWidget extends StatelessWidget {
                     fontSize: 19),
                 CustomText(
                     text: oCcy.format(totalProduct * invoice!.durationMonths +
-                            totalAccessory + totalPackaging) +
+                            totalAccessory +
+                            totalPackaging) +
                         " đ",
                     color: CustomColor.blue,
                     context: context,

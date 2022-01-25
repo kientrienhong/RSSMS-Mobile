@@ -77,7 +77,7 @@ class SendRequestScreenState extends State<SendRequestScreen> {
                         _state = CurrentRadioState.modifyItem;
                       });
                     },
-                    text: "Đặt lịch thay đổi đồ dùng đang được giữ",
+                    text: "Đặt lịch rút đồ đang được giữ",
                     color: _state == CurrentRadioState.modifyItem
                         ? CustomColor.blue
                         : CustomColor.white,

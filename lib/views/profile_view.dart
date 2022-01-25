@@ -9,7 +9,7 @@ abstract class ProfileView {
       String oldPassword, String newPassword, String confirmPassword);
 
   void updateStatusOfButtonUpdateProfile(
-      String fullname, String phone, String address);
+      String fullname, String phone, String address, String birthDay);
   // handle events
   void onChangeInput();
   void onChangeInputProfile();

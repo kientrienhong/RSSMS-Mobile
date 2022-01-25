@@ -1,14 +1,16 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
+import 'package:rssms/models/entity/request.dart';
 import 'package:rssms/pages/customers/detail_request/detail_request_screen.dart';
 import 'package:rssms/pages/customers/my_account/request/request_screen.dart';
 
 class RequestWidget extends StatelessWidget {
-  Map<String, dynamic>? request;
+  Request? request;
   RequestWidget({Key? key, this.request}) : super(key: key);
 
   @override
@@ -16,12 +18,12 @@ class RequestWidget extends StatelessWidget {
     final deviceSize = MediaQuery.of(context).size;
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => DetailRequestScreen(
-                      request: request!,
-                    )));
+        // Navigator.push(
+        //     context,
+        //     MaterialPageRoute(
+        //         builder: (context) => DetailRequestScreen(
+        //               request: request!,
+        //             )));
       },
       child: Container(
         padding: EdgeInsets.only(
@@ -47,7 +49,7 @@ class RequestWidget extends StatelessWidget {
                 children: [
                   SizedBox(
                       width: (deviceSize.width - 32) / 4,
-                      child: Image.asset(request!['url']!)),
+                      child: Image.asset("assets/images/truck1.png")),
                   CustomSizedBox(
                     context: context,
                     width: 15,
@@ -59,7 +61,7 @@ class RequestWidget extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         CustomText(
-                            text: "Request id: #" + request!["requestId"],
+                            text: "Mã yêu cầu: #" + request!.id.toString(),
                             color: CustomColor.black,
                             context: context,
                             fontWeight: FontWeight.bold,
@@ -69,7 +71,7 @@ class RequestWidget extends StatelessWidget {
                           height: 14,
                         ),
                         CustomText(
-                            text: "Order id: #" + request!["orderId"],
+                            text: "Mã đơn hàng: #" + request!.orderId.toString(),
                             color: CustomColor.black,
                             context: context,
                             fontWeight: FontWeight.bold,
@@ -78,14 +80,15 @@ class RequestWidget extends StatelessWidget {
                           context: context,
                           height: 14,
                         ),
-                        if (request!["type"] == REQUEST_TYPE.modifyRequest)
+                        if (request!.type == 1)
                           Column(
                             children: [
                               Row(
                                 children: [
                                   CustomText(
-                                      text: 'Ngày đổi đồ: ' +
-                                          request!["dateChange"],
+                                      text: 'Ngày lấy đồ: ' +
+                                          DateFormat("dd/MM/yyyy")
+                                              .format(DateTime.now()),
                                       color: CustomColor.black,
                                       context: context,
                                       fontWeight: FontWeight.bold,
@@ -99,7 +102,7 @@ class RequestWidget extends StatelessWidget {
                             ],
                           ),
                         CustomText(
-                            text: 'Trạng thái: ' + request!["status"],
+                            text: 'Trạng thái: Cập nhật..',
                             color: CustomColor.black,
                             context: context,
                             fontWeight: FontWeight.bold,

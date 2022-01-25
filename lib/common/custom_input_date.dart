@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 import '/common/custom_color.dart';
 import '/common/custom_sizebox.dart';
 import '/common/custom_text.dart';
@@ -134,11 +136,7 @@ class _CustomOutLineInputState extends State<CustomOutLineInputDateTime> {
                         firstDate: DateTime(1900),
                         lastDate: DateTime(2100),
                       );
-                      widget.controller?.text = date!.day.toString() +
-                          "/" +
-                          date.month.toString() +
-                          "/" +
-                          date.year.toString();
+                      widget.controller?.text = DateFormat("dd/MM/yyyy").format(date!);
                     },
                     obscureText: widget.isSecure!,
                     validator:

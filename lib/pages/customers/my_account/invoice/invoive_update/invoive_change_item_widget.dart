@@ -178,19 +178,19 @@ class _ChangeItemWidgetState extends State<ChangeItemWidget> {
             controller: _controllerStreet,
           ),
 
-          if (widget.invoice!.typeOrder == 1)
-            CustomText(
-              text: "Danh sách đồ",
-              color: CustomColor.black,
-              context: context,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          if (widget.invoice!.typeOrder == 1)
-            CustomSizedBox(
-              context: context,
-              height: 14,
-            ),
+          // if (widget.invoice!.typeOrder == 1)
+          //   CustomText(
+          //     text: "Danh sách đồ",
+          //     color: CustomColor.black,
+          //     context: context,
+          //     fontSize: 18,
+          //     fontWeight: FontWeight.bold,
+          //   ),
+          // if (widget.invoice!.typeOrder == 1)
+          //   CustomSizedBox(
+          //     context: context,
+          //     height: 14,
+          //   ),
           // if (widget.invoice!.typeOrder == 1)
           // SingleChildScrollView(
           //   scrollDirection: Axis.horizontal,

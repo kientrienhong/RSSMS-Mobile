@@ -67,11 +67,24 @@ class _InvoiceScreenState extends State<InvoiceScreen> implements InvoiceView {
 
   Widget invoiceWidget() {
     if (!_isFound) {
-      return Expanded(
-          child: ListView(
-        padding: const EdgeInsets.all(0),
-        children: mapInvoiceWidget(_model.getListInvoice()),
-      ));
+      if (_model.getListInvoice()!.isNotEmpty) {
+        return Expanded(
+            child: ListView(
+          padding: const EdgeInsets.all(0),
+          children: mapInvoiceWidget(_model.getListInvoice()),
+        ));
+      } else {
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 36),
+          child: Center(
+            child: CustomText(
+                text: "Chưa có đơn hàng",
+                color: Colors.black45,
+                context: context,
+                fontSize: 16),
+          ),
+        );
+      }
     } else {
       return InvoiceWidget(invoice: _model.searchInvoice);
     }
@@ -119,7 +132,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> implements InvoiceView {
                     },
                     noItemsFoundBuilder: (context) => Center(
                       child: CustomText(
-                          text: 'No invoice found!',
+                          text: 'Không tìm thấy đơn hàng!',
                           color: CustomColor.black,
                           context: context,
                           fontSize: 16),
