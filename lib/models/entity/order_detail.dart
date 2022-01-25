@@ -63,13 +63,15 @@ class OrderDetail {
   factory OrderDetail.fromMap(Map<String, dynamic> map) {
     return OrderDetail(
       id: map['id']?.toInt() ?? 0,
+      note: map['note'] ?? '',
       productId: map['productId']?.toInt() ?? 0,
       productName: map['productName'] ?? '',
       price: map['price']?.toInt() ?? 0,
       amount: map['amount']?.toInt() ?? 0,
       productType: map['productType']?.toInt() ?? 0,
-      note: map['note'] ?? '',
-      images: List<ImageEntity>.from(map['images']?.map((x) => ImageEntity.fromMap(x))),
+      images: List<ImageEntity>.from(
+          map['images']?.map((x) => ImageEntity.fromMap(x))),
+      // currentBox: map['listImageUpdate'] ?? []);
     );
   }
 

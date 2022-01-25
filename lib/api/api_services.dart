@@ -290,4 +290,23 @@ class ApiServices {
       throw Exception('Update Failed');
     }
   }
+
+  static Future<dynamic> getListArea(int storageId, String idToken) {
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        'Authorization': 'Bearer $idToken'
+      };
+
+      final url = Uri.parse(
+          '$_domain/api/v1/areas?storageid=$storageId&page=1&size=-1');
+      return http.get(
+        url,
+        headers: headers,
+      );
+    } catch (e) {
+      print(e.toString());
+      throw Exception('Update Failed');
+    }
+  }
 }

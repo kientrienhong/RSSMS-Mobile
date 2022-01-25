@@ -32,7 +32,7 @@ class SignUpScreen extends StatelessWidget {
         body: SingleChildScrollView(
           child: SizedBox(
             width: deviceSize.width,
-            height: deviceSize.height * 1.65,
+            height: deviceSize.height * 1.8,
             child: Stack(
               clipBehavior: Clip.none,
               children: [

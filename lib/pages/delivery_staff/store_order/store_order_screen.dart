@@ -28,7 +28,7 @@ class _StoreOrderScreenState extends State<StoreOrderScreen> {
   BottomDrawerController controller = BottomDrawerController();
   StoreOrderPresenter? _presenter;
   StoreOrderModel? _model;
-
+  int _currentChoicedBox = -1;
   bool _isFound = false;
   int _currentIndex = -1;
 
@@ -39,6 +39,12 @@ class _StoreOrderScreenState extends State<StoreOrderScreen> {
     _presenter!.loadShelf(user.idToken!);
     _model = _presenter!.model;
     super.initState();
+  }
+
+  void onChangeRadio(val) {
+    setState(() {
+      _currentChoicedBox = val;
+    });
   }
 
   @override
@@ -177,6 +183,8 @@ class _StoreOrderScreenState extends State<StoreOrderScreen> {
           ),
         ),
         CustomBottomSheet(
+          currentChoicedProduct: _currentChoicedBox,
+          onChangeRadio: onChangeRadio,
           controller: controller,
           invoice: widget.invoice,
         ),
