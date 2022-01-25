@@ -25,7 +25,7 @@ class InvoiceModel {
   List<Invoice>? getListInvoice() {
 
     if (filterIndex == "10") {
-      return _listInvoice;
+      return _listInvoiceFull;
     } else {
       _listInvoice = _listInvoiceFull!
           .where((element) => element.typeOrder == int.parse(filterIndex!))

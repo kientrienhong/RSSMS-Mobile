@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_radio_button.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/models/entity/invoice.dart';
+import 'package:rssms/models/entity/order_booking.dart';
 import 'package:rssms/models/entity/order_detail.dart';
-import 'package:rssms/pages/customers/cart/widgets/quantity_widget.dart';
+import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/pages/customers/cart/widgets/quantity_widget_custom.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/product_in_invoice/product_widget.dart';
 import 'package:rssms/views/extend_invoice_view.dart';
@@ -25,8 +28,11 @@ enum PaymentMethod { tienmat, mbanking, theatm, quocte, vidientu }
 
 class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
     implements ExtendInvoiceView {
+  final oCcy = NumberFormat("#,##0", "en_US");
   int? durationMonth;
+  int totalProduct = 0;
   PaymentMethod? _state;
+  List<OrderDetail>? listProduct;
   DateTime? returnDateNew;
   List<Widget> mapProductWidget(listProduct) => listProduct
       .map<ProductInvoiceWidget>((p) => ProductInvoiceWidget(
@@ -56,17 +62,99 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
 
   @override
   void initState() {
-    durationMonth = 0;
+    List<OrderDetail> listTemp = widget.invoice!.orderDetails;
+    listProduct = listTemp
+        .where((element) =>
+            element.productType == constants.HANDY ||
+            element.productType == constants.UNWEILDY)
+        .toList();
+    listProduct!.forEach((element) {
+      totalProduct += (element.price * element.amount);
+    });
+    durationMonth = 1;
     returnDateNew = DateTime.parse(widget.invoice!.returnDate
         .substring(0, widget.invoice!.returnDate.indexOf("T")));
+    returnDateNew = DateTime(
+        returnDateNew!.year, returnDateNew!.month + 1, returnDateNew!.day);
     super.initState();
+  }
+
+  @override
+  void onClickPayment() {
+    try {
+      // OrderBooking orderBooking =
+      //     Provider.of<OrderBooking>(context, listen: false);
+
+      // Users users = Provider.of<Users>(context, listen: false);
+      // if (_model.currentIndexPaymentMethod == PAYMENT_METHOD.cash) {
+      //   orderBooking.setOrderBooking(
+      //       orderBooking: orderBooking.copyWith(isPaid: false));
+      //   bool isSuccess = await _presenter.createOrder(orderBooking, users);
+
+      //   if (isSuccess) {
+      //     orderBooking.setOrderBooking(
+      //         orderBooking: OrderBooking.empty(TypeOrder.doorToDoor));
+      //     CustomSnackBar.buildErrorSnackbar(
+      //         context: context,
+      //         message: 'Create order success',
+      //         color: CustomColor.green);
+      //     Navigator.of(context).pushAndRemoveUntil(
+      //         MaterialPageRoute(
+      //             builder: (context) => const CustomBottomNavigation(
+      //                   listIndexStack: [
+      //                     MyAccountScreen(),
+      //                     CartScreen(),
+      //                     NotificationDeliveryScreen(),
+      //                   ],
+      //                   listNavigator:
+      //                       constants.LIST_CUSTOMER_BOTTOM_NAVIGATION,
+      //                 )),
+      //         (Route<dynamic> route) => false);
+      //   }
+      // } else {
+      //   orderBooking.setOrderBooking(
+      //       orderBooking: orderBooking.copyWith(isPaid: true));
+      //   var request = BraintreeDropInRequest(
+      //       tokenizationKey: 'sandbox_x62jjpjk_n5rdrcwx7kv3ppb7',
+      //       collectDeviceData: true,
+      //       paypalRequest: BraintreePayPalRequest(
+      //           currencyCode: 'VND',
+      //           amount: orderBooking.totalPrice.toString(),
+      //           displayName: users.name));
+      //   BraintreeDropInResult? result = await BraintreeDropIn.start(request);
+      //   if (result != null) {
+      //     bool isSuccess = await _presenter.createOrder(orderBooking, users);
+
+      //     if (isSuccess) {
+      //       orderBooking.setOrderBooking(
+      //           orderBooking: OrderBooking.empty(TypeOrder.doorToDoor));
+      //       CustomSnackBar.buildErrorSnackbar(
+      //           context: context,
+      //           message: 'Create order success',
+      //           color: CustomColor.green);
+      //       Navigator.of(context).pushAndRemoveUntil(
+      //           MaterialPageRoute(
+      //               builder: (context) => const CustomBottomNavigation(
+      //                     listIndexStack: [
+      //                       MyAccountScreen(),
+      //                       CartScreen(),
+      //                       NotificationDeliveryScreen(),
+      //                     ],
+      //                     listNavigator:
+      //                         constants.LIST_CUSTOMER_BOTTOM_NAVIGATION,
+      //                   )),
+      //           (Route<dynamic> route) => false);
+      //     }
+      //   }
+      // }
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
-
-    List<OrderDetail> listProduct = widget.invoice!.orderDetails;
 
     return Column(
       children: [
@@ -149,7 +237,7 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
                             fontWeight: FontWeight.bold,
                             fontSize: 16),
                         CustomText(
-                            text: widget.invoice!.totalPrice.toString() + " đ",
+                            text: oCcy.format(totalProduct).toString() + " đ",
                             color: Colors.black,
                             context: context,
                             fontWeight: FontWeight.bold,
@@ -199,7 +287,10 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
                             fontWeight: FontWeight.bold,
                             fontSize: 16),
                         CustomText(
-                            text: widget.invoice!.totalPrice.toString() + " đ",
+                            text: oCcy
+                                    .format((totalProduct * durationMonth!))
+                                    .toString() +
+                                " đ",
                             color: CustomColor.blue,
                             context: context,
                             fontWeight: FontWeight.bold,

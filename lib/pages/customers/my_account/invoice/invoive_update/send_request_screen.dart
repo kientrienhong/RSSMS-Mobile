@@ -29,52 +29,6 @@ class SendRequestScreenState extends State<SendRequestScreen> {
     return Colors.white;
   }
 
-  Widget customRadioButton(String text, CurrentRadioState index, Color color) {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          _state = index;
-        });
-      },
-      child: Container(
-        padding: const EdgeInsets.only(left: 10),
-        child: Row(
-          children: [
-            OutlinedButton(
-              style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.resolveWith((states) => color),
-                shape: MaterialStateProperty.all(const CircleBorder()),
-                side: MaterialStateProperty.all(
-                  const BorderSide(color: CustomColor.blue, width: 1.5),
-                ),
-                maximumSize: MaterialStateProperty.all(
-                  const Size(50, 50),
-                ),
-                minimumSize: MaterialStateProperty.all(
-                  const Size(25, 25),
-                ),
-              ),
-              onPressed: () {},
-              child: const Icon(
-                Icons.check,
-                size: 15,
-                color: CustomColor.white,
-              ),
-            ),
-            Text(
-              text,
-              style: TextStyle(
-                fontSize: 14,
-                color: (_state == index) ? CustomColor.blue : Colors.black,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;

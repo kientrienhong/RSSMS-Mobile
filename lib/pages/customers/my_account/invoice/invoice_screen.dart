@@ -83,7 +83,6 @@ class _InvoiceScreenState extends State<InvoiceScreen> implements InvoiceView {
 
     return SizedBox(
       width: deviceSize.width,
-      height: deviceSize.height * 1.5,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
@@ -94,7 +93,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> implements InvoiceView {
                   child: TypeAheadField(
                     textFieldConfiguration: TextFieldConfiguration(
                       controller: _model.searchValue,
-                      onEditingComplete: (){
+                      onEditingComplete: () {
                         _presenter.handleOnChangeInput(_model.searchValue.text);
                       },
                       decoration: InputDecoration(
@@ -186,16 +185,23 @@ class _InvoiceScreenState extends State<InvoiceScreen> implements InvoiceView {
                 ),
               ],
             ),
-            
-            if (!_model.isLoadingInvoice!)
+            if (!(_model.isLoadingInvoice!))
               invoiceWidget()
             else
-              const SizedBox(
-                height: 16,
-                width: 16,
-                child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.black45),
-                ),
+              Column(
+                children: [
+                  CustomSizedBox(
+                    context: context,
+                    height: 50,
+                  ),
+                  const SizedBox(
+                    height: 16,
+                    width: 16,
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.black45),
+                    ),
+                  ),
+                ],
               )
           ],
         ),

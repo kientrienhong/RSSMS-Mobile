@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:rssms/models/entity/box.dart';
+import 'package:rssms/models/entity/order_box_detail.dart';
 import 'package:rssms/models/entity/shelf.dart';
 
 class StoreOrderModel {
@@ -7,7 +7,7 @@ class StoreOrderModel {
   Shelf? selectedShelf;
   TextEditingController? _searchValue;
   FocusNode? _searchfocusNode;
-  Box? _currentBox;
+  OrderBoxDetail? _currentBox;
 
   StoreOrderModel() {
     listShelf = [];

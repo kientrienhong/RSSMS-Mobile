@@ -22,7 +22,8 @@ class InvoicePresenter {
   }
 
   void loadInvoice(String idToken) async {
-    try{
+    view!.updateIsLoadingInvoice();
+    try {
       final response = await ApiServices.getInvoice(idToken);
       final decodedReponse = jsonDecode(response.body);
       List<Invoice>? listInvoice;
@@ -36,6 +37,7 @@ class InvoicePresenter {
         listInvoice = [];
         model!.listInvoiceFull = listInvoice;
       }
+
     } catch (e) {
       print(e);
     } finally {

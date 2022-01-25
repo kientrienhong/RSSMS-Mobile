@@ -1,4 +1,7 @@
 import 'package:flutter/cupertino.dart';
+import 'package:rssms/models/entity/invoice.dart';
+import 'package:rssms/models/entity/order_detail.dart';
+import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/pages/customers/input_information_booking/input_information.dart';
 
 enum TypeOrder { selfStorage, doorToDoor }
@@ -143,6 +146,35 @@ class OrderBooking with ChangeNotifier {
         selectDistrict: selectDistrict ?? _selectDistrict);
   }
 
+  void fromInvoice(
+      {required Invoice invoice,
+      required DateTime returnDateTimeNew,
+      required int durationMonth,
+      required Users user}) {
+
+    //  _productOrder = orderBooking.productOrder;
+    _dateTimeDelivery = DateTime.parse(invoice.deliveryDate);
+    _dateTimeReturn = returnDateTimeNew;
+    _months = durationMonth;
+    _diffDay = returnDateTimeNew.difference(returnDateTimeNew).inDays;
+    _currentSelectTime = 0;
+    _isCustomerDelivery = invoice.isUserDelivery;
+    _dateTimeDeliveryString = invoice.deliveryTime;
+    _dateTimeReturnString = invoice.returnTime;
+    _nameCustomer = invoice.customerName;
+    _addressDelivery = invoice.deliveryAddress;
+    _addressReturn = invoice.addressReturn;
+    _floorAddressDelivery = "0";
+    _floorAddressReturn = "0";
+    _phoneCustomer = user.phone;
+    _emailCustomer = user.email;
+    _typeOrder =
+        invoice.typeOrder == 0 ? TypeOrder.selfStorage : TypeOrder.doorToDoor;
+    _selectDistrict = SelectDistrict.same;
+    _isPaid = true;
+    _totalPrice = (invoice.totalPrice * durationMonth) as double;
+  }
+
   void setOrderBooking({required OrderBooking orderBooking}) {
     _productOrder = orderBooking.productOrder;
     _dateTimeDelivery = orderBooking.dateTimeDelivery;
@@ -164,7 +196,6 @@ class OrderBooking with ChangeNotifier {
     _selectDistrict = orderBooking.selectDistrict;
     _isPaid = orderBooking.isPaid;
     _totalPrice = orderBooking.totalPrice;
-
     notifyListeners();
   }
 

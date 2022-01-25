@@ -105,9 +105,18 @@ class _ProfileScreenState extends State<FormProfileScreen>
   void updateStatusOfButtonUpdateProfile(
       String fullname, String phone, String address) {
     if (fullname.isNotEmpty && phone.isNotEmpty && address.isNotEmpty) {
-      setState(() {
-        _model.isDisableUpdateProfile = false;
-      });
+      Users user = Provider.of<Users>(context, listen: false);
+      if (user.name != fullname ||
+          user.phone != phone ||
+          user.address != address) {
+        setState(() {
+          _model.isDisableUpdateProfile = false;
+        });
+      } else {
+        setState(() {
+          _model.isDisableUpdateProfile = true;
+        });
+      }
     } else {
       setState(() {
         _model.isDisableUpdateProfile = true;
@@ -133,7 +142,6 @@ class _ProfileScreenState extends State<FormProfileScreen>
 
   @override
   void updateViewPasswordErrorMsg(String error) {
-    // TODO: implement updateViewErrorMsg
     setState(() {
       _model.errorMsgChangePassword = error;
     });
