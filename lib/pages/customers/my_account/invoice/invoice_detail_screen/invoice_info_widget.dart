@@ -5,6 +5,7 @@ import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/pages/time_line/time_line_screen.dart';
+import 'package:rssms/constants/constants.dart';
 
 class InvoiceInfoWidget extends StatelessWidget {
   Invoice? invoice;
@@ -47,16 +48,8 @@ class InvoiceInfoWidget extends StatelessWidget {
               fontWeight: FontWeight.bold,
               fontSize: 17),
           CustomText(
-              text: invoice!.status == 1
-                  ? "Đã thanh toán"
-                  : invoice!.status == 2
-                      ? "Sắp hết hạn"
-                      : "Đã hết hạn",
-              color: invoice!.status == 1
-                  ? CustomColor.blue
-                  : invoice!.status == 2
-                      ? const Color.fromRGBO(249, 168, 37, 1)
-                      : CustomColor.red,
+              text: LIST_STATUS_ORDER[invoice!.status]['name']! as String,
+              color: LIST_STATUS_ORDER[invoice!.status]['color'] as Color,
               context: context,
               fontWeight: FontWeight.bold,
               fontSize: 16),
