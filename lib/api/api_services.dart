@@ -255,6 +255,31 @@ class ApiServices {
     }
   }
 
+    static Future<dynamic> createGetInvoicedRequest(
+      Map<String, dynamic> request, Users user) {
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        'Authorization': 'Bearer ${user.idToken}'
+      };
+
+      final url = Uri.parse('$_domain/api/v1/requests');
+      return http.post(
+        url,
+        body: jsonEncode({
+          "orderId": request["orderId"],
+          "returnAddress": request["returnAddress"],
+          "returnTime": request["returnTime"],
+          "returnDate": request["returnDate"].toIso8601String(),
+          "type": request["type"],
+        }),
+        headers: headers,
+      );
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
   static Future<dynamic> updateProfile(
       String fullname,
       String phone,
