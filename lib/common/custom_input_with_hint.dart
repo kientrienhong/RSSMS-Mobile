@@ -110,6 +110,8 @@ class _CustomOutLineInputState extends State<CustomOutLineInputWithHint> {
               validator: widget.validator == null
                   ? null
                   : (val) {
+                      print(val);
+                      print(widget.validator!(widget.controller!.text));
                       return widget.validator!(widget.controller!.text);
                     },
               maxLines: 1,

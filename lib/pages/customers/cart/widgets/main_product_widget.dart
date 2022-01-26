@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
@@ -23,6 +24,8 @@ class MainProductWidget extends StatefulWidget {
 
 class _MainProductWidgetState extends State<MainProductWidget>
     implements ItemWidgetView {
+  final oCcy = NumberFormat("#,##0", "en_US");
+
   @override
   void onAddQuantity() {
     OrderBooking orderBooking =
@@ -77,6 +80,8 @@ class _MainProductWidgetState extends State<MainProductWidget>
 
   @override
   Widget build(BuildContext context) {
+    String unit = widget.product!.unit == 'quantity' ? 'cái' : 'tháng';
+
     final deviceSize = MediaQuery.of(context).size;
     SizeConfig().init(context);
     return Container(
@@ -151,7 +156,7 @@ class _MainProductWidgetState extends State<MainProductWidget>
                       height: 8,
                     ),
                     CustomText(
-                        text: '100.000đ / tháng',
+                        text: '${oCcy.format(widget.product!.price)}đ / $unit',
                         color: CustomColor.blue,
                         context: context,
                         fontWeight: FontWeight.bold,

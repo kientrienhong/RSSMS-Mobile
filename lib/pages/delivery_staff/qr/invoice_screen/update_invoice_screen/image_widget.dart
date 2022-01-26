@@ -1,29 +1,33 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_text.dart';
-import 'package:rssms/common/image_details.dart';
+import 'package:rssms/models/entity/imageEntity.dart';
+import 'package:rssms/models/entity/invoice.dart';
+import 'package:rssms/models/entity/order_detail.dart';
+import 'package:rssms/common/image_pop_up.dart';
 import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_screen/image_item.dart';
-import 'package:rssms/pages/log_in/widget/button_icon.dart';
 
 class ImageWidget extends StatefulWidget {
-  Map<String, dynamic> image;
-
-  ImageWidget({Key? key, required this.image}) : super(key: key);
+  OrderDetail orderDetail;
+  final bool isView;
+  ImageWidget({Key? key, required this.orderDetail, required this.isView})
+      : super(key: key);
 
   @override
   _ImageWidgetState createState() => _ImageWidgetState();
 }
 
 class _ImageWidgetState extends State<ImageWidget> {
-  List<Map<String, dynamic>>? listImage;
-
   onPressDeleteImage(BuildContext context, int index) {
     Widget cancelButton = TextButton(
       child: const Text("Có"),
       onPressed: () {
         setState(() {
-          listImage!.removeAt(index);
+          widget.orderDetail.images.removeAt(index);
+          Invoice invoice = Provider.of<Invoice>(context, listen: false);
+          invoice.updateOrderDetail(widget.orderDetail);
         });
         Navigator.of(context).pop();
       },
@@ -52,20 +56,20 @@ class _ImageWidgetState extends State<ImageWidget> {
     );
   }
 
-  onPressDetailImage(Map<String, dynamic> image) {
+  onPressDetailImage(ImageEntity image) {
     showDialog(
         context: context,
         builder: (ctx) {
-          return ImageDetailsInvoice(
-            isDisable: false,
-            image: image,
+          return ImageDetailPopUp(
+            isView: widget.isView,
+            orderDetail: widget.orderDetail,
+            imageUpdate: image,
           );
         });
   }
 
   @override
   void initState() {
-    listImage = [...widget.image["image"]];
     super.initState();
   }
 
@@ -88,32 +92,34 @@ class _ImageWidgetState extends State<ImageWidget> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             CustomText(
-                text: widget.image["name"],
+                text: widget.orderDetail.productName,
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
                 context: context,
                 fontSize: 14),
             CustomText(
-                text: widget.image["quantityImage"],
+                text: (widget.orderDetail.images.length - 1).toString() +
+                    ' hình ảnh',
                 color: Colors.black38,
                 context: context,
                 fontSize: 14)
           ],
         ),
         children: [
-          for (var i = 0; i < listImage!.length; i++)
-            if (i != listImage!.length - 1)
-              ImageItem(
-                onPressDelete: () {
-                  onPressDeleteImage(context, i);
-                },
-                onPressDetails: () {
-                  onPressDetailImage(listImage![i]);
-                },
-                index: i,
-                image: listImage![i],
-              )
-            else
+          Column(
+            children: [
+              for (var i = 1; i < widget.orderDetail.images.length; i++)
+                ImageItem(
+                  isView: widget.isView,
+                  onPressDelete: () {
+                    onPressDeleteImage(context, i);
+                  },
+                  onPressDetails: () {
+                    onPressDetailImage(widget.orderDetail.images[i]);
+                  },
+                  index: i,
+                  image: widget.orderDetail.images[i],
+                ),
               Container(
                   padding:
                       const EdgeInsets.only(left: 8.0, right: 8, bottom: 18),
@@ -126,7 +132,17 @@ class _ImageWidgetState extends State<ImageWidget> {
                         dashPattern: const [8, 4],
                         child: Center(
                           child: TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (ctx) {
+                                    return ImageDetailPopUp(
+                                      isView: false,
+                                      orderDetail: widget.orderDetail,
+                                      imageUpdate: null,
+                                    );
+                                  });
+                            },
                             clipBehavior: Clip.none,
                             autofocus: false,
                             style: ButtonStyle(
@@ -143,6 +159,8 @@ class _ImageWidgetState extends State<ImageWidget> {
                           ),
                         )),
                   )),
+            ],
+          )
         ],
       ),
     );

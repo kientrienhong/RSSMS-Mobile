@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/constants/constants.dart' as constants;
-import 'package:rssms/models/entity/boxe.dart';
+import 'package:rssms/models/entity/box.dart';
 
 class BoxWidget extends StatelessWidget {
-  final Boxe box;
+  final Box box;
   final int index;
   final int currentIndex;
   final Function onTap;

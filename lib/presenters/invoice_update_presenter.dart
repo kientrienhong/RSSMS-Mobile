@@ -1,5 +1,9 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:rssms/api/api_services.dart';
+import 'package:rssms/helpers/firebase_storage_helper.dart';
+import 'package:rssms/models/entity/imageEntity.dart';
 import 'package:rssms/models/entity/invoice.dart';
+import 'package:rssms/models/entity/order_detail.dart';
 import 'package:rssms/models/invoice_update_model.dart';
 import 'package:rssms/views/invoice_update_view.dart';
 
@@ -21,22 +25,61 @@ class InvoiceUpdatePresenter {
     _model = InvoiceUpdateModel(user, invoice);
   }
 
-
-  Future<bool> updateProfile(String name, int gender, DateTime birthday,
-      String address, String phone, String idToken, int userId) async {
-    _view!.updateLoadingProfile();
-
+  Future<List<OrderDetail>?> formatListImageEntity(
+      Invoice invoice, Users user) async {
+    List<OrderDetail> listOrderDetailNew = [];
     try {
-      final response = await ApiServices.updateProfile(
-          name, phone, birthday, gender, address, idToken, userId);
-      if (response.statusCode == 200) return true;
-      return false;
+      listOrderDetailNew =
+          await Future.wait(invoice.orderDetails.map((element) async {
+        List<ImageEntity> listImageEntity =
+            await FirebaseStorageHelper.convertImageToBase64(element);
+        return element.copyWith(images: listImageEntity);
+      }).toList());
     } catch (e) {
-      print(e.toString());
-      throw Exception(e.toString());
-    } finally {
-      _view!.updateLoadingProfile();
+      throw Exception(e);
     }
+
+    return listOrderDetailNew;
   }
 
+  Future<bool> updateOrder(Users user, Invoice invoice) async {
+    try {
+      view.updateLoadingUpdate();
+      var response = await ApiServices.updateOrder(invoice, user.idToken!);
+      if (response.statusCode == 200) {
+        return true;
+      }
+    } catch (e) {
+      throw Exception(e);
+    } finally {
+      view.updateLoadingUpdate();
+    }
+
+    return false;
+  }
+
+  Future<bool?> sendNoti(Users user, Invoice invoice) async {
+    try {
+      view.updateLoadingUpdate();
+
+      List<OrderDetail>? listOrderDetail =
+          await formatListImageEntity(invoice, user);
+
+      if (listOrderDetail != null) {
+        invoice.setInvoice(
+            invoice: invoice.copyWith(orderDetails: listOrderDetail));
+        var response =
+            await ApiServices.sendNotification(invoice, user.idToken!);
+        if (response.statusCode == 200) {
+          return true;
+        }
+      }
+    } catch (e) {
+      throw Exception(e);
+    } finally {
+      view.updateLoadingUpdate();
+    }
+
+    return false;
+  }
 }

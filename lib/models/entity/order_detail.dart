@@ -1,18 +1,22 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
+import 'package:rssms/models/entity/box.dart';
 
-import 'image.dart';
+import 'imageEntity.dart';
 
 class OrderDetail {
+  final int id;
   final int productId;
   final String productName;
   final int price;
   final int amount;
   final int productType;
   final String note;
-  final List<Image> images;
+  final List<ImageEntity> images;
+  final Box? currentBox;
   OrderDetail({
+    required this.id,
     required this.productId,
     required this.productName,
     required this.price,
@@ -20,6 +24,7 @@ class OrderDetail {
     required this.note,
     required this.productType,
     required this.images,
+    this.currentBox,
   });
 
   OrderDetail copyWith({
@@ -28,10 +33,13 @@ class OrderDetail {
     int? price,
     int? amount,
     int? productType,
-    List<Image>? images,
+    List<ImageEntity>? images,
     String? note,
+    int? id,
+    List<Map<String, dynamic>>? listImageUpdate,
   }) {
     return OrderDetail(
+      id: id ?? this.id,
       note: note ?? this.note,
       productId: productId ?? this.productId,
       productName: productName ?? this.productName,
@@ -39,11 +47,13 @@ class OrderDetail {
       amount: amount ?? this.amount,
       productType: productType ?? this.productType,
       images: images ?? this.images,
+      currentBox: currentBox ?? this.currentBox,
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
+      'id': id,
       'productId': productId,
       'productName': productName,
       'price': price,
@@ -56,13 +66,16 @@ class OrderDetail {
 
   factory OrderDetail.fromMap(Map<String, dynamic> map) {
     return OrderDetail(
+      id: map['id']?.toInt() ?? 0,
       note: map['note'] ?? '',
       productId: map['productId']?.toInt() ?? 0,
       productName: map['productName'] ?? '',
       price: map['price']?.toInt() ?? 0,
       amount: map['amount']?.toInt() ?? 0,
       productType: map['productType']?.toInt() ?? 0,
-      images: List<Image>.from(map['images']?.map((x) => Image.fromMap(x))),
+      images: List<ImageEntity>.from(
+          map['images']?.map((x) => ImageEntity.fromMap(x))),
+      // currentBox: map['listImageUpdate'] ?? []);
     );
   }
 
@@ -73,7 +86,7 @@ class OrderDetail {
 
   @override
   String toString() {
-    return 'OrderDetail(productId: $productId, productName: $productName, price: $price, amount: $amount, productType: $productType, images: $images)';
+    return 'OrderDetail(productId: $productId, productName: $productName, price: $price, amount: $amount, productType: $productType, images: $images, currentBox: $currentBox)';
   }
 
   @override
@@ -82,6 +95,7 @@ class OrderDetail {
 
     return other is OrderDetail &&
         other.productId == productId &&
+        other.id == id &&
         other.productName == productName &&
         other.price == price &&
         other.amount == amount &&
@@ -95,6 +109,7 @@ class OrderDetail {
     return productId.hashCode ^
         productName.hashCode ^
         price.hashCode ^
+        id.hashCode ^
         amount.hashCode ^
         note.hashCode ^
         productType.hashCode ^

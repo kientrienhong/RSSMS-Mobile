@@ -6,21 +6,46 @@ import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/constants/constants.dart' as constants;
 import 'package:collection/collection.dart';
+import 'package:rssms/models/entity/box.dart';
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/order_detail.dart';
 import 'package:rssms/pages/delivery_staff/store_order/widgets/item_radio_widget.dart';
+import 'package:rssms/presenters/custom_bottom_sheet_presenter.dart';
+import 'package:rssms/views/custom_bottom_navigation_view.dart';
+import 'package:rssms/views/custom_bottom_sheet.dart';
 
 class CustomBottomSheet extends StatefulWidget {
   final BottomDrawerController controller;
+  final Function onChangeRadio;
+  final int currentChoicedProduct;
   Invoice? invoice;
-  CustomBottomSheet({Key? key, required this.controller, required this.invoice})
+  CustomBottomSheet(
+      {Key? key,
+      required this.currentChoicedProduct,
+      required this.onChangeRadio,
+      required this.controller,
+      required this.invoice})
       : super(key: key);
 
   @override
   _CustomBottomSheetState createState() => _CustomBottomSheetState();
 }
 
-class _CustomBottomSheetState extends State<CustomBottomSheet> {
+class _CustomBottomSheetState extends State<CustomBottomSheet>
+    implements CustomBottomSheetView {
+  late CustomBottomSheetPresenter _presenter;
+
+  @override
+  void initState() {
+    super.initState();
+    _presenter = CustomBottomSheetPresenter();
+    _presenter.view = this;
+  }
+
+  @override
+  @override
+  void onClickPlace(Box currentBox) {}
+
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
@@ -81,7 +106,9 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
                   ),
                   itemBuilder: (ctx, i) {
                     return ItemRadioWidget(
+                      currentChoicedProduct: widget.currentChoicedProduct,
                       product: listProduct[i],
+                      onChangeRadio: widget.onChangeRadio,
                     );
                   },
                   itemCount: listProduct.length,

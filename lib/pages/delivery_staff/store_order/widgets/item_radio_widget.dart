@@ -5,8 +5,14 @@ import 'package:rssms/models/entity/order_detail.dart';
 
 class ItemRadioWidget extends StatelessWidget {
   final OrderDetail product;
-
-  const ItemRadioWidget({Key? key, required this.product}) : super(key: key);
+  final Function onChangeRadio;
+  final int currentChoicedProduct;
+  const ItemRadioWidget(
+      {Key? key,
+      required this.currentChoicedProduct,
+      required this.product,
+      required this.onChangeRadio})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,13 +32,18 @@ class ItemRadioWidget extends StatelessWidget {
           SizedBox(
               height: deviceSize.height / 9,
               width: deviceSize.width / 9,
-              child: Image.network(product.images[0].url)),
+              child: Image.network(product.images[0].url!)),
           CustomText(
               text: '${product.productName} x ${product.amount}',
               color: CustomColor.black,
               context: context,
               fontSize: 16),
-          Radio(value: product.productName, groupValue: 1, onChanged: (val) {})
+          Radio(
+              value: product.id,
+              groupValue: currentChoicedProduct,
+              onChanged: (val) {
+                onChangeRadio(val);
+              })
         ],
       ),
     );

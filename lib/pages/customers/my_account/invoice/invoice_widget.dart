@@ -68,16 +68,11 @@ class InvoiceWidget extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                               fontSize: 20),
                           CustomText(
-                              text: invoice!.status == 1
-                                  ? "Đã thanh toán"
-                                  : invoice!.status == 2
-                                      ? "Sắp hết hạn"
-                                      : "Đã hết hạn",
-                              color: invoice!.status == 1
-                                  ? CustomColor.blue
-                                  : invoice!.status == 2
-                                      ? const Color.fromRGBO(249, 168, 37, 1)
-                                      : CustomColor.red,
+                              text: constants.LIST_STATUS_ORDER[invoice!.status]
+                                  ['name']! as String,
+                              color:
+                                  constants.LIST_STATUS_ORDER[invoice!.status]
+                                      ['color'] as Color,
                               context: context,
                               fontWeight: FontWeight.bold,
                               fontSize: 20),

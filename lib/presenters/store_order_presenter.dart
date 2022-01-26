@@ -17,6 +17,7 @@ class StoreOrderPresenter {
     try {
       final response = await ApiServices.getShelf(idToken);
       final decodedReponse = jsonDecode(response.body);
+
       List<Shelf> listShelf =
           decodedReponse["data"]!.map<Shelf>((e) => Shelf.fromMap(e)).toList();
       model!.listShelf = listShelf;

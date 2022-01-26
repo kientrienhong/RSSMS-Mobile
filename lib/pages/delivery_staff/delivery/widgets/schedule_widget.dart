@@ -1,15 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
+import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/pages/delivery_staff/delivery/delivery_screen.dart';
+import 'package:rssms/constants/constants.dart';
+import 'package:rssms/pages/delivery_staff/qr/invoice_screen/invoice_screen.dart';
 
 class ScheduleWidget extends StatelessWidget {
+  final Invoice invoice;
   final Map<String, dynamic> schedule;
   final int listLength;
   final int currentIndex;
+  final DateTime? firstDayOfWeek;
+  final DateTime? endDayOfWeek;
   const ScheduleWidget(
       {Key? key,
+      required this.firstDayOfWeek,
+      required this.invoice,
+      required this.endDayOfWeek,
       required this.schedule,
       required this.currentIndex,
       required this.listLength})
@@ -47,21 +57,10 @@ class ScheduleWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
     Color status = CustomColor.black[3]!;
+    DateTime deliveryDateTime = DateTime.parse(schedule['deliveryDate']);
+    bool isDelivery = deliveryDateTime.isAfter(firstDayOfWeek!) &&
+        deliveryDateTime.isBefore(endDayOfWeek!);
     String statusString = '';
-    switch (schedule['order']['status']) {
-      case ORDER_STATUS.notYet:
-        {
-          status = CustomColor.black[3]!;
-          statusString = 'Not yet';
-          break;
-        }
-      case ORDER_STATUS.completed:
-        {
-          status = CustomColor.blue;
-          statusString = 'Completed';
-          break;
-        }
-    }
 
     return Container(
       width: deviceSize.width,
@@ -96,81 +95,105 @@ class ScheduleWidget extends StatelessWidget {
             context: context,
             width: 8,
           ),
-          SizedBox(
-            height: deviceSize.height / 3,
-            width: deviceSize.width * 3 / 4,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CustomText(
-                    text: schedule['time'],
-                    color: CustomColor.black,
-                    context: context,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 24),
-                CustomSizedBox(
-                  context: context,
-                  height: 40,
-                ),
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: CustomColor.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: CustomColor.black[3]!,
-                          spreadRadius: 3,
-                          blurRadius: 16,
-                          offset: Offset(0, 0), // changes position of shadow
-                        ),
-                      ]),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              CustomText(
-                                  text: 'Order Id: #${schedule['id']}',
-                                  color: CustomColor.black,
-                                  fontWeight: FontWeight.bold,
-                                  context: context,
-                                  fontSize: 18),
-                            ],
-                          ),
-                          CustomText(
-                              text: statusString,
-                              color: status,
-                              fontWeight: FontWeight.bold,
-                              context: context,
-                              textAlign: TextAlign.right,
-                              fontSize: 20)
-                        ],
-                      ),
-                      CustomSizedBox(
-                        context: context,
-                        height: 8,
-                      ),
-                      buildInfo(
-                          'Address: ', schedule['order']['address'], context),
-                      CustomSizedBox(
-                        context: context,
-                        height: 8,
-                      ),
-                      buildInfo('Customer Name: ',
-                          schedule['order']['customerName'], context),
-                      CustomSizedBox(
-                        context: context,
-                        height: 8,
-                      ),
-                      buildInfo('Customer Phone: ',
-                          schedule['order']['customerPhone'], context),
-                    ],
+          GestureDetector(
+            onTap: () {
+              Invoice invoiceProvider =
+                  Provider.of<Invoice>(context, listen: false);
+              invoiceProvider.setInvoice(invoice: invoice);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => InvoiceDetailsScreen(
+                    deviceSize: deviceSize,
                   ),
-                )
-              ],
+                ),
+              );
+            },
+            child: SizedBox(
+              height: deviceSize.height / 3,
+              width: deviceSize.width * 3 / 4,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CustomText(
+                      // text: schedule['time'],
+                      text: isDelivery
+                          ? schedule['deliveryTime']
+                          : schedule['returnTime'],
+                      color: CustomColor.black,
+                      context: context,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 24),
+                  CustomSizedBox(
+                    context: context,
+                    height: 40,
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: CustomColor.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: CustomColor.black[3]!,
+                            spreadRadius: 3,
+                            blurRadius: 16,
+                            offset: Offset(0, 0), // changes position of shadow
+                          ),
+                        ]),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                CustomText(
+                                    text: 'Order Id: #${schedule['id']}',
+                                    color: CustomColor.black,
+                                    fontWeight: FontWeight.bold,
+                                    context: context,
+                                    fontSize: 18),
+                              ],
+                            ),
+                            CustomText(
+                                text:
+                                    '${LIST_STATUS_ORDER[schedule['status']]['name']}',
+                                color: LIST_STATUS_ORDER[schedule['status']]
+                                    ['color'] as Color,
+                                fontWeight: FontWeight.bold,
+                                textAlign: TextAlign.right,
+                                context: context,
+                                fontSize: 18),
+                          ],
+                        ),
+                        CustomSizedBox(
+                          context: context,
+                          height: 8,
+                        ),
+                        buildInfo(
+                            'Address: ',
+                            isDelivery
+                                ? schedule['deliveryAddress']
+                                : schedule['returnAddress'],
+                            context),
+                        CustomSizedBox(
+                          context: context,
+                          height: 8,
+                        ),
+                        buildInfo('Customer Name: ', schedule['customerName'],
+                            context),
+                        CustomSizedBox(
+                          context: context,
+                          height: 8,
+                        ),
+                        buildInfo('Customer Phone: ', schedule['customerPhone'],
+                            context),
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
           )
         ],
