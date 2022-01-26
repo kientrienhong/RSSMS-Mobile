@@ -23,7 +23,7 @@ class InvoicePresenter {
     List<Invoice>? listTemp = decodedReponse['data']!
         .map<Invoice>((e) => Invoice.fromMap(e))
         .toList();
-    List<Invoice>? listInvoice = listTemp!.reversed.toList();
+    List<Invoice>? listInvoice = listTemp!.toList();
     model!.listInvoiceFull = listInvoice;
     view!.setChangeList();
   }
