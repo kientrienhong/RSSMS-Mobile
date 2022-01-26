@@ -117,7 +117,81 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
       }
     }
     return sum;
-    // return '${oCcy.format(sum)} VND';
+  }
+
+  _selectDateReturn(BuildContext context) async {
+    OrderBooking orderBooking =
+        Provider.of<OrderBooking>(context, listen: false);
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: _model.dateReturnController.text.isNotEmpty
+          ? orderBooking.dateTimeReturn
+          : orderBooking.dateTimeDelivery,
+      firstDate: _model.dateDeliveryController.text.isNotEmpty == true
+          ? orderBooking.dateTimeDelivery
+          : DateTime.now().add(const Duration(days: 1)),
+      lastDate: DateTime(2025),
+    );
+    if (picked != null) {
+      setState(() {
+        String dateReturnString = picked.toIso8601String().split("T")[0];
+        orderBooking.setOrderBooking(
+            orderBooking: orderBooking.copyWith(
+                dateTimeReturn: picked,
+                dateTimeReturnString: dateReturnString));
+        _model.dateReturnController.text = dateReturnString;
+      });
+      if (_model.dateDeliveryController.text.isNotEmpty &&
+          _model.dateReturnController.text.isNotEmpty) {
+        setState(() {
+          var _diffDate =
+              picked.difference(orderBooking.dateTimeDelivery).inDays;
+          var _months = (_diffDate / 30).ceil();
+          orderBooking.setOrderBooking(
+              orderBooking: orderBooking.copyWith(
+                  months: _months,
+                  diffDay: _diffDate,
+                  totalPrice: totalBill(),
+                  dateTimeReturn: picked));
+          print('test');
+        });
+      }
+    }
+  }
+
+  _selectDateDelivery(BuildContext context) async {
+    OrderBooking orderBooking =
+        Provider.of<OrderBooking>(context, listen: false);
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: orderBooking.dateTimeDelivery,
+      firstDate: DateTime.now().add(const Duration(days: 1)),
+      lastDate: DateTime(2025),
+    );
+    if (picked != null && picked != orderBooking.dateTimeDelivery) {
+      setState(() {
+        String dateDeliveryString = picked.toIso8601String().split("T")[0];
+        orderBooking.setOrderBooking(
+            orderBooking: orderBooking.copyWith(
+                dateTimeDelivery: picked,
+                dateTimeDeliveryString: dateDeliveryString));
+        _model.dateDeliveryController.text = dateDeliveryString;
+      });
+
+      if (_model.dateDeliveryController.text.isNotEmpty &&
+          _model.dateReturnController.text.isNotEmpty) {
+        setState(() {
+          var _diffDate = orderBooking.dateTimeReturn.difference(picked).inDays;
+          var _months = (_diffDate / 30).ceil();
+          orderBooking.setOrderBooking(
+              orderBooking: orderBooking.copyWith(
+                  months: _months,
+                  diffDay: _diffDate,
+                  totalPrice: totalBill(),
+                  dateTimeDelivery: picked));
+        });
+      }
+    }
   }
 
   @override
@@ -125,77 +199,6 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
     final deviceSize = MediaQuery.of(context).size;
     OrderBooking orderBooking =
         Provider.of<OrderBooking>(context, listen: false);
-
-    _selectDateReturn(BuildContext context) async {
-      final DateTime? picked = await showDatePicker(
-        context: context,
-        initialDate: _model.dateReturnController.text.isNotEmpty
-            ? orderBooking.dateTimeReturn
-            : orderBooking.dateTimeDelivery,
-        firstDate: _model.dateDeliveryController.text.isNotEmpty == true
-            ? orderBooking.dateTimeDelivery
-            : DateTime.now().add(const Duration(days: 1)),
-        lastDate: DateTime(2025),
-      );
-      if (picked != null) {
-        setState(() {
-          String dateReturnString = picked.toIso8601String().split("T")[0];
-          orderBooking.setOrderBooking(
-              orderBooking: orderBooking.copyWith(
-                  dateTimeReturn: picked,
-                  dateTimeReturnString: dateReturnString));
-          _model.dateReturnController.text = dateReturnString;
-        });
-        if (_model.dateDeliveryController.text.isNotEmpty &&
-            _model.dateReturnController.text.isNotEmpty) {
-          setState(() {
-            var _diffDate =
-                picked.difference(orderBooking.dateTimeDelivery).inDays;
-            var _months = (_diffDate / 30).ceil();
-            orderBooking.setOrderBooking(
-                orderBooking: orderBooking.copyWith(
-                    months: _months,
-                    diffDay: _diffDate,
-                    totalPrice: totalBill(),
-                    dateTimeReturn: picked));
-          });
-        }
-      }
-    }
-
-    _selectDateDelivery(BuildContext context) async {
-      final DateTime? picked = await showDatePicker(
-        context: context,
-        initialDate: orderBooking.dateTimeDelivery,
-        firstDate: DateTime.now().add(const Duration(days: 1)),
-        lastDate: DateTime(2025),
-      );
-      if (picked != null && picked != orderBooking.dateTimeDelivery) {
-        setState(() {
-          String dateDeliveryString = picked.toIso8601String().split("T")[0];
-          orderBooking.setOrderBooking(
-              orderBooking: orderBooking.copyWith(
-                  dateTimeDelivery: picked,
-                  dateTimeDeliveryString: dateDeliveryString));
-          _model.dateDeliveryController.text = dateDeliveryString;
-        });
-
-        if (_model.dateDeliveryController.text.isNotEmpty &&
-            _model.dateReturnController.text.isNotEmpty) {
-          setState(() {
-            var _diffDate =
-                orderBooking.dateTimeReturn.difference(picked).inDays;
-            var _months = (_diffDate / 30).ceil();
-            orderBooking.setOrderBooking(
-                orderBooking: orderBooking.copyWith(
-                    months: _months,
-                    diffDay: _diffDate,
-                    totalPrice: totalBill(),
-                    dateTimeDelivery: picked));
-          });
-        }
-      }
-    }
 
     return AlertDialog(
       insetPadding: const EdgeInsets.all(15),
@@ -424,6 +427,11 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
                       text: 'Tiếp theo',
                       width: deviceSize.width * 1.2 / 3,
                       onPressFunction: () {
+                        OrderBooking orderBooking =
+                            Provider.of<OrderBooking>(context, listen: false);
+                        OrderBooking temp =
+                            orderBooking.copyWith(totalPrice: totalBill());
+                        orderBooking.setOrderBooking(orderBooking: temp);
                         Navigator.push(
                             context,
                             MaterialPageRoute(

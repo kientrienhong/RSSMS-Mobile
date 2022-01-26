@@ -9,12 +9,11 @@ import 'package:collection/collection.dart';
 import 'package:rssms/models/delivery_screen_model.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/pages/customers/cart/widgets/product_widget.dart';
+import 'package:rssms/pages/delivery_staff/delivery/widgets/dialog_confirm_cancel.dart';
 import 'package:rssms/pages/delivery_staff/delivery/widgets/schedule_widget.dart';
 import 'package:rssms/presenters/delivery_presenter.dart';
 import 'package:rssms/views/delivery_screen_view.dart';
 import '../../../constants/constants.dart' as constants;
-
-enum ORDER_STATUS { notYet, completed }
 
 class DeliveryScreen extends StatefulWidget {
   const DeliveryScreen({Key? key}) : super(key: key);
@@ -145,7 +144,14 @@ class _DeliveryScreenState extends State<DeliveryScreen>
               height: 24,
               text: 'Hủy lịch',
               width: deviceSize.width * 2 / 3,
-              onPressFunction: () {},
+              onPressFunction: () {
+                showDialog(
+                    context: context,
+                    builder: (ctx) {
+                      return DialogConfirmCancel(
+                          dateTime: _model.listDateTime[_model.currentIndex]);
+                    });
+              },
               isLoading: false,
               textColor: CustomColor.white,
               buttonColor: CustomColor.blue,
