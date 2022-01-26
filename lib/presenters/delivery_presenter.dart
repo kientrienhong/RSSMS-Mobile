@@ -16,6 +16,8 @@ class DeliveryPresenter {
 
   void init(Users user) {
     DateTime now = DateTime.now();
+    // String nowString = now.toIso8601String().split('T')[0];
+    // now = DateTime.parse(nowString);
     var firstDay = now.subtract(Duration(days: now.weekday - 1));
     var firstDayOfWeek = firstDay;
     var endDayOfWeek;

@@ -336,22 +336,24 @@ class ApiServices {
     }
   }
 
-  static Future<dynamic> getListArea(int storageId, String idToken) {
+  //cancel schedule cancel type = 0
+
+  static Future<dynamic> requestCancel(
+      String note, int type, String dateCancel, String idToken) {
     try {
       Map<String, String> headers = {
         "Content-type": "application/json",
         'Authorization': 'Bearer $idToken'
       };
 
-      final url = Uri.parse(
-          '$_domain/api/v1/areas?storageid=$storageId&page=1&size=-1');
-      return http.get(
-        url,
-        headers: headers,
-      );
+      final url = Uri.parse('$_domain/api/v1/requests');
+      return http.post(url,
+          headers: headers,
+          body: jsonEncode(
+              {"cancelDay": dateCancel, "type": type, "note": note}));
     } catch (e) {
       print(e.toString());
-      throw Exception('Update Failed');
+      throw Exception('Request Failed');
     }
   }
 }
