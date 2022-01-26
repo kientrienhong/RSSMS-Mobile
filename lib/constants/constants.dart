@@ -57,6 +57,7 @@ const LIST_STATUS_ORDER = [
   {'color': CustomColor.blue, 'name': 'Đang vận chuyển'},
   {'color': CustomColor.green, 'name': 'Đã về kho'},
   {'color': CustomColor.red, 'name': 'Đã hết hạn'},
+  {'color': CustomColor.purple, 'name': 'Đã được xử lý'},
 ];
 
 const List<Map<String, String>> TAB_DOOR_TO_DOOR = [

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -6,6 +7,7 @@ import 'package:rssms/models/entity/add_image.dart';
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/order_booking.dart';
 import 'package:rssms/models/entity/user.dart';
+import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_screen/update_invoice_screen.dart';
 
 import '/config/http_overrides.dart';
 import '/pages/log_in/log_in_screen.dart';
@@ -13,19 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-// Future firebaseCloudMessaging_Listeners(BuildContext context) async {
-//   final FirebaseMessaging _fcm = FirebaseMessaging.instance;
-//   _fcm.getToken().then((token) async {
-//     log('Got Firebase Token!');
-//   });
-//   FirebaseMessaging.onMessage.listen((RemoteMessage evt) {
-//     doNotiAction(evt);
-//   });
-//   FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage evt) {
-//     doNotiAction(evt);
-//   });
-//   //
-// }
+late final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
 void main() async {
   HttpOverrides.global = MyHttpOverrides();
@@ -53,6 +43,23 @@ void main() async {
     ],
     child: const MyApp(),
   ));
+}
+
+void onClickNotification(String? payload, BuildContext context) {
+  try {
+    Invoice invoice = Provider.of<Invoice>(context, listen: false);
+    // print(json.decode(payload!));
+    Invoice invoiceTemp = Invoice.fromJson(json.decode(payload!)['data']);
+    invoice.setInvoice(invoice: invoiceTemp);
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => UpdateInvoiceScreen(
+                  isView: true,
+                )));
+  } catch (e) {
+    print(e);
+  }
 }
 
 class MyApp extends StatelessWidget {
