@@ -37,7 +37,7 @@ class ApiServices {
           }));
     } catch (e) {
       print(e.toString());
-      throw Exception('Log In failed');
+      throw Exception('Log In failedd');
     }
   }
 
@@ -139,6 +139,23 @@ class ApiServices {
     }
   }
 
+    static Future<dynamic> getRequest(String idToken) {
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        'Authorization': 'Bearer $idToken'
+      };
+
+      final url = Uri.parse('$_domain/api/v1/requests');
+      return http.get(
+        url,
+        headers: headers,
+      );
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
   static Future<dynamic> getInvoiceInRangeTime(
       String idToken, DateTime startOfWeek, DateTime endOfWeek) {
     try {
@@ -203,6 +220,59 @@ class ApiServices {
               ? orderBooking.months
               : orderBooking.diffDay,
           "listProduct": listProduct
+        }),
+        headers: headers,
+      );
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  static Future<dynamic> createExtendRequest(
+      Map<String, dynamic> extendInvoice, Users user) {
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        'Authorization': 'Bearer ${user.idToken}'
+      };
+
+      final url = Uri.parse('$_domain/api/v1/requests');
+      return http.post(
+        url,
+        body: jsonEncode({
+          "orderId": extendInvoice["orderId"],
+          "totalPrice": extendInvoice["totalProduct"],
+          "oldReturnDate": extendInvoice["oldReturnDate"].toIso8601String(),
+          "returnDate": extendInvoice["newReturnDate"].toIso8601String(),
+          "cancelDay": extendInvoice["oldReturnDate"].toIso8601String(),
+          "type": extendInvoice["type"],
+          "status": extendInvoice["status"],
+          "note": extendInvoice["note"],
+        }),
+        headers: headers,
+      );
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+    static Future<dynamic> createGetInvoicedRequest(
+      Map<String, dynamic> request, Users user) {
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        'Authorization': 'Bearer ${user.idToken}'
+      };
+
+      final url = Uri.parse('$_domain/api/v1/requests');
+      return http.post(
+        url,
+        body: jsonEncode({
+          "orderId": request["orderId"],
+          "returnAddress": request["returnAddress"],
+          "returnTime": request["returnTime"],
+          "returnDate": request["returnDate"].toIso8601String(),
+          "type": request["type"],
         }),
         headers: headers,
       );

@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_input_date.dart';
+import 'package:rssms/common/custom_radio_button.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/models/signup_model.dart';
 import 'package:rssms/common/custom_bottom_navigation.dart';
@@ -144,6 +145,7 @@ class _FormSignUpState extends State<FormSignUp> implements SignUpView {
   @override
   void onClickSignUp(String email, String password, String confirmPassword,
       String address, String name, String phone, String birthDay) async {
+        _model.errorMsg = "";
     try {
       if (password != confirmPassword) {
         throw Exception('Vui lòng nhập mật khẩu khớp với xác nhận mật khẩu');
@@ -178,7 +180,7 @@ class _FormSignUpState extends State<FormSignUp> implements SignUpView {
       }
     } catch (e) {
       print(e.toString());
-      signupPresenter.view.updateViewErrorMsg(e.toString());
+      signupPresenter.view.updateViewErrorMsg("Đã có lỗi xảy ra, vui lòng thử lại sau!");
     }
   }
 
@@ -250,47 +252,40 @@ class _FormSignUpState extends State<FormSignUp> implements SignUpView {
             nextNode: _focusNodeEmail,
             controller: _model.controllerName,
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CustomText(
-                  text: "Giới Tính",
-                  color: CustomColor.black,
-                  fontWeight: FontWeight.bold,
-                  context: context,
-                  fontSize: 16),
-              CustomSizedBox(context: context, height: 8),
-              Row(
-                children: [
-                  RadioButton(
-                    description: "Nam",
-                    value: 0,
-                    groupValue: _gender,
-                    onChanged: (value) => setState(
-                      () => _gender = value as int,
-                    ),
-                    activeColor: Colors.blue,
-                  ),
-                  RadioButton(
-                    description: "Nữ",
-                    value: 1,
-                    groupValue: _gender,
-                    onChanged: (value) =>
-                        setState(() => _gender = value as int),
-                    activeColor: Colors.blue,
-                  ),
-                  RadioButton(
-                    description: "Khác",
-                    value: 2,
-                    groupValue: _gender,
-                    onChanged: (value) =>
-                        setState(() => _gender = value as int),
-                    activeColor: Colors.blue,
-                  ),
-                ],
-              )
-            ],
-          ),
+          CustomText(
+              text: "Giới Tính",
+              color: CustomColor.black,
+              fontWeight: FontWeight.bold,
+              context: context,
+              fontSize: 16),
+          CustomSizedBox(context: context, height: 8),
+          CustomRadioButton(
+              function: () {
+                setState(() => _gender = 0);
+              },
+              text: "Nam",
+              color:
+                  _gender == 0 ? CustomColor.blue : CustomColor.white,
+              state: _gender,
+              value: 0),
+          CustomRadioButton(
+              function: () {
+                setState(() => _gender = 1);
+              },
+              text:  "Nữ",
+              color:
+                  _gender == 1 ? CustomColor.blue : CustomColor.white,
+              state: _gender,
+              value: 1),
+          CustomRadioButton(
+              function: () {
+                setState(() => _gender = 2);
+              },
+              text: "Khác",
+              color:
+                  _gender == 2 ? CustomColor.blue : CustomColor.white,
+              state: _gender,
+              value: 2),
           SizedBox(
             width: widget.deviceSize.width / 2.5,
             child: CustomOutLineInputDateTime(
@@ -371,6 +366,13 @@ class _FormSignUpState extends State<FormSignUp> implements SignUpView {
                   ? () {
                       onClickSignUp(_email, _password, _confirmPassword,
                           _address, _name, _phone, _birthdate);
+                          _focusNodePassword.unfocus();
+                          _focusNodeAddress.unfocus();
+                          _focusNodeBirthDate.unfocus();
+                          _focusNodeConfirmPassword.unfocus();
+                          _focusNodeEmail.unfocus();
+                          _focusNodeName.unfocus();
+                          _focusNodePhone.unfocus();
                     }
                   : null,
               buttonColor: _model.isDisableSignup == false

@@ -47,6 +47,11 @@ class _InvoiceScreenState extends State<InvoiceScreen> implements InvoiceView {
   }
 
   @override
+  void updateIsLoadingInvoice() {
+    _model.isLoadingInvoice = !_model.isLoadingInvoice!;
+  }
+
+  @override
   void onHandleChangeInput() {
     _presenter.handleOnChangeInput(_model.searchValue.text);
   }
@@ -60,13 +65,37 @@ class _InvoiceScreenState extends State<InvoiceScreen> implements InvoiceView {
     }
   }
 
+  Widget invoiceWidget() {
+    if (!_isFound) {
+      if (_model.getListInvoice()!.isNotEmpty) {
+        return Expanded(
+            child: ListView(
+          padding: const EdgeInsets.all(0),
+          children: mapInvoiceWidget(_model.getListInvoice()),
+        ));
+      } else {
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 36),
+          child: Center(
+            child: CustomText(
+                text: "Chưa có đơn hàng",
+                color: Colors.black45,
+                context: context,
+                fontSize: 16),
+          ),
+        );
+      }
+    } else {
+      return InvoiceWidget(invoice: _model.searchInvoice);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
 
     return SizedBox(
       width: deviceSize.width,
-      height: deviceSize.height * 1.5,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
@@ -77,6 +106,9 @@ class _InvoiceScreenState extends State<InvoiceScreen> implements InvoiceView {
                   child: TypeAheadField(
                     textFieldConfiguration: TextFieldConfiguration(
                       controller: _model.searchValue,
+                      onEditingComplete: () {
+                        _presenter.handleOnChangeInput(_model.searchValue.text);
+                      },
                       decoration: InputDecoration(
                         border: const OutlineInputBorder(),
                         prefixIcon: ImageIcon(
@@ -100,7 +132,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> implements InvoiceView {
                     },
                     noItemsFoundBuilder: (context) => Center(
                       child: CustomText(
-                          text: 'No invoice found!',
+                          text: 'Không tìm thấy đơn hàng!',
                           color: CustomColor.black,
                           context: context,
                           fontSize: 16),
@@ -166,13 +198,24 @@ class _InvoiceScreenState extends State<InvoiceScreen> implements InvoiceView {
                 ),
               ],
             ),
-            if (!_isFound)
-              Expanded(
-                  child: ListView(
-                padding: const EdgeInsets.all(0),
-                children: mapInvoiceWidget(_model.getListInvoice()),
-              )),
-            if (_isFound) InvoiceWidget(invoice: _model.searchInvoice)
+            if (!(_model.isLoadingInvoice!))
+              invoiceWidget()
+            else
+              Column(
+                children: [
+                  CustomSizedBox(
+                    context: context,
+                    height: 50,
+                  ),
+                  const SizedBox(
+                    height: 16,
+                    width: 16,
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.black45),
+                    ),
+                  ),
+                ],
+              )
           ],
         ),
       ),

@@ -1,4 +1,9 @@
+import 'dart:ffi';
+
 import 'package:flutter/cupertino.dart';
+import 'package:rssms/models/entity/invoice.dart';
+import 'package:rssms/models/entity/order_detail.dart';
+import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/pages/customers/input_information_booking/input_information.dart';
 
 enum TypeOrder { selfStorage, doorToDoor }
@@ -143,6 +148,41 @@ class OrderBooking with ChangeNotifier {
         selectDistrict: selectDistrict ?? _selectDistrict);
   }
 
+  OrderBooking fromInvoice(
+      {required Invoice invoice,
+      required DateTime returnDateTimeNew,
+      required int durationMonth,
+      required Users user,
+      required bool isPaid,
+      required int totalPrice}) {
+    print(returnDateTimeNew);
+    DateTime returnDateOld = DateTime.parse(invoice.returnDate
+        .substring(0, invoice.returnDate.indexOf("T")));
+    return OrderBooking(
+        productOrder: productOrder ?? _productOrder,
+        dateTimeDelivery: DateTime.parse(invoice.returnDate),
+        dateTimeReturn: returnDateTimeNew,
+        months: durationMonth,
+        diffDay: returnDateTimeNew.difference(returnDateOld).inDays,
+        typeOrder: invoice.typeOrder == 0
+            ? TypeOrder.selfStorage
+            : TypeOrder.doorToDoor,
+        isPaid: isPaid,
+        currentSelectTime: currentSelectTime ?? _currentSelectTime,
+        isCustomerDelivery: invoice.isUserDelivery,
+        dateTimeDeliveryString: invoice.deliveryTime,
+        dateTimeReturnString: invoice.returnTime,
+        nameCustomer: invoice.customerName,
+        addressDelivery: invoice.deliveryAddress,
+        addressReturn: invoice.addressReturn,
+        floorAddressDelivery: "0",
+        floorAddressReturn: "0",
+        phoneCustomer: user.phone,
+        emailCustomer: user.email,
+        totalPrice: double.parse(totalPrice.toString()),
+        selectDistrict: SelectDistrict.same);
+  }
+
   void setOrderBooking({required OrderBooking orderBooking}) {
     _productOrder = orderBooking.productOrder;
     _dateTimeDelivery = orderBooking.dateTimeDelivery;
@@ -164,7 +204,6 @@ class OrderBooking with ChangeNotifier {
     _selectDistrict = orderBooking.selectDistrict;
     _isPaid = orderBooking.isPaid;
     _totalPrice = orderBooking.totalPrice;
-
     notifyListeners();
   }
 

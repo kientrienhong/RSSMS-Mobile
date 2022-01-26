@@ -7,17 +7,25 @@ class InvoiceModel {
   TextEditingController? _searchValue;
   Invoice? searchInvoice;
   String? filterIndex = "10";
+  bool? isLoadingInvoice;
 
   InvoiceModel() {
     listInvoice = [];
     _listInvoiceFull = [];
     _searchValue = TextEditingController();
+    isLoadingInvoice = false;
   }
 
+
+  set filterBy(value) {
+     _listInvoice = _listInvoiceFull!
+          .where((element) => element.typeOrder == int.parse(value!))
+          .toList();
+  }
   List<Invoice>? getListInvoice() {
+
     if (filterIndex == "10") {
-      _listInvoice = _listInvoiceFull;
-      return _listInvoice;
+      return _listInvoiceFull;
     } else {
       _listInvoice = _listInvoiceFull!
           .where((element) => element.typeOrder == int.parse(filterIndex!))
@@ -26,7 +34,7 @@ class InvoiceModel {
     }
   }
 
-  get listInvoiceFull => _listInvoiceFull;
+   List<Invoice>? get listInvoiceFull => _listInvoiceFull;
 
   set listInvoiceFull(value) => _listInvoiceFull = value;
 

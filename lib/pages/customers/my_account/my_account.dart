@@ -23,6 +23,41 @@ class _ProfileScreenState extends State<MyAccountScreen>
     super.initState();
   }
 
+  onPressLogout(BuildContext context) {
+    Widget cancelButton = TextButton(
+      child: const Text("Đồng ý"),
+      onPressed: () {
+        setState(() {
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => LogInScreen()),
+              (Route<dynamic> route) => false);
+        });
+      },
+    );
+    Widget continueButton = TextButton(
+      child: const Text("Không"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+
+    AlertDialog alert = AlertDialog(
+      title: const Text("Thông báo"),
+      content: const Text("Bạn chắc chắn muốn đăng xuất?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,12 +70,7 @@ class _ProfileScreenState extends State<MyAccountScreen>
                 title: const Text("My Account"),
                 actions: <Widget>[
                   GestureDetector(
-                      onTap: () => {
-                            Navigator.of(context).pushAndRemoveUntil(
-                                MaterialPageRoute(
-                                    builder: (context) => LogInScreen()),
-                                (Route<dynamic> route) => false)
-                          },
+                      onTap: () => {onPressLogout(context)},
                       child: Image.asset('assets/images/logout.png'))
                 ],
                 titleTextStyle: const TextStyle(

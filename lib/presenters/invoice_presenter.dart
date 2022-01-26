@@ -14,17 +14,35 @@ class InvoicePresenter {
   }
 
   void handleOnChangeInput(String searchValue) {
+    print(searchValue);
+    model!.listInvoice = model!.listInvoiceFull!
+        .where((element) => element.id.toString().contains(searchValue))
+        .toList();
     view!.refreshList(searchValue);
   }
 
   void loadInvoice(String idToken) async {
-    final response = await ApiServices.getInvoice(idToken);
-    final decodedReponse = jsonDecode(response.body);
-    List<Invoice>? listTemp = decodedReponse['data']!
-        .map<Invoice>((e) => Invoice.fromMap(e))
-        .toList();
-    List<Invoice>? listInvoice = listTemp!.toList();
-    model!.listInvoiceFull = listInvoice;
-    view!.setChangeList();
+    view!.updateIsLoadingInvoice();
+    try {
+      final response = await ApiServices.getInvoice(idToken);
+      final decodedReponse = jsonDecode(response.body);
+      List<Invoice>? listInvoice;
+      if (!decodedReponse['data'].isEmpty) {
+        List<Invoice>? listTemp = decodedReponse['data']!
+            .map<Invoice>((e) => Invoice.fromMap(e))
+            .toList();
+        listInvoice = listTemp!.reversed.toList();
+        model!.listInvoiceFull = listInvoice.reversed.toList();
+      } else {
+        listInvoice = [];
+        model!.listInvoiceFull = listInvoice;
+      }
+
+    } catch (e) {
+      print(e);
+    } finally {
+      view!.updateIsLoadingInvoice();
+      view!.setChangeList();
+    }
   }
 }

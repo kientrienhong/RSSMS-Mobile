@@ -235,7 +235,9 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
       // } else {
 
       // }
-
+      _focusNodeEmail.unfocus();
+      _focusNodePassword.unfocus();
+      _model.errorMsg ="";
       Users user = Provider.of<Users>(context, listen: false);
 
       final result = await loginPresenter.handleSignIn(email, password, _token);
