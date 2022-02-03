@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
+import 'package:rssms/models/entity/notification.dart';
+import 'package:rssms/constants/constants.dart';
 
 class NotificationWidget extends StatelessWidget {
-  final Map<String, dynamic> notification;
+  final NotificationEntity notification;
 
   const NotificationWidget({Key? key, required this.notification})
       : super(key: key);
@@ -13,7 +15,7 @@ class NotificationWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16),
-      margin: const EdgeInsets.only(bottom: 32),
+      margin: const EdgeInsets.only(bottom: 24),
       decoration: BoxDecoration(
           color: CustomColor.white,
           borderRadius: BorderRadius.circular(8),
@@ -30,7 +32,7 @@ class NotificationWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               CustomText(
-                  text: notification['timeRemaining'],
+                  text: '1m',
                   color: CustomColor.black[3]!,
                   fontWeight: FontWeight.bold,
                   context: context,
@@ -41,19 +43,18 @@ class NotificationWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               SizedBox(
-                  width: 80,
-                  height: 80,
-                  child: Image.asset(notification['url'])),
+                  width: 24,
+                  height: 24,
+                  child: Image.asset(LIST_URL_NOTFICATION[notification.type])),
               CustomSizedBox(
                 context: context,
                 width: 8,
               ),
               Flexible(
                 child: CustomText(
-                    text: notification['content'],
+                    text: notification.description,
                     color: CustomColor.black[2]!,
                     maxLines: 3,
-                    fontWeight: FontWeight.bold,
                     context: context,
                     fontSize: 16),
               )

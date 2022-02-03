@@ -24,6 +24,8 @@ class ApiServices {
 
   static Future<dynamic> logInWithEmail(
       String email, String password, String deviceToken) {
+    print(deviceToken);
+
     try {
       Map<String, String> headers = {"Content-type": "application/json"};
 
@@ -139,7 +141,7 @@ class ApiServices {
     }
   }
 
-    static Future<dynamic> getRequest(String idToken) {
+  static Future<dynamic> getRequest(String idToken) {
     try {
       Map<String, String> headers = {
         "Content-type": "application/json",
@@ -256,7 +258,7 @@ class ApiServices {
     }
   }
 
-    static Future<dynamic> createGetInvoicedRequest(
+  static Future<dynamic> createGetInvoicedRequest(
       Map<String, dynamic> request, Users user) {
     try {
       Map<String, String> headers = {
@@ -390,6 +392,25 @@ class ApiServices {
     } catch (e) {
       print(e.toString());
       throw Exception('Request Failed');
+    }
+  }
+
+  static Future<dynamic> loadListNotification(String idToken, int userId) {
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        'Authorization': 'Bearer $idToken'
+      };
+
+      final url = Uri.parse(
+          '$_domain/api/v1/notifications?userId=$userId&page=1&size=-1');
+      return http.get(
+        url,
+        headers: headers,
+      );
+    } catch (e) {
+      print(e.toString());
+      throw Exception('Get Notification Failed');
     }
   }
 }

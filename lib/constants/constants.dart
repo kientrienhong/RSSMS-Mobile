@@ -73,6 +73,11 @@ const List<String> LIST_TIME_PICK_UP = [
   "4pm - 6pm",
 ];
 
+const List<String> LIST_URL_NOTFICATION = [
+  'assets/images/invoice.png',
+  'assets/images/truck1.png'
+];
+
 const Map<String, String> ICON_INVOICE = {
   "box": "assets/images/delivery-box1.png",
   "warehose": "assets/images/warehouse1.png"
