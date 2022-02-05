@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_color.dart';
+import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/models/entity/invoice.dart';
+import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_screen/update_invoice_screen.dart';
 import 'package:rssms/views/custom_bottom_navigation_view.dart';
 
@@ -102,11 +104,44 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation>
 
   List<BottomNavigationBarItem> mapListBottomNavigationBarItem() {
     return widget.listNavigator!.map((e) {
-      return BottomNavigationBarItem(
-          icon: ImageIcon(
-            AssetImage(e['url']),
-          ),
-          label: e['label']);
+      if (e['label'] != 'Notification') {
+        return BottomNavigationBarItem(
+            icon: ImageIcon(
+              AssetImage(e['url']),
+            ),
+            label: e['label']);
+      } else {
+        return BottomNavigationBarItem(
+            icon: Consumer<Users>(builder: (_, user, child) {
+              return Stack(children: [
+                ImageIcon(
+                  AssetImage(e['url']),
+                ),
+                if (user.listUnreadNoti!.isNotEmpty)
+                  Positioned(
+                    right: 0,
+                    bottom: 1,
+                    child: Container(
+                      height: 14,
+                      width: 14,
+                      decoration: BoxDecoration(
+                          color: CustomColor.red,
+                          borderRadius: BorderRadius.circular(7)),
+                      child: Center(
+                        child: CustomText(
+                          text: user.listUnreadNoti!.length.toString(),
+                          color: CustomColor.white,
+                          context: context,
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  )
+              ]);
+            }),
+            label: e['label']);
+      }
     }).toList();
   }
 

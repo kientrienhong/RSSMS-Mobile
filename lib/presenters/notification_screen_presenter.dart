@@ -23,6 +23,12 @@ class NotificationScreenPresenter {
         List<NotificationEntity> listNotification = decodedReponse['data']!
             .map<NotificationEntity>((e) => NotificationEntity.fromMap(e))
             .toList();
+        user.setUser(
+            user: user.copyWith(
+                listUnreadNoti: listNotification
+                    .where((element) => element.isRead == false)
+                    .toList()));
+
         model.list = listNotification;
         view.updateView();
       }

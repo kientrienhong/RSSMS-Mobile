@@ -42,6 +42,7 @@ class _NotificationScreenState extends State<NotificationScreen>
     Users user = Provider.of<Users>(context, listen: false);
 
     _presenter.loadListNotification(user);
+
     super.initState();
   }
 

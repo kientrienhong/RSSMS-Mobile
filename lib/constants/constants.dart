@@ -15,7 +15,7 @@ const List<Map<String, String>> LIST_DELIVERY_BOTTOM_NAVIGATION = [
   {'url': "assets/images/profile.png", 'label': 'Profile'},
   {'url': "assets/images/deliveryNav.png", 'label': 'Schedule'},
   {'url': "assets/images/qrCode.png", 'label': 'QR'},
-  {'url': "assets/images/notification.png", 'label': 'Notifcation'},
+  {'url': "assets/images/notification.png", 'label': 'Notification'},
 ];
 
 const DOOR_TO_DOOR_TAB = 0;

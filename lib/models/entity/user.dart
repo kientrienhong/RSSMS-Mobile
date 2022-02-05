@@ -1,7 +1,9 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
+import 'package:rssms/models/entity/notification.dart';
 
 enum UserRole {
   admin,
@@ -27,7 +29,7 @@ class Users with ChangeNotifier {
   String? phone;
   List<dynamic>? images;
   List<dynamic>? staffManageStorages;
-
+  List<NotificationEntity>? listUnreadNoti;
   Users.register({
     required this.address,
     required this.birthDate,
@@ -38,6 +40,7 @@ class Users with ChangeNotifier {
   });
 
   Users({
+    required this.listUnreadNoti,
     required this.idToken,
     required this.refreshToken,
     required this.expiresIn,
@@ -71,26 +74,28 @@ class Users with ChangeNotifier {
     gender = 0;
     birthDate = DateTime.now();
     staffManageStorages = [];
+    listUnreadNoti = [];
   }
 
-  Users copyWith({
-    String? idToken,
-    String? refreshToken,
-    double? expiresIn,
-    String? tokenType,
-    int? userId,
-    int? storageId,
-    String? name,
-    String? email,
-    String? address,
-    String? roleName,
-    String? phone,
-    int? gender,
-    DateTime? birthDate,
-    List<dynamic>? images,
-    List<dynamic>? staffManageStorages,
-  }) {
+  Users copyWith(
+      {String? idToken,
+      String? refreshToken,
+      double? expiresIn,
+      String? tokenType,
+      int? userId,
+      int? storageId,
+      String? name,
+      String? email,
+      String? address,
+      String? roleName,
+      String? phone,
+      int? gender,
+      DateTime? birthDate,
+      List<dynamic>? images,
+      List<dynamic>? staffManageStorages,
+      List<NotificationEntity>? listUnreadNoti}) {
     return Users(
+      listUnreadNoti: listUnreadNoti ?? this.listUnreadNoti,
       idToken: idToken ?? this.idToken,
       refreshToken: refreshToken ?? this.refreshToken,
       expiresIn: expiresIn ?? this.expiresIn,
@@ -131,6 +136,7 @@ class Users with ChangeNotifier {
 
   factory Users.fromMap(Map<String, dynamic> map) {
     return Users(
+      listUnreadNoti: [],
       idToken: map['idToken'] ?? '',
       refreshToken: map['refreshToken'] ?? '',
       expiresIn: map['expiresIn']?.toDouble() ?? 0.0,
@@ -203,6 +209,7 @@ class Users with ChangeNotifier {
     refreshToken = user.refreshToken;
     expiresIn = user.expiresIn;
     tokenType = user.tokenType;
+    listUnreadNoti = user.listUnreadNoti;
     userId = user.userId;
     storageId = user.storageId;
     name = user.name;
