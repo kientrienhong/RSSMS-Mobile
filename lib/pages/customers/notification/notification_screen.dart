@@ -48,6 +48,8 @@ class _NotificationScreenState extends State<NotificationScreen>
 
   @override
   Widget build(BuildContext context) {
+    Users user = Provider.of<Users>(context, listen: false);
+
     return Scaffold(
       backgroundColor: CustomColor.white,
       body: Container(
@@ -55,7 +57,7 @@ class _NotificationScreenState extends State<NotificationScreen>
         child: ListView(
           padding: const EdgeInsets.all(8),
           shrinkWrap: true,
-          children: mapNotifcationWidget(_model.list),
+          children: mapNotifcationWidget(user.listNoti!),
         ),
       ),
     );
