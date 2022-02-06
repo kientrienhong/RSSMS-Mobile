@@ -124,7 +124,9 @@ class SendRequestScreenState extends State<SendRequestScreen> {
                   invoice: widget.invoice,
                 ),
               if (_state == CurrentRadioState.cancelOrder)
-                const InvoiceCancelWidget()
+                InvoiceCancelWidget(
+                  invoice: widget.invoice,
+                )
             ],
           ),
         ),

@@ -66,7 +66,7 @@ class _PaymentMethodBookingScreenState extends State<PaymentMethodBookingScreen>
               orderBooking: OrderBooking.empty(TypeOrder.doorToDoor));
           CustomSnackBar.buildErrorSnackbar(
               context: context,
-              message: 'Create order success',
+              message: 'Đặt đơn hàng thành công',
               color: CustomColor.green);
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
@@ -100,7 +100,7 @@ class _PaymentMethodBookingScreenState extends State<PaymentMethodBookingScreen>
                 orderBooking: OrderBooking.empty(TypeOrder.doorToDoor));
             CustomSnackBar.buildErrorSnackbar(
                 context: context,
-                message: 'Create order success',
+                message: 'Đặt đơn hàng thành công',
                 color: CustomColor.green);
             Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(
