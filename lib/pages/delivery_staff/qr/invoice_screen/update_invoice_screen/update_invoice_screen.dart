@@ -92,6 +92,7 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
             context: context,
             message: 'Cập nhật đơn thành công',
             color: CustomColor.green);
+        Navigator.of(context).pop();
       }
     } catch (e) {
       print(e);

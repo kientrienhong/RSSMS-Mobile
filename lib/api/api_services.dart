@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/order_booking.dart';
+import 'package:rssms/models/entity/order_detail.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/constants/constants.dart' as constants;
 
@@ -23,6 +24,8 @@ class ApiServices {
 
   static Future<dynamic> logInWithEmail(
       String email, String password, String deviceToken) {
+    print(deviceToken);
+
     try {
       Map<String, String> headers = {"Content-type": "application/json"};
 
@@ -138,7 +141,7 @@ class ApiServices {
     }
   }
 
-    static Future<dynamic> getRequest(String idToken) {
+  static Future<dynamic> getRequest(String idToken) {
     try {
       Map<String, String> headers = {
         "Content-type": "application/json",
@@ -358,7 +361,7 @@ class ApiServices {
         "Content-type": "application/json",
         'Authorization': 'Bearer $idToken'
       };
-      print(invoice.toMap());
+      invoice.toJson();
       final url = Uri.parse('$_domain/api/v1/orders/${invoice.id}');
       return http.post(url,
           headers: headers, body: jsonEncode(invoice.toMap()));
@@ -375,8 +378,18 @@ class ApiServices {
         'Authorization': 'Bearer $idToken'
       };
 
-      final url = Uri.parse('$_domain/api/v1/orders/${invoice.id}');
-      return http.put(url, headers: headers, body: jsonEncode(invoice.toMap()));
+      Invoice invoiceTemp = invoice.copyWith();
+
+      List<OrderDetail> listOrderDetailTemp =
+          invoiceTemp.orderDetails.map<OrderDetail>((e) {
+        e.images.removeAt(0);
+        return e;
+      }).toList();
+      invoiceTemp.copyWith(orderDetails: listOrderDetailTemp);
+
+      final url = Uri.parse('$_domain/api/v1/orders/${invoiceTemp.id}');
+      return http.put(url,
+          headers: headers, body: jsonEncode(invoiceTemp.toMap()));
     } catch (e) {
       print(e.toString());
       throw Exception('Update Failed');
@@ -401,6 +414,25 @@ class ApiServices {
     } catch (e) {
       print(e.toString());
       throw Exception('Request Failed');
+    }
+  }
+
+  static Future<dynamic> loadListNotification(String idToken, int userId) {
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        'Authorization': 'Bearer $idToken'
+      };
+
+      final url = Uri.parse(
+          '$_domain/api/v1/notifications?userId=$userId&page=1&size=-1');
+      return http.get(
+        url,
+        headers: headers,
+      );
+    } catch (e) {
+      print(e.toString());
+      throw Exception('Get Notification Failed');
     }
   }
 }

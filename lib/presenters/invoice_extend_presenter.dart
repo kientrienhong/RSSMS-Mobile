@@ -22,7 +22,6 @@ class InvoiceExtendPresenter {
       Map<String, dynamic> extendInvoice, Users user, Invoice invoice) async {
     // view!.updateLoading();
     try {
-
       final response =
           await ApiServices.createExtendRequest(extendInvoice, user);
 
