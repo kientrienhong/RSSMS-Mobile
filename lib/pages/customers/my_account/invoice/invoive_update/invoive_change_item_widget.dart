@@ -100,7 +100,7 @@ class _ChangeItemWidgetState extends State<ChangeItemWidget>
     if (result) {
       CustomSnackBar.buildErrorSnackbar(
           context: context,
-          message: 'Gia hạn đơn hàng thành công',
+          message: 'Yêu cầu rút đồ đã đươc gửi',
           color: CustomColor.green);
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(

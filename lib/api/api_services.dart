@@ -255,6 +255,28 @@ class ApiServices {
     }
   }
 
+    static Future<dynamic> createCancelRequest(
+      String reasonString, Users user, Invoice invoice) {
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        'Authorization': 'Bearer ${user.idToken}'
+      };
+
+      final url = Uri.parse('$_domain/api/v1/orders/cancel/'+ invoice.id.toString());
+      return http.put(
+        url,
+        body: jsonEncode({
+          "id": invoice.id,
+          "rejectedReason": reasonString,
+        }),
+        headers: headers,
+      );
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
     static Future<dynamic> createGetInvoicedRequest(
       Map<String, dynamic> request, Users user) {
     try {
