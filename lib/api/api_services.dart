@@ -455,4 +455,21 @@ class ApiServices {
       throw Exception('Get Notification Failed');
     }
   }
+
+  static Future<dynamic> updateListNotification(
+      String idToken, List<int> listNoti) {
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        'Authorization': 'Bearer $idToken'
+      };
+
+      final url = Uri.parse('$_domain/api/v1/notifications');
+      return http.put(url,
+          headers: headers, body: jsonEncode({"ids": listNoti}));
+    } catch (e) {
+      print(e.toString());
+      throw Exception('Update Failed');
+    }
+  }
 }

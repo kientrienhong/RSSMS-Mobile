@@ -25,6 +25,7 @@ class NotificationScreenPresenter {
             .toList();
         user.setUser(
             user: user.copyWith(
+                listNoti: listNotification,
                 listUnreadNoti: listNotification
                     .where((element) => element.isRead == false)
                     .toList()));

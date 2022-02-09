@@ -30,6 +30,7 @@ class Users with ChangeNotifier {
   List<dynamic>? images;
   List<dynamic>? staffManageStorages;
   List<NotificationEntity>? listUnreadNoti;
+  List<NotificationEntity>? listNoti;
   Users.register({
     required this.address,
     required this.birthDate,
@@ -43,6 +44,7 @@ class Users with ChangeNotifier {
     required this.listUnreadNoti,
     required this.idToken,
     required this.refreshToken,
+    required this.listNoti,
     required this.expiresIn,
     required this.tokenType,
     required this.userId,
@@ -75,6 +77,7 @@ class Users with ChangeNotifier {
     birthDate = DateTime.now();
     staffManageStorages = [];
     listUnreadNoti = [];
+    listNoti = [];
   }
 
   Users copyWith(
@@ -93,6 +96,7 @@ class Users with ChangeNotifier {
       DateTime? birthDate,
       List<dynamic>? images,
       List<dynamic>? staffManageStorages,
+      List<NotificationEntity>? listNoti,
       List<NotificationEntity>? listUnreadNoti}) {
     return Users(
       listUnreadNoti: listUnreadNoti ?? this.listUnreadNoti,
@@ -102,6 +106,7 @@ class Users with ChangeNotifier {
       tokenType: tokenType ?? this.tokenType,
       userId: userId ?? this.userId,
       storageId: storageId ?? this.storageId,
+      listNoti: listNoti ?? this.listNoti,
       name: name ?? this.name,
       email: email ?? this.email,
       address: address ?? this.address,
@@ -137,6 +142,7 @@ class Users with ChangeNotifier {
   factory Users.fromMap(Map<String, dynamic> map) {
     return Users(
       listUnreadNoti: [],
+      listNoti: [],
       idToken: map['idToken'] ?? '',
       refreshToken: map['refreshToken'] ?? '',
       expiresIn: map['expiresIn']?.toDouble() ?? 0.0,
@@ -210,6 +216,7 @@ class Users with ChangeNotifier {
     expiresIn = user.expiresIn;
     tokenType = user.tokenType;
     listUnreadNoti = user.listUnreadNoti;
+    listNoti = user.listNoti;
     userId = user.userId;
     storageId = user.storageId;
     name = user.name;
