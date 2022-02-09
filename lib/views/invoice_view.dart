@@ -3,4 +3,5 @@ abstract class InvoiceView {
   void onHandleChangeInput();
   void refreshList(String searchValue);
   void updateIsLoadingInvoice();
+  Future<void> refresh();
 }

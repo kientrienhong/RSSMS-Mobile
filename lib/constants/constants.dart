@@ -60,6 +60,18 @@ const LIST_STATUS_ORDER = [
   {'color': CustomColor.purple, 'name': 'Đã được xử lý'},
 ];
 
+const LIST_ICON_REQUEST = [
+  {'name': 'assets/images/invoice.png'},
+  {'name': 'assets/images/invoice.png'},
+  {'name': 'assets/images/truck1.png'},
+  {'name': 'assets/images/error1.png'},
+];
+
+const LIST_STATUS_REQUEST = [
+  {'name': 'Hoàn Thành'},
+  {'name': 'Đang xử lý'},
+];
+
 const List<Map<String, String>> TAB_DOOR_TO_DOOR = [
   {"name": "Ít đồ"},
   {"name": "Nhiều đồ"}

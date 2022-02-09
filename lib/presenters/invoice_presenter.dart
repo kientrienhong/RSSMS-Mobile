@@ -21,23 +21,40 @@ class InvoicePresenter {
     view!.refreshList(searchValue);
   }
 
-  void loadInvoice(String idToken) async {
-    view!.updateIsLoadingInvoice();
+  Future<void> loadInvoice({idToken = "", clearCachedDate = false}) async {
     try {
-      final response = await ApiServices.getInvoice(idToken);
+      if (clearCachedDate) {
+        model!.data = List<Map>.empty(growable: true);
+        model!.hasMore = true;
+        model!.listInvoiceFull!.clear();
+        model!.page = 1;
+      }
+      if (model!.isLoadingInvoice! || !model!.hasMore!) {
+        return Future.value();
+      }
+      view!.updateIsLoadingInvoice();
+      final response =
+          await ApiServices.getInvoice(idToken, model!.page.toString(), "10");
       final decodedReponse = jsonDecode(response.body);
       List<Invoice>? listInvoice;
+      model!.metadata = decodedReponse["metadata"];
       if (!decodedReponse['data'].isEmpty) {
         List<Invoice>? listTemp = decodedReponse['data']!
             .map<Invoice>((e) => Invoice.fromMap(e))
             .toList();
-        listInvoice = listTemp!.reversed.toList();
-        model!.listInvoiceFull = listInvoice.reversed.toList();
+        model!.listInvoiceFull!.addAll(listTemp!);
       } else {
         listInvoice = [];
-        model!.listInvoiceFull = listInvoice;
+        model!.listInvoiceFull!.addAll(listInvoice);
       }
+      List<Map> listInvoiceTemp = (decodedReponse['data']! as List)
+          .map((e) => e as Map<dynamic, dynamic>)
+          .toList();
+         model!.data.addAll(listInvoiceTemp);
 
+
+      model!.hasMore = !(model!.page == model!.metadata!["totalPage"]);
+      model!.controller.add(model!.data);
     } catch (e) {
       print(e);
     } finally {

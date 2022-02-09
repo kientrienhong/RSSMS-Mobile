@@ -14,11 +14,11 @@ class InvoiceCancelPresenter {
   }
 
   Future<bool> createRequest(
-      String reasonString, Users user, Invoice invoice) async {
+      Map<String,dynamic> cancelRequest, Users user, Invoice invoice) async {
     // view!.updateLoading();
     try {
       final response =
-          await ApiServices.createCancelRequest(reasonString, user, invoice);
+          await ApiServices.createCancelRequest(cancelRequest, user, invoice);
 
       if (response.statusCode == 200) {
         return true;

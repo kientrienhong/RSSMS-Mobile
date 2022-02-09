@@ -6,8 +6,10 @@ import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/models/entity/request.dart';
-import 'package:rssms/pages/customers/detail_request/detail_request_screen.dart';
-import 'package:rssms/pages/customers/my_account/request/request_screen.dart';
+import 'package:rssms/pages/customers/my_account/request/request_details_screen/cancel_request_screen.dart';
+import 'package:rssms/pages/customers/my_account/request/request_details_screen/extends_request_screen.dart';
+import 'package:rssms/pages/customers/my_account/request/request_details_screen/get_item_request_screen.dart';
+import '../../../../constants/constants.dart' as constants;
 
 class RequestWidget extends StatelessWidget {
   Request? request;
@@ -18,12 +20,30 @@ class RequestWidget extends StatelessWidget {
     final deviceSize = MediaQuery.of(context).size;
     return GestureDetector(
       onTap: () {
-        // Navigator.push(
-        //     context,
-        //     MaterialPageRoute(
-        //         builder: (context) => DetailRequestScreen(
-        //               request: request!,
-        //             )));
+        if (request!.type == 1) {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ExtendRequestScreen(
+                        request: request!,
+                      )));
+        }
+        if (request!.type == 3) {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => CancelledRequestScreen(
+                        request: request!,
+                      )));
+        }
+        if (request!.type == 2) {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => GetItemRequestScreen(
+                        request: request!,
+                      )));
+        }
       },
       child: Container(
         padding: EdgeInsets.only(
@@ -49,7 +69,9 @@ class RequestWidget extends StatelessWidget {
                 children: [
                   SizedBox(
                       width: (deviceSize.width - 32) / 4,
-                      child: Image.asset("assets/images/truck1.png")),
+                      child: Image.asset(constants
+                          .LIST_ICON_REQUEST[request!.type]["name"]
+                          .toString())),
                   CustomSizedBox(
                     context: context,
                     width: 15,
@@ -71,7 +93,8 @@ class RequestWidget extends StatelessWidget {
                           height: 14,
                         ),
                         CustomText(
-                            text: "Mã đơn hàng: #" + request!.orderId.toString(),
+                            text:
+                                "Mã đơn hàng: #" + request!.orderId.toString(),
                             color: CustomColor.black,
                             context: context,
                             fontWeight: FontWeight.bold,
@@ -80,7 +103,7 @@ class RequestWidget extends StatelessWidget {
                           context: context,
                           height: 14,
                         ),
-                        if (request!.type == 1)
+                        if (request!.type == 2)
                           Column(
                             children: [
                               Row(
@@ -102,7 +125,10 @@ class RequestWidget extends StatelessWidget {
                             ],
                           ),
                         CustomText(
-                            text: 'Trạng thái: Cập nhật..',
+                            text: 'Trạng thái: ' +
+                                constants.LIST_STATUS_REQUEST[request!.status]
+                                        ['name']
+                                    .toString(),
                             color: CustomColor.black,
                             context: context,
                             fontWeight: FontWeight.bold,

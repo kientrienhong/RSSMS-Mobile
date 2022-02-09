@@ -22,6 +22,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> implements InvoiceView {
   late InvoicePresenter _presenter;
   late InvoiceModel _model;
   late bool _isFound;
+  final scrollController = ScrollController();
 
   @override
   void initState() {
@@ -31,8 +32,18 @@ class _InvoiceScreenState extends State<InvoiceScreen> implements InvoiceView {
     _presenter = InvoicePresenter();
     _presenter.view = this;
     _model = _presenter.model!;
-    _presenter.loadInvoice(user.idToken!);
+    _presenter.loadInvoice(idToken: user.idToken);
     _model.searchValue.addListener(onHandleChangeInput);
+    scrollController.addListener(() {
+      if (scrollController.position.maxScrollExtent ==
+          scrollController.offset) {
+        print(_model.hasMore!);
+        if (_model.hasMore!) {
+          _model.page = _model.page! + 1;
+          _presenter.loadInvoice(idToken: user.idToken);
+        }
+      }
+    });
   }
 
   List<Widget> mapInvoiceWidget(listInvoice) => listInvoice
@@ -48,7 +59,9 @@ class _InvoiceScreenState extends State<InvoiceScreen> implements InvoiceView {
 
   @override
   void updateIsLoadingInvoice() {
-    _model.isLoadingInvoice = !_model.isLoadingInvoice!;
+    setState(() {
+      _model.isLoadingInvoice = !_model.isLoadingInvoice!;
+    });
   }
 
   @override
@@ -65,159 +78,250 @@ class _InvoiceScreenState extends State<InvoiceScreen> implements InvoiceView {
     }
   }
 
-  Widget invoiceWidget() {
-    if (!_isFound) {
-      if (_model.getListInvoice()!.isNotEmpty) {
-        return Expanded(
-            child: ListView(
-          padding: const EdgeInsets.all(0),
-          children: mapInvoiceWidget(_model.getListInvoice()),
-        ));
-      } else {
-        return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 36),
-          child: Center(
-            child: CustomText(
-                text: "Chưa có đơn hàng",
-                color: Colors.black45,
+  @override
+  Future<void> refresh() {
+    Users user = Provider.of<Users>(context, listen: false);
+    _presenter.loadInvoice(idToken: user.idToken, clearCachedDate: true);
+    return Future.value();
+  }
+
+  // Widget invoiceWidget() {
+  //   if (!_isFound) {
+  //     if (_model.getListInvoice()!.isNotEmpty) {
+  //       return StreamBuilder(
+  //         child: Expanded(
+  //             child: ListView(
+  //           padding: const EdgeInsets.all(0),
+  //           children: mapInvoiceWidget(_model.getListInvoice()),
+  //         )),
+  //       );
+  //     } else {
+  //       return Padding(
+  //         padding: const EdgeInsets.symmetric(vertical: 36),
+  //         child: Center(
+  //           child: CustomText(
+  //               text: "Chưa có đơn hàng",
+  //               color: Colors.black45,
+  //               context: context,
+  //               fontSize: 16),
+  //         ),
+  //       );
+  //     }
+  //   } else {
+  //     return InvoiceWidget(invoice: _model.searchInvoice);
+  //   }
+  // }
+
+  Widget invoiceList() {
+    return StreamBuilder(
+      stream: _model.stream,
+      builder: (context, AsyncSnapshot snapshot) {
+        if (!snapshot.hasData) {
+          return Column(
+            children: [
+              CustomSizedBox(
                 context: context,
-                fontSize: 16),
-          ),
-        );
-      }
-    } else {
-      return InvoiceWidget(invoice: _model.searchInvoice);
-    }
+                height: 50,
+              ),
+              const SizedBox(
+                height: 16,
+                width: 16,
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.black45),
+                ),
+              ),
+            ],
+          );
+        } else {
+          return Flexible(
+            child: RefreshIndicator(
+              onRefresh: refresh,
+              child: ListView.separated(
+                controller: scrollController,
+                separatorBuilder: (context, index) {
+                  return CustomSizedBox(
+                    context: context,
+                    height: 0,
+                  );
+                },
+                itemCount: snapshot.data!.length + 1,
+                itemBuilder: (context, index) {
+                  if (index < snapshot.data.length) {
+                    return InvoiceWidget(
+                      invoice: snapshot.data[index],
+                    );
+                  } else if (_model.hasMore!) {
+                    return const Center(
+                      child: CircularProgressIndicator(
+                        valueColor:
+                            AlwaysStoppedAnimation<Color>(Colors.black45),
+                      ),
+                    );
+                  } else {
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 10),
+                      child: Center(
+                        child: CustomText(
+                            text: "No more invoice !",
+                            color: Colors.black38,
+                            context: context,
+                            fontSize: 14),
+                      ),
+                    );
+                  }
+                },
+              ),
+            ),
+          );
+        }
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
 
-    return SizedBox(
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       width: deviceSize.width,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: TypeAheadField(
-                    textFieldConfiguration: TextFieldConfiguration(
-                      controller: _model.searchValue,
-                      onEditingComplete: () {
-                        _presenter.handleOnChangeInput(_model.searchValue.text);
-                      },
-                      decoration: InputDecoration(
-                        border: const OutlineInputBorder(),
-                        prefixIcon: ImageIcon(
-                          const AssetImage('assets/images/search.png'),
-                          color: CustomColor.black[2]!,
-                        ),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: TypeAheadField(
+                  textFieldConfiguration: TextFieldConfiguration(
+                    controller: _model.searchValue,
+                    onEditingComplete: () {
+                      _presenter.handleOnChangeInput(_model.searchValue.text);
+                    },
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(),
+                      prefixIcon: ImageIcon(
+                        const AssetImage('assets/images/search.png'),
+                        color: CustomColor.black[2]!,
                       ),
                     ),
-                    suggestionsCallback: (pattern) async {
-                      return _model
-                          .getListInvoice()!
-                          .where((element) =>
-                              element.id.toString().contains(pattern))
-                          .toList();
-                    },
-                    itemBuilder: (context, suggestion) {
-                      Invoice shelf = suggestion! as Invoice;
-                      return ListTile(
-                        title: Text(shelf.id.toString()),
-                      );
-                    },
-                    noItemsFoundBuilder: (context) => Center(
-                      child: CustomText(
-                          text: 'Không tìm thấy đơn hàng!',
-                          color: CustomColor.black,
-                          context: context,
-                          fontSize: 16),
-                    ),
-                    onSuggestionSelected: (suggestion) {
-                      setState(() {
-                        _isFound = true;
-                        _model.searchInvoice = suggestion as Invoice;
-                        _model.searchValue.text = suggestion.id.toString();
-                      });
-                    },
                   ),
-                ),
-                CustomSizedBox(
-                  context: context,
-                  width: 16,
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: CustomColor.white,
-                      border: Border.all(color: CustomColor.black, width: 0.5)),
-                  child: PopupMenuButton(
-                      shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(
-                        Radius.circular(10.0),
-                      )),
-                      icon: const ImageIcon(
-                          AssetImage('assets/images/filter.png')),
-                      itemBuilder: (_) => <PopupMenuItem<String>>[
-                            PopupMenuItem<String>(
-                                child: CustomText(
-                                    text: 'Kho tự quản',
-                                    color: _model.filterIndex == "0"
-                                        ? CustomColor.blue
-                                        : CustomColor.black,
-                                    context: context,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 14),
-                                value: '0'),
-                            PopupMenuItem<String>(
-                                child: CustomText(
-                                    text: 'Giữ đồ thuê',
-                                    color: _model.filterIndex == "1"
-                                        ? CustomColor.blue
-                                        : CustomColor.black,
-                                    context: context,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 14),
-                                value: '1'),
-                          ],
-                      onSelected: (_) {
-                        if (_.toString() == _model.filterIndex) {
-                          setState(() {
-                            _model.filterIndex = "10";
-                          });
-                        } else {
-                          setState(() {
-                            _model.filterIndex = _.toString();
-                          });
-                        }
-                      }),
-                ),
-              ],
-            ),
-            if (!(_model.isLoadingInvoice!))
-              invoiceWidget()
-            else
-              Column(
-                children: [
-                  CustomSizedBox(
-                    context: context,
-                    height: 50,
+                  suggestionsCallback: (pattern) async {
+                    return _model
+                        .getListInvoice()!
+                        .where((element) =>
+                            element.id.toString().contains(pattern))
+                        .toList();
+                  },
+                  itemBuilder: (context, suggestion) {
+                    Invoice shelf = suggestion! as Invoice;
+                    return ListTile(
+                      title: Text(shelf.id.toString()),
+                    );
+                  },
+                  noItemsFoundBuilder: (context) => Center(
+                    child: CustomText(
+                        text: 'Không tìm thấy đơn hàng!',
+                        color: CustomColor.black,
+                        context: context,
+                        fontSize: 16),
                   ),
-                  const SizedBox(
-                    height: 16,
-                    width: 16,
-                    child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.black45),
-                    ),
-                  ),
-                ],
-              )
-          ],
-        ),
+                  onSuggestionSelected: (suggestion) {
+                    setState(() {
+                      _isFound = true;
+                      _model.searchInvoice = suggestion as Invoice;
+                      _model.searchValue.text = suggestion.id.toString();
+                    });
+                  },
+                ),
+              ),
+              CustomSizedBox(
+                context: context,
+                width: 16,
+              ),
+              Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: CustomColor.white,
+                    border: Border.all(color: CustomColor.black, width: 0.5)),
+                child: PopupMenuButton(
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                      Radius.circular(10.0),
+                    )),
+                    icon:
+                        const ImageIcon(AssetImage('assets/images/filter.png')),
+                    itemBuilder: (_) => <PopupMenuItem<String>>[
+                          PopupMenuItem<String>(
+                              child: CustomText(
+                                  text: 'Kho tự quản',
+                                  color: _model.filterIndex == "0"
+                                      ? CustomColor.blue
+                                      : CustomColor.black,
+                                  context: context,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14),
+                              value: '0'),
+                          PopupMenuItem<String>(
+                              child: CustomText(
+                                  text: 'Giữ đồ thuê',
+                                  color: _model.filterIndex == "1"
+                                      ? CustomColor.blue
+                                      : CustomColor.black,
+                                  context: context,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14),
+                              value: '1'),
+                        ],
+                    onSelected: (_) {
+                      if (_.toString() == _model.filterIndex) {
+                        setState(() {
+                          _model.filterIndex = "10";
+                        });
+                      } else {
+                        setState(() {
+                          _model.filterIndex = _.toString();
+                        });
+                      }
+                    }),
+              ),
+            ],
+          ),
+          // if (!(_model.isLoadingInvoice!))
+          invoiceList()
+          // else
+          //   Column(
+          //     children: [
+          //       CustomSizedBox(
+          //         context: context,
+          //         height: 50,
+          //       ),
+          //       const SizedBox(
+          //         height: 16,
+          //         width: 16,
+          //         child: CircularProgressIndicator(
+          //           valueColor: AlwaysStoppedAnimation<Color>(Colors.black45),
+          //         ),
+          //       ),
+          //     ],
+          //   )
+          // if (!(_model.isLoadingInvoice!))
+          //   invoiceWidget()
+          // else
+          //   Column(
+          //     children: [
+          //       CustomSizedBox(
+          //         context: context,
+          //         height: 50,
+          //       ),
+          //       const SizedBox(
+          //         height: 16,
+          //         width: 16,
+          //         child: CircularProgressIndicator(
+          //           valueColor: AlwaysStoppedAnimation<Color>(Colors.black45),
+          //         ),
+          //       ),
+          //     ],
+          //   )
+        ],
       ),
     );
   }

@@ -1,44 +1,72 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
-
-import 'request_detail.dart';
-
 class Request {
   final int id;
   final int orderId;
   final int userId;
+  final String totalPrice;
+  final String returnAddress;
+  final String returnTime;
+  final String oldReturnDate;
+  final String returnDate;
   final int type;
   final int status;
+  final String deliveryStaffName;
+  final String deliveryStaffPhone;
   final String note;
-  final List<RequestDetail> requestDetails;
+  final String cancelBy;
+  final String cancelByPhone;
   Request({
     required this.id,
     required this.orderId,
     required this.userId,
+    required this.totalPrice,
+    required this.returnAddress,
+    required this.returnTime,
+    required this.oldReturnDate,
+    required this.returnDate,
     required this.type,
     required this.status,
+    required this.deliveryStaffName,
+    required this.deliveryStaffPhone,
     required this.note,
-    required this.requestDetails,
+    required this.cancelBy,
+    required this.cancelByPhone,
   });
 
   Request copyWith({
     int? id,
     int? orderId,
     int? userId,
+    String? totalPrice,
+    String? returnAddress,
+    String? returnTime,
+    String? oldReturnDate,
+    String? returnDate,
     int? type,
     int? status,
+    String? deliveryStaffName,
+    String? deliveryStaffPhone,
     String? note,
-    List<RequestDetail>? requestDetails,
+    String? cancelBy,
+    String? cancelByPhone,
   }) {
     return Request(
       id: id ?? this.id,
       orderId: orderId ?? this.orderId,
       userId: userId ?? this.userId,
+      totalPrice: totalPrice ?? this.totalPrice,
+      returnAddress: returnAddress ?? this.returnAddress,
+      returnTime: returnTime ?? this.returnTime,
+      oldReturnDate: oldReturnDate ?? this.oldReturnDate,
+      returnDate: returnDate ?? this.returnDate,
       type: type ?? this.type,
       status: status ?? this.status,
+      deliveryStaffName: deliveryStaffName ?? this.deliveryStaffName,
+      deliveryStaffPhone: deliveryStaffPhone ?? this.deliveryStaffPhone,
       note: note ?? this.note,
-      requestDetails: requestDetails ?? this.requestDetails,
+      cancelBy: cancelBy ?? this.cancelBy,
+      cancelByPhone: cancelByPhone ?? this.cancelByPhone,
     );
   }
 
@@ -47,10 +75,18 @@ class Request {
       'id': id,
       'orderId': orderId,
       'userId': userId,
+      'totalPrice': totalPrice,
+      'returnAddress': returnAddress,
+      'returnTime': returnTime,
+      'oldReturnDate': oldReturnDate,
+      'returnDate': returnDate,
       'type': type,
       'status': status,
+      'deliveryStaffName': deliveryStaffName,
+      'deliveryStaffPhone': deliveryStaffPhone,
       'note': note,
-      'requestDetails': requestDetails.map((x) => x.toMap()).toList(),
+      'cancelBy': cancelBy,
+      'cancelByPhone': cancelByPhone,
     };
   }
 
@@ -59,10 +95,18 @@ class Request {
       id: map['id']?.toInt() ?? 0,
       orderId: map['orderId']?.toInt() ?? 0,
       userId: map['userId']?.toInt() ?? 0,
+      totalPrice: map['totalPrice'] ?? '',
+      returnAddress: map['returnAddress'] ?? '',
+      returnTime: map['returnTime'] ?? '',
+      oldReturnDate: map['oldReturnDate'] ?? '',
+      returnDate: map['returnDate'] ?? '',
       type: map['type']?.toInt() ?? 0,
       status: map['status']?.toInt() ?? 0,
+      deliveryStaffName: map['deliveryStaffName'] ?? '',
+      deliveryStaffPhone: map['deliveryStaffPhone'] ?? '',
       note: map['note'] ?? '',
-      requestDetails: List<RequestDetail>.from(map['requestDetails']?.map((x) => RequestDetail.fromMap(x))),
+      cancelBy: map['cancelBy'] ?? '',
+      cancelByPhone: map['cancelByPhone'] ?? '',
     );
   }
 
@@ -72,7 +116,7 @@ class Request {
 
   @override
   String toString() {
-    return 'Request(id: $id, orderId: $orderId, userId: $userId, type: $type, status: $status, note: $note, requestDetails: $requestDetails)';
+    return 'Request(id: $id, orderId: $orderId, userId: $userId, totalPrice: $totalPrice, returnAddress: $returnAddress, returnTime: $returnTime, oldReturnDate: $oldReturnDate, returnDate: $returnDate, type: $type, status: $status, deliveryStaffName: $deliveryStaffName, deliveryStaffPhone: $deliveryStaffPhone, note: $note, cancelBy: $cancelBy, cancelByPhone: $cancelByPhone)';
   }
 
   @override
@@ -83,10 +127,18 @@ class Request {
       other.id == id &&
       other.orderId == orderId &&
       other.userId == userId &&
+      other.totalPrice == totalPrice &&
+      other.returnAddress == returnAddress &&
+      other.returnTime == returnTime &&
+      other.oldReturnDate == oldReturnDate &&
+      other.returnDate == returnDate &&
       other.type == type &&
       other.status == status &&
+      other.deliveryStaffName == deliveryStaffName &&
+      other.deliveryStaffPhone == deliveryStaffPhone &&
       other.note == note &&
-      listEquals(other.requestDetails, requestDetails);
+      other.cancelBy == cancelBy &&
+      other.cancelByPhone == cancelByPhone;
   }
 
   @override
@@ -94,9 +146,17 @@ class Request {
     return id.hashCode ^
       orderId.hashCode ^
       userId.hashCode ^
+      totalPrice.hashCode ^
+      returnAddress.hashCode ^
+      returnTime.hashCode ^
+      oldReturnDate.hashCode ^
+      returnDate.hashCode ^
       type.hashCode ^
       status.hashCode ^
+      deliveryStaffName.hashCode ^
+      deliveryStaffPhone.hashCode ^
       note.hashCode ^
-      requestDetails.hashCode;
+      cancelBy.hashCode ^
+      cancelByPhone.hashCode;
   }
 }

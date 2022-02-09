@@ -50,9 +50,12 @@ class _InvoiceCancelWidgetState extends State<InvoiceCancelWidget>
   @override
   void onClickCancelInvoice() async {
     Users users = Provider.of<Users>(context, listen: false);
-
-    bool result = await _presenter.createRequest(
-        _model.controllerReason.text, users, widget.invoice!);
+    Map<String, dynamic> cancelRequest = {
+      "reason": _model.controllerReason.text,
+      "type": 3
+    };
+    bool result =
+        await _presenter.createRequest(cancelRequest, users, widget.invoice!);
     if (result) {
       CustomSnackBar.buildErrorSnackbar(
           context: context,

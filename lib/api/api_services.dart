@@ -124,14 +124,15 @@ class ApiServices {
     }
   }
 
-  static Future<dynamic> getInvoice(String idToken) {
+  static Future<dynamic> getInvoice(String idToken, String page, String total) {
     try {
       Map<String, String> headers = {
         "Content-type": "application/json",
         'Authorization': 'Bearer $idToken'
       };
 
-      final url = Uri.parse('$_domain/api/v1/orders');
+      final url =
+          Uri.parse('$_domain/api/v1/orders?page=' + page + '&size=' + total);
       return http.get(
         url,
         headers: headers,
@@ -190,6 +191,7 @@ class ApiServices {
         headers: headers,
       );
     } catch (e) {
+      print(e);
       throw Exception(e.toString());
     }
   }
@@ -230,6 +232,23 @@ class ApiServices {
     }
   }
 
+  static Future<dynamic> getRequestbyId(String idToken, String id) {
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        'Authorization': 'Bearer $idToken'
+      };
+
+      final url = Uri.parse('$_domain/api/v1/requests/' + id.toString());
+      return http.get(
+        url,
+        headers: headers,
+      );
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
   static Future<dynamic> createExtendRequest(
       Map<String, dynamic> extendInvoice, Users user) {
     try {
@@ -258,20 +277,21 @@ class ApiServices {
     }
   }
 
-    static Future<dynamic> createCancelRequest(
-      String reasonString, Users user, Invoice invoice) {
+  static Future<dynamic> createCancelRequest(
+      Map<String, dynamic> cancelRequest, Users user, Invoice invoice) {
     try {
       Map<String, String> headers = {
         "Content-type": "application/json",
         'Authorization': 'Bearer ${user.idToken}'
       };
 
-      final url = Uri.parse('$_domain/api/v1/orders/cancel/'+ invoice.id.toString());
-      return http.put(
+      final url = Uri.parse('$_domain/api/v1/requests');
+      return http.post(
         url,
         body: jsonEncode({
-          "id": invoice.id,
-          "rejectedReason": reasonString,
+          "orderId": invoice.id,
+          "note": cancelRequest["reason"],
+          "type": cancelRequest["type"]
         }),
         headers: headers,
       );
@@ -280,7 +300,7 @@ class ApiServices {
     }
   }
 
-    static Future<dynamic> createGetInvoicedRequest(
+  static Future<dynamic> createGetInvoicedRequest(
       Map<String, dynamic> request, Users user) {
     try {
       Map<String, String> headers = {
