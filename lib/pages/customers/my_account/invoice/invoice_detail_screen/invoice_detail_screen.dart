@@ -6,6 +6,7 @@ import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/common/invoice_image_widget.dart';
 import 'package:rssms/models/entity/invoice.dart';
+import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/invoice_cancelled_screen/invoice_cancelled_screen.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/invoice_info_widget.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/invoice_product_widget.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoive_update/send_request_screen.dart';
@@ -108,25 +109,46 @@ class InvoiceDetailScreen extends StatelessWidget {
                       context: context,
                       height: 16,
                     ),
-                    Center(
-                      child: CustomButton(
-                          height: 24,
-                          isLoading: false,
-                          text: 'Gửi yêu cầu',
-                          textColor: CustomColor.white,
-                          onPressFunction: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => SendRequestScreen(
-                                        invoice: invoice,
-                                      )),
-                            );
-                          },
-                          width: deviceSize.width / 2.5,
-                          buttonColor: CustomColor.blue,
-                          borderRadius: 6),
-                    )
+                    if (invoice!.status != 0)
+                      Center(
+                        child: CustomButton(
+                            height: 24,
+                            isLoading: false,
+                            text: 'Gửi yêu cầu',
+                            textColor: CustomColor.white,
+                            onPressFunction: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SendRequestScreen(
+                                          invoice: invoice,
+                                        )),
+                              );
+                            },
+                            width: deviceSize.width / 2.5,
+                            buttonColor: CustomColor.blue,
+                            borderRadius: 6),
+                      ),
+                    if (invoice!.status == 0)
+                      Center(
+                        child: CustomButton(
+                            height: 24,
+                            isLoading: false,
+                            text: 'Chi tiết đơn hủy',
+                            textColor: CustomColor.white,
+                            onPressFunction: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => InvoiceCancelledScreen(
+                                         
+                                        )),
+                              );
+                            },
+                            width: deviceSize.width / 2.5,
+                            buttonColor: CustomColor.blue,
+                            borderRadius: 6),
+                      )
                   ],
                 ),
               ),

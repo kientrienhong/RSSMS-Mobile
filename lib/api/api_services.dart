@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/order_booking.dart';
+import 'package:rssms/models/entity/order_detail.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/constants/constants.dart' as constants;
 
@@ -23,6 +24,8 @@ class ApiServices {
 
   static Future<dynamic> logInWithEmail(
       String email, String password, String deviceToken) {
+    print(deviceToken);
+
     try {
       Map<String, String> headers = {"Content-type": "application/json"};
 
@@ -36,7 +39,7 @@ class ApiServices {
           }));
     } catch (e) {
       print(e.toString());
-      throw Exception('Log In failed');
+      throw Exception('Log In failedd');
     }
   }
 
@@ -121,14 +124,32 @@ class ApiServices {
     }
   }
 
-  static Future<dynamic> getInvoice(String idToken) {
+  static Future<dynamic> getInvoice(String idToken, String page, String total) {
     try {
       Map<String, String> headers = {
         "Content-type": "application/json",
         'Authorization': 'Bearer $idToken'
       };
 
-      final url = Uri.parse('$_domain/api/v1/orders');
+      final url =
+          Uri.parse('$_domain/api/v1/orders?page=' + page + '&size=' + total);
+      return http.get(
+        url,
+        headers: headers,
+      );
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  static Future<dynamic> getRequest(String idToken) {
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        'Authorization': 'Bearer $idToken'
+      };
+
+      final url = Uri.parse('$_domain/api/v1/requests');
       return http.get(
         url,
         headers: headers,
@@ -170,6 +191,7 @@ class ApiServices {
         headers: headers,
       );
     } catch (e) {
+      print(e);
       throw Exception(e.toString());
     }
   }
@@ -202,6 +224,99 @@ class ApiServices {
               ? orderBooking.months
               : orderBooking.diffDay,
           "listProduct": listProduct
+        }),
+        headers: headers,
+      );
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  static Future<dynamic> getRequestbyId(String idToken, String id) {
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        'Authorization': 'Bearer $idToken'
+      };
+
+      final url = Uri.parse('$_domain/api/v1/requests/' + id.toString());
+      return http.get(
+        url,
+        headers: headers,
+      );
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  static Future<dynamic> createExtendRequest(
+      Map<String, dynamic> extendInvoice, Users user) {
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        'Authorization': 'Bearer ${user.idToken}'
+      };
+
+      final url = Uri.parse('$_domain/api/v1/requests');
+      return http.post(
+        url,
+        body: jsonEncode({
+          "orderId": extendInvoice["orderId"],
+          "totalPrice": extendInvoice["totalProduct"],
+          "oldReturnDate": extendInvoice["oldReturnDate"].toIso8601String(),
+          "returnDate": extendInvoice["newReturnDate"].toIso8601String(),
+          "cancelDay": extendInvoice["oldReturnDate"].toIso8601String(),
+          "type": extendInvoice["type"],
+          "status": extendInvoice["status"],
+          "note": extendInvoice["note"],
+        }),
+        headers: headers,
+      );
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  static Future<dynamic> createCancelRequest(
+      Map<String, dynamic> cancelRequest, Users user, Invoice invoice) {
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        'Authorization': 'Bearer ${user.idToken}'
+      };
+
+      final url = Uri.parse('$_domain/api/v1/requests');
+      return http.post(
+        url,
+        body: jsonEncode({
+          "orderId": invoice.id,
+          "note": cancelRequest["reason"],
+          "type": cancelRequest["type"]
+        }),
+        headers: headers,
+      );
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  static Future<dynamic> createGetInvoicedRequest(
+      Map<String, dynamic> request, Users user) {
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        'Authorization': 'Bearer ${user.idToken}'
+      };
+
+      final url = Uri.parse('$_domain/api/v1/requests');
+      return http.post(
+        url,
+        body: jsonEncode({
+          "orderId": request["orderId"],
+          "returnAddress": request["returnAddress"],
+          "returnTime": request["returnTime"],
+          "returnDate": request["returnDate"].toIso8601String(),
+          "type": request["type"],
         }),
         headers: headers,
       );
@@ -266,7 +381,7 @@ class ApiServices {
         "Content-type": "application/json",
         'Authorization': 'Bearer $idToken'
       };
-      print(invoice.toMap());
+      invoice.toJson();
       final url = Uri.parse('$_domain/api/v1/orders/${invoice.id}');
       return http.post(url,
           headers: headers, body: jsonEncode(invoice.toMap()));
@@ -283,8 +398,18 @@ class ApiServices {
         'Authorization': 'Bearer $idToken'
       };
 
-      final url = Uri.parse('$_domain/api/v1/orders/${invoice.id}');
-      return http.put(url, headers: headers, body: jsonEncode(invoice.toMap()));
+      Invoice invoiceTemp = invoice.copyWith();
+
+      List<OrderDetail> listOrderDetailTemp =
+          invoiceTemp.orderDetails.map<OrderDetail>((e) {
+        e.images.removeAt(0);
+        return e;
+      }).toList();
+      invoiceTemp.copyWith(orderDetails: listOrderDetailTemp);
+
+      final url = Uri.parse('$_domain/api/v1/orders/${invoiceTemp.id}');
+      return http.put(url,
+          headers: headers, body: jsonEncode(invoiceTemp.toMap()));
     } catch (e) {
       print(e.toString());
       throw Exception('Update Failed');
@@ -309,6 +434,42 @@ class ApiServices {
     } catch (e) {
       print(e.toString());
       throw Exception('Request Failed');
+    }
+  }
+
+  static Future<dynamic> loadListNotification(String idToken, int userId) {
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        'Authorization': 'Bearer $idToken'
+      };
+
+      final url = Uri.parse(
+          '$_domain/api/v1/notifications?userId=$userId&page=1&size=-1');
+      return http.get(
+        url,
+        headers: headers,
+      );
+    } catch (e) {
+      print(e.toString());
+      throw Exception('Get Notification Failed');
+    }
+  }
+
+  static Future<dynamic> updateListNotification(
+      String idToken, List<int> listNoti) {
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        'Authorization': 'Bearer $idToken'
+      };
+
+      final url = Uri.parse('$_domain/api/v1/notifications');
+      return http.put(url,
+          headers: headers, body: jsonEncode({"ids": listNoti}));
+    } catch (e) {
+      print(e.toString());
+      throw Exception('Update Failed');
     }
   }
 }

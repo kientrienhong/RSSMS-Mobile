@@ -27,6 +27,7 @@ class ProductInvoiceWidget extends StatelessWidget {
                   Image.network(
                     product!.images[0].url!,
                     height: 50,
+                    width: 50,
                   ),
                   CustomSizedBox(
                     context: context,

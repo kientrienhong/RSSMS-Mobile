@@ -14,8 +14,8 @@ class InvoiceUpdateModel {
     _isDisableUpdateInvoice = true;
     _isLoadingUpdateInvoice = false;
     _isPaid = invoice.isPaid;
-    _controllerFullname = TextEditingController(text: user.name);
-    _controllerPhone = TextEditingController(text: user.phone);
+    _controllerFullname = TextEditingController(text: invoice.customerName);
+    _controllerPhone = TextEditingController(text: invoice.customerPhone);
     switch (invoice.status) {
       case 0:
         _txtStatus = "Đã đặt";

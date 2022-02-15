@@ -6,6 +6,7 @@ import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_input_date.dart';
 import 'package:rssms/common/custom_input_with_hint.dart';
+import 'package:rssms/common/custom_radio_button.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_snack_bar.dart';
 import 'package:rssms/common/custom_text.dart';
@@ -25,7 +26,7 @@ class ProfileScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: SizedBox(
           width: deviceSize.width,
-          height: deviceSize.height * 1.5,
+          height: deviceSize.height * 1.2,
           child: Stack(
             clipBehavior: Clip.none,
             children: [
@@ -81,8 +82,11 @@ class _ProfileScreenState extends State<FormProfileScreen>
 
   @override
   void onChangeInputProfile() {
-    profilePresenter.handleOnChangeInputProfile(_model.controllerFullname.text,
-        _model.controllerPhone.text, _model.controllerStreet.text);
+    profilePresenter.handleOnChangeInputProfile(
+        _model.controllerFullname.text,
+        _model.controllerPhone.text,
+        _model.controllerStreet.text,
+        _model.controllerBirthDate.text);
   }
 
   @override
@@ -103,11 +107,22 @@ class _ProfileScreenState extends State<FormProfileScreen>
 
   @override
   void updateStatusOfButtonUpdateProfile(
-      String fullname, String phone, String address) {
+      String fullname, String phone, String address, String birthDay) {
     if (fullname.isNotEmpty && phone.isNotEmpty && address.isNotEmpty) {
-      setState(() {
-        _model.isDisableUpdateProfile = false;
-      });
+      Users user = Provider.of<Users>(context, listen: false);
+      String birth = DateFormat("dd/MM/yyyy").format(user.birthDate!);
+      if (user.name != fullname ||
+          user.phone != phone ||
+          user.address != address ||
+          birth != birthDay) {
+        setState(() {
+          _model.isDisableUpdateProfile = false;
+        });
+      } else {
+        setState(() {
+          _model.isDisableUpdateProfile = true;
+        });
+      }
     } else {
       setState(() {
         _model.isDisableUpdateProfile = true;
@@ -133,7 +148,6 @@ class _ProfileScreenState extends State<FormProfileScreen>
 
   @override
   void updateViewPasswordErrorMsg(String error) {
-    // TODO: implement updateViewErrorMsg
     setState(() {
       _model.errorMsgChangePassword = error;
     });
@@ -160,46 +174,18 @@ class _ProfileScreenState extends State<FormProfileScreen>
     }
   }
 
-  Widget customRadioButton(String text, String gender, Color color) {
-    return Row(
-      children: [
-        OutlinedButton(
-          style: ButtonStyle(
-            backgroundColor:
-                MaterialStateProperty.resolveWith((states) => color),
-            shape: MaterialStateProperty.all(const CircleBorder()),
-            side: MaterialStateProperty.all(
-              const BorderSide(color: CustomColor.blue, width: 1.5),
-            ),
-            maximumSize: MaterialStateProperty.all(
-              const Size(70, 70),
-            ),
-            minimumSize: MaterialStateProperty.all(
-              const Size(25, 25),
-            ),
-          ),
-          onPressed: () {
-            setState(() {
-              _model.txtGender = gender;
-            });
-          },
-          child: const Icon(
-            Icons.check,
-            size: 15,
-            color: CustomColor.white,
-          ),
-        ),
-        Text(
-          text,
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
-            color:
-                (_model.txtGender == gender) ? CustomColor.blue : Colors.black,
-          ),
-        ),
-      ],
-    );
+  void onChangeGender(String value) {
+    if (_model.txtGender == value) {
+      setState(() {
+        _model.isDisableUpdateProfile = true;
+        _model.txtGender = value;
+      });
+    } else {
+      setState(() {
+        _model.isDisableUpdateProfile = false;
+        _model.txtGender = value;
+      });
+    }
   }
 
   @override
@@ -250,7 +236,7 @@ class _ProfileScreenState extends State<FormProfileScreen>
     _model.controllerPhone.addListener(onChangeInputProfile);
     _model.controllerStreet.addListener(onChangeInputProfile);
     _model.controllerWard.addListener(onChangeInput);
-    _model.controllerBirthDate.addListener(onChangeInput);
+    _model.controllerBirthDate.addListener(onChangeInputProfile);
   }
 
   @override
@@ -279,222 +265,238 @@ class _ProfileScreenState extends State<FormProfileScreen>
 
   @override
   Widget build(BuildContext context) {
-    print(_model.isLoadingUpdateProfile);
     return Scaffold(
       backgroundColor: CustomColor.white,
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            CustomSizedBox(
-              context: context,
-              height: 16,
-            ),
-            CustomText(
-              text: "Thông tin cá nhân",
-              color: Colors.black,
-              context: context,
-              fontSize: 17,
-              fontWeight: FontWeight.bold,
-            ),
-            CustomSizedBox(
-              context: context,
-              height: 16,
-            ),
-            CustomOutLineInputWithHint(
-              deviceSize: widget.deviceSize,
-              hintText: "Họ Và Tên",
-              isDisable: false,
-              focusNode: _focusNodeFullname,
-              nextNode: _focusNodePhone,
-              controller: _model.controllerFullname,
-            ),
-            CustomOutLineInputWithHint(
-              deviceSize: widget.deviceSize,
-              hintText: 'Số Điện Thoại',
-              isDisable: false,
-              focusNode: _focusNodePhone,
-              nextNode: _focusNodeBirthDate,
-              controller: _model.controllerPhone,
-              textInputType: TextInputType.number,
-            ),
-            CustomText(
-              text: 'Ngày sinh',
-              color: CustomColor.black,
-              context: context,
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),
-            CustomSizedBox(
-              context: context,
-              height: 16,
-            ),
-            SizedBox(
-              width: widget.deviceSize.width / 2.5,
-              child: CustomOutLineInputDateTime(
-                deviceSize: widget.deviceSize,
-                labelText: '',
-                isDisable: false,
-                focusNode: _focusNodeBirthDate,
-                controller: _model.controllerBirthDate,
-                icon: "assets/images/calendar.png",
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CustomSizedBox(
+                context: context,
+                height: 16,
               ),
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CustomText(
-                    text: "Giới Tính",
-                    color: CustomColor.black,
-                    context: context,
-                    fontSize: 16),
-                CustomSizedBox(context: context, height: 8),
-                Row(
-                  children: [
-                    customRadioButton(
-                        "Nam",
-                        "Nam",
-                        _model.txtGender == "Nam"
-                            ? CustomColor.blue
-                            : CustomColor.white),
-                    customRadioButton(
-                        "Nữ",
-                        "Nữ",
-                        _model.txtGender == "Nữ"
-                            ? CustomColor.blue
-                            : CustomColor.white),
-                  ],
-                )
-              ],
-            ),
-            CustomSizedBox(
-              context: context,
-              height: 16,
-            ),
-            CustomText(
-              text: "Địa Chỉ",
-              color: Colors.black,
-              context: context,
-              fontSize: 17,
-              fontWeight: FontWeight.bold,
-            ),
-            CustomSizedBox(
-              context: context,
-              height: 16,
-            ),
-            CustomOutLineInputWithHint(
-              deviceSize: widget.deviceSize,
-              hintText: "Địa chỉ",
-              isDisable: false,
-              focusNode: _focusNodeStreet,
-              controller: _model.controllerStreet,
-            ),
-            Center(
-              child: CustomButton(
-                  height: 24,
-                  isLoading: _model.isLoadingUpdateProfile,
-                  text: 'Cập Nhật',
-                  width: widget.deviceSize.width / 3,
-                  textColor: CustomColor.white,
-                  onPressFunction: _model.isDisableUpdateProfile == true
-                      ? null
-                      : () {
-                          onClickUpdateProfile(
-                              _model.controllerFullname.text,
-                              _model.controllerPhone.text,
-                              _model.controllerBirthDate.text,
-                              _model.txtGender,
-                              _model.controllerStreet.text);
-                        },
-                  buttonColor: _model.isDisableUpdateProfile == false
-                      ? CustomColor.blue
-                      : CustomColor.black[3],
-                  borderRadius: 6),
-            ),
-            CustomSizedBox(
-              context: context,
-              height: 24,
-            ),
-            CustomText(
-              text: "Đổi mật khẩu",
-              color: Colors.black,
-              context: context,
-              fontSize: 17,
-              fontWeight: FontWeight.bold,
-            ),
-            CustomSizedBox(
-              context: context,
-              height: 16,
-            ),
-            CustomOutLineInputWithHint(
-              deviceSize: widget.deviceSize,
-              hintText: 'Mật khẩu cũ',
-              isDisable: false,
-              isSecure: true,
-              focusNode: _focusNodeOldPassword,
-              nextNode: _focusNodePassword,
-              controller: _model.controllerOldPassword,
-            ),
-            CustomOutLineInputWithHint(
-              deviceSize: widget.deviceSize,
-              hintText: 'Mật khẩu mới',
-              isDisable: false,
-              nextNode: _focusNodeConfirmPassword,
-              isSecure: true,
-              focusNode: _focusNodePassword,
-              controller: _model.controllerPassword,
-            ),
-            CustomOutLineInputWithHint(
-              deviceSize: widget.deviceSize,
-              hintText: 'Xác nhận mật khẩu mới',
-              isDisable: false,
-              isSecure: true,
-              focusNode: _focusNodeConfirmPassword,
-              controller: _model.controllerConfirmPassword,
-            ),
-            if (_model.errorMsgChangePassword.isNotEmpty)
+              CustomText(
+                text: "Thông tin cá nhân",
+                color: Colors.black,
+                context: context,
+                fontSize: 17,
+                fontWeight: FontWeight.bold,
+              ),
+              CustomSizedBox(
+                context: context,
+                height: 16,
+              ),
+              CustomOutLineInputWithHint(
+                deviceSize: widget.deviceSize,
+                hintText: "Họ Và Tên",
+                isDisable: false,
+                focusNode: _focusNodeFullname,
+                nextNode: _focusNodePhone,
+                controller: _model.controllerFullname,
+              ),
+              CustomOutLineInputWithHint(
+                deviceSize: widget.deviceSize,
+                hintText: 'Số Điện Thoại',
+                isDisable: false,
+                focusNode: _focusNodePhone,
+                nextNode: _focusNodeBirthDate,
+                controller: _model.controllerPhone,
+                textInputType: TextInputType.number,
+              ),
+              CustomText(
+                text: 'Ngày sinh',
+                color: CustomColor.black,
+                context: context,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+              CustomSizedBox(
+                context: context,
+                height: 16,
+              ),
+              SizedBox(
+                width: widget.deviceSize.width / 2.5,
+                child: CustomOutLineInputDateTime(
+                  deviceSize: widget.deviceSize,
+                  labelText: '',
+                  isDisable: false,
+                  focusNode: _focusNodeBirthDate,
+                  controller: _model.controllerBirthDate,
+                  icon: "assets/images/calendar.png",
+                ),
+              ),
               Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(
-                    width: double.infinity,
-                    child: CustomText(
-                      text: _model.errorMsgChangePassword,
-                      maxLines: 2,
-                      color: CustomColor.red,
+                  CustomText(
+                      text: "Giới Tính",
+                      color: CustomColor.black,
                       context: context,
-                      textAlign: TextAlign.center,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  CustomSizedBox(
-                    context: context,
-                    height: 16,
+                      fontSize: 16),
+                  CustomSizedBox(context: context, height: 8),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: CustomRadioButton(
+                            function: () {
+                              onChangeGender("Nam");
+                            },
+                            text: "Nam",
+                            color: _model.txtGender == "Nam"
+                                ? CustomColor.blue
+                                : CustomColor.white,
+                            state: _model.txtGender,
+                            value: "Nam"),
+                      ),
+                      Expanded(
+                        child: CustomRadioButton(
+                            function: () {
+                              onChangeGender("Nữ");
+                            },
+                            text: "Nữ",
+                            color: _model.txtGender == "Nữ"
+                                ? CustomColor.blue
+                                : CustomColor.white,
+                            state: _model.txtGender,
+                            value: "Nữ"),
+                      ),
+                    ],
                   )
                 ],
               ),
-            Center(
-              child: CustomButton(
-                  height: 24,
-                  isLoading: _model.isLoadingChangePassword,
-                  text: 'Cập Nhật',
-                  width: widget.deviceSize.width / 3,
-                  textColor: CustomColor.white,
-                  onPressFunction: _model.isDisableUpdatePass == true
-                      ? null
-                      : () {
-                          onClickChangePassword(
-                              _model.controllerOldPassword.text,
-                              _model.controllerPassword.text,
-                              _model.controllerConfirmPassword.text);
-                        },
-                  buttonColor: _model.isDisableUpdatePass == false
-                      ? CustomColor.blue
-                      : CustomColor.black[3],
-                  borderRadius: 6),
-            )
-          ],
+              CustomSizedBox(
+                context: context,
+                height: 16,
+              ),
+              CustomText(
+                text: "Địa Chỉ",
+                color: Colors.black,
+                context: context,
+                fontSize: 17,
+                fontWeight: FontWeight.bold,
+              ),
+              CustomSizedBox(
+                context: context,
+                height: 16,
+              ),
+              CustomOutLineInputWithHint(
+                deviceSize: widget.deviceSize,
+                hintText: "Địa chỉ",
+                isDisable: false,
+                focusNode: _focusNodeStreet,
+                controller: _model.controllerStreet,
+              ),
+              Center(
+                child: CustomButton(
+                    height: 24,
+                    isLoading: _model.isLoadingUpdateProfile,
+                    text: 'Cập Nhật',
+                    width: widget.deviceSize.width / 3,
+                    textColor: CustomColor.white,
+                    onPressFunction: _model.isDisableUpdateProfile == true
+                        ? null
+                        : () {
+                            onClickUpdateProfile(
+                                _model.controllerFullname.text,
+                                _model.controllerPhone.text,
+                                _model.controllerBirthDate.text,
+                                _model.txtGender,
+                                _model.controllerStreet.text);
+                          },
+                    buttonColor: _model.isDisableUpdateProfile == false
+                        ? CustomColor.blue
+                        : CustomColor.black[3],
+                    borderRadius: 6),
+              ),
+              CustomSizedBox(
+                context: context,
+                height: 24,
+              ),
+              CustomText(
+                text: "Đổi mật khẩu",
+                color: Colors.black,
+                context: context,
+                fontSize: 17,
+                fontWeight: FontWeight.bold,
+              ),
+              CustomSizedBox(
+                context: context,
+                height: 16,
+              ),
+              CustomOutLineInputWithHint(
+                deviceSize: widget.deviceSize,
+                hintText: 'Mật khẩu cũ',
+                isDisable: false,
+                isSecure: true,
+                focusNode: _focusNodeOldPassword,
+                nextNode: _focusNodePassword,
+                controller: _model.controllerOldPassword,
+              ),
+              CustomOutLineInputWithHint(
+                deviceSize: widget.deviceSize,
+                hintText: 'Mật khẩu mới',
+                isDisable: false,
+                nextNode: _focusNodeConfirmPassword,
+                isSecure: true,
+                focusNode: _focusNodePassword,
+                controller: _model.controllerPassword,
+              ),
+              CustomOutLineInputWithHint(
+                deviceSize: widget.deviceSize,
+                hintText: 'Xác nhận mật khẩu mới',
+                isDisable: false,
+                isSecure: true,
+                focusNode: _focusNodeConfirmPassword,
+                controller: _model.controllerConfirmPassword,
+              ),
+              if (_model.errorMsgChangePassword.isNotEmpty)
+                Column(
+                  children: [
+                    SizedBox(
+                      width: double.infinity,
+                      child: CustomText(
+                        text: _model.errorMsgChangePassword,
+                        maxLines: 2,
+                        color: CustomColor.red,
+                        context: context,
+                        textAlign: TextAlign.center,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    CustomSizedBox(
+                      context: context,
+                      height: 16,
+                    )
+                  ],
+                ),
+              Center(
+                child: CustomButton(
+                    height: 24,
+                    isLoading: _model.isLoadingChangePassword,
+                    text: 'Cập Nhật',
+                    width: widget.deviceSize.width / 3,
+                    textColor: CustomColor.white,
+                    onPressFunction: _model.isDisableUpdatePass == true
+                        ? null
+                        : () {
+                            onClickChangePassword(
+                                _model.controllerOldPassword.text,
+                                _model.controllerPassword.text,
+                                _model.controllerConfirmPassword.text);
+                          },
+                    buttonColor: _model.isDisableUpdatePass == false
+                        ? CustomColor.blue
+                        : CustomColor.black[3],
+                    borderRadius: 6),
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -1,16 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rssms/common/custom_bottom_navigation.dart';
 import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_input_date.dart';
 import 'package:rssms/common/custom_input_with_hint.dart';
 import 'package:rssms/common/custom_sizebox.dart';
+import 'package:rssms/common/custom_snack_bar.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/common/list_time_select.dart';
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/user.dart';
-import 'package:rssms/pages/customers/my_account/invoice/invoive_update/widgets/image_select.dart';
-import 'package:collection/collection.dart';
+import 'package:rssms/models/invoice_get_model.dart';
+import 'package:rssms/pages/customers/cart/cart_screen.dart';
+import 'package:rssms/pages/customers/my_account/my_account.dart';
+import 'package:rssms/pages/delivery_staff/notifcation/notification_delivery.dart';
+import 'package:rssms/presenters/invoice_get_presenter.dart';
+import 'package:rssms/views/invoice_get_view.dart';
+import 'package:rssms/constants/constants.dart' as constants;
 
 class ChangeItemWidget extends StatefulWidget {
   Invoice? invoice;
@@ -21,24 +28,25 @@ class ChangeItemWidget extends StatefulWidget {
   _ChangeItemWidgetState createState() => _ChangeItemWidgetState();
 }
 
-class _ChangeItemWidgetState extends State<ChangeItemWidget> {
-  final _focusNodeBirthDate = FocusNode();
+class _ChangeItemWidgetState extends State<ChangeItemWidget>
+    with InvoiceGetView {
+  late InvoiceGetPresenter _presenter;
+  late InvoiceGetModel _model;
 
+  final _focusNodeBirthDate = FocusNode();
   final _focusNodeStreet = FocusNode();
 
-  final _controllerBirthDate = TextEditingController();
-  final _controllerStreet = TextEditingController();
-
-  String get _birthdate => _controllerBirthDate.text;
-  String get _street => _controllerStreet.text;
-  List<Map<String, dynamic>> currentIndexNoteChoice = [];
+  // List<Map<String, dynamic>> currentIndexNoteChoice = [];
 
   late int _currentIndex;
 
   @override
   void initState() {
     Users users = Provider.of<Users>(context, listen: false);
-    _controllerStreet.text = users.address!;
+    _presenter = InvoiceGetPresenter();
+    _model = _presenter.model;
+    _presenter.view = this;
+    _model.controllerStreet.text = users.address!;
     _currentIndex = -1;
     super.initState();
   }
@@ -49,17 +57,17 @@ class _ChangeItemWidgetState extends State<ChangeItemWidget> {
     });
   }
 
-  void onTapChoice(Map<String, dynamic> image, int indexFound, int index) {
-    if (indexFound == -1) {
-      setState(() {
-        currentIndexNoteChoice.add({...image, 'index': index});
-      });
-    } else {
-      setState(() {
-        currentIndexNoteChoice.removeAt(indexFound);
-      });
-    }
-  }
+  // void onTapChoice(Map<String, dynamic> image, int indexFound, int index) {
+  //   if (indexFound == -1) {
+  //     setState(() {
+  //       currentIndexNoteChoice.add({...image, 'index': index});
+  //     });
+  //   } else {
+  //     setState(() {
+  //       currentIndexNoteChoice.removeAt(indexFound);
+  //     });
+  //   }
+  // }
 
   @override
   void dispose() {
@@ -67,18 +75,55 @@ class _ChangeItemWidgetState extends State<ChangeItemWidget> {
     _focusNodeBirthDate.dispose();
     _focusNodeStreet.dispose();
 
-    _controllerBirthDate.dispose();
-    _controllerStreet.dispose();
+    _model.controllerBirthDate.dispose();
+    _model.controllerStreet.dispose();
   }
 
-  List<Widget> mapImageWidget(List<Map<String, dynamic>> listImage) => listImage
-      .mapIndexed<ImageSelectWidget>((i, ele) => ImageSelectWidget(
-            index: i,
-            image: ele,
-            listCurrent: currentIndexNoteChoice,
-            onTapChoice: onTapChoice,
-          ))
-      .toList();
+  @override
+  void updateStatusButton() {
+    _model.isLoadingButton = !_model.isLoadingButton;
+  }
+
+  @override
+  void onClickCreateRequest() async {
+    Users users = Provider.of<Users>(context, listen: false);
+    List<String>? date = _model.controllerBirthDate.text.split("/");
+
+    Map<String, dynamic> request = {
+      "orderId": widget.invoice!.id,
+      "returnAddress": _model.controllerStreet.text,
+      "returnTime": constants.LIST_TIME_PICK_UP[_currentIndex],
+      "returnDate": DateTime.parse(date![2] + "-" + date[1] + '-' + date[0]),
+      "type": 2
+    };
+    bool result = await _presenter.createRequest(request, users);
+    if (result) {
+      CustomSnackBar.buildErrorSnackbar(
+          context: context,
+          message: 'Yêu cầu rút đồ đã đươc gửi',
+          color: CustomColor.green);
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+              builder: (context) => const CustomBottomNavigation(
+                    listIndexStack: [
+                      MyAccountScreen(),
+                      CartScreen(),
+                      NotificationDeliveryScreen(),
+                    ],
+                    listNavigator: constants.LIST_CUSTOMER_BOTTOM_NAVIGATION,
+                  )),
+          (Route<dynamic> route) => false);
+    }
+  }
+
+  // List<Widget> mapImageWidget(List<Map<String, dynamic>> listImage) => listImage
+  //     .mapIndexed<ImageSelectWidget>((i, ele) => ImageSelectWidget(
+  //           index: i,
+  //           image: ele,
+  //           listCurrent: currentIndexNoteChoice,
+  //           onTapChoice: onTapChoice,
+  //         ))
+  //     .toList();
 
   @override
   Widget build(BuildContext context) {
@@ -137,7 +182,7 @@ class _ChangeItemWidgetState extends State<ChangeItemWidget> {
                   labelText: '',
                   isDisable: false,
                   focusNode: _focusNodeBirthDate,
-                  controller: _controllerBirthDate,
+                  controller: _model.controllerBirthDate,
                   icon: "assets/images/calendar.png",
                 ),
               ),
@@ -175,22 +220,22 @@ class _ChangeItemWidgetState extends State<ChangeItemWidget> {
             hintText: "Địa chỉ nhận hàng",
             isDisable: false,
             focusNode: _focusNodeStreet,
-            controller: _controllerStreet,
+            controller: _model.controllerStreet,
           ),
 
-          if (widget.invoice!.typeOrder == 1)
-            CustomText(
-              text: "Danh sách đồ",
-              color: CustomColor.black,
-              context: context,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          if (widget.invoice!.typeOrder == 1)
-            CustomSizedBox(
-              context: context,
-              height: 14,
-            ),
+          // if (widget.invoice!.typeOrder == 1)
+          //   CustomText(
+          //     text: "Danh sách đồ",
+          //     color: CustomColor.black,
+          //     context: context,
+          //     fontSize: 18,
+          //     fontWeight: FontWeight.bold,
+          //   ),
+          // if (widget.invoice!.typeOrder == 1)
+          //   CustomSizedBox(
+          //     context: context,
+          //     height: 14,
+          //   ),
           // if (widget.invoice!.typeOrder == 1)
           // SingleChildScrollView(
           //   scrollDirection: Axis.horizontal,
@@ -208,10 +253,12 @@ class _ChangeItemWidgetState extends State<ChangeItemWidget> {
           ),
           CustomButton(
               height: 24,
-              isLoading: false,
+              isLoading: _model.isLoadingButton,
               text: 'Gửi yêu cầu',
               textColor: CustomColor.white,
-              onPressFunction: null,
+              onPressFunction: () {
+                onClickCreateRequest();
+              },
               width: deviceSize.width,
               buttonColor: CustomColor.blue,
               borderRadius: 6),

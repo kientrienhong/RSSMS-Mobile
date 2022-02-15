@@ -27,8 +27,8 @@ class ProfilePresenter {
   }
 
   void handleOnChangeInputProfile(
-      String fullname, String phone, String address) {
-    _view!.updateStatusOfButtonUpdateProfile(fullname, phone, address);
+      String fullname, String phone, String address, String birthDate) {
+    _view!.updateStatusOfButtonUpdateProfile(fullname, phone, address, birthDate);
   }
   // void handleOnChangeInput(String email, String password,
   //     String confirmPassword, String firstname, String lastname, String phone) {

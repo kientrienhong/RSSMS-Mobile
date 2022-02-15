@@ -15,7 +15,7 @@ const List<Map<String, String>> LIST_DELIVERY_BOTTOM_NAVIGATION = [
   {'url': "assets/images/profile.png", 'label': 'Profile'},
   {'url': "assets/images/deliveryNav.png", 'label': 'Schedule'},
   {'url': "assets/images/qrCode.png", 'label': 'QR'},
-  {'url': "assets/images/notification.png", 'label': 'Notifcation'},
+  {'url': "assets/images/notification.png", 'label': 'Notification'},
 ];
 
 const DOOR_TO_DOOR_TAB = 0;
@@ -51,12 +51,25 @@ const LIST_NOTE_STATUS_BOX = [
 ];
 
 const LIST_STATUS_ORDER = [
-  {'color': CustomColor.red, 'name': 'Hủy'},
-  {'color': CustomColor.blue, 'name': 'Đã đặt'},
-  {'color': CustomColor.purple, 'name': 'Đã được xử lý'},
+  {'color': CustomColor.red, 'name': 'Đã Hủy'},
+  {'color': CustomColor.purple, 'name': 'Đang xử lý'},
+  {'color': CustomColor.blue, 'name': 'Đã được xử lý'},
   {'color': CustomColor.blue, 'name': 'Đang vận chuyển'},
   {'color': CustomColor.green, 'name': 'Đã về kho'},
   {'color': CustomColor.red, 'name': 'Đã hết hạn'},
+  {'color': CustomColor.purple, 'name': 'Đã được xử lý'},
+];
+
+const LIST_ICON_REQUEST = [
+  {'name': 'assets/images/invoice.png'},
+  {'name': 'assets/images/invoice.png'},
+  {'name': 'assets/images/truck1.png'},
+  {'name': 'assets/images/error1.png'},
+];
+
+const LIST_STATUS_REQUEST = [
+  {'name': 'Hoàn Thành'},
+  {'name': 'Đang xử lý'},
 ];
 
 const List<Map<String, String>> TAB_DOOR_TO_DOOR = [
@@ -70,6 +83,11 @@ const List<String> LIST_TIME_PICK_UP = [
   "12pm - 2pm",
   "2pm - 4pm",
   "4pm - 6pm",
+];
+
+const List<String> LIST_URL_NOTFICATION = [
+  'assets/images/invoice.png',
+  'assets/images/truck1.png'
 ];
 
 const Map<String, String> ICON_INVOICE = {

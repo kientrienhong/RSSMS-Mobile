@@ -53,6 +53,7 @@ class _QuantityWidgetState extends State<QuantityWidgetCustom> {
           width: widget.width,
           height: 24,
           child: TextFormField(
+            readOnly: true,
             keyboardType: TextInputType.number,
             textAlign: TextAlign.center,
             decoration: InputDecoration(
