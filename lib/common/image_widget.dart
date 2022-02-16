@@ -7,7 +7,7 @@ import 'package:rssms/models/entity/imageEntity.dart';
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/order_detail.dart';
 import 'package:rssms/common/image_pop_up.dart';
-import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_screen/image_item.dart';
+import 'package:rssms/common/image_item.dart';
 
 class ImageWidget extends StatefulWidget {
   OrderDetail orderDetail;
@@ -120,45 +120,46 @@ class _ImageWidgetState extends State<ImageWidget> {
                   index: i,
                   image: widget.orderDetail.images[i],
                 ),
-              Container(
-                  padding:
-                      const EdgeInsets.only(left: 8.0, right: 8, bottom: 18),
-                  height: deviceSize.width * 1 / 3,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(4),
-                    child: DottedBorder(
-                        color: CustomColor.black,
-                        strokeWidth: 1,
-                        dashPattern: const [8, 4],
-                        child: Center(
-                          child: TextButton(
-                            onPressed: () {
-                              showDialog(
-                                  context: context,
-                                  builder: (ctx) {
-                                    return ImageDetailPopUp(
-                                      isView: false,
-                                      orderDetail: widget.orderDetail,
-                                      imageUpdate: null,
-                                    );
-                                  });
-                            },
-                            clipBehavior: Clip.none,
-                            autofocus: false,
-                            style: ButtonStyle(
-                                minimumSize: MaterialStateProperty.all(Size(
-                                    deviceSize.width,
-                                    deviceSize.width * 1 / 3))),
-                            child: CustomText(
-                              text: "Thêm hình ảnh",
-                              color: CustomColor.black,
-                              context: context,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
+              if (widget.isView == false)
+                Container(
+                    padding:
+                        const EdgeInsets.only(left: 8.0, right: 8, bottom: 18),
+                    height: deviceSize.width * 1 / 3,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(4),
+                      child: DottedBorder(
+                          color: CustomColor.black,
+                          strokeWidth: 1,
+                          dashPattern: const [8, 4],
+                          child: Center(
+                            child: TextButton(
+                              onPressed: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (ctx) {
+                                      return ImageDetailPopUp(
+                                        isView: false,
+                                        orderDetail: widget.orderDetail,
+                                        imageUpdate: null,
+                                      );
+                                    });
+                              },
+                              clipBehavior: Clip.none,
+                              autofocus: false,
+                              style: ButtonStyle(
+                                  minimumSize: MaterialStateProperty.all(Size(
+                                      deviceSize.width,
+                                      deviceSize.width * 1 / 3))),
+                              child: CustomText(
+                                text: "Thêm hình ảnh",
+                                color: CustomColor.black,
+                                context: context,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ),
-                        )),
-                  )),
+                          )),
+                    )),
             ],
           )
         ],

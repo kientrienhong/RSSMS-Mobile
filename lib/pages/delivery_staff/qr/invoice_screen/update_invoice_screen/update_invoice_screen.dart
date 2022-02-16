@@ -13,7 +13,7 @@ import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/order_detail.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/models/invoice_update_model.dart';
-import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_screen/image_widget.dart';
+import 'package:rssms/common/image_widget.dart';
 import 'package:rssms/presenters/invoice_update_presenter.dart';
 import 'package:rssms/views/invoice_update_view.dart';
 

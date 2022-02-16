@@ -42,6 +42,7 @@ class _ImageDetailPopUpState extends State<ImageDetailPopUp>
 
   @override
   void onClickImage() {
+    if (widget.isView == true) return;
     showDialog<ImageSource>(
       context: context,
       builder: (context) =>
@@ -94,6 +95,11 @@ class _ImageDetailPopUpState extends State<ImageDetailPopUp>
 
   @override
   void onClickSubmit() {
+    if (widget.isView == true) {
+      Navigator.of(context).pop();
+      return;
+    }
+
     if (_formKey.currentState!.validate()) {
       if (widget.imageUpdate == null) {
         addImage();
@@ -107,7 +113,7 @@ class _ImageDetailPopUpState extends State<ImageDetailPopUp>
   @override
   void initState() {
     super.initState();
-    // _presenter = AddImagePopUpPresenter1(widget.imageUpdate);
+    _presenter = AddImagePopUpPresenter(widget.imageUpdate);
     _model = _presenter.model;
     _presenter.view = this;
     _nameFocusNode = FocusNode();
