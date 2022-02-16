@@ -14,6 +14,7 @@ class OrderDetail {
   final int productType;
   final String note;
   final List<ImageEntity> images;
+  final List<ImageEntity> imageProduct;
   OrderDetail({
     required this.id,
     required this.productId,
@@ -23,6 +24,7 @@ class OrderDetail {
     required this.productType,
     required this.note,
     required this.images,
+    required this.imageProduct,
   });
 
   OrderDetail copyWith({
@@ -34,17 +36,18 @@ class OrderDetail {
     int? productType,
     String? note,
     List<ImageEntity>? images,
+    List<ImageEntity>? imageProduct,
   }) {
     return OrderDetail(
-      id: id ?? this.id,
-      productId: productId ?? this.productId,
-      productName: productName ?? this.productName,
-      price: price ?? this.price,
-      amount: amount ?? this.amount,
-      productType: productType ?? this.productType,
-      note: note ?? this.note,
-      images: images ?? this.images,
-    );
+        id: id ?? this.id,
+        productId: productId ?? this.productId,
+        productName: productName ?? this.productName,
+        price: price ?? this.price,
+        amount: amount ?? this.amount,
+        productType: productType ?? this.productType,
+        note: note ?? this.note,
+        images: images ?? this.images,
+        imageProduct: imageProduct ?? this.imageProduct);
   }
 
   Map<String, dynamic> toMap() {
@@ -57,6 +60,7 @@ class OrderDetail {
       'productType': productType,
       'note': note,
       'images': images.map((x) => x.toMap()).toList(),
+      'productImages': imageProduct.map((x) => x.toMap()).toList(),
     };
   }
 
@@ -71,13 +75,16 @@ class OrderDetail {
       productType: map['productType']?.toInt() ?? 0,
       images: List<ImageEntity>.from(
           map['images']?.map((x) => ImageEntity.fromMap(x))),
+      imageProduct: List<ImageEntity>.from(
+          map['productImages']?.map((x) => ImageEntity.fromMap(x))),
       // currentBox: map['listImageUpdate'] ?? []);
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory OrderDetail.fromJson(String source) => OrderDetail.fromMap(json.decode(source));
+  factory OrderDetail.fromJson(String source) =>
+      OrderDetail.fromMap(json.decode(source));
 
   @override
   String toString() {
@@ -87,27 +94,27 @@ class OrderDetail {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-  
+
     return other is OrderDetail &&
-      other.id == id &&
-      other.productId == productId &&
-      other.productName == productName &&
-      other.price == price &&
-      other.amount == amount &&
-      other.productType == productType &&
-      other.note == note &&
-      listEquals(other.images, images);
+        other.id == id &&
+        other.productId == productId &&
+        other.productName == productName &&
+        other.price == price &&
+        other.amount == amount &&
+        other.productType == productType &&
+        other.note == note &&
+        listEquals(other.images, images);
   }
 
   @override
   int get hashCode {
     return id.hashCode ^
-      productId.hashCode ^
-      productName.hashCode ^
-      price.hashCode ^
-      amount.hashCode ^
-      productType.hashCode ^
-      note.hashCode ^
-      images.hashCode;
+        productId.hashCode ^
+        productName.hashCode ^
+        price.hashCode ^
+        amount.hashCode ^
+        productType.hashCode ^
+        note.hashCode ^
+        images.hashCode;
   }
 }

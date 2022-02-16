@@ -4,7 +4,7 @@ class Request {
   final int id;
   final int orderId;
   final int userId;
-  final String totalPrice;
+  final double totalPrice;
   final String returnAddress;
   final String returnTime;
   final String oldReturnDate;
@@ -38,7 +38,7 @@ class Request {
     int? id,
     int? orderId,
     int? userId,
-    String? totalPrice,
+    double? totalPrice,
     String? returnAddress,
     String? returnTime,
     String? oldReturnDate,
@@ -95,7 +95,7 @@ class Request {
       id: map['id']?.toInt() ?? 0,
       orderId: map['orderId']?.toInt() ?? 0,
       userId: map['userId']?.toInt() ?? 0,
-      totalPrice: map['totalPrice'] ?? '',
+      totalPrice: map['totalPrice'] ?? 0,
       returnAddress: map['returnAddress'] ?? '',
       returnTime: map['returnTime'] ?? '',
       oldReturnDate: map['oldReturnDate'] ?? '',
@@ -112,7 +112,8 @@ class Request {
 
   String toJson() => json.encode(toMap());
 
-  factory Request.fromJson(String source) => Request.fromMap(json.decode(source));
+  factory Request.fromJson(String source) =>
+      Request.fromMap(json.decode(source));
 
   @override
   String toString() {
@@ -122,41 +123,41 @@ class Request {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-  
+
     return other is Request &&
-      other.id == id &&
-      other.orderId == orderId &&
-      other.userId == userId &&
-      other.totalPrice == totalPrice &&
-      other.returnAddress == returnAddress &&
-      other.returnTime == returnTime &&
-      other.oldReturnDate == oldReturnDate &&
-      other.returnDate == returnDate &&
-      other.type == type &&
-      other.status == status &&
-      other.deliveryStaffName == deliveryStaffName &&
-      other.deliveryStaffPhone == deliveryStaffPhone &&
-      other.note == note &&
-      other.cancelBy == cancelBy &&
-      other.cancelByPhone == cancelByPhone;
+        other.id == id &&
+        other.orderId == orderId &&
+        other.userId == userId &&
+        other.totalPrice == totalPrice &&
+        other.returnAddress == returnAddress &&
+        other.returnTime == returnTime &&
+        other.oldReturnDate == oldReturnDate &&
+        other.returnDate == returnDate &&
+        other.type == type &&
+        other.status == status &&
+        other.deliveryStaffName == deliveryStaffName &&
+        other.deliveryStaffPhone == deliveryStaffPhone &&
+        other.note == note &&
+        other.cancelBy == cancelBy &&
+        other.cancelByPhone == cancelByPhone;
   }
 
   @override
   int get hashCode {
     return id.hashCode ^
-      orderId.hashCode ^
-      userId.hashCode ^
-      totalPrice.hashCode ^
-      returnAddress.hashCode ^
-      returnTime.hashCode ^
-      oldReturnDate.hashCode ^
-      returnDate.hashCode ^
-      type.hashCode ^
-      status.hashCode ^
-      deliveryStaffName.hashCode ^
-      deliveryStaffPhone.hashCode ^
-      note.hashCode ^
-      cancelBy.hashCode ^
-      cancelByPhone.hashCode;
+        orderId.hashCode ^
+        userId.hashCode ^
+        totalPrice.hashCode ^
+        returnAddress.hashCode ^
+        returnTime.hashCode ^
+        oldReturnDate.hashCode ^
+        returnDate.hashCode ^
+        type.hashCode ^
+        status.hashCode ^
+        deliveryStaffName.hashCode ^
+        deliveryStaffPhone.hashCode ^
+        note.hashCode ^
+        cancelBy.hashCode ^
+        cancelByPhone.hashCode;
   }
 }

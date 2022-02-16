@@ -120,7 +120,7 @@ class _DeliveryScreenState extends State<DeliveryScreen>
             height: 32,
           ),
           CustomText(
-            text: 'Delivery Schedule',
+            text: 'Lịch giao hàng',
             color: CustomColor.black,
             context: context,
             fontSize: 24,

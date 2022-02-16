@@ -398,18 +398,8 @@ class ApiServices {
         'Authorization': 'Bearer $idToken'
       };
 
-      Invoice invoiceTemp = invoice.copyWith();
-
-      List<OrderDetail> listOrderDetailTemp =
-          invoiceTemp.orderDetails.map<OrderDetail>((e) {
-        e.images.removeAt(0);
-        return e;
-      }).toList();
-      invoiceTemp.copyWith(orderDetails: listOrderDetailTemp);
-
-      final url = Uri.parse('$_domain/api/v1/orders/${invoiceTemp.id}');
-      return http.put(url,
-          headers: headers, body: jsonEncode(invoiceTemp.toMap()));
+      final url = Uri.parse('$_domain/api/v1/orders/${invoice.id}');
+      return http.put(url, headers: headers, body: jsonEncode(invoice.toMap()));
     } catch (e) {
       print(e.toString());
       throw Exception('Update Failed');

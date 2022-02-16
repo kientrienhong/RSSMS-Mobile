@@ -99,6 +99,7 @@ class ScheduleWidget extends StatelessWidget {
             onTap: () {
               Invoice invoiceProvider =
                   Provider.of<Invoice>(context, listen: false);
+              var test = invoice;
               invoiceProvider.setInvoice(invoice: invoice);
               Navigator.push(
                 context,
@@ -147,7 +148,7 @@ class ScheduleWidget extends StatelessWidget {
                             Row(
                               children: [
                                 CustomText(
-                                    text: 'Order Id: #${schedule['id']}',
+                                    text: 'Mã đơn: #${schedule['id']}',
                                     color: CustomColor.black,
                                     fontWeight: FontWeight.bold,
                                     context: context,
@@ -170,7 +171,7 @@ class ScheduleWidget extends StatelessWidget {
                           height: 8,
                         ),
                         buildInfo(
-                            'Address: ',
+                            'Địa chỉ: ',
                             isDelivery
                                 ? schedule['deliveryAddress']
                                 : schedule['addressReturn'],
@@ -179,13 +180,13 @@ class ScheduleWidget extends StatelessWidget {
                           context: context,
                           height: 8,
                         ),
-                        buildInfo('Customer Name: ', schedule['customerName'],
+                        buildInfo('Tên khách hàng: ', schedule['customerName'],
                             context),
                         CustomSizedBox(
                           context: context,
                           height: 8,
                         ),
-                        buildInfo('Customer Phone: ', schedule['customerPhone'],
+                        buildInfo('SĐT khách hàng: ', schedule['customerPhone'],
                             context),
                       ],
                     ),

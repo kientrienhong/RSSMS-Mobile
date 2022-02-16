@@ -98,8 +98,8 @@ class _ImageWidgetState extends State<ImageWidget> {
                 context: context,
                 fontSize: 14),
             CustomText(
-                text: (widget.orderDetail.images.length - 1).toString() +
-                    ' hình ảnh',
+                text:
+                    (widget.orderDetail.images.length).toString() + ' hình ảnh',
                 color: Colors.black38,
                 context: context,
                 fontSize: 14)
@@ -108,7 +108,7 @@ class _ImageWidgetState extends State<ImageWidget> {
         children: [
           Column(
             children: [
-              for (var i = 1; i < widget.orderDetail.images.length; i++)
+              for (var i = 0; i < widget.orderDetail.images.length; i++)
                 ImageItem(
                   isView: widget.isView,
                   onPressDelete: () {

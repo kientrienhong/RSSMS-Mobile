@@ -21,7 +21,7 @@ class AccessoryInvoiceWidget extends StatelessWidget {
           Row(
             children: [
               Image.network(
-                product!.images[0].url!,
+                product!.imageProduct[0].url!,
                 height: 50,
                 width: 50,
               ),

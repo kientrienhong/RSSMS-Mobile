@@ -173,7 +173,7 @@ class _CancelledRequestScreenState extends State<CancelledRequestScreen>
                                 fontWeight: FontWeight.bold,
                                 fontSize: 17),
                             CustomText(
-                                text: _model!.request!.totalPrice,
+                                text: _model!.request!.totalPrice.toString(),
                                 color: Colors.black,
                                 context: context,
                                 fontWeight: FontWeight.bold,
