@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dotted_border/dotted_border.dart';
@@ -9,24 +10,22 @@ import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_input.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
-import 'package:rssms/helpers/validator.dart';
 import 'package:rssms/models/add_image_pop_up_model.dart';
-import 'package:rssms/models/entity/imageEntity.dart';
-import 'package:rssms/models/entity/invoice.dart';
-import 'package:rssms/models/entity/order_detail.dart';
 import 'package:rssms/presenters/add_image_pop_up_presenter.dart';
 import 'package:rssms/views/add_image_pop_up_view.dart';
 
 class ImageDetailPopUp extends StatefulWidget {
   final bool isView;
-  OrderDetail orderDetail;
-  ImageEntity? imageUpdate;
-  ImageDetailPopUp(
-      {Key? key,
-      required this.isView,
-      required this.orderDetail,
-      this.imageUpdate})
-      : super(key: key);
+  Map<String, dynamic> orderDetail;
+  Map<String, dynamic>? imageUpdate;
+  Function updateUI;
+  ImageDetailPopUp({
+    Key? key,
+    required this.updateUI,
+    required this.isView,
+    required this.orderDetail,
+    required this.imageUpdate,
+  }) : super(key: key);
 
   @override
   _ImageDetailPopUpState createState() => _ImageDetailPopUpState();
@@ -66,30 +65,31 @@ class _ImageDetailPopUpState extends State<ImageDetailPopUp>
   }
 
   void addImage() {
-    var listImage = [...widget.orderDetail.images];
-
-    listImage.add(ImageEntity(
-        file: _model.file, name: _model.name.text, note: _model.note.text));
-    OrderDetail orderDetailtemp =
-        widget.orderDetail.copyWith(images: listImage);
-    Invoice invoice = Provider.of<Invoice>(context, listen: false);
-    invoice.updateOrderDetail(orderDetailtemp);
+    setState(() {
+      widget.orderDetail['imageEntity'].add(Map<String, dynamic>.from({
+        'file': _model.file,
+        'name': _model.name.text,
+        'note': _model.note.text,
+        'id': widget.orderDetail['imageEntity'].length
+      }));
+    });
+    widget.updateUI();
   }
 
   void editImage() {
-    var listImage = [...widget.orderDetail.images];
+    Map<String, dynamic> imageEntity = {...widget.imageUpdate!};
 
-    int indexFound =
-        listImage.indexWhere((element) => element.id == widget.imageUpdate!.id);
-    listImage[indexFound] = listImage[indexFound].copyWith(
-      file: _model.file,
-      name: _model.name.text,
-      note: _model.note.text,
-    );
-    OrderDetail orderDetailtemp =
-        widget.orderDetail.copyWith(images: listImage);
-    Invoice invoice = Provider.of<Invoice>(context, listen: false);
-    invoice.updateOrderDetail(orderDetailtemp);
+    imageEntity['file'] = _model.file != null ? _model.file as Object : null;
+    imageEntity['name'] = _model.name.text;
+    imageEntity['note'] = _model.note.text;
+
+    int indexFound = widget.orderDetail['imageEntity']
+        .indexWhere((e) => e['id'] == imageEntity['id']);
+
+    setState(() {
+      widget.orderDetail['imageEntity'][indexFound] = imageEntity;
+    });
+    widget.updateUI();
   }
 
   @override
@@ -107,7 +107,7 @@ class _ImageDetailPopUpState extends State<ImageDetailPopUp>
   @override
   void initState() {
     super.initState();
-    // _presenter = AddImagePopUpPresenter1(widget.imageUpdate);
+    _presenter = AddImagePopUpPresenter(widget.imageUpdate);
     _model = _presenter.model;
     _presenter.view = this;
     _nameFocusNode = FocusNode();
@@ -127,9 +127,9 @@ class _ImageDetailPopUpState extends State<ImageDetailPopUp>
           ),
         );
       } else if (widget.imageUpdate != null) {
-        if (widget.imageUpdate!.url != null) {
-          return Image.network(
-            widget.imageUpdate!.url!,
+        if (widget.imageUpdate!['url'] != null) {
+          return Image.asset(
+            widget.imageUpdate!['url']!,
           );
         }
         return DottedBorder(
@@ -189,7 +189,6 @@ class _ImageDetailPopUpState extends State<ImageDetailPopUp>
                   height: 24,
                 ),
                 CustomOutLineInput(
-                    validator: Validator.notEmpty,
                     controller: _model.name,
                     isDisable: widget.isView,
                     focusNode: _nameFocusNode,
@@ -197,7 +196,6 @@ class _ImageDetailPopUpState extends State<ImageDetailPopUp>
                     nextNode: _noteFocusNode,
                     labelText: 'Tên'),
                 CustomOutLineInput(
-                    validator: Validator.notEmpty,
                     controller: _model.note,
                     isDisable: widget.isView,
                     focusNode: _noteFocusNode,

@@ -4,7 +4,7 @@ class Request {
   final int id;
   final int orderId;
   final int userId;
-  final String totalPrice;
+  final double totalPrice;
   final String returnAddress;
   final String returnTime;
   final String oldReturnDate;
@@ -38,7 +38,7 @@ class Request {
     int? id,
     int? orderId,
     int? userId,
-    String? totalPrice,
+    double? totalPrice,
     String? returnAddress,
     String? returnTime,
     String? oldReturnDate,
@@ -95,7 +95,7 @@ class Request {
       id: map['id']?.toInt() ?? 0,
       orderId: map['orderId']?.toInt() ?? 0,
       userId: map['userId']?.toInt() ?? 0,
-      totalPrice: map['totalPrice'] ?? '',
+      totalPrice: map['totalPrice']?? 0.0,
       returnAddress: map['returnAddress'] ?? '',
       returnTime: map['returnTime'] ?? '',
       oldReturnDate: map['oldReturnDate'] ?? '',

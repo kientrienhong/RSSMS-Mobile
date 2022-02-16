@@ -6,7 +6,8 @@ class AddImagePopUpPresenter {
   late AddImagePopUpModel model;
   late AddImagePopUpView view;
 
-  AddImagePopUpPresenter(ImageEntity? imageUpdate) {
+  AddImagePopUpPresenter(Map<String, dynamic>? imageUpdate) {
     model = AddImagePopUpModel(imageUpdate);
   }
+
 }
