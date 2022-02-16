@@ -4,7 +4,6 @@ import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/models/entity/invoice.dart';
-import 'package:rssms/pages/delivery_staff/delivery/delivery_screen.dart';
 import 'package:rssms/constants/constants.dart';
 import 'package:rssms/pages/delivery_staff/qr/invoice_screen/invoice_screen.dart';
 
@@ -57,6 +56,7 @@ class ScheduleWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
     Color status = CustomColor.black[3]!;
+    final test = schedule;
     DateTime deliveryDateTime = DateTime.parse(schedule['deliveryDate']);
     bool isDelivery = deliveryDateTime.isAfter(firstDayOfWeek!) &&
         deliveryDateTime.isBefore(endDayOfWeek!);
@@ -117,9 +117,7 @@ class ScheduleWidget extends StatelessWidget {
                 children: [
                   CustomText(
                       // text: schedule['time'],
-                      text: isDelivery
-                          ? schedule['deliveryTime']
-                          : schedule['returnTime'],
+                      text: schedule['deliveryTime'],
                       color: CustomColor.black,
                       context: context,
                       fontWeight: FontWeight.bold,
@@ -175,7 +173,7 @@ class ScheduleWidget extends StatelessWidget {
                             'Address: ',
                             isDelivery
                                 ? schedule['deliveryAddress']
-                                : schedule['returnAddress'],
+                                : schedule['addressReturn'],
                             context),
                         CustomSizedBox(
                           context: context,
