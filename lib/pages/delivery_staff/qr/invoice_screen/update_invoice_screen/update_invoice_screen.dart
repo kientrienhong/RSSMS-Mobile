@@ -208,57 +208,6 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                 context: context,
                 height: 16,
               ),
-              CustomText(
-                text: "Tình trạng đơn hàng",
-                color: CustomColor.black,
-                context: context,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-              CustomSizedBox(
-                context: context,
-                height: 16,
-              ),
-              CustomRadioButton(
-                  function: () {
-                    setState(() {
-                      _model.txtStatus = "Đã đặt";
-                    });
-                  },
-                  text: "Đã đặt",
-                  color: Colors.black,
-                  state: _model.txtStatus,
-                  value: "Đã đặt"),
-              CustomRadioButton(
-                  function: () {
-                    setState(() {
-                      _model.txtStatus = "Đang lưu kho";
-                    });
-                  },
-                  text: "Đang lưu kho",
-                  color: CustomColor.black,
-                  state: _model.txtStatus,
-                  value: "Đang lưu kho"),
-              CustomRadioButton(
-                  function: () {
-                    setState(() {
-                      _model.txtStatus = "Yêu cầu trả";
-                    });
-                  },
-                  text: "Yêu cầu trả",
-                  color: CustomColor.black,
-                  state: _model.txtStatus,
-                  value: "Yêu cầu trả"),
-              CustomRadioButton(
-                  function: () {
-                    setState(() {
-                      _model.txtStatus = "Đã trả";
-                    });
-                  },
-                  text: "Đã trả",
-                  color: CustomColor.black,
-                  state: _model.txtStatus,
-                  value: "Đã trả"),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

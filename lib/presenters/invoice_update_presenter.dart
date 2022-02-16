@@ -67,7 +67,8 @@ class InvoiceUpdatePresenter {
 
       if (listOrderDetail != null) {
         invoice.setInvoice(
-            invoice: invoice.copyWith(orderDetails: listOrderDetail));
+            invoice: invoice.copyWith(
+                orderDetails: listOrderDetail, isPaid: model.getIsPaid));
         var response =
             await ApiServices.sendNotification(invoice, user.idToken!);
         if (response.statusCode == 200) {
