@@ -197,7 +197,9 @@ class InvoiceProductWidget extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     fontSize: 16),
                 CustomText(
-                    text: oCcy.format(totalProduct * invoice!.durationMonths) +
+                    text: oCcy.format(totalProduct *
+                            (returnDate.difference(deliveryDate).inDays / 30)
+                                .ceil()) +
                         " đ",
                     color: CustomColor.blue,
                     context: context,
@@ -312,7 +314,10 @@ class InvoiceProductWidget extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     fontSize: 15),
                 CustomText(
-                    text: oCcy.format(totalProduct * invoice!.durationMonths +
+                    text: oCcy.format(totalProduct *
+                                (returnDate.difference(deliveryDate).inDays /
+                                        30)
+                                    .ceil() +
                             totalAccessory) +
                         " đ",
                     color: CustomColor.blue,
@@ -388,7 +393,10 @@ class InvoiceProductWidget extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     fontSize: 19),
                 CustomText(
-                    text: oCcy.format(totalProduct * invoice!.durationMonths +
+                    text: oCcy.format(totalProduct *
+                                (returnDate.difference(deliveryDate).inDays /
+                                        30)
+                                    .ceil() +
                             totalAccessory +
                             totalPackaging) +
                         " đ",

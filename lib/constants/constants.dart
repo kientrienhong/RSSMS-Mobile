@@ -2,8 +2,11 @@ import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/pages/customers/input_information_booking/input_information.dart';
 import 'package:rssms/pages/customers/my_account/request/request_screen.dart';
 import 'package:rssms/pages/customers/payment_method_booking/payment_method_booking_screen.dart';
-import 'package:rssms/pages/delivery_staff/delivery/delivery_screen.dart';
-import 'package:rssms/pages/delivery_staff/request/widgets/request_widget.dart';
+
+const List<Map<String, String>> TAB_INVOICE_DETAIL = [
+  {"name": "Hóa đơn"},
+  {"name": "Đồ đạc"}
+];
 
 const List<Map<String, String>> LIST_CUSTOMER_BOTTOM_NAVIGATION = [
   {'url': "assets/images/profile.png", 'label': 'Profile'},
@@ -84,6 +87,30 @@ const List<String> LIST_TIME_PICK_UP = [
   "2pm - 4pm",
   "4pm - 6pm",
 ];
+
+const Map<String, dynamic> IMAGE_INVOICE = {
+  "name": "Test 1",
+  'imageEntity': <Map<String, dynamic>>[
+    {
+      "url": "assets/images/image28.png",
+      "name": 'Box 1',
+      'id': 0,
+      'note': 'dsadasdasd'
+    },
+    {
+      "url": "assets/images/image27.png",
+      "name": 'Box 2',
+      'id': 1,
+      'note': 'dsadasdasd'
+    },
+    {
+      "url": "assets/images/image27.png",
+      "name": 'Box 2',
+      'id': 3,
+      'note': 'dsadasdasd'
+    },
+  ]
+};
 
 const List<String> LIST_URL_NOTFICATION = [
   'assets/images/invoice.png',

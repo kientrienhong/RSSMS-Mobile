@@ -6,33 +6,32 @@ import 'package:rssms/models/entity/invoice.dart';
 class InvoiceModel {
   List<Invoice>? _listInvoiceFull;
   List<Invoice>? _listInvoice;
+
   TextEditingController? _searchValue;
   Invoice? searchInvoice;
   String? filterIndex = "10";
   bool? isLoadingInvoice;
 
   Stream<List<Invoice>>? stream;
-  StreamController<List<Map>>? _controller;
+  StreamController<List<Invoice>>? _controller;
   bool? hasMore;
-  List<Map>? _data;
+  List<Invoice>? _data;
   Map<String, dynamic>? metadata;
 
   int? page;
   int? totalPage;
 
   InvoiceModel() {
-    listInvoice = [];
-    _listInvoiceFull = [];
+    listInvoice = List<Invoice>.empty(growable: true);
+    _listInvoiceFull = List<Invoice>.empty(growable: true);
     _searchValue = TextEditingController();
     isLoadingInvoice = false;
 
     page = 1;
     _data = [];
-    _controller = StreamController<List<Map>>.broadcast();
+    _controller = StreamController<List<Invoice>>.broadcast();
     stream = _controller!.stream.map((event) {
-      return event
-          .map<Invoice>((e) => Invoice.fromMap(e as Map<String, dynamic>))
-          .toList();
+      return event;
     });
 
     hasMore = true;
@@ -59,7 +58,8 @@ class InvoiceModel {
 
   set listInvoiceFull(value) => _listInvoiceFull = value;
 
-  set listInvoice(List<Invoice>? value) => _listInvoice = value;
+  set listInvoice(value) => _listInvoice = value;
+  get listInvoice => _listInvoice;
 
   get searchValue => _searchValue;
 
@@ -85,7 +85,7 @@ class InvoiceModel {
 
   set setHasMore(hasMore) => hasMore = hasMore;
 
-  get data => _data;
+  List<Invoice>? get data => _data;
 
   set data(value) => _data = value;
 

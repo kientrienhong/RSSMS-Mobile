@@ -9,12 +9,12 @@ class AddImagePopUpModel {
   late bool isLoading;
   File? file;
 
-  AddImagePopUpModel(ImageEntity? imageUpdate) {
+  AddImagePopUpModel(Map<String, dynamic>? imageUpdate) {
     if (imageUpdate != null) {
-      name = TextEditingController(text: imageUpdate.name);
-      note = TextEditingController(text: imageUpdate.note);
-      if (imageUpdate.file != null) {
-        file = imageUpdate.file;
+      name = TextEditingController(text: imageUpdate['name']);
+      note = TextEditingController(text: imageUpdate['note']);
+      if (imageUpdate['file'] != null) {
+        file = imageUpdate['file'];
       }
     } else {
       name = TextEditingController();
