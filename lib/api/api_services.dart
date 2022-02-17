@@ -477,4 +477,20 @@ class ApiServices {
       throw Exception('Update Failed');
     }
   }
+
+  static Future<dynamic> updateListOrders(
+      String idToken, List<Map<dynamic, dynamic>> listOrderStatus) {
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        'Authorization': 'Bearer $idToken'
+      };
+
+      final url = Uri.parse('$_domain/api/v1/orders');
+      return http.put(url, headers: headers, body: jsonEncode(listOrderStatus));
+    } catch (e) {
+      print(e.toString());
+      throw Exception('Update Failed');
+    }
+  }
 }

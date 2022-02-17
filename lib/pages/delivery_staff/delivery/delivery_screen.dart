@@ -4,9 +4,11 @@ import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
+import 'package:rssms/common/custom_snack_bar.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:collection/collection.dart';
 import 'package:rssms/models/delivery_screen_model.dart';
+import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/pages/customers/cart/widgets/product_widget.dart';
 import 'package:rssms/pages/delivery_staff/delivery/widgets/dialog_confirm_cancel.dart';
@@ -121,6 +123,13 @@ class _DeliveryScreenState extends State<DeliveryScreen>
       .toList();
 
   @override
+  updateLoadingStartDelivery() {
+    setState(() {
+      _model.isLoadingStartDelivery = !_model.isLoadingStartDelivery;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
     return Scaffold(
@@ -152,22 +161,60 @@ class _DeliveryScreenState extends State<DeliveryScreen>
                   .toList(),
             ),
           ),
-          CustomButton(
-              height: 24,
-              text: 'Hủy lịch',
-              width: deviceSize.width * 2 / 3,
-              onPressFunction: () {
-                showDialog(
-                    context: context,
-                    builder: (ctx) {
-                      return DialogConfirmCancel(
-                          dateTime: _model.listDateTime[_model.currentIndex]);
-                    });
-              },
-              isLoading: false,
-              textColor: CustomColor.white,
-              buttonColor: CustomColor.blue,
-              borderRadius: 6),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              CustomButton(
+                  height: 24,
+                  text: 'Bắt đầu vận chuyển',
+                  width: deviceSize.width * 2 / 3,
+                  onPressFunction: () async {
+                    Users user = Provider.of<Users>(context, listen: false);
+                    bool? result =
+                        await _presenter.startDelivery(user.idToken!);
+                    if (result == null) {
+                      updateLoadingStartDelivery();
+                    } else {
+                      if (result == true) {
+                        CustomSnackBar.buildErrorSnackbar(
+                            context: context,
+                            message: "Bắt đầu thành công",
+                            color: CustomColor.green);
+                        _presenter.init(user);
+                        _model.listInvoice = <String, List<Invoice>>{};
+                        await _presenter.loadListShedule(user.idToken!,
+                            _model.firstDayOfWeek, _model.endDayOfWeek);
+                      }
+                      updateLoadingStartDelivery();
+                    }
+                  },
+                  isLoading: _model.isLoadingStartDelivery,
+                  textColor: CustomColor.white,
+                  buttonColor: CustomColor.blue,
+                  borderRadius: 6),
+              CustomSizedBox(
+                context: context,
+                width: 8,
+              ),
+              CustomButton(
+                  height: 24,
+                  text: 'Hủy lịch',
+                  width: deviceSize.width * 0.8 / 3,
+                  onPressFunction: () {
+                    showDialog(
+                        context: context,
+                        builder: (ctx) {
+                          return DialogConfirmCancel(
+                              dateTime:
+                                  _model.listDateTime[_model.currentIndex]);
+                        });
+                  },
+                  isLoading: false,
+                  textColor: CustomColor.white,
+                  buttonColor: CustomColor.red,
+                  borderRadius: 6),
+            ],
+          ),
           CustomSizedBox(
             context: context,
             height: 24,
