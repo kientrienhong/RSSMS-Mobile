@@ -63,6 +63,7 @@ class _ProfileScreenState extends State<MyAccountScreen>
     return Scaffold(
       backgroundColor: CustomColor.white,
       body: NestedScrollView(
+        physics: NeverScrollableScrollPhysics(),
         controller: _scrollController,
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return <Widget>[

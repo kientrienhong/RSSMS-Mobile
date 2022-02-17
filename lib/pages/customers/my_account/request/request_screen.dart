@@ -7,7 +7,6 @@ import 'package:rssms/models/request_screen_model.dart';
 import 'package:rssms/pages/customers/my_account/request/request_widget.dart';
 import 'package:rssms/presenters/request_screen_presenter.dart';
 import 'package:rssms/views/request_screen_view.dart';
-import '../../../../constants/constants.dart' as constants;
 
 enum REQUEST_TYPE { modifyRequest, cancelOrderRequest, cancelDeliveryRequest }
 
@@ -35,7 +34,7 @@ class _RequestScreenState extends State<RequestScreen> with RequestScreenView {
     _model = _presenter.model!;
     _presenter.view = this;
     Users users = Provider.of<Users>(context, listen: false);
-    _presenter.loadRequest(users.idToken!);
+    _presenter.loadCusRequest(users.idToken!);
     super.initState();
   }
 
@@ -46,12 +45,9 @@ class _RequestScreenState extends State<RequestScreen> with RequestScreenView {
     });
   }
 
-  
   @override
   void setChangeList() {
-    setState(() {
-      
-    });
+    setState(() {});
   }
 
   Widget invoiceWidget() {
@@ -66,54 +62,65 @@ class _RequestScreenState extends State<RequestScreen> with RequestScreenView {
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
 
-    return SizedBox(
-      width: deviceSize.width,
-      height: deviceSize.height * 1.5,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.all(5),
-                        prefixIcon: const ImageIcon(
-                          AssetImage('assets/images/search.png'),
-                          color: CustomColor.black,
-                        ),
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5),
-                            borderSide: const BorderSide(
-                              color: CustomColor.black,
-                            ))),
-                  ),
-                ),
-              ],
-            ),
-            if (!(_model.isLoadingRequest!))
-              invoiceWidget()
-            else
-              Column(
+    return RefreshIndicator(
+      onRefresh: () {
+        return Future.value();
+      },
+      child: SizedBox(
+        width: deviceSize.width,
+        height: deviceSize.height * 1.5,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            children: [
+              Row(
                 children: [
-                  CustomSizedBox(
-                    context: context,
-                    height: 50,
-                  ),
-                  const SizedBox(
-                    height: 16,
-                    width: 16,
-                    child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.black45),
+                  Expanded(
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.all(5),
+                          prefixIcon: const ImageIcon(
+                            AssetImage('assets/images/search.png'),
+                            color: CustomColor.black,
+                          ),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5),
+                              borderSide: const BorderSide(
+                                color: CustomColor.black,
+                              ))),
                     ),
                   ),
                 ],
-              )
-          ],
+              ),
+              if (!(_model.isLoadingRequest!))
+                invoiceWidget()
+              else
+                Column(
+                  children: [
+                    CustomSizedBox(
+                      context: context,
+                      height: 50,
+                    ),
+                    const SizedBox(
+                      height: 16,
+                      width: 16,
+                      child: CircularProgressIndicator(
+                        valueColor:
+                            AlwaysStoppedAnimation<Color>(Colors.black45),
+                      ),
+                    ),
+                  ],
+                )
+            ],
+          ),
         ),
       ),
     );
   }
 
+  @override
+  Future<void> refresh() {
+    // TODO: implement refresh
+    throw UnimplementedError();
+  }
 }
