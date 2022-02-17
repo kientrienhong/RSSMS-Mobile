@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rssms/common/custom_bottom_navigation.dart';
 import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_input_with_hint.dart';
@@ -14,12 +15,21 @@ import 'package:rssms/models/entity/order_detail.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/models/invoice_update_model.dart';
 import 'package:rssms/common/image_widget.dart';
+import 'package:rssms/pages/customers/cart/cart_screen.dart';
+import 'package:rssms/pages/customers/my_account/my_account.dart';
+import 'package:rssms/pages/customers/notification/notification_screen.dart';
+import 'package:rssms/pages/delivery_staff/delivery/delivery_screen.dart';
+import 'package:rssms/pages/delivery_staff/my_account/my_account_delivery.dart';
+import 'package:rssms/pages/delivery_staff/notifcation/notification_delivery.dart';
+import 'package:rssms/pages/delivery_staff/qr/qr_screen.dart';
 import 'package:rssms/presenters/invoice_update_presenter.dart';
 import 'package:rssms/views/invoice_update_view.dart';
+import 'package:rssms/constants/constants.dart' as constant;
 
 class UpdateInvoiceScreen extends StatefulWidget {
   final bool? isView;
-  UpdateInvoiceScreen({Key? key, this.isView}) : super(key: key);
+  final bool? isScanQR;
+  UpdateInvoiceScreen({Key? key, this.isView, this.isScanQR}) : super(key: key);
 
   @override
   _UpdateInvoiceScreenState createState() => _UpdateInvoiceScreenState();
@@ -64,17 +74,29 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
     });
   }
 
-  void sendNoti() async {
+  void doneOrder() async {
     try {
       Invoice invoice = Provider.of<Invoice>(context, listen: false);
 
       Users user = Provider.of<Users>(context, listen: false);
-      var response = await _presenter.sendNoti(user, invoice);
+      var response = await _presenter.doneOrder(user, invoice);
       if (response == true) {
         CustomSnackBar.buildErrorSnackbar(
             context: context,
-            message: 'Gửi thông báo thành công',
+            message: 'Trả đơn thành công',
             color: CustomColor.green);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (context) => const CustomBottomNavigation(
+                      listIndexStack: [
+                        MyAccountDeliveryScreen(),
+                        DeliveryScreen(),
+                        QrScreen(),
+                        NotificationDeliveryScreen(),
+                      ],
+                      listNavigator: constant.LIST_DELIVERY_BOTTOM_NAVIGATION,
+                    )),
+            (Route<dynamic> route) => false);
       }
     } catch (e) {
       print(e);
@@ -92,7 +114,17 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
             context: context,
             message: 'Cập nhật đơn thành công',
             color: CustomColor.green);
-        Navigator.of(context).pop();
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (context) => const CustomBottomNavigation(
+                      listIndexStack: [
+                        MyAccountScreen(),
+                        CartScreen(),
+                        NotificationScreen(),
+                      ],
+                      listNavigator: constant.LIST_CUSTOMER_BOTTOM_NAVIGATION,
+                    )),
+            (Route<dynamic> route) => false);
       }
     } catch (e) {
       print(e);
@@ -103,8 +135,27 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
   void onClickUpdateOrder() async {
     if (widget.isView == null) {
       sendNoti();
-    } else {
+    } else if (widget.isScanQR == true && widget.isView == true) {
+      doneOrder();
+    } else if (widget.isScanQR == null && widget.isView == true) {
       updateOrder();
+    }
+  }
+
+  void sendNoti() async {
+    try {
+      Invoice invoice = Provider.of<Invoice>(context, listen: false);
+
+      Users user = Provider.of<Users>(context, listen: false);
+      var response = await _presenter.sendNoti(user, invoice);
+      if (response == true) {
+        CustomSnackBar.buildErrorSnackbar(
+            context: context,
+            message: 'Gửi thông báo thành công',
+            color: CustomColor.green);
+      }
+    } catch (e) {
+      print(e);
     }
   }
 
@@ -119,7 +170,6 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
   @override
   Widget build(BuildContext context) {
     var deviceSize = MediaQuery.of(context).size;
-    Invoice invoice = Provider.of<Invoice>(context, listen: false);
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -221,11 +271,13 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                   Checkbox(
                       fillColor: MaterialStateProperty.all(CustomColor.blue),
                       value: _model.getIsPaid,
-                      onChanged: (value) {
-                        setState(() {
-                          _model.setIsPaid = value;
-                        });
-                      })
+                      onChanged: widget.isView == null
+                          ? (value) {
+                              setState(() {
+                                _model.setIsPaid = value;
+                              });
+                            }
+                          : (val) => {})
                 ],
               ),
               Center(

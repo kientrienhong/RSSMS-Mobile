@@ -397,9 +397,24 @@ class ApiServices {
         "Content-type": "application/json",
         'Authorization': 'Bearer $idToken'
       };
-
+      final test = invoice.toMap();
       final url = Uri.parse('$_domain/api/v1/orders/${invoice.id}');
       return http.put(url, headers: headers, body: jsonEncode(invoice.toMap()));
+    } catch (e) {
+      print(e.toString());
+      throw Exception('Update Failed');
+    }
+  }
+
+  static Future<dynamic> doneOrder(Invoice invoice, String idToken) {
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        'Authorization': 'Bearer $idToken'
+      };
+
+      final url = Uri.parse('$_domain/api/v1/orders/done/${invoice.id}');
+      return http.put(url, headers: headers);
     } catch (e) {
       print(e.toString());
       throw Exception('Update Failed');

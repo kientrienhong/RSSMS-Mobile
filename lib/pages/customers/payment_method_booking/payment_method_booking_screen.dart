@@ -68,18 +68,18 @@ class _PaymentMethodBookingScreenState extends State<PaymentMethodBookingScreen>
               context: context,
               message: 'Đặt đơn hàng thành công',
               color: CustomColor.green);
-          // Navigator.of(context).pushAndRemoveUntil(
-          //     MaterialPageRoute(
-          //         builder: (context) => const CustomBottomNavigation(
-          //               listIndexStack: [
-          //                 MyAccountScreen(),
-          //                 CartScreen(),
-          //                 NotificationDeliveryScreen(),
-          //               ],
-          //               listNavigator:
-          //                   constants.LIST_CUSTOMER_BOTTOM_NAVIGATION,
-          //             )),
-          //     (Route<dynamic> route) => false);
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                  builder: (context) => const CustomBottomNavigation(
+                        listIndexStack: [
+                          MyAccountScreen(),
+                          CartScreen(),
+                          NotificationDeliveryScreen(),
+                        ],
+                        listNavigator:
+                            constants.LIST_CUSTOMER_BOTTOM_NAVIGATION,
+                      )),
+              (Route<dynamic> route) => false);
         }
       } else {
         orderBooking.setOrderBooking(

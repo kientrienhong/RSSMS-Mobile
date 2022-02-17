@@ -33,9 +33,13 @@ const TYPE_PRODUCT = {
 };
 
 // STATUS_INVOICE
-const PAID = 1;
-const EXPIRED_SOON = 2;
-const EXPIRED = 3;
+const BOOKED = 1;
+const ASSIGNED = 2;
+const DELIVERIED = 3;
+const STORED = 4;
+const EXPIRED = 5;
+const DONE = 6;
+const DELIVERIED_RETURN = 7;
 
 const SELF_STORAGE = 0;
 const ACCESSORY = 1;
@@ -115,6 +119,7 @@ const Map<String, dynamic> IMAGE_INVOICE = {
 
 const Map<int, String> LIST_URL_NOTFICATION = {
   0: 'assets/images/invoice.png',
+  2: 'assets/images/invoice.png',
   1: 'assets/images/truck1.png',
   6: 'assets/images/invoice.png'
 };
