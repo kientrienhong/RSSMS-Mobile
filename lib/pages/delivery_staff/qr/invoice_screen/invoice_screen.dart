@@ -8,12 +8,13 @@ import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/invoice_product_widget.dart';
 import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_screen/update_invoice_screen.dart';
 import 'package:rssms/pages/delivery_staff/qr/invoice_screen/widget/invoice_info_widget.dart';
-import 'package:rssms/pages/delivery_staff/store_order/store_order_screen.dart';
 
 class InvoiceDetailsScreen extends StatelessWidget {
   final Size deviceSize;
-
-  InvoiceDetailsScreen({Key? key, required this.deviceSize}) : super(key: key);
+  final bool isScanQR;
+  InvoiceDetailsScreen(
+      {Key? key, required this.deviceSize, required this.isScanQR})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -73,42 +74,27 @@ class InvoiceDetailsScreen extends StatelessWidget {
                       context: context,
                       height: 16,
                     ),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          CustomButton(
-                              height: 24,
-                              isLoading: false,
-                              text: 'Cập nhật đơn',
-                              textColor: CustomColor.white,
-                              onPressFunction: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          UpdateInvoiceScreen()),
-                                );
-                              },
-                              width: deviceSize.width / 2.5,
-                              buttonColor: CustomColor.blue,
-                              borderRadius: 6),
-                          CustomButton(
-                              height: 24,
-                              isLoading: false,
-                              text: 'Đem đơn về kho',
-                              textColor: CustomColor.white,
-                              onPressFunction: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          StoreOrderScreen(invoice: invoice)),
-                                );
-                              },
-                              width: deviceSize.width / 2.5,
-                              buttonColor: CustomColor.green,
-                              borderRadius: 6),
-                        ])
+                    if (isScanQR == true)
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            CustomButton(
+                                height: 24,
+                                isLoading: false,
+                                text: 'Cập nhật đơn',
+                                textColor: CustomColor.white,
+                                onPressFunction: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            UpdateInvoiceScreen()),
+                                  );
+                                },
+                                width: deviceSize.width / 2.5,
+                                buttonColor: CustomColor.blue,
+                                borderRadius: 6),
+                          ])
                   ],
                 ),
               ),

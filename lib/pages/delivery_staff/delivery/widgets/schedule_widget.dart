@@ -106,6 +106,7 @@ class ScheduleWidget extends StatelessWidget {
                 MaterialPageRoute(
                   builder: (context) => InvoiceDetailsScreen(
                     deviceSize: deviceSize,
+                    isScanQR: false,
                   ),
                 ),
               );
@@ -155,15 +156,18 @@ class ScheduleWidget extends StatelessWidget {
                                     fontSize: 18),
                               ],
                             ),
-                            CustomText(
-                                text:
-                                    '${LIST_STATUS_ORDER[schedule['status']]['name']}',
-                                color: LIST_STATUS_ORDER[schedule['status']]
-                                    ['color'] as Color,
-                                fontWeight: FontWeight.bold,
-                                textAlign: TextAlign.right,
-                                context: context,
-                                fontSize: 18),
+                            Flexible(
+                              child: CustomText(
+                                  text:
+                                      '${LIST_STATUS_ORDER[schedule['status']]['name']}',
+                                  color: LIST_STATUS_ORDER[schedule['status']]
+                                      ['color'] as Color,
+                                  fontWeight: FontWeight.bold,
+                                  maxLines: 2,
+                                  textAlign: TextAlign.right,
+                                  context: context,
+                                  fontSize: 18),
+                            ),
                           ],
                         ),
                         CustomSizedBox(

@@ -53,15 +53,27 @@ class _DeliveryScreenState extends State<DeliveryScreen>
     String getCurrentDateTime = _model.listDateTime[_model.currentIndex]
         .toIso8601String()
         .split('T')[0];
-    return _model.listInvoice[getCurrentDateTime]
-        ?.mapIndexed((index, element) => ScheduleWidget(
-            invoice: element,
-            schedule: element.toMap(),
-            currentIndex: index,
-            endDayOfWeek: _model.endDayOfWeek,
-            firstDayOfWeek: _model.firstDayOfWeek,
-            listLength: _model.listInvoice[getCurrentDateTime]!.length))
-        .toList();
+    if (_model.listInvoice[getCurrentDateTime] != null) {
+      return _model.listInvoice[getCurrentDateTime]
+          ?.mapIndexed((index, element) => ScheduleWidget(
+              invoice: element,
+              schedule: element.toMap(),
+              currentIndex: index,
+              endDayOfWeek: _model.endDayOfWeek,
+              firstDayOfWeek: _model.firstDayOfWeek,
+              listLength: _model.listInvoice[getCurrentDateTime]!.length))
+          .toList();
+    } else {
+      return [
+        Center(
+          child: CustomText(
+              text: 'Bạn không có lịch vào ngày này',
+              color: CustomColor.black,
+              context: context,
+              fontSize: 24),
+        )
+      ];
+    }
   }
 
   Widget formatDate(DateTime dateTime, int index) {
