@@ -8,12 +8,14 @@ import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/invoice_product_widget.dart';
 import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_screen/update_invoice_screen.dart';
 import 'package:rssms/pages/delivery_staff/qr/invoice_screen/widget/invoice_info_widget.dart';
-import 'package:rssms/pages/delivery_staff/store_order/store_order_screen.dart';
+import 'package:rssms/constants/constants.dart' as constants;
 
 class InvoiceDetailsScreen extends StatelessWidget {
   final Size deviceSize;
-
-  InvoiceDetailsScreen({Key? key, required this.deviceSize}) : super(key: key);
+  final bool isScanQR;
+  InvoiceDetailsScreen(
+      {Key? key, required this.deviceSize, required this.isScanQR})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -73,10 +75,10 @@ class InvoiceDetailsScreen extends StatelessWidget {
                       context: context,
                       height: 16,
                     ),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          CustomButton(
+                    if (isScanQR == true)
+                      if (invoice.status == constants.ASSIGNED)
+                        Center(
+                          child: CustomButton(
                               height: 24,
                               isLoading: false,
                               text: 'Cập nhật đơn',
@@ -92,23 +94,28 @@ class InvoiceDetailsScreen extends StatelessWidget {
                               width: deviceSize.width / 2.5,
                               buttonColor: CustomColor.blue,
                               borderRadius: 6),
-                          CustomButton(
+                        )
+                      else if (invoice.status == constants.DELIVERIED_RETURN)
+                        Center(
+                          child: CustomButton(
                               height: 24,
                               isLoading: false,
-                              text: 'Đem đơn về kho',
+                              text: 'Trả đơn',
                               textColor: CustomColor.white,
                               onPressFunction: () {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) =>
-                                          StoreOrderScreen(invoice: invoice)),
+                                      builder: (context) => UpdateInvoiceScreen(
+                                            isView: true,
+                                            isScanQR: true,
+                                          )),
                                 );
                               },
                               width: deviceSize.width / 2.5,
-                              buttonColor: CustomColor.green,
+                              buttonColor: CustomColor.blue,
                               borderRadius: 6),
-                        ])
+                        )
                   ],
                 ),
               ),

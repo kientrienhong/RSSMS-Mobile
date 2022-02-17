@@ -33,9 +33,13 @@ const TYPE_PRODUCT = {
 };
 
 // STATUS_INVOICE
-const PAID = 1;
-const EXPIRED_SOON = 2;
-const EXPIRED = 3;
+const BOOKED = 1;
+const ASSIGNED = 2;
+const DELIVERIED = 3;
+const STORED = 4;
+const EXPIRED = 5;
+const DONE = 6;
+const DELIVERIED_RETURN = 7;
 
 const SELF_STORAGE = 0;
 const ACCESSORY = 1;
@@ -60,7 +64,8 @@ const LIST_STATUS_ORDER = [
   {'color': CustomColor.blue, 'name': 'Đang vận chuyển'},
   {'color': CustomColor.green, 'name': 'Đã về kho'},
   {'color': CustomColor.red, 'name': 'Đã hết hạn'},
-  {'color': CustomColor.purple, 'name': 'Đã được xử lý'},
+  {'color': CustomColor.green, 'name': 'Đã hoàn tất'},
+  {'color': CustomColor.purple, 'name': 'Đang vận chuyển (trả)'},
 ];
 
 const LIST_ICON_REQUEST = [
@@ -112,10 +117,12 @@ const Map<String, dynamic> IMAGE_INVOICE = {
   ]
 };
 
-const List<String> LIST_URL_NOTFICATION = [
-  'assets/images/invoice.png',
-  'assets/images/truck1.png'
-];
+const Map<int, String> LIST_URL_NOTFICATION = {
+  0: 'assets/images/invoice.png',
+  2: 'assets/images/invoice.png',
+  1: 'assets/images/truck1.png',
+  6: 'assets/images/invoice.png'
+};
 
 const Map<String, String> ICON_INVOICE = {
   "box": "assets/images/delivery-box1.png",

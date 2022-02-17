@@ -397,19 +397,24 @@ class ApiServices {
         "Content-type": "application/json",
         'Authorization': 'Bearer $idToken'
       };
+      final test = invoice.toMap();
+      final url = Uri.parse('$_domain/api/v1/orders/${invoice.id}');
+      return http.put(url, headers: headers, body: jsonEncode(invoice.toMap()));
+    } catch (e) {
+      print(e.toString());
+      throw Exception('Update Failed');
+    }
+  }
 
-      Invoice invoiceTemp = invoice.copyWith();
+  static Future<dynamic> doneOrder(Invoice invoice, String idToken) {
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        'Authorization': 'Bearer $idToken'
+      };
 
-      List<OrderDetail> listOrderDetailTemp =
-          invoiceTemp.orderDetails.map<OrderDetail>((e) {
-        e.images.removeAt(0);
-        return e;
-      }).toList();
-      invoiceTemp.copyWith(orderDetails: listOrderDetailTemp);
-
-      final url = Uri.parse('$_domain/api/v1/orders/${invoiceTemp.id}');
-      return http.put(url,
-          headers: headers, body: jsonEncode(invoiceTemp.toMap()));
+      final url = Uri.parse('$_domain/api/v1/orders/done/${invoice.id}');
+      return http.put(url, headers: headers);
     } catch (e) {
       print(e.toString());
       throw Exception('Update Failed');
@@ -467,6 +472,22 @@ class ApiServices {
       final url = Uri.parse('$_domain/api/v1/notifications');
       return http.put(url,
           headers: headers, body: jsonEncode({"ids": listNoti}));
+    } catch (e) {
+      print(e.toString());
+      throw Exception('Update Failed');
+    }
+  }
+
+  static Future<dynamic> updateListOrders(
+      String idToken, List<Map<dynamic, dynamic>> listOrderStatus) {
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        'Authorization': 'Bearer $idToken'
+      };
+
+      final url = Uri.parse('$_domain/api/v1/orders');
+      return http.put(url, headers: headers, body: jsonEncode(listOrderStatus));
     } catch (e) {
       print(e.toString());
       throw Exception('Update Failed');

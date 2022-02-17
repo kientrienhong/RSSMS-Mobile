@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rssms/api/api_services.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/constants/constants.dart';
+import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/pages/delivery_staff/qr/invoice_screen/invoice_screen.dart';
 
 class ScheduleWidget extends StatelessWidget {
@@ -96,18 +98,26 @@ class ScheduleWidget extends StatelessWidget {
             width: 8,
           ),
           GestureDetector(
-            onTap: () {
+            onTap: () async {
               Invoice invoiceProvider =
                   Provider.of<Invoice>(context, listen: false);
-              invoiceProvider.setInvoice(invoice: invoice);
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => InvoiceDetailsScreen(
-                    deviceSize: deviceSize,
+              Users users = Provider.of<Users>(context, listen: false);
+
+              final response = await ApiServices.getInvoicebyId(
+                  users.idToken!, invoice.id.toString());
+              if (response.statusCode == 200) {
+                Invoice invoiceReponse = Invoice.fromJson(response.body);
+                invoiceProvider.setInvoice(invoice: invoiceReponse);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => InvoiceDetailsScreen(
+                      deviceSize: deviceSize,
+                      isScanQR: false,
+                    ),
                   ),
-                ),
-              );
+                );
+              }
             },
             child: SizedBox(
               height: deviceSize.height / 3,
@@ -147,22 +157,25 @@ class ScheduleWidget extends StatelessWidget {
                             Row(
                               children: [
                                 CustomText(
-                                    text: 'Order Id: #${schedule['id']}',
+                                    text: 'Mã đơn: #${schedule['id']}',
                                     color: CustomColor.black,
                                     fontWeight: FontWeight.bold,
                                     context: context,
                                     fontSize: 18),
                               ],
                             ),
-                            CustomText(
-                                text:
-                                    '${LIST_STATUS_ORDER[schedule['status']]['name']}',
-                                color: LIST_STATUS_ORDER[schedule['status']]
-                                    ['color'] as Color,
-                                fontWeight: FontWeight.bold,
-                                textAlign: TextAlign.right,
-                                context: context,
-                                fontSize: 18),
+                            Flexible(
+                              child: CustomText(
+                                  text:
+                                      '${LIST_STATUS_ORDER[schedule['status']]['name']}',
+                                  color: LIST_STATUS_ORDER[schedule['status']]
+                                      ['color'] as Color,
+                                  fontWeight: FontWeight.bold,
+                                  maxLines: 2,
+                                  textAlign: TextAlign.right,
+                                  context: context,
+                                  fontSize: 18),
+                            ),
                           ],
                         ),
                         CustomSizedBox(
@@ -170,7 +183,7 @@ class ScheduleWidget extends StatelessWidget {
                           height: 8,
                         ),
                         buildInfo(
-                            'Address: ',
+                            'Địa chỉ: ',
                             isDelivery
                                 ? schedule['deliveryAddress']
                                 : schedule['addressReturn'],
@@ -179,13 +192,13 @@ class ScheduleWidget extends StatelessWidget {
                           context: context,
                           height: 8,
                         ),
-                        buildInfo('Customer Name: ', schedule['customerName'],
+                        buildInfo('Tên khách hàng: ', schedule['customerName'],
                             context),
                         CustomSizedBox(
                           context: context,
                           height: 8,
                         ),
-                        buildInfo('Customer Phone: ', schedule['customerPhone'],
+                        buildInfo('SĐT khách hàng: ', schedule['customerPhone'],
                             context),
                       ],
                     ),

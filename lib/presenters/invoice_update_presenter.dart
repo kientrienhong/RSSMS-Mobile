@@ -45,6 +45,7 @@ class InvoiceUpdatePresenter {
   Future<bool> updateOrder(Users user, Invoice invoice) async {
     try {
       view.updateLoadingUpdate();
+      invoice = invoice.copyWith(status: 3);
       var response = await ApiServices.updateOrder(invoice, user.idToken!);
       if (response.statusCode == 200) {
         return true;
@@ -67,12 +68,30 @@ class InvoiceUpdatePresenter {
 
       if (listOrderDetail != null) {
         invoice.setInvoice(
-            invoice: invoice.copyWith(orderDetails: listOrderDetail));
+            invoice: invoice.copyWith(
+                orderDetails: listOrderDetail, isPaid: model.getIsPaid));
         var response =
             await ApiServices.sendNotification(invoice, user.idToken!);
         if (response.statusCode == 200) {
           return true;
         }
+      }
+    } catch (e) {
+      throw Exception(e);
+    } finally {
+      view.updateLoadingUpdate();
+    }
+
+    return false;
+  }
+
+  Future<bool?> doneOrder(Users user, Invoice invoice) async {
+    try {
+      view.updateLoadingUpdate();
+
+      var response = await ApiServices.doneOrder(invoice, user.idToken!);
+      if (response.statusCode == 200) {
+        return true;
       }
     } catch (e) {
       throw Exception(e);
