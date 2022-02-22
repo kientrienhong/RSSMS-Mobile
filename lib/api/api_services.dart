@@ -149,7 +149,7 @@ class ApiServices {
         'Authorization': 'Bearer $idToken'
       };
 
-      final url = Uri.parse('$_domain/api/v1/requests');
+      final url = Uri.parse('$_domain/api/v1/requests?page=1&size=10');
       return http.get(
         url,
         headers: headers,

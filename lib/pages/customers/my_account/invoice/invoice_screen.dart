@@ -101,43 +101,39 @@ class _InvoiceScreenState extends State<InvoiceScreen> implements InvoiceView {
           );
         } else {
           return Flexible(
-            child: RefreshIndicator(
-              onRefresh: refresh,
-              child: ListView.separated(
-           
-                separatorBuilder: (context, index) {
-                  return CustomSizedBox(
-                    context: context,
-                    height: 0,
+            child: ListView.separated(
+              controller: scrollController,
+              separatorBuilder: (context, index) {
+                return CustomSizedBox(
+                  context: context,
+                  height: 0,
+                );
+              },
+              itemCount: snapshot.data!.length + 1,
+              itemBuilder: (context, index) {
+                if (index < snapshot.data.length) {
+                  return InvoiceWidget(
+                    invoice: snapshot.data[index],
                   );
-                },
-                itemCount: snapshot.data!.length + 1,
-                itemBuilder: (context, index) {
-                  if (index < snapshot.data.length) {
-                    return InvoiceWidget(
-                      invoice: snapshot.data[index],
-                    );
-                  } else if (_model.hasMore!) {
-                    return const Center(
-                      child: CircularProgressIndicator(
-                        valueColor:
-                            AlwaysStoppedAnimation<Color>(Colors.black45),
-                      ),
-                    );
-                  } else {
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 10),
-                      child: Center(
-                        child: CustomText(
-                            text: "Đã hết đơn !",
-                            color: Colors.black38,
-                            context: context,
-                            fontSize: 14),
-                      ),
-                    );
-                  }
-                },
-              ),
+                } else if (_model.hasMore!) {
+                  return const Center(
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.black45),
+                    ),
+                  );
+                } else {
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: Center(
+                      child: CustomText(
+                          text: "Đã hết đơn !",
+                          color: Colors.black38,
+                          context: context,
+                          fontSize: 14),
+                    ),
+                  );
+                }
+              },
             ),
           );
         }
@@ -149,114 +145,117 @@ class _InvoiceScreenState extends State<InvoiceScreen> implements InvoiceView {
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
 
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      width: deviceSize.width,
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Expanded(
-                child: TextField(
-                  controller: _model.searchValue,
-                  decoration: InputDecoration(
-                    border: const OutlineInputBorder(),
-                    prefixIcon: ImageIcon(
-                      const AssetImage('assets/images/search.png'),
-                      color: CustomColor.black[2]!,
+    return RefreshIndicator(
+      onRefresh: refresh,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        width: deviceSize.width,
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _model.searchValue,
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(),
+                      prefixIcon: ImageIcon(
+                        const AssetImage('assets/images/search.png'),
+                        color: CustomColor.black[2]!,
+                      ),
                     ),
                   ),
                 ),
-              ),
-              CustomSizedBox(
-                context: context,
-                width: 16,
-              ),
-              Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: CustomColor.white,
-                    border: Border.all(color: CustomColor.black, width: 0.5)),
-                child: PopupMenuButton(
-                    shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(
-                      Radius.circular(10.0),
-                    )),
-                    icon:
-                        const ImageIcon(AssetImage('assets/images/filter.png')),
-                    itemBuilder: (_) => <PopupMenuItem<String>>[
-                          PopupMenuItem<String>(
-                              child: CustomText(
-                                  text: 'Kho tự quản',
-                                  color: _model.filterIndex == "0"
-                                      ? CustomColor.blue
-                                      : CustomColor.black,
-                                  context: context,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 14),
-                              value: '0'),
-                          PopupMenuItem<String>(
-                              child: CustomText(
-                                  text: 'Giữ đồ thuê',
-                                  color: _model.filterIndex == "1"
-                                      ? CustomColor.blue
-                                      : CustomColor.black,
-                                  context: context,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 14),
-                              value: '1'),
-                        ],
-                    onSelected: (_) {
-                      if (_.toString() == _model.filterIndex) {
-                        setState(() {
-                          _model.filterIndex = "10";
-                        });
-                      } else {
-                        setState(() {
-                          _model.filterIndex = _.toString();
-                        });
-                      }
-                    }),
-              ),
-            ],
-          ),
-          // if (!(_model.isLoadingInvoice!))
-          invoiceList()
-          // else
-          //   Column(
-          //     children: [
-          //       CustomSizedBox(
-          //         context: context,
-          //         height: 50,
-          //       ),
-          //       const SizedBox(
-          //         height: 16,
-          //         width: 16,
-          //         child: CircularProgressIndicator(
-          //           valueColor: AlwaysStoppedAnimation<Color>(Colors.black45),
-          //         ),
-          //       ),
-          //     ],
-          //   )
-          // if (!(_model.isLoadingInvoice!))
-          //   invoiceWidget()
-          // else
-          //   Column(
-          //     children: [
-          //       CustomSizedBox(
-          //         context: context,
-          //         height: 50,
-          //       ),
-          //       const SizedBox(
-          //         height: 16,
-          //         width: 16,
-          //         child: CircularProgressIndicator(
-          //           valueColor: AlwaysStoppedAnimation<Color>(Colors.black45),
-          //         ),
-          //       ),
-          //     ],
-          //   )
-        ],
+                CustomSizedBox(
+                  context: context,
+                  width: 16,
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: CustomColor.white,
+                      border: Border.all(color: CustomColor.black, width: 0.5)),
+                  child: PopupMenuButton(
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(
+                        Radius.circular(10.0),
+                      )),
+                      icon: const ImageIcon(
+                          AssetImage('assets/images/filter.png')),
+                      itemBuilder: (_) => <PopupMenuItem<String>>[
+                            PopupMenuItem<String>(
+                                child: CustomText(
+                                    text: 'Kho tự quản',
+                                    color: _model.filterIndex == "0"
+                                        ? CustomColor.blue
+                                        : CustomColor.black,
+                                    context: context,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 14),
+                                value: '0'),
+                            PopupMenuItem<String>(
+                                child: CustomText(
+                                    text: 'Giữ đồ thuê',
+                                    color: _model.filterIndex == "1"
+                                        ? CustomColor.blue
+                                        : CustomColor.black,
+                                    context: context,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 14),
+                                value: '1'),
+                          ],
+                      onSelected: (_) {
+                        if (_.toString() == _model.filterIndex) {
+                          setState(() {
+                            _model.filterIndex = "10";
+                          });
+                        } else {
+                          setState(() {
+                            _model.filterIndex = _.toString();
+                          });
+                        }
+                      }),
+                ),
+              ],
+            ),
+            // if (!(_model.isLoadingInvoice!))
+            invoiceList()
+            // else
+            //   Column(
+            //     children: [
+            //       CustomSizedBox(
+            //         context: context,
+            //         height: 50,
+            //       ),
+            //       const SizedBox(
+            //         height: 16,
+            //         width: 16,
+            //         child: CircularProgressIndicator(
+            //           valueColor: AlwaysStoppedAnimation<Color>(Colors.black45),
+            //         ),
+            //       ),
+            //     ],
+            //   )
+            // if (!(_model.isLoadingInvoice!))
+            //   invoiceWidget()
+            // else
+            //   Column(
+            //     children: [
+            //       CustomSizedBox(
+            //         context: context,
+            //         height: 50,
+            //       ),
+            //       const SizedBox(
+            //         height: 16,
+            //         width: 16,
+            //         child: CircularProgressIndicator(
+            //           valueColor: AlwaysStoppedAnimation<Color>(Colors.black45),
+            //         ),
+            //       ),
+            //     ],
+            //   )
+          ],
+        ),
       ),
     );
   }

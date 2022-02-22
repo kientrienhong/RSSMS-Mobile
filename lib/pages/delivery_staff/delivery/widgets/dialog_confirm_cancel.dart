@@ -47,7 +47,7 @@ class _DialogConfirmCancelState extends State<DialogConfirmCancel>
         if (result) {
           CustomSnackBar.buildErrorSnackbar(
               context: context,
-              message: 'Request successful',
+              message: 'Yêu cầu thành công',
               color: CustomColor.green);
         }
         Navigator.pop(context, result);
