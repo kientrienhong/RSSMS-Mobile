@@ -76,6 +76,13 @@ class _InvoiceCancelWidgetState extends State<InvoiceCancelWidget>
   }
 
   @override
+  void updateLoadingCancel() {
+    setState(() {
+      _model.isLoading != _model.isLoading;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
     return Container(
@@ -111,7 +118,7 @@ class _InvoiceCancelWidgetState extends State<InvoiceCancelWidget>
           ),
           CustomButton(
               height: 24,
-              isLoading: false,
+              isLoading: _model.isLoading,
               text: 'Gửi yêu cầu',
               textColor: CustomColor.white,
               onPressFunction: onClickCancelInvoice,

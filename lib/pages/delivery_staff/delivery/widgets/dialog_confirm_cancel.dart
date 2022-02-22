@@ -50,10 +50,10 @@ class _DialogConfirmCancelState extends State<DialogConfirmCancel>
               message: 'Yêu cầu thành công',
               color: CustomColor.green);
         }
+        Navigator.pop(context, result);
       } catch (e) {
         print(e);
       }
-      Navigator.of(context).pop();
     }
   }
 

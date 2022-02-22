@@ -14,8 +14,8 @@ class InvoiceCancelPresenter {
   }
 
   Future<bool> createRequest(
-      Map<String,dynamic> cancelRequest, Users user, Invoice invoice) async {
-    // view!.updateLoading();
+      Map<String, dynamic> cancelRequest, Users user, Invoice invoice) async {
+    view.updateLoadingCancel();
     try {
       final response =
           await ApiServices.createCancelRequest(cancelRequest, user, invoice);
@@ -29,7 +29,7 @@ class InvoiceCancelPresenter {
     } catch (e) {
       throw Exception(e.toString());
     } finally {
-      // view!.updateLoading();
+      view.updateLoadingCancel();
     }
   }
 }

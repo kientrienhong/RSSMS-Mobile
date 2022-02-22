@@ -125,6 +125,8 @@ const Map<String, dynamic> IMAGE_INVOICE = {
 const Map<int, String> LIST_URL_NOTFICATION = {
   0: 'assets/images/invoice.png',
   2: 'assets/images/invoice.png',
+  3: 'assets/images/invoice.png',
+  4: 'assets/images/invoice.png',
   1: 'assets/images/truck1.png',
   6: 'assets/images/invoice.png'
 };
