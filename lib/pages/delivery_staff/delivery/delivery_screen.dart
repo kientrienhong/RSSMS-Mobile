@@ -207,7 +207,17 @@ class _DeliveryScreenState extends State<DeliveryScreen>
                           return DialogConfirmCancel(
                               dateTime:
                                   _model.listDateTime[_model.currentIndex]);
-                        });
+                        }).then((value) async {
+                      if (value == true) {
+                        Users user = Provider.of<Users>(context, listen: false);
+
+                        _presenter.init(user);
+                        _model.listInvoice = <String, List<Invoice>>{};
+                        await _presenter.loadListShedule(user.idToken!,
+                            _model.firstDayOfWeek, _model.endDayOfWeek);
+                        setState(() {});
+                      }
+                    });
                   },
                   isLoading: false,
                   textColor: CustomColor.white,

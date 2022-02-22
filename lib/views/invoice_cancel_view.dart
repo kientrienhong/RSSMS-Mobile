@@ -1,3 +1,4 @@
-abstract class InvoiceCancelView{
+abstract class InvoiceCancelView {
   void onClickCancelInvoice();
+  void updateLoadingCancel();
 }

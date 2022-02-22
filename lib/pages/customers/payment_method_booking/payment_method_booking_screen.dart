@@ -175,31 +175,6 @@ class _PaymentMethodBookingScreenState extends State<PaymentMethodBookingScreen>
                 context: context,
                 height: 16,
               ),
-              CustomText(
-                  text: 'Ghi chú',
-                  color: CustomColor.blue,
-                  fontWeight: FontWeight.bold,
-                  context: context,
-                  fontSize: 24),
-              CustomSizedBox(
-                context: context,
-                height: 16,
-              ),
-              Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(4),
-                    border: Border.all(color: CustomColor.black[3]!, width: 1)),
-                child: TextFormField(
-                  minLines: 6,
-                  controller: _model.controllerNote,
-                  keyboardType: TextInputType.multiline,
-                  maxLines: null,
-                ),
-              ),
-              CustomSizedBox(
-                context: context,
-                height: 16,
-              ),
               SizedBox(
                 width: double.infinity,
                 child: Center(
