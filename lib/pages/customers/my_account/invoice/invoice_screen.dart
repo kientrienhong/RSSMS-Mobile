@@ -75,7 +75,12 @@ class _InvoiceScreenState extends State<InvoiceScreen> implements InvoiceView {
   @override
   Future<void> refresh() {
     Users user = Provider.of<Users>(context, listen: false);
+    setState(() {
+      _model.onRefresh = true;
+    });
+
     _presenter.loadInvoice(idToken: user.idToken, clearCachedDate: true);
+
     return Future.value();
   }
 
@@ -84,31 +89,20 @@ class _InvoiceScreenState extends State<InvoiceScreen> implements InvoiceView {
       stream: _model.stream,
       builder: (context, AsyncSnapshot snapshot) {
         if (!snapshot.hasData) {
-          return Column(
-            children: [
-              CustomSizedBox(
-                context: context,
-                height: 50,
-              ),
-              const SizedBox(
-                height: 16,
-                width: 16,
-                child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.black45),
-                ),
-              ),
-            ],
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20.0),
+            child: Center(
+              child: CustomText(
+                  text: "Hiện vẫn chưa có đơn hàng",
+                  color: CustomColor.black,
+                  context: context,
+                  fontSize: 16),
+            ),
           );
         } else {
           return Flexible(
-            child: ListView.separated(
+            child: ListView.builder(
               controller: scrollController,
-              separatorBuilder: (context, index) {
-                return CustomSizedBox(
-                  context: context,
-                  height: 0,
-                );
-              },
               itemCount: snapshot.data!.length + 1,
               itemBuilder: (context, index) {
                 if (index < snapshot.data.length) {
@@ -116,10 +110,21 @@ class _InvoiceScreenState extends State<InvoiceScreen> implements InvoiceView {
                     invoice: snapshot.data[index],
                   );
                 } else if (_model.hasMore!) {
-                  return const Center(
-                    child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.black45),
-                    ),
+                  return Column(
+                    children: [
+                      CustomSizedBox(
+                        context: context,
+                        height: 50,
+                      ),
+                      const SizedBox(
+                        height: 16,
+                        width: 16,
+                        child: CircularProgressIndicator(
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Colors.blue),
+                        ),
+                      ),
+                    ],
                   );
                 } else {
                   return Padding(
@@ -144,11 +149,10 @@ class _InvoiceScreenState extends State<InvoiceScreen> implements InvoiceView {
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
-
     return RefreshIndicator(
       onRefresh: refresh,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
         width: deviceSize.width,
         child: Column(
           children: [
@@ -218,42 +222,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> implements InvoiceView {
                 ),
               ],
             ),
-            // if (!(_model.isLoadingInvoice!))
             invoiceList()
-            // else
-            //   Column(
-            //     children: [
-            //       CustomSizedBox(
-            //         context: context,
-            //         height: 50,
-            //       ),
-            //       const SizedBox(
-            //         height: 16,
-            //         width: 16,
-            //         child: CircularProgressIndicator(
-            //           valueColor: AlwaysStoppedAnimation<Color>(Colors.black45),
-            //         ),
-            //       ),
-            //     ],
-            //   )
-            // if (!(_model.isLoadingInvoice!))
-            //   invoiceWidget()
-            // else
-            //   Column(
-            //     children: [
-            //       CustomSizedBox(
-            //         context: context,
-            //         height: 50,
-            //       ),
-            //       const SizedBox(
-            //         height: 16,
-            //         width: 16,
-            //         child: CircularProgressIndicator(
-            //           valueColor: AlwaysStoppedAnimation<Color>(Colors.black45),
-            //         ),
-            //       ),
-            //     ],
-            //   )
           ],
         ),
       ),

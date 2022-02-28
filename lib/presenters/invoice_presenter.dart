@@ -54,16 +54,16 @@ class InvoicePresenter {
       if (response.statusCode == 200) {
         final decodedReponse = jsonDecode(response.body);
         model!.metadata = decodedReponse["metadata"];
-        if (!decodedReponse['data'].isEmpty) {
+        if (decodedReponse['data'].isNotEmpty) {
           List<Invoice>? listTemp = decodedReponse['data']!
               .map<Invoice>((e) => Invoice.fromMap(e))
               .toList();
           model!.listInvoiceFull!.addAll(listTemp!);
           model!.listInvoice = model!.listInvoiceFull;
+          model!.data!.addAll(listTemp);
+          model!.hasMore = !(model!.page == model!.metadata!["totalPage"]);
+          model!.controller.add(model!.data);
         }
-        model!.data!.addAll(model!.listInvoiceFull!);
-        model!.hasMore = !(model!.page == model!.metadata!["totalPage"]);
-        model!.controller.add(model!.data);
       } else if (response.statusCode >= 500) {
         throw Exception("Máy chủ bị lỗi vui lòng thử lại sau");
       } else if (response.statusCode == 404) {

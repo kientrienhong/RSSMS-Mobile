@@ -43,7 +43,7 @@ class SignUpPresenter {
       if (response.statusCode == 200) {
         return Users.fromMap(jsonDecode(response.body));
       }
-
+      print(response.body);
       throw Exception(response.body.toString());
     } catch (e) {
       throw Exception(e.toString());

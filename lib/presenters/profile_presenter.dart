@@ -61,13 +61,16 @@ class ProfilePresenter {
         throw Exception(
             "Vui lòng nhập mật khẩu mới trùng với xác nhận mật khẩu");
       }
+      
       final response = await ApiServices.changePassword(
           oldPassword, confirmPassword, newPassword, userId, idToken);
 
       if (response.statusCode == 200) return true;
-
+      if(response.statusCode == 400){
+        model.errorMsgChangePassword = "Mật khẩu cũ không đúng";
+      }
       return false;
-    } catch (e) {
+    } catch (e) { 
       print(e.toString());
       throw Exception(e.toString());
     } finally {

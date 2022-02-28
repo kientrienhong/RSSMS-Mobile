@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_input_date.dart';
 import 'package:rssms/common/custom_radio_button.dart';
+import 'package:rssms/helpers/validator.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/models/signup_model.dart';
 import 'package:rssms/common/custom_bottom_navigation.dart';
@@ -145,12 +146,8 @@ class _FormSignUpState extends State<FormSignUp> implements SignUpView {
   @override
   void onClickSignUp(String email, String password, String confirmPassword,
       String address, String name, String phone, String birthDay) async {
-        _model.errorMsg = "";
+    _model.errorMsg = "";
     try {
-      if (password != confirmPassword) {
-        throw Exception('Vui lòng nhập mật khẩu khớp với xác nhận mật khẩu');
-      }
-
       Users user = Users.register(
           address: address,
           birthDate: DateFormat('dd/MM/yyyy').parse(birthDay),
@@ -180,7 +177,8 @@ class _FormSignUpState extends State<FormSignUp> implements SignUpView {
       }
     } catch (e) {
       print(e.toString());
-      signupPresenter.view.updateViewErrorMsg("Đã có lỗi xảy ra, vui lòng thử lại sau!");
+      signupPresenter.view
+          .updateViewErrorMsg("Đã có lỗi xảy ra, vui lòng thử lại sau!");
     }
   }
 
@@ -237,135 +235,160 @@ class _FormSignUpState extends State<FormSignUp> implements SignUpView {
     });
   }
 
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          CustomOutLineInput(
-            deviceSize: widget.deviceSize,
-            labelText: 'Họ và tên',
-            isDisable: false,
-            focusNode: _focusNodeName,
-            nextNode: _focusNodeEmail,
-            controller: _model.controllerName,
-          ),
-          CustomText(
-              text: "Giới Tính",
-              color: CustomColor.black,
-              fontWeight: FontWeight.bold,
-              context: context,
-              fontSize: 16),
-          CustomSizedBox(context: context, height: 8),
-          CustomRadioButton(
-              function: () {
-                setState(() => _gender = 0);
-              },
-              text: "Nam",
-              color:
-                  _gender == 0 ? CustomColor.blue : CustomColor.white,
-              state: _gender,
-              value: 0),
-          CustomRadioButton(
-              function: () {
-                setState(() => _gender = 1);
-              },
-              text:  "Nữ",
-              color:
-                  _gender == 1 ? CustomColor.blue : CustomColor.white,
-              state: _gender,
-              value: 1),
-          CustomRadioButton(
-              function: () {
-                setState(() => _gender = 2);
-              },
-              text: "Khác",
-              color:
-                  _gender == 2 ? CustomColor.blue : CustomColor.white,
-              state: _gender,
-              value: 2),
-          SizedBox(
-            width: widget.deviceSize.width / 2.5,
-            child: CustomOutLineInputDateTime(
+      child: Form(
+        key: _formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CustomOutLineInput(
               deviceSize: widget.deviceSize,
-              labelText: 'Năm sinh',
+              labelText: 'Họ và tên',
               isDisable: false,
-              focusNode: _focusNodeBirthDate,
+              focusNode: _focusNodeName,
               nextNode: _focusNodeEmail,
-              controller: _model.controllerBirthDate,
-              icon: "assets/images/calendar.png",
+              validator: Validator.checkFullname,
+              controller: _model.controllerName,
             ),
-          ),
-          CustomOutLineInput(
-            deviceSize: widget.deviceSize,
-            labelText: 'Email',
-            isDisable: false,
-            focusNode: _focusNodeEmail,
-            controller: _model.controllerEmail,
-            nextNode: _focusNodePhone,
-          ),
-          CustomOutLineInput(
-            deviceSize: widget.deviceSize,
-            labelText: 'Số điện thoại',
-            isDisable: false,
-            textInputType: TextInputType.number,
-            focusNode: _focusNodePhone,
-            controller: _model.controllerPhone,
-            nextNode: _focusNodeAddress,
-          ),
-          CustomOutLineInput(
-            deviceSize: widget.deviceSize,
-            labelText: 'Địa chỉ',
-            isDisable: false,
-            focusNode: _focusNodeAddress,
-            controller: _model.controllerAddress,
-            nextNode: _focusNodePassword,
-          ),
-          CustomOutLineInput(
-            deviceSize: widget.deviceSize,
-            labelText: 'Mật khẩu',
-            isDisable: false,
-            isSecure: true,
-            focusNode: _focusNodePassword,
-            controller: _model.controllerPassword,
-            nextNode: _focusNodeConfirmPassword,
-          ),
-          CustomOutLineInput(
-            deviceSize: widget.deviceSize,
-            labelText: 'Xác nhận mật khẩu',
-            isDisable: false,
-            isSecure: true,
-            focusNode: _focusNodeConfirmPassword,
-            controller: _model.controllerConfirmPassword,
-          ),
-          if (_model.errorMsg.isNotEmpty)
-            SizedBox(
-              width: double.infinity,
-              child: CustomText(
-                text: _model.errorMsg,
-                color: CustomColor.red,
-                context: context,
-                textAlign: TextAlign.center,
-                fontSize: 16,
+            CustomText(
+                text: "Giới Tính",
+                color: CustomColor.black,
                 fontWeight: FontWeight.bold,
+                context: context,
+                fontSize: 16),
+            CustomSizedBox(context: context, height: 8),
+            CustomRadioButton(
+                function: () {
+                  setState(() => _gender = 0);
+                },
+                text: "Nam",
+                color: _gender == 0 ? CustomColor.blue : CustomColor.white,
+                state: _gender,
+                value: 0),
+            CustomRadioButton(
+                function: () {
+                  setState(() => _gender = 1);
+                },
+                text: "Nữ",
+                color: _gender == 1 ? CustomColor.blue : CustomColor.white,
+                state: _gender,
+                value: 1),
+            CustomRadioButton(
+                function: () {
+                  setState(() => _gender = 2);
+                },
+                text: "Khác",
+                color: _gender == 2 ? CustomColor.blue : CustomColor.white,
+                state: _gender,
+                value: 2),
+            SizedBox(
+              width: widget.deviceSize.width / 2.5,
+              child: CustomOutLineInputDateTime(
+                deviceSize: widget.deviceSize,
+                labelText: 'Năm sinh',
+                isDisable: true,
+                focusNode: _focusNodeBirthDate,
+                nextNode: _focusNodeEmail,
+                controller: _model.controllerBirthDate,
+                icon: "assets/images/calendar.png",
               ),
             ),
-          CustomSizedBox(
-            context: context,
-            height: 8,
-          ),
-          CustomButton(
-              height: 24,
-              isLoading: _model.isLoading,
-              text: 'Đăng Ký',
-              width: double.infinity,
-              textColor: CustomColor.white,
-              onPressFunction: _model.isDisableSignup == false
-                  ? () {
-                      onClickSignUp(_email, _password, _confirmPassword,
-                          _address, _name, _phone, _birthdate);
+            CustomOutLineInput(
+              deviceSize: widget.deviceSize,
+              labelText: 'Email',
+              isDisable: false,
+              focusNode: _focusNodeEmail,
+              validator: Validator.checkEmail,
+              controller: _model.controllerEmail,
+              nextNode: _focusNodePhone,
+            ),
+            CustomOutLineInput(
+              deviceSize: widget.deviceSize,
+              labelText: 'Số điện thoại',
+              isDisable: false,
+              textInputType: TextInputType.number,
+              focusNode: _focusNodePhone,
+              controller: _model.controllerPhone,
+              validator: (value) {
+              
+              },
+              nextNode: _focusNodeAddress,
+            ),
+            CustomOutLineInput(
+                deviceSize: widget.deviceSize,
+                labelText: 'Địa chỉ',
+                isDisable: false,
+                focusNode: _focusNodeAddress,
+                controller: _model.controllerAddress,
+                nextNode: _focusNodePassword,
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return "Vui lòng nhập địa chỉ.";
+                  }
+                }),
+            CustomOutLineInput(
+              deviceSize: widget.deviceSize,
+              labelText: 'Mật khẩu',
+              isDisable: false,
+              isSecure: true,
+              focusNode: _focusNodePassword,
+              controller: _model.controllerPassword,
+              nextNode: _focusNodeConfirmPassword,
+              validator: (value) {
+                if (value!.length < 6) {
+                  return "Mật khẩu quá ngắn (ít nhất 6 kí tự)";
+                } else {
+                  return null;
+                }
+              },
+            ),
+            CustomOutLineInput(
+              deviceSize: widget.deviceSize,
+              labelText: 'Xác nhận mật khẩu',
+              isDisable: false,
+              isSecure: true,
+              focusNode: _focusNodeConfirmPassword,
+              controller: _model.controllerConfirmPassword,
+              validator: (value) {
+                if (!(_model.controllerPassword.text == value)) {
+                  return "Xác nhận mật khẩu không trùng.";
+                } else {
+                  return null;
+                }
+              },
+            ),
+            if (_model.errorMsg.isNotEmpty)
+              SizedBox(
+                width: double.infinity,
+                child: CustomText(
+                  text: _model.errorMsg,
+                  color: CustomColor.red,
+                  context: context,
+                  textAlign: TextAlign.center,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            CustomSizedBox(
+              context: context,
+              height: 8,
+            ),
+            CustomButton(
+                height: 24,
+                isLoading: _model.isLoading,
+                text: 'Đăng Ký',
+                width: double.infinity,
+                textColor: CustomColor.white,
+                onPressFunction: _model.isDisableSignup == false
+                    ? () {
+                        if (_formKey.currentState!.validate()) {
+                          onClickSignUp(_email, _password, _confirmPassword,
+                              _address, _name, _phone, _birthdate);
                           _focusNodePassword.unfocus();
                           _focusNodeAddress.unfocus();
                           _focusNodeBirthDate.unfocus();
@@ -373,13 +396,15 @@ class _FormSignUpState extends State<FormSignUp> implements SignUpView {
                           _focusNodeEmail.unfocus();
                           _focusNodeName.unfocus();
                           _focusNodePhone.unfocus();
-                    }
-                  : null,
-              buttonColor: _model.isDisableSignup == false
-                  ? CustomColor.purple
-                  : CustomColor.black[3],
-              borderRadius: 6),
-        ],
+                        }
+                      }
+                    : null,
+                buttonColor: _model.isDisableSignup == false
+                    ? CustomColor.purple
+                    : CustomColor.black[3],
+                borderRadius: 6),
+          ],
+        ),
       ),
     );
   }

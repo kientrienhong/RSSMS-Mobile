@@ -26,6 +26,7 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
   late BookingPopUpDoorToDoorModel _model;
 
   final oCcy = NumberFormat("#,##0", "en_US");
+  
   @override
   void initState() {
     super.initState();
@@ -153,7 +154,6 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
                   diffDay: _diffDate,
                   totalPrice: totalBill(),
                   dateTimeReturn: picked));
-          print('test');
         });
       }
     }
@@ -194,6 +194,8 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
     }
   }
 
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
@@ -203,261 +205,276 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
     return AlertDialog(
       insetPadding: const EdgeInsets.all(15),
       content: SingleChildScrollView(
-        child: SizedBox(
-          width: double.infinity,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              CustomText(
-                text: 'Thời gian',
-                color: CustomColor.blue,
-                context: context,
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-              CustomSizedBox(
-                context: context,
-                height: 8,
-              ),
-              SizedBox(
-                width: deviceSize.width,
-                height: deviceSize.height / 14,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    CustomText(
-                      text: 'Ngày lấy hàng',
-                      color: CustomColor.black,
-                      context: context,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    SizedBox(
-                      width: deviceSize.width / 2.5,
-                      height: deviceSize.height / 14,
-                      child: TextField(
-                        controller: _model.dateDeliveryController,
-                        onTap: () => _selectDateDelivery(context),
-                        style: const TextStyle(fontSize: 12),
-                        textAlign: TextAlign.center,
-                        readOnly: true,
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.symmetric(
-                              vertical: (deviceSize.height - 12) / 28 -
-                                  (deviceSize.height - 12) / 56),
-                          hintText: 'yyyy-mm-dd',
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(4),
-                              borderSide:
-                                  BorderSide(color: CustomColor.black[2]!)),
-                          suffixIcon: const ImageIcon(
-                            AssetImage('assets/images/calendar.png'),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+        child: Form(
+          key: _formKey,
+          child: SizedBox(
+            width: double.infinity,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                CustomText(
+                  text: 'Thời gian',
+                  color: CustomColor.blue,
+                  context: context,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
                 ),
-              ),
-              CustomSizedBox(
-                context: context,
-                height: 8,
-              ),
-              CustomText(
-                text: 'Giờ lấy hàng',
-                color: CustomColor.black,
-                context: context,
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-              CustomSizedBox(
-                context: context,
-                height: 12,
-              ),
-              SizedBox(
-                  height: deviceSize.width * 3 / 9,
+                CustomSizedBox(
+                  context: context,
+                  height: 8,
+                ),
+                SizedBox(
                   width: deviceSize.width,
-                  child: ListTimeSelect(
-                    currentIndex: orderBooking.currentSelectTime,
-                    onChangeTab: onChangeTime,
-                  )),
-              CustomSizedBox(
-                context: context,
-                height: 4,
-              ),
-              GestureDetector(
-                onTap: () => onChangeIsCustomerDelivery(
-                    !orderBooking.isCustomerDelivery),
-                child: Row(
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.only(left: 8),
-                      width: 0,
-                      child: Checkbox(
-                        checkColor: Colors.white,
-                        fillColor: MaterialStateProperty.all(CustomColor.blue),
-                        value: orderBooking.isCustomerDelivery,
-                        shape: const CircleBorder(),
-                        onChanged: (bool? value) {
-                          onChangeIsCustomerDelivery(value!);
-                        },
-                      ),
-                    ),
-                    CustomSizedBox(
-                      context: context,
-                      width: 16,
-                    ),
-                    CustomText(
-                        text: 'Khách hàng vận chuyển',
+                  height: deviceSize.height / 14,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CustomText(
+                        text: 'Ngày lấy hàng',
                         color: CustomColor.black,
                         context: context,
-                        fontSize: 16)
-                  ],
-                ),
-              ),
-              SizedBox(
-                width: deviceSize.width,
-                height: deviceSize.height / 14,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    CustomText(
-                      text: 'Ngày trả hàng',
-                      color: CustomColor.black,
-                      context: context,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    SizedBox(
-                      width: deviceSize.width / 2.5,
-                      height: deviceSize.height / 14,
-                      child: TextField(
-                        controller: _model.dateReturnController,
-                        onTap: () => _selectDateReturn(context),
-                        style: const TextStyle(fontSize: 12),
-                        textAlign: TextAlign.center,
-                        readOnly: true,
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.symmetric(
-                              vertical: (deviceSize.height - 12) / 28 -
-                                  (deviceSize.height - 12) / 56),
-                          hintText: 'yyyy-mm-dd',
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(4),
-                              borderSide:
-                                  BorderSide(color: CustomColor.black[2]!)),
-                          suffixIcon: const ImageIcon(
-                            AssetImage('assets/images/calendar.png'),
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      SizedBox(
+                        width: deviceSize.width / 2.5,
+                        height: deviceSize.height / 14,
+                        child: TextFormField(
+                          validator: ((value) =>
+                              value!.isEmpty ? "* Vui lòng nhập ngày" : null),
+                          controller: _model.dateDeliveryController,
+                          onTap: () => _selectDateDelivery(context),
+                          style: const TextStyle(fontSize: 12),
+                          textAlign: TextAlign.center,
+                          readOnly: true,
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: (deviceSize.height - 12) / 28 -
+                                    (deviceSize.height - 12) / 56),
+                            hintText: 'yyyy-mm-dd',
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(4),
+                                borderSide:
+                                    BorderSide(color: CustomColor.black[2]!)),
+                            suffixIcon: const ImageIcon(
+                              AssetImage('assets/images/calendar.png'),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              CustomSizedBox(
-                context: context,
-                height: 16,
-              ),
-              buildInfo('Tổng ngày: ', '${orderBooking.diffDay} ngày',
-                  CustomColor.blue),
-              CustomSizedBox(
-                context: context,
-                height: 16,
-              ),
-              CustomText(
-                text: 'Tạm tính',
-                color: CustomColor.blue,
-                context: context,
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-              CustomSizedBox(
-                context: context,
-                height: 8,
-              ),
-              buildInfo(
-                  'Chi phí thuê: ',
-                  totalEachPart(
-                      orderBooking.productOrder!['product']!, 'product'),
-                  CustomColor.black),
-              CustomSizedBox(
-                context: context,
-                height: 8,
-              ),
-              buildInfo(
-                  'Phụ kiện đóng gói: ',
-                  totalEachPart(
-                      orderBooking.productOrder!['accessory']!, 'accessory'),
-                  CustomColor.black),
-              CustomSizedBox(
-                context: context,
-                height: 8,
-              ),
-              buildInfo(
-                  'Dịch vụ hỗ trợ: ',
-                  totalEachPart(
-                      orderBooking.productOrder!['service']!, 'services'),
-                  CustomColor.black),
-              CustomSizedBox(
-                context: context,
-                height: 8,
-              ),
-              Container(
-                width: double.infinity,
-                height: 1,
-                color: CustomColor.black,
-              ),
-              CustomSizedBox(
-                context: context,
-                height: 8,
-              ),
-              buildInfo('Tổng cộng ', '${oCcy.format(totalBill())} VND',
-                  CustomColor.black),
-              CustomSizedBox(
-                context: context,
-                height: 16,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  CustomButton(
-                      height: 24,
-                      text: 'Tiếp theo',
-                      width: deviceSize.width * 1.2 / 3,
-                      onPressFunction: () {
-                        OrderBooking orderBooking =
-                            Provider.of<OrderBooking>(context, listen: false);
-                        OrderBooking temp =
-                            orderBooking.copyWith(totalPrice: totalBill());
-                        orderBooking.setOrderBooking(orderBooking: temp);
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const InputInformation(
-                                      isSelfStorageOrder: false,
-                                    )));
-                      },
-                      isLoading: false,
-                      textColor: CustomColor.white,
-                      buttonColor: CustomColor.blue,
-                      borderRadius: 6),
-                  CustomButton(
-                      height: 24,
-                      text: 'Hủy',
-                      width: deviceSize.width * 0.7 / 3,
-                      onPressFunction: () {
-                        Navigator.of(context).pop();
-                      },
-                      isLoading: false,
-                      textColor: CustomColor.red,
-                      buttonColor: CustomColor.white,
-                      isCancelButton: true,
-                      borderRadius: 6),
-                ],
-              )
-            ],
+                CustomSizedBox(
+                  context: context,
+                  height: 8,
+                ),
+                CustomText(
+                  text: 'Giờ lấy hàng',
+                  color: CustomColor.black,
+                  context: context,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+                CustomSizedBox(
+                  context: context,
+                  height: 12,
+                ),
+                SizedBox(
+                    height: deviceSize.width * 3 / 8,
+                    width: deviceSize.width,
+                    child: ListTimeSelect(
+                      currentIndex: orderBooking.currentSelectTime,
+                      onChangeTab: onChangeTime,
+                    )),
+                CustomSizedBox(
+                  context: context,
+                  height: 4,
+                ),
+                GestureDetector(
+                  onTap: () => onChangeIsCustomerDelivery(
+                      !orderBooking.isCustomerDelivery),
+                  child: Row(
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.only(left: 8),
+                        width: 0,
+                        child: Checkbox(
+                          checkColor: Colors.white,
+                          fillColor:
+                              MaterialStateProperty.all(CustomColor.blue),
+                          value: orderBooking.isCustomerDelivery,
+                          shape: const CircleBorder(),
+                          onChanged: (bool? value) {
+                            onChangeIsCustomerDelivery(value!);
+                          },
+                        ),
+                      ),
+                      CustomSizedBox(
+                        context: context,
+                        width: 16,
+                      ),
+                      CustomText(
+                          text: 'Khách hàng vận chuyển',
+                          color: CustomColor.black,
+                          context: context,
+                          fontSize: 16)
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  width: deviceSize.width,
+                  height: deviceSize.height / 14,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CustomText(
+                        text: 'Ngày trả hàng',
+                        color: CustomColor.black,
+                        context: context,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      SizedBox(
+                        width: deviceSize.width / 2.5,
+                        height: deviceSize.height / 14,
+                        child: TextFormField(
+                          validator: ((value) =>
+                              value!.isEmpty ? "* Vui lòng nhập ngày" : null),
+                          controller: _model.dateReturnController,
+                          onTap: () => _selectDateReturn(context),
+                          style: const TextStyle(fontSize: 12),
+                          textAlign: TextAlign.center,
+                          readOnly: true,
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: (deviceSize.height - 12) / 28 -
+                                    (deviceSize.height - 12) / 56),
+                            hintText: 'yyyy-mm-dd',
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(4),
+                                borderSide:
+                                    BorderSide(color: CustomColor.black[2]!)),
+                            suffixIcon: const ImageIcon(
+                              AssetImage('assets/images/calendar.png'),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                CustomSizedBox(
+                  context: context,
+                  height: 16,
+                ),
+                buildInfo('Tổng ngày: ', '${orderBooking.diffDay} ngày',
+                    CustomColor.blue),
+                CustomSizedBox(
+                  context: context,
+                  height: 16,
+                ),
+                CustomText(
+                  text: 'Tạm tính',
+                  color: CustomColor.blue,
+                  context: context,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+                CustomSizedBox(
+                  context: context,
+                  height: 8,
+                ),
+                buildInfo(
+                    'Chi phí thuê: ',
+                    totalEachPart(
+                        orderBooking.productOrder!['product']!, 'product'),
+                    CustomColor.black),
+                CustomSizedBox(
+                  context: context,
+                  height: 8,
+                ),
+                buildInfo(
+                    'Phụ kiện đóng gói: ',
+                    totalEachPart(
+                        orderBooking.productOrder!['accessory']!, 'accessory'),
+                    CustomColor.black),
+                CustomSizedBox(
+                  context: context,
+                  height: 8,
+                ),
+                buildInfo(
+                    'Dịch vụ hỗ trợ: ',
+                    totalEachPart(
+                        orderBooking.productOrder!['service']!, 'services'),
+                    CustomColor.black),
+                CustomSizedBox(
+                  context: context,
+                  height: 8,
+                ),
+                Container(
+                  width: double.infinity,
+                  height: 1,
+                  color: CustomColor.black,
+                ),
+                CustomSizedBox(
+                  context: context,
+                  height: 8,
+                ),
+                buildInfo('Tổng cộng ', '${oCcy.format(totalBill())} VND',
+                    CustomColor.black),
+                CustomSizedBox(
+                  context: context,
+                  height: 16,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    CustomButton(
+                        height: 24,
+                        text: 'Tiếp theo',
+                        width: deviceSize.width * 1.2 / 3,
+                        onPressFunction: () {
+                          
+                          if (_formKey.currentState!.validate() || orderBooking.currentSelectTime != -1) {
+                            OrderBooking orderBooking =
+                                Provider.of<OrderBooking>(context,
+                                    listen: false);
+                            OrderBooking temp =
+                                orderBooking.copyWith(totalPrice: totalBill());
+                            orderBooking.setOrderBooking(orderBooking: temp);
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const InputInformation(
+                                          isSelfStorageOrder: false,
+                                        )));
+                          }else{
+
+                          }
+                        },
+                        isLoading: false,
+                        textColor: CustomColor.white,
+                        buttonColor: CustomColor.blue,
+                        borderRadius: 6),
+                    CustomButton(
+                        height: 24,
+                        text: 'Hủy',
+                        width: deviceSize.width * 0.7 / 3,
+                        onPressFunction: () {
+                          Navigator.of(context).pop();
+                        },
+                        isLoading: false,
+                        textColor: CustomColor.red,
+                        buttonColor: CustomColor.white,
+                        isCancelButton: true,
+                        borderRadius: 6),
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       ),

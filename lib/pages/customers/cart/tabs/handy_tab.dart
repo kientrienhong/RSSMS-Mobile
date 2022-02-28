@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
+import 'package:rssms/models/entity/order_booking.dart';
 import 'package:rssms/models/entity/product.dart';
 import 'package:rssms/pages/customers/cart/widgets/accessory_widget.dart';
 import 'package:rssms/pages/customers/cart/widgets/booking_pop_up_door_to_door.dart';
@@ -146,11 +148,33 @@ class _HandyTabState extends State<HandyTab> {
             text: 'Đặt',
             width: double.infinity,
             onPressFunction: () {
-              showDialog(
-                  context: context,
-                  builder: (ctx) {
-                    return const BookingPopUpDoorToDoor();
-                  });
+              OrderBooking orderBooking =
+                  Provider.of<OrderBooking>(context, listen: false);
+              List<dynamic> listBooking = orderBooking.productOrder!['product'];
+              if (listBooking.isNotEmpty) {
+                showDialog(
+                    context: context,
+                    builder: (ctx) {
+                      return const BookingPopUpDoorToDoor();
+                    });
+              } else {
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: const Text("Thông báo"),
+                        content: const Text("Vui lòng chọn ít nhất một dịch vụ?"),
+                        actions: [
+                          TextButton(
+                            child: const Text("Đồng ý"),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          )
+                        ],
+                      );
+                    });
+              }
             },
             isLoading: false,
             textColor: CustomColor.white,

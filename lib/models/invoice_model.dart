@@ -18,6 +18,8 @@ class InvoiceModel {
   List<Invoice>? _data;
   Map<String, dynamic>? metadata;
 
+
+  bool? onRefresh;
   int? page;
   int? totalPage;
 
@@ -26,6 +28,7 @@ class InvoiceModel {
     _listInvoiceFull = List<Invoice>.empty(growable: true);
     _searchValue = TextEditingController();
     isLoadingInvoice = false;
+    onRefresh = false;
 
     page = 1;
     _data = [];
