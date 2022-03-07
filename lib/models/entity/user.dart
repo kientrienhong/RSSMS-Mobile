@@ -18,7 +18,7 @@ class Users with ChangeNotifier {
   String? refreshToken;
   double? expiresIn;
   String? tokenType;
-  int? userId;
+  String? userId;
   int? storageId;
   String? name;
   String? email;
@@ -27,7 +27,7 @@ class Users with ChangeNotifier {
   int? gender;
   DateTime? birthDate;
   String? phone;
-  List<dynamic>? images;
+  String? imageUrl;
   List<dynamic>? staffManageStorages;
   List<NotificationEntity>? listUnreadNoti;
   List<NotificationEntity>? listNoti;
@@ -54,7 +54,7 @@ class Users with ChangeNotifier {
     required this.address,
     required this.roleName,
     required this.phone,
-    required this.images,
+    required this.imageUrl,
     required this.birthDate,
     required this.gender,
     required this.staffManageStorages,
@@ -65,14 +65,14 @@ class Users with ChangeNotifier {
     refreshToken = '';
     expiresIn = -1;
     tokenType = '';
-    userId = -1;
+    userId = '';
     storageId = -1;
     name = '';
     email = '';
     address = '';
     roleName = '';
     phone = '';
-    images = [];
+    imageUrl = '';
     gender = 0;
     birthDate = DateTime.now();
     staffManageStorages = [];
@@ -85,7 +85,7 @@ class Users with ChangeNotifier {
       String? refreshToken,
       double? expiresIn,
       String? tokenType,
-      int? userId,
+      String? userId,
       int? storageId,
       String? name,
       String? email,
@@ -94,7 +94,7 @@ class Users with ChangeNotifier {
       String? phone,
       int? gender,
       DateTime? birthDate,
-      List<dynamic>? images,
+      String? imageUrl,
       List<dynamic>? staffManageStorages,
       List<NotificationEntity>? listNoti,
       List<NotificationEntity>? listUnreadNoti}) {
@@ -114,7 +114,7 @@ class Users with ChangeNotifier {
       birthDate: birthDate ?? this.birthDate,
       roleName: roleName ?? this.roleName,
       phone: phone ?? this.phone,
-      images: images ?? this.images,
+      imageUrl: imageUrl ?? this.imageUrl,
       staffManageStorages: staffManageStorages ?? this.staffManageStorages,
     );
   }
@@ -134,7 +134,7 @@ class Users with ChangeNotifier {
       'gender': gender,
       'birthDate': birthDate,
       'phone': phone,
-      'images': images,
+      'imageUrl': imageUrl,
       'staffManageStorages': staffManageStorages,
     };
   }
@@ -147,7 +147,7 @@ class Users with ChangeNotifier {
       refreshToken: map['refreshToken'] ?? '',
       expiresIn: map['expiresIn']?.toDouble() ?? 0.0,
       tokenType: map['tokenType'] ?? '',
-      userId: map['userId']?.toInt() ?? 0,
+      userId: map['userId'] ?? '',
       storageId: map['storageId']?.toInt() ?? 0,
       name: map['name'] ?? '',
       email: map['email'] ?? '',
@@ -158,8 +158,8 @@ class Users with ChangeNotifier {
           : DateFormat('yyyy-MM-dd').parse(map['birthdate'].split('T')[0]),
       gender: map['gender'] ?? 0,
       phone: map['phone'] ?? '',
-      images: List<dynamic>.from(map['images']),
-      staffManageStorages: List<dynamic>.from(map['staffManageStorages']),
+      imageUrl: map['imageUrl'],
+      staffManageStorages: List<dynamic>.from(map['staffManageStorages'] ?? []),
     );
   }
 
@@ -185,7 +185,7 @@ class Users with ChangeNotifier {
         other.address == address &&
         other.roleName == roleName &&
         other.phone == phone &&
-        listEquals(other.images, images) &&
+        other.imageUrl == imageUrl &&
         listEquals(other.staffManageStorages, staffManageStorages);
   }
 
@@ -204,7 +204,7 @@ class Users with ChangeNotifier {
         address.hashCode ^
         roleName.hashCode ^
         phone.hashCode ^
-        images.hashCode ^
+        imageUrl.hashCode ^
         staffManageStorages.hashCode;
   }
 
@@ -224,7 +224,7 @@ class Users with ChangeNotifier {
     gender = user.gender;
     birthDate = user.birthDate;
     phone = user.phone;
-    images = user.images;
+    imageUrl = user.imageUrl;
     staffManageStorages = user.staffManageStorages;
     notifyListeners();
   }

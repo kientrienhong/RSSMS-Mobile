@@ -102,7 +102,7 @@ class _ProductWidgetState extends State<ProductWidget> implements ProductView {
           children: [
             SizedBox(
                 width: (deviceSize.width - 64) / 4,
-                child: Image.network(widget.product!.images[0]['url'])),
+                child: Image.network(widget.product!.imageUrl)),
             SizedBox(
               width: 16,
             ),

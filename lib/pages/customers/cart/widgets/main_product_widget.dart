@@ -107,7 +107,7 @@ class _MainProductWidgetState extends State<MainProductWidget>
             children: [
               SizedBox(
                   width: (deviceSize.width - 48) / 4 - 8,
-                  child: Image.network(widget.product!.images[0]['url'])),
+                  child: Image.network(widget.product!.imageUrl)),
               const SizedBox(
                 width: 16,
               ),

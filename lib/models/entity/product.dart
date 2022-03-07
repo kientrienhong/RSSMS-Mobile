@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 
 class Product {
-  final int id;
+  final String id;
   int? quantity;
   final String name;
   final int price;
@@ -13,7 +13,7 @@ class Product {
   final String unit;
   final String tooltip;
   final int status;
-  final List<dynamic> images;
+  final String imageUrl;
   Product({
     int? this.quantity,
     required this.id,
@@ -25,12 +25,12 @@ class Product {
     required this.unit,
     required this.tooltip,
     required this.status,
-    required this.images,
+    required this.imageUrl,
   });
 
   Product copyWith({
     int? quantity,
-    int? id,
+    String? id,
     String? name,
     int? price,
     String? size,
@@ -39,7 +39,7 @@ class Product {
     String? unit,
     String? tooltip,
     int? status,
-    List<Map<String, dynamic>>? images,
+    String? imageUrl,
   }) {
     return Product(
       id: id ?? this.id,
@@ -52,7 +52,7 @@ class Product {
       unit: unit ?? this.unit,
       tooltip: tooltip ?? this.tooltip,
       status: status ?? this.status,
-      images: images ?? this.images,
+      imageUrl: imageUrl ?? this.imageUrl,
     );
   }
 
@@ -67,13 +67,13 @@ class Product {
       'unit': unit,
       'tooltip': tooltip,
       'status': status,
-      'images': images.toList(),
+      'imageUrl': imageUrl,
     };
   }
 
   factory Product.fromMap(Map<String, dynamic> map) {
     return Product(
-      id: map['id']?.toInt() ?? 0,
+      id: map['id'] ?? '',
       name: map['name'] ?? '',
       price: map['price']?.toInt() ?? 0,
       size: map['size'] ?? '',
@@ -82,7 +82,7 @@ class Product {
       unit: map['unit'] ?? '',
       tooltip: map['tooltip'] ?? '',
       status: map['status'] ?? 0,
-      images: map['images']?.map((x) => x).toList(),
+      imageUrl: map['imageUrl'] ?? '',
     );
   }
 
@@ -93,7 +93,7 @@ class Product {
 
   @override
   String toString() {
-    return 'Product(id: $id, name: $name, price: $price, size: $size, description: $description, type: $type, unit: $unit, tooltip: $tooltip, status: $status, images: $images)';
+    return 'Product(id: $id, name: $name, price: $price, size: $size, description: $description, type: $type, unit: $unit, tooltip: $tooltip, status: $status)';
   }
 
   @override
@@ -110,7 +110,7 @@ class Product {
         other.unit == unit &&
         other.tooltip == tooltip &&
         other.status == status &&
-        listEquals(other.images, images);
+        other.imageUrl == imageUrl;
   }
 
   @override
@@ -124,6 +124,6 @@ class Product {
         unit.hashCode ^
         tooltip.hashCode ^
         status.hashCode ^
-        images.hashCode;
+        imageUrl.hashCode;
   }
 }

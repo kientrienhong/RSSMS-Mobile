@@ -23,13 +23,11 @@ class CartScreenPresenter {
         decodedReponse['1']!.map<Product>((e) => Product.fromMap(e)).toList();
     List<Product> listHandy =
         decodedReponse['2']!.map<Product>((e) => Product.fromMap(e)).toList();
-    List<Product> listServices =
-        decodedReponse['3']!.map<Product>((e) => Product.fromMap(e)).toList();
+
     List<Product> listArea =
-        decodedReponse['4']!.map<Product>((e) => Product.fromMap(e)).toList();
+        decodedReponse['3']!.map<Product>((e) => Product.fromMap(e)).toList();
 
     model!.handyTab!.putIfAbsent(constants.HANDY, () => listHandy);
-    model!.handyTab!.putIfAbsent(constants.SERVICES, () => listServices);
     model!.handyTab!.putIfAbsent(constants.ACCESSORY, () => listAccessory);
 
     model!.selfStorageTab!

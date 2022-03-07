@@ -68,7 +68,7 @@ class FirebaseStorageHelper {
         return e;
       }
       List<int> imageBytes = await e.file!.readAsBytes();
-      return e.copyWith(base64: base64Encode(imageBytes), id: 0);
+      return e.copyWith(base64: base64Encode(imageBytes), id: '');
     }));
   }
 

@@ -26,12 +26,12 @@ class InvoiceInfoWidget extends StatelessWidget {
               context: context,
               fontWeight: FontWeight.bold,
               fontSize: 17),
-          CustomText(
-              text: "#" + invoice!.id.toString(),
-              color: Colors.black,
-              context: context,
-              fontWeight: FontWeight.bold,
-              fontSize: 16),
+          // CustomText(
+          //     text: "#" + invoice!.id.toString(),
+          //     color: Colors.black,
+          //     context: context,
+          //     fontWeight: FontWeight.bold,
+          //     fontSize: 16),
         ],
       ),
       CustomSizedBox(

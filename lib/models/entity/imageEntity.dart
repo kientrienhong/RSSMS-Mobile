@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 class ImageEntity {
-  final int? id;
+  final String? id;
   final String? url;
   final String? note;
   final String? name;
@@ -13,7 +13,7 @@ class ImageEntity {
       {this.id, this.url, this.name, this.note, this.file, this.base64});
 
   ImageEntity copyWith(
-      {int? id,
+      {String? id,
       String? url,
       String? name,
       String? note,
@@ -34,7 +34,7 @@ class ImageEntity {
 
   factory ImageEntity.fromMap(Map<String, dynamic> map) {
     return ImageEntity(
-        id: map['id']?.toInt() ?? 0,
+        id: map['id'] ?? '',
         url: map['url'] ?? '',
         note: map['note'] ?? '',
         name: map['name'] ?? '');

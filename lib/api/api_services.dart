@@ -64,8 +64,12 @@ class ApiServices {
     }
   }
 
-  static Future<dynamic> changePassword(String oldPassword,
-      String confirmPassword, String newPassword, int userId, String idToken) {
+  static Future<dynamic> changePassword(
+      String oldPassword,
+      String confirmPassword,
+      String newPassword,
+      String userId,
+      String idToken) {
     try {
       Map<String, String> headers = {
         "Content-type": "application/json",
@@ -329,7 +333,7 @@ class ApiServices {
       int gender,
       String address,
       String idToken,
-      int userId) {
+      String userId) {
     try {
       Map<String, String> headers = {
         "Content-type": "application/json",
@@ -439,7 +443,7 @@ class ApiServices {
     }
   }
 
-  static Future<dynamic> loadListNotification(String idToken, int userId) {
+  static Future<dynamic> loadListNotification(String idToken, String userId) {
     try {
       Map<String, String> headers = {
         "Content-type": "application/json",

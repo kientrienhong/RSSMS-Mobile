@@ -102,45 +102,6 @@ class _HandyTabState extends State<HandyTab> {
         ),
         CustomSizedBox(
           context: context,
-          height: 8,
-        ),
-        Row(
-          children: [
-            CustomText(
-                text: 'Dịch vụ ',
-                color: CustomColor.blue,
-                fontWeight: FontWeight.bold,
-                context: context,
-                fontSize: 24),
-            CustomText(
-                text: 'hỗ trợ ',
-                color: CustomColor.black[3]!,
-                context: context,
-                fontWeight: FontWeight.bold,
-                fontSize: 24)
-          ],
-        ),
-        CustomSizedBox(
-          context: context,
-          height: 8,
-        ),
-        GridView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            childAspectRatio: 0.6,
-            crossAxisSpacing: 16.0,
-          ),
-          itemBuilder: (ctx, i) {
-            return ServiceWidget(
-              product: listService[i],
-            );
-          },
-          itemCount: listService.length,
-        ),
-        CustomSizedBox(
-          context: context,
           height: 16,
         ),
         CustomButton(
@@ -163,7 +124,8 @@ class _HandyTabState extends State<HandyTab> {
                     builder: (context) {
                       return AlertDialog(
                         title: const Text("Thông báo"),
-                        content: const Text("Vui lòng chọn ít nhất một dịch vụ?"),
+                        content:
+                            const Text("Vui lòng chọn ít nhất một dịch vụ?"),
                         actions: [
                           TextButton(
                             child: const Text("Đồng ý"),

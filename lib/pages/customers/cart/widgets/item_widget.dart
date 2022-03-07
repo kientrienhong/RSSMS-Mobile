@@ -93,66 +93,72 @@ class _ItemWidgetState extends State<ItemWidget> implements ItemWidgetView {
           ]),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+          Column(
             children: [
-              GestureDetector(
-                onTap: () {
-                  showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return InfoPopUp(
-                          product: widget.product,
-                        );
-                      });
-                },
-                child: Container(
-                    margin: const EdgeInsets.only(right: 8, top: 8),
-                    child: Image.asset('assets/images/info.png')),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return InfoPopUp(
+                              product: widget.product,
+                            );
+                          });
+                    },
+                    child: Container(
+                        margin: const EdgeInsets.only(right: 8, top: 8),
+                        child: Image.asset('assets/images/info.png')),
+                  ),
+                ],
+              ),
+              SizedBox(
+                  height: deviceSize.width / 8,
+                  width: deviceSize.width / 8,
+                  child: Image.network(widget.product!.imageUrl)),
+              CustomSizedBox(
+                context: context,
+                height: 8,
+              ),
+              CustomText(
+                  text: widget.product!.name,
+                  color: CustomColor.black,
+                  context: context,
+                  fontWeight: FontWeight.bold,
+                  maxLines: 2,
+                  textAlign: TextAlign.center,
+                  fontSize: 20),
+              CustomSizedBox(
+                context: context,
+                height: 8,
+              ),
+              CustomText(
+                  text: widget.product!.description,
+                  color: CustomColor.black[3]!,
+                  context: context,
+                  maxLines: 2,
+                  textAlign: TextAlign.center,
+                  fontSize: 16),
+              CustomSizedBox(
+                context: context,
+                height: 8,
+              ),
+              CustomText(
+                  text: '${oCcy.format(widget.product!.price)}đ / $unit',
+                  color: CustomColor.blue,
+                  context: context,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20),
+              CustomSizedBox(
+                context: context,
+                height: 16,
               ),
             ],
-          ),
-          SizedBox(
-              height: deviceSize.width / 8,
-              width: deviceSize.width / 8,
-              child: Image.network(widget.product!.images[0]['url'])),
-          CustomSizedBox(
-            context: context,
-            height: 8,
-          ),
-          CustomText(
-              text: widget.product!.name,
-              color: CustomColor.black,
-              context: context,
-              fontWeight: FontWeight.bold,
-              maxLines: 2,
-              textAlign: TextAlign.center,
-              fontSize: 20),
-          CustomSizedBox(
-            context: context,
-            height: 8,
-          ),
-          CustomText(
-              text: widget.product!.description,
-              color: CustomColor.black[3]!,
-              context: context,
-              maxLines: 2,
-              textAlign: TextAlign.center,
-              fontSize: 16),
-          CustomSizedBox(
-            context: context,
-            height: 8,
-          ),
-          CustomText(
-              text: '${oCcy.format(widget.product!.price)}đ / $unit',
-              color: CustomColor.blue,
-              context: context,
-              fontWeight: FontWeight.bold,
-              fontSize: 20),
-          CustomSizedBox(
-            context: context,
-            height: 16,
           ),
           QuantityWidget(
             product: widget.product,

@@ -15,10 +15,12 @@ class InvoiceTab extends StatelessWidget {
   Invoice? invoice;
   final Size deviceSize;
 
-  InvoiceTab({Key? key, required this.deviceSize, this.invoice}) : super(key: key);
+  InvoiceTab({Key? key, required this.deviceSize, this.invoice})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    print(invoice!.id);
     return Column(
       children: [
         CustomText(
@@ -31,8 +33,7 @@ class InvoiceTab extends StatelessWidget {
           context: context,
           height: 32,
         ),
-        InvoiceInfoWidget(
-            deviceSize: deviceSize, invoice: invoice),
+        InvoiceInfoWidget(deviceSize: deviceSize, invoice: invoice),
         SizedBox(
           width: deviceSize.width,
           child: Column(
@@ -42,30 +43,11 @@ class InvoiceTab extends StatelessWidget {
                 context: context,
                 height: 16,
               ),
-              InvoiceProductWidget(
-                  deviceSize: deviceSize, invoice: invoice),
+              InvoiceProductWidget(deviceSize: deviceSize, invoice: invoice),
               CustomSizedBox(
                 context: context,
                 height: 16,
               ),
-              // if (invoice!.typeOrder== 0)
-              //   CustomText(
-              //       text: "Hình ảnh",
-              //       color: CustomColor.blue,
-              //       context: context,
-              //       textAlign: TextAlign.right,
-              //       fontWeight: FontWeight.bold,
-              //       fontSize: 16),
-              // if (invoice!.typeOrder == 0)
-              //   SingleChildScrollView(
-              //     scrollDirection: Axis.horizontal,
-              //     child: Padding(
-              //       padding: const EdgeInsets.symmetric(vertical: 12.0),
-              //       child: Row(
-              //         children: mapImageWidget(listImage),
-              //       ),
-              //     ),
-              //   ),
               CustomText(
                   text: "QR code",
                   color: CustomColor.blue,
@@ -77,9 +59,10 @@ class InvoiceTab extends StatelessWidget {
                 width: double.infinity,
                 child: Center(
                   child: QrImage(
-                    data: invoice!.id.toString(),
+                    data: invoice!.id,
                     size: 88.0,
-                    version: 2,
+                    gapless: true,
+                    version: 10,
                   ),
                 ),
               ),

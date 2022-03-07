@@ -25,7 +25,7 @@ class ProductInvoiceWidget extends StatelessWidget {
               Row(
                 children: [
                   Image.network(
-                    product!.imageProduct[0].url! ,
+                    product!.serviceImageUrl,
                     height: 50,
                     width: 50,
                   ),

@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'order_detail.dart';
 
 class Invoice with ChangeNotifier {
-  late int id;
+  late String id;
   late String customerName;
   late String customerPhone;
   late String deliveryAddress;
@@ -47,7 +47,7 @@ class Invoice with ChangeNotifier {
   });
 
   Invoice.empty() {
-    id = -1;
+    id = '';
     customerName = '';
     customerPhone = '';
     deliveryAddress = '';
@@ -69,7 +69,7 @@ class Invoice with ChangeNotifier {
   }
 
   Invoice copyWith({
-    int? id,
+    String? id,
     String? customerName,
     String? customerPhone,
     String? deliveryAddress,
@@ -138,7 +138,7 @@ class Invoice with ChangeNotifier {
 
   factory Invoice.fromMap(Map<String, dynamic> map) {
     return Invoice(
-      id: map['id']?.toInt() ?? 0,
+      id: map['id'] ?? '',
       customerName: map['customerName'] ?? '',
       customerPhone: map['customerPhone'] ?? '',
       deliveryAddress: map['deliveryAddress'] ?? '',

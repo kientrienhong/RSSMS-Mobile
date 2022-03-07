@@ -8,13 +8,13 @@ import 'package:rssms/common/custom_input_with_hint.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_snack_bar.dart';
 import 'package:rssms/common/custom_text.dart';
+import 'package:rssms/common/image_widget.dart';
 import 'package:rssms/constants/constants.dart';
 import 'package:rssms/helpers/validator.dart';
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/order_detail.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/models/invoice_update_model.dart';
-import 'package:rssms/common/image_widget.dart';
 import 'package:rssms/pages/customers/cart/cart_screen.dart';
 import 'package:rssms/pages/customers/my_account/my_account.dart';
 import 'package:rssms/pages/customers/notification/notification_screen.dart';
@@ -158,7 +158,7 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
 
   List<Widget> mapInvoiceWidget(List<OrderDetail> listOrderDetail) =>
       listOrderDetail
-          .map<ImageWidget>((e) => ImageWidget(
+          .map<Widget>((e) => ImageWidget(
                 orderDetail: e,
                 isView: widget.isView ?? false,
               ))

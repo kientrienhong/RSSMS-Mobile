@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
+import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/models/entity/product.dart';
 
 class QuantityWidget extends StatefulWidget {
@@ -38,12 +39,26 @@ class _QuantityWidgetState extends State<QuantityWidget> {
       children: [
         GestureDetector(
           onTap: widget.minusQuantity,
-          child: SizedBox(
-              height: 20,
-              child: Image.asset(
-                'assets/images/minusButton.png',
-                fit: BoxFit.cover,
-              )),
+          child: Container(
+            height: 40,
+            width: 40,
+            decoration: BoxDecoration(
+                border: Border.all(color: CustomColor.black[3]!),
+                borderRadius: BorderRadius.circular(4)),
+            child: Center(
+              child: CustomText(
+                  text: '-',
+                  color: CustomColor.black[3]!,
+                  context: context,
+                  fontSize: 32),
+            ),
+          ),
+          // child: SizedBox(
+          //     height: 40,
+          //     child: Image.asset(
+          //       'assets/images/minusButton.png',
+          //       fit: BoxFit.cover,
+          //     )),
         ),
         CustomSizedBox(
           context: context,
@@ -51,7 +66,7 @@ class _QuantityWidgetState extends State<QuantityWidget> {
         ),
         SizedBox(
           width: widget.width,
-          height: 24,
+          height: 40,
           child: TextFormField(
             enabled: false,
             keyboardType: TextInputType.number,
@@ -74,10 +89,20 @@ class _QuantityWidgetState extends State<QuantityWidget> {
         ),
         GestureDetector(
           onTap: widget.addQuantity,
-          child: SizedBox(
-              height: 20,
-              child: Image.asset('assets/images/addButton.png',
-                  fit: BoxFit.cover)),
+          child: Container(
+            height: 40,
+            width: 40,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(4),
+                color: CustomColor.blue),
+            child: Center(
+              child: CustomText(
+                  text: '+',
+                  color: CustomColor.white,
+                  context: context,
+                  fontSize: 32),
+            ),
+          ),
         ),
       ],
     );

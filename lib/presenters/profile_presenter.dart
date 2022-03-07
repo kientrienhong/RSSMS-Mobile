@@ -28,7 +28,8 @@ class ProfilePresenter {
 
   void handleOnChangeInputProfile(
       String fullname, String phone, String address, String birthDate) {
-    _view!.updateStatusOfButtonUpdateProfile(fullname, phone, address, birthDate);
+    _view!
+        .updateStatusOfButtonUpdateProfile(fullname, phone, address, birthDate);
   }
   // void handleOnChangeInput(String email, String password,
   //     String confirmPassword, String firstname, String lastname, String phone) {
@@ -37,7 +38,7 @@ class ProfilePresenter {
   // }
 
   Future<bool> updateProfile(String name, int gender, DateTime birthday,
-      String address, String phone, String idToken, int userId) async {
+      String address, String phone, String idToken, String userId) async {
     _view!.updateLoadingProfile();
 
     try {
@@ -54,23 +55,23 @@ class ProfilePresenter {
   }
 
   Future<bool> changePassword(String newPassword, String oldPassword,
-      String confirmPassword, String idToken, int userId) async {
+      String confirmPassword, String idToken, String userId) async {
     _view!.updateLoadingPassword();
     try {
       if (newPassword != confirmPassword) {
         throw Exception(
             "Vui lòng nhập mật khẩu mới trùng với xác nhận mật khẩu");
       }
-      
+
       final response = await ApiServices.changePassword(
           oldPassword, confirmPassword, newPassword, userId, idToken);
 
       if (response.statusCode == 200) return true;
-      if(response.statusCode == 400){
+      if (response.statusCode == 400) {
         model.errorMsgChangePassword = "Mật khẩu cũ không đúng";
       }
       return false;
-    } catch (e) { 
+    } catch (e) {
       print(e.toString());
       throw Exception(e.toString());
     } finally {
