@@ -291,6 +291,7 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
         }
       }
     } catch (e) {
+      print(e);
       loginPresenter.view.updateViewErrorMsg('Tài khoản / mật khẩu không đúng');
     }
   }

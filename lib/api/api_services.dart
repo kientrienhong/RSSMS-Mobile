@@ -23,12 +23,10 @@ class ApiServices {
 
   static Future<dynamic> logInWithEmail(
       String email, String password, String deviceToken) {
-    print(deviceToken);
-
     try {
       Map<String, String> headers = {"Content-type": "application/json"};
 
-      final url = Uri.parse('$_domain/api/v1/users/login');
+      final url = Uri.parse('$_domain/api/v1/accounts/login');
       return http.post(url,
           headers: headers,
           body: jsonEncode({
@@ -47,7 +45,7 @@ class ApiServices {
     try {
       Map<String, String> headers = {"Content-type": "application/json"};
 
-      final url = Uri.parse('$_domain/api/v1/users');
+      final url = Uri.parse('$_domain/api/v1/accounts');
       return http.post(url,
           headers: headers,
           body: jsonEncode({
@@ -74,7 +72,7 @@ class ApiServices {
         'Authorization': 'Bearer $idToken'
       };
 
-      final url = Uri.parse('$_domain/api/v1/users/changepassword');
+      final url = Uri.parse('$_domain/api/v1/accounts/changepassword');
       return http.post(url,
           headers: headers,
           body: jsonEncode({
@@ -88,14 +86,14 @@ class ApiServices {
     }
   }
 
-  static Future<dynamic> getProduct(String idToken) {
+  static Future<dynamic> getService(String idToken) {
     try {
       Map<String, String> headers = {
         "Content-type": "application/json",
         'Authorization': 'Bearer $idToken'
       };
 
-      final url = Uri.parse('$_domain/api/v1/products');
+      final url = Uri.parse('$_domain/api/v1/services');
       return http.get(
         url,
         headers: headers,

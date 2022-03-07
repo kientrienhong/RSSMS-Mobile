@@ -15,7 +15,7 @@ class CartScreenPresenter {
   }
 
   void loadProduct(String idToken) async {
-    final response = await ApiServices.getProduct(idToken);
+    final response = await ApiServices.getService(idToken);
     final decodedReponse = jsonDecode(response.body);
     List<Product> listSelfStorage =
         decodedReponse['0']!.map<Product>((e) => Product.fromMap(e)).toList();
