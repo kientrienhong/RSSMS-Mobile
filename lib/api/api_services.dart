@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/order_booking.dart';
-import 'package:rssms/models/entity/order_detail.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/constants/constants.dart' as constants;
 

@@ -60,8 +60,7 @@ class InputInformation extends StatelessWidget {
                 isHome: false,
                 name: '',
               ),
-              buildTitle(
-                  'ĐỊA CHỈ VÀ THỜI GIAN CHÚNG TÔI ĐẾN LẤY ĐỒ ĐẠC', context),
+              buildTitle('THÔNG TIN KHÁCH HÀNG', context),
               HandleInput(
                 isSelfStorageOrder: isSelfStorageOrder,
               )
@@ -231,8 +230,10 @@ class _HandleInputState extends State<HandleInput>
             focusNode: _focusNodeName,
             deviceSize: deviceSize,
             hintText: 'Tên của bạn',
+            validator: Validator.checkFullname,
             nextNode: _focusNodePhone,
           ),
+          
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -256,6 +257,7 @@ class _HandleInputState extends State<HandleInput>
                   focusNode: _focusNodeEmail,
                   deviceSize: deviceSize,
                   hintText: 'Email',
+                  validator: Validator.checkEmail,
                   nextNode: _focusNodeAddress,
                 ),
               ),
@@ -274,8 +276,7 @@ class _HandleInputState extends State<HandleInput>
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                buildTitle(
-                    'ĐỊA CHỈ VÀ THỜI GIAN CHÚNG TÔI TRẢ ĐỒ ĐẠC', context),
+                buildTitle('THÔNG TIN GIAO HÀNG VÀ TRẢ HÀNG', context),
                 CustomSizedBox(
                   context: context,
                   height: 16,
@@ -296,7 +297,7 @@ class _HandleInputState extends State<HandleInput>
                   height: 8,
                 ),
                 CustomText(
-                  text: 'Lưu ý với nhân viên chúng tôi',
+                  text: 'Lưu ý với nhân viên',
                   color: CustomColor.blue,
                   context: context,
                   fontSize: 24,

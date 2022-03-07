@@ -11,6 +11,7 @@ import 'package:rssms/pages/delivery_staff/notifcation/notification_delivery.dar
 import 'package:rssms/pages/delivery_staff/qr/qr_screen.dart';
 import 'package:rssms/pages/log_in/widget/button_icon.dart';
 import 'package:rssms/pages/no_permission/no_permission.dart';
+import 'package:rssms/pages/office_staff/my_account/my_account_office.dart';
 import 'package:rssms/pages/sign_up/sign_up_screen.dart';
 import '/common/background.dart';
 import '/common/custom_button.dart';
@@ -237,7 +238,7 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
       // }
       _focusNodeEmail.unfocus();
       _focusNodePassword.unfocus();
-      _model.errorMsg ="";
+      _model.errorMsg = "";
       Users user = Provider.of<Users>(context, listen: false);
 
       final result = await loginPresenter.handleSignIn(email, password, _token);
@@ -268,6 +269,18 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
                         NotificationDeliveryScreen(),
                       ],
                       listNavigator: constant.LIST_DELIVERY_BOTTOM_NAVIGATION,
+                    )),
+          );
+        } else if (user.roleName == 'Office staff') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const CustomBottomNavigation(
+                      listIndexStack: [
+                        MyAccountOfficeScreen(),
+                        QrScreen(),
+                      ],
+                      listNavigator: constant.LIST_OFFICE_BOTTOM_NAVIGATION,
                     )),
           );
         } else {
