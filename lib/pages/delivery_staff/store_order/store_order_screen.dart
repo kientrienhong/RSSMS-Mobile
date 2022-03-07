@@ -1,4 +1,5 @@
-import 'dart:math';
+
+// ignore_for_file: must_be_immutable
 
 import 'package:bottom_drawer/bottom_drawer.dart';
 import 'package:flutter/material.dart';
@@ -49,13 +50,10 @@ class _StoreOrderScreenState extends State<StoreOrderScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final deviceSize = MediaQuery.of(context).size;
 
     void onTapBox(int index, int status) {
       setState(() {
-        if (status != null) {
-          controller.open();
-        }
+        controller.open();
         _currentIndex = index;
       });
     }

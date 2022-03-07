@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:intl/intl.dart';
 import 'package:rssms/api/api_services.dart';
 import 'package:rssms/models/delivery_screen_model.dart';
 import 'package:rssms/models/entity/invoice.dart';
@@ -82,10 +81,10 @@ class DeliveryPresenter {
           idToken, firstDayOfWeek, endDayOfWeek);
       if (response.statusCode == 200) {
         final decodedReponse = jsonDecode(response.body);
-        model.listDateTime.forEach((e) {
+        for (var e in model.listDateTime) {
           String date = e.toIso8601String().split('T')[0];
           model.listInvoice.putIfAbsent(date, () => []);
-        });
+        }
         decodedReponse['data'].forEach((e) {
           String scheduleDay = e['scheduleDay'].split('T')[0];
           for (int i = 0; i < e['orders'].length; i++) {

@@ -1,11 +1,8 @@
 import 'dart:convert';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-
-import '/api/firebase_services.dart';
 
 import '/api/api_services.dart';
 import '/models/entity/user.dart';
@@ -55,6 +52,7 @@ class LoginPresenter {
     } finally {
       _view!.updateLoadingGoogle();
     }
+    return null;
   }
 
   Future<Users?> handleSignInFacebook(String deviceToken) async {

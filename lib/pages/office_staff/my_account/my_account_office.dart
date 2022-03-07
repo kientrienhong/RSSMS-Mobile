@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:rssms/common/custom_color.dart';
-import 'package:rssms/common/custom_tabbutton.dart';
-import 'package:rssms/pages/customers/my_account/invoice/invoice_screen.dart';
-import 'package:rssms/pages/customers/my_account/request/request_screen.dart';
 import 'package:rssms/pages/log_in/log_in_screen.dart';
 import 'package:rssms/pages/profile/profile_screen.dart';
 
@@ -15,7 +12,8 @@ class MyAccountOfficeScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<MyAccountOfficeScreen>
     with SingleTickerProviderStateMixin {
-  var _scrollController, _tabController;
+  ScrollController? _scrollController;
+   TabController? _tabController;
   @override
   void initState() {
     _scrollController = ScrollController();
@@ -29,7 +27,7 @@ class _ProfileScreenState extends State<MyAccountOfficeScreen>
       onPressed: () {
         setState(() {
           Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (context) => LogInScreen()),
+              MaterialPageRoute(builder: (context) => const LogInScreen()),
               (Route<dynamic> route) => false);
         });
       },
@@ -63,7 +61,7 @@ class _ProfileScreenState extends State<MyAccountOfficeScreen>
     return Scaffold(
       backgroundColor: CustomColor.white,
       body: NestedScrollView(
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         controller: _scrollController,
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return <Widget>[

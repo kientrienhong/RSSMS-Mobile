@@ -26,6 +26,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 class LogInScreen extends StatelessWidget {
+  const LogInScreen({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
@@ -104,7 +106,7 @@ class LogInScreen extends StatelessWidget {
 
 class FormLogIn extends StatefulWidget {
   final Size deviceSize;
-  FormLogIn({Key? key, required this.deviceSize}) : super(key: key);
+  const FormLogIn({Key? key, required this.deviceSize}) : super(key: key);
 
   @override
   _FormLogInState createState() => _FormLogInState();
@@ -142,8 +144,8 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
     });
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      RemoteNotification notification = message.notification!;
-      AndroidNotification? android = message.notification?.android;
+      // RemoteNotification notification = message.notification!;
+      // AndroidNotification? android = message.notification?.android;
     });
   }
 

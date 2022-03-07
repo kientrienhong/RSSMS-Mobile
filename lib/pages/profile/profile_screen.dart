@@ -56,13 +56,10 @@ class FormProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<FormProfileScreen>
-    with AutomaticKeepAliveClientMixin
+
     implements ProfileView {
   late ProfilePresenter profilePresenter;
   late ProfileModel _model;
-
-  @override
-  final bool wantKeepAlive = true;
 
   final _focusNodeFullname = FocusNode();
   final _focusNodeOldPassword = FocusNode();
@@ -211,7 +208,7 @@ class _ProfileScreenState extends State<FormProfileScreen>
     }
   }
 
-  var scrollController;
+  ScrollController? scrollController;
 
   @override
   void initState() {
@@ -248,6 +245,7 @@ class _ProfileScreenState extends State<FormProfileScreen>
   }
 
   final _formKey = GlobalKey<FormState>();
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(

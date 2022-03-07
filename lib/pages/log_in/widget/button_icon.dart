@@ -27,9 +27,9 @@ class ButtonIcon extends StatelessWidget {
       : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final deviceSize = MediaQuery.of(context).size;
-    final heightMockUp = 896;
-    final widthMockUp = 414;
+    // final deviceSize = MediaQuery.of(context).size;
+    // const heightMockUp = 896;
+    const widthMockUp = 414;
 
     return GestureDetector(
         onTap: onPressFunction,

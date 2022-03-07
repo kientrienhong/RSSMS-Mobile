@@ -46,13 +46,13 @@ class _ImageDetailPopUpState extends State<ImageDetailPopUp>
     showDialog<ImageSource>(
       context: context,
       builder: (context) =>
-          AlertDialog(content: const Text("Choose image source"), actions: [
+          AlertDialog(content: const Text("Chọn nguồn ảnh"), actions: [
         TextButton(
           child: const Text("Camera"),
           onPressed: () => Navigator.pop(context, ImageSource.camera),
         ),
         TextButton(
-          child: const Text("Gallery"),
+          child: const Text("Thư viện ảnh"),
           onPressed: () => Navigator.pop(context, ImageSource.gallery),
         ),
       ]),
@@ -102,7 +102,28 @@ class _ImageDetailPopUpState extends State<ImageDetailPopUp>
 
     if (_formKey.currentState!.validate()) {
       if (widget.imageUpdate == null) {
-        addImage();
+        if (_model.file != null) {
+          addImage();
+        } else {
+          showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: const Text("Thông báo"),
+                  content:
+                      const Text("Vui lòng cập nhật ảnh"),
+                  actions: [
+                    TextButton(
+                      child: const Text("Đồng ý"),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    )
+                  ],
+                );
+              });
+              return;
+        }
       } else {
         editImage();
       }

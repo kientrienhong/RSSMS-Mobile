@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -59,10 +58,10 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation>
       //     .resolvePlatformSpecificImplementation<
       //         AndroidFlutterLocalNotificationsPlugin>()
       //     ?.createNotificationChannel(channel);
-      final AndroidInitializationSettings initializationSettingsAndroid =
+      const  AndroidInitializationSettings initializationSettingsAndroid =
           AndroidInitializationSettings('app_icon');
       await flutterLocalNotificationsPlugin.initialize(
-          InitializationSettings(
+          const InitializationSettings(
             android: initializationSettingsAndroid,
           ),
           onSelectNotification: onClickNotification);
