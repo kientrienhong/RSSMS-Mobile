@@ -1,5 +1,4 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:group_radio_button/group_radio_button.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_button.dart';
@@ -12,7 +11,6 @@ import 'package:rssms/common/custom_bottom_navigation.dart';
 import 'package:rssms/pages/customers/cart/cart_screen.dart';
 import 'package:rssms/pages/customers/my_account/my_account.dart';
 import 'package:rssms/pages/customers/notification/notification_screen.dart';
-import 'package:rssms/pages/profile/profile_screen.dart';
 import 'package:rssms/presenters/signup_presenters.dart';
 import 'package:rssms/views/signup_view.dart';
 import 'package:rssms/constants/constants.dart' as constant;
@@ -24,6 +22,8 @@ import '/common/custom_text.dart';
 import 'package:flutter/material.dart';
 
 class SignUpScreen extends StatelessWidget {
+  const SignUpScreen({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
@@ -80,7 +80,7 @@ class SignUpScreen extends StatelessWidget {
 
 class FormSignUp extends StatefulWidget {
   final Size deviceSize;
-  FormSignUp(this.deviceSize);
+  const FormSignUp(this.deviceSize, {Key? key}) : super(key: key);
 
   @override
   _FormSignUpState createState() => _FormSignUpState();

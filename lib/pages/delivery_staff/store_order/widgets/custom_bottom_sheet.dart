@@ -4,14 +4,11 @@ import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
-import 'package:rssms/constants/constants.dart' as constants;
-import 'package:collection/collection.dart';
 import 'package:rssms/models/entity/box.dart';
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/order_detail.dart';
 import 'package:rssms/pages/delivery_staff/store_order/widgets/item_radio_widget.dart';
 import 'package:rssms/presenters/custom_bottom_sheet_presenter.dart';
-import 'package:rssms/views/custom_bottom_navigation_view.dart';
 import 'package:rssms/views/custom_bottom_sheet.dart';
 
 class CustomBottomSheet extends StatefulWidget {

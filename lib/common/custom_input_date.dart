@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:intl/intl.dart';
 
 import '/common/custom_color.dart';
@@ -5,7 +7,7 @@ import '/common/custom_sizebox.dart';
 import '/common/custom_text.dart';
 import 'package:flutter/material.dart';
 
-enum StatusTypeInput { VALID, INVALID, DISABLE }
+enum StatusTypeInput { valid, invalid, disable }
 
 class CustomOutLineInputDateTime extends StatefulWidget {
   final Size? deviceSize;
@@ -22,7 +24,7 @@ class CustomOutLineInputDateTime extends StatefulWidget {
   String icon;
   CustomOutLineInputDateTime(
       {Key? key,
-      this.statusTypeInput = StatusTypeInput.VALID,
+      this.statusTypeInput = StatusTypeInput.valid,
       required this.controller,
       this.validator,
       this.backgroundColorLabel = CustomColor.white,
@@ -48,14 +50,14 @@ class _CustomOutLineInputState extends State<CustomOutLineInputDateTime> {
     super.initState();
 
     switch (widget.statusTypeInput) {
-      case StatusTypeInput.VALID:
+      case StatusTypeInput.valid:
         {
           colorLabel = Colors.black;
           colorBorder = CustomColor.black[3]!;
           break;
         }
 
-      case StatusTypeInput.DISABLE:
+      case StatusTypeInput.disable:
         {
           colorLabel = CustomColor.black[3]!;
           colorBorder = CustomColor.black[3]!;
@@ -89,7 +91,7 @@ class _CustomOutLineInputState extends State<CustomOutLineInputDateTime> {
         setStateIfMounted(() {
           colorBorder = Colors.red;
           colorLabel = Colors.red;
-          widget.statusTypeInput = StatusTypeInput.INVALID;
+          widget.statusTypeInput = StatusTypeInput.invalid;
         });
 
         return;
@@ -97,7 +99,7 @@ class _CustomOutLineInputState extends State<CustomOutLineInputDateTime> {
       setStateIfMounted(() {
         colorBorder = CustomColor.black[3]!;
         colorLabel = Colors.black;
-        widget.statusTypeInput = StatusTypeInput.VALID;
+        widget.statusTypeInput = StatusTypeInput.valid;
       });
     }
   }
@@ -189,12 +191,12 @@ class _CustomOutLineInputState extends State<CustomOutLineInputDateTime> {
                     ),
                   ],
                 ),
-                if (widget.statusTypeInput == StatusTypeInput.INVALID)
+                if (widget.statusTypeInput == StatusTypeInput.invalid)
                   CustomSizedBox(
                     context: context,
                     height: 8,
                   ),
-                if (widget.statusTypeInput == StatusTypeInput.INVALID)
+                if (widget.statusTypeInput == StatusTypeInput.invalid)
                   CustomText(
                     text: '* Required',
                     color: Colors.red,
@@ -202,7 +204,7 @@ class _CustomOutLineInputState extends State<CustomOutLineInputDateTime> {
                     textAlign: TextAlign.start,
                     fontSize: 14,
                   ),
-                widget.statusTypeInput == StatusTypeInput.INVALID
+                widget.statusTypeInput == StatusTypeInput.invalid
                     ? CustomSizedBox(
                         context: context,
                         height: 8,

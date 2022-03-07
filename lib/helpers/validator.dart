@@ -24,26 +24,26 @@ class Validator {
     String patttern = "^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,4}\$";
     RegExp regExp = RegExp(patttern);
     if (!value!.contains(regExp)) {
-      return "Vui lòng nhập email đúng dạng";
+      return "* Vui lòng nhập email đúng dạng";
     }
     return null;
   }
 
   static dynamic checkPhoneNumber(String? value) {
     String patttern =
-        r'^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$';
+        r'^(0|\+84)(\s|\.)?[0-9]{9}$';
     RegExp regExp = RegExp(patttern);
     if (!value!.contains(regExp)) {
-      return "Sai định dạng.";
+      return "* Sai định dạng.";
     }
     return null;
   }
 
   static dynamic checkFullname(String? value) {
     if (value!.isEmpty) {
-      return "Vui lòng nhập đầy đủ họ và tên.";
-    } else if (value.length < 5) {
-      return "Vui lòng nhập đầy đủ họ và tên.";
+      return "* Vui lòng nhập";
+    } else if (value.isEmpty) {
+      return "* Vui lòng nhập";
     }
     return null;
   }

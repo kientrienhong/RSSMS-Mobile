@@ -2,7 +2,6 @@ import 'package:rssms/api/api_services.dart';
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/models/invoice_cancel_model.dart';
-import 'package:rssms/models/invoice_model.dart';
 import 'package:rssms/views/invoice_cancel_view.dart';
 
 class InvoiceCancelPresenter {

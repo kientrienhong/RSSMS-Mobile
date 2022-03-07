@@ -5,11 +5,11 @@ import 'package:rssms/common/custom_bottom_navigation.dart';
 import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_input_with_hint.dart';
-import 'package:rssms/common/custom_radio_button.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_snack_bar.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/constants/constants.dart';
+import 'package:rssms/helpers/validator.dart';
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/order_detail.dart';
 import 'package:rssms/models/entity/user.dart';
@@ -44,7 +44,6 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
   final _focusNodePhone = FocusNode();
 
   File? image;
-  List<bool>? _isOpen;
 
   @override
   void initState() {
@@ -52,8 +51,6 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
 
     Users users = Provider.of<Users>(context, listen: false);
     _presenter = InvoiceUpdatePresenter(users, invoice);
-    _isOpen =
-        List<bool>.generate(invoice.orderDetails.length, (index) => false);
     _presenter.setView(this);
     _model = _presenter.model;
     super.initState();
@@ -167,131 +164,172 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
               ))
           .toList();
 
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     var deviceSize = MediaQuery.of(context).size;
 
     return Scaffold(
       body: SingleChildScrollView(
-        child: Container(
-          color: CustomColor.white,
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CustomSizedBox(
-                context: context,
-                height: 32,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 24),
-                    child: GestureDetector(
-                      onTap: () => {Navigator.of(context).pop()},
-                      child: Image.asset('assets/images/arrowLeft.png'),
+        child: Form(
+          key: _formKey,
+          child: Container(
+            color: CustomColor.white,
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CustomSizedBox(
+                  context: context,
+                  height: 32,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 24),
+                      child: GestureDetector(
+                        onTap: () => {Navigator.of(context).pop()},
+                        child: Image.asset('assets/images/arrowLeft.png'),
+                      ),
                     ),
-                  ),
-                  CustomText(
-                      text: "Cập nhật đơn hàng",
-                      color: Colors.black,
+                    CustomText(
+                        text: "Cập nhật đơn hàng",
+                        color: Colors.black,
+                        context: context,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 25),
+                    CustomSizedBox(
                       context: context,
+                      height: 0,
+                    ),
+                  ],
+                ),
+                CustomSizedBox(
+                  context: context,
+                  height: 16,
+                ),
+                CustomText(
+                  text: "Thông tin khách hàng",
+                  color: CustomColor.black,
+                  context: context,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+                CustomSizedBox(
+                  context: context,
+                  height: 16,
+                ),
+                CustomOutLineInputWithHint(
+                    controller: _model.controllerFullname,
+                    isDisable: false,
+                    hintText: "Họ và Tên",
+                    focusNode: _focusNodeFullname,
+                    validator: Validator.checkFullname,
+                    deviceSize: deviceSize),
+                CustomOutLineInputWithHint(
+                    controller: _model.controllerPhone,
+                    isDisable: false,
+                    textInputType: TextInputType.number,
+                    hintText: "Số điện thoại",
+                    focusNode: _focusNodePhone,
+                    validator: Validator.checkPhoneNumber,
+                    deviceSize: deviceSize),
+                CustomText(
+                  text: "Hình ảnh",
+                  color: CustomColor.black,
+                  context: context,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+                CustomSizedBox(
+                  context: context,
+                  height: 16,
+                ),
+                Consumer<Invoice>(
+                  builder: (context, invoiceLocal, child) {
+                    return Column(
+                      children: mapInvoiceWidget(invoiceLocal.orderDetails
+                          .where((element) =>
+                              element.productType != SERVICES &&
+                              element.productType != ACCESSORY)
+                          .toList()),
+                    );
+                  },
+                ),
+                CustomSizedBox(
+                  context: context,
+                  height: 16,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CustomText(
+                      text: "Đã thanh toán",
+                      color: CustomColor.black,
+                      context: context,
+                      fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      fontSize: 25),
-                  CustomSizedBox(
-                    context: context,
-                    height: 0,
-                  ),
-                ],
-              ),
-              CustomSizedBox(
-                context: context,
-                height: 16,
-              ),
-              CustomText(
-                text: "Thông tin khách hàng",
-                color: CustomColor.black,
-                context: context,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-              CustomSizedBox(
-                context: context,
-                height: 16,
-              ),
-              CustomOutLineInputWithHint(
-                  controller: _model.controllerFullname,
-                  isDisable: false,
-                  hintText: "Họ và Tên",
-                  focusNode: _focusNodeFullname,
-                  deviceSize: deviceSize),
-              CustomOutLineInputWithHint(
-                  controller: _model.controllerPhone,
-                  isDisable: false,
-                  hintText: "Phone",
-                  focusNode: _focusNodePhone,
-                  deviceSize: deviceSize),
-              CustomText(
-                text: "Hình ảnh",
-                color: CustomColor.black,
-                context: context,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-              CustomSizedBox(
-                context: context,
-                height: 16,
-              ),
-              Consumer<Invoice>(
-                builder: (context, invoiceLocal, child) {
-                  return Column(
-                    children: mapInvoiceWidget(invoiceLocal.orderDetails
-                        .where((element) =>
-                            element.productType != SERVICES &&
-                            element.productType != ACCESSORY)
-                        .toList()),
-                  );
-                },
-              ),
-              CustomSizedBox(
-                context: context,
-                height: 16,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CustomText(
-                    text: "Đã thanh toán",
-                    color: CustomColor.black,
-                    context: context,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  Checkbox(
-                      fillColor: MaterialStateProperty.all(CustomColor.blue),
-                      value: _model.getIsPaid,
-                      onChanged: widget.isView == null
-                          ? (value) {
-                              setState(() {
-                                _model.setIsPaid = value;
+                    ),
+                    Checkbox(
+                        fillColor: MaterialStateProperty.all(CustomColor.blue),
+                        value: _model.getIsPaid,
+                        onChanged: widget.isView == null
+                            ? (value) {
+                                setState(() {
+                                  _model.setIsPaid = value;
+                                });
+                              }
+                            : (val) => {})
+                  ],
+                ),
+                Center(
+                  child: CustomButton(
+                      height: 24,
+                      isLoading: _model.isLoadingUpdateInvoice,
+                      text: 'Cập nhật đơn',
+                      textColor: CustomColor.white,
+                      onPressFunction: () {
+                        Invoice invoice =
+                            Provider.of<Invoice>(context, listen: false);
+                        List<OrderDetail>? listImage = invoice.orderDetails;
+                        bool emptyImage = false;
+                        for (var image in listImage) {
+                          if (image.images.isEmpty) {
+                            emptyImage = true;
+                            break;
+                          }
+                        }
+                        if (_formKey.currentState!.validate() && !emptyImage) {
+                          onClickUpdateOrder();
+                        }
+                        if (emptyImage) {
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: const Text("Thông báo"),
+                                  content: const Text(
+                                      "Vui lòng cập nhật ít nhất 1 ảnh cho 1 box !"),
+                                  actions: [
+                                    TextButton(
+                                      child: const Text("Đồng ý"),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    )
+                                  ],
+                                );
                               });
-                            }
-                          : (val) => {})
-                ],
-              ),
-              Center(
-                child: CustomButton(
-                    height: 24,
-                    isLoading: _model.isLoadingUpdateInvoice,
-                    text: 'Cập nhật đơn',
-                    textColor: CustomColor.white,
-                    onPressFunction: onClickUpdateOrder,
-                    width: deviceSize.width / 2.5,
-                    buttonColor: CustomColor.blue,
-                    borderRadius: 6),
-              ),
-            ],
+                        }
+                      },
+                      width: deviceSize.width / 2.5,
+                      buttonColor: CustomColor.blue,
+                      borderRadius: 6),
+                ),
+              ],
+            ),
           ),
         ),
       ),
