@@ -30,7 +30,7 @@ class NotificationWidget extends StatelessWidget {
         SizedBox(
             width: 24,
             height: 24,
-            child: Image.asset(LIST_URL_NOTFICATION[notification.type])),
+            child: Image.asset(LIST_URL_NOTFICATION[notification.type]!)),
         Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,

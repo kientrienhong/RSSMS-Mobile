@@ -28,6 +28,7 @@ class _MyAccountDeliveryScreenState extends State<MyAccountDeliveryScreen>
     return Scaffold(
       backgroundColor: CustomColor.white,
       body: NestedScrollView(
+          physics: const NeverScrollableScrollPhysics(),
           controller: _scrollController,
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
@@ -48,8 +49,8 @@ class _MyAccountDeliveryScreenState extends State<MyAccountDeliveryScreen>
                     fontSize: 25,
                     fontWeight: FontWeight.bold),
                 centerTitle: true,
-                pinned: false,
-                floating: true,
+                pinned: true,
+                floating: false,
                 snap: false,
                 backgroundColor: CustomColor.white,
                 bottom: TabBar(

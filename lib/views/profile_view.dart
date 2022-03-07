@@ -10,9 +10,6 @@ abstract class ProfileView {
 
   void updateStatusOfButtonUpdateProfile(
       String fullname, String phone, String address, String birthDay);
-  // handle events
-  void onChangeInput();
-  void onChangeInputProfile();
   void onClickUpdateProfile(String fullname, String phone, String birthdate,
       String gender, String address);
   void onClickChangePassword(

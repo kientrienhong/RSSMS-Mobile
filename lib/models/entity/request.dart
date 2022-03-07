@@ -95,7 +95,7 @@ class Request {
       id: map['id']?.toInt() ?? 0,
       orderId: map['orderId']?.toInt() ?? 0,
       userId: map['userId']?.toInt() ?? 0,
-      totalPrice: map['totalPrice'] ?? 0,
+      totalPrice: map['totalPrice'] ?? 0.0,
       returnAddress: map['returnAddress'] ?? '',
       returnTime: map['returnTime'] ?? '',
       oldReturnDate: map['oldReturnDate'] ?? '',

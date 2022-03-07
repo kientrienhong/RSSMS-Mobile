@@ -12,12 +12,11 @@ class TimeLineScreen extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Column(
-          children: [
-            const CustomAppBar(
+          children: const [CustomAppBar(
               isHome: false,
               name: 'Thông tin vận chuyển',
             ),
-            const TimeLine(listTimeLine: constants.LIST_TIME_LINE_MODIFY)
+             TimeLine(listTimeLine: constants.LIST_TIME_LINE_MODIFY)
           ],
         ),
       ),

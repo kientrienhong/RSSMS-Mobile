@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:intl/intl.dart';
 
 import '/common/custom_color.dart';
@@ -5,7 +7,7 @@ import '/common/custom_sizebox.dart';
 import '/common/custom_text.dart';
 import 'package:flutter/material.dart';
 
-enum StatusTypeInput { VALID, INVALID, DISABLE }
+enum StatusTypeInput { valid, invalid, disable }
 
 class CustomOutLineInputDateTime extends StatefulWidget {
   final Size? deviceSize;
@@ -22,7 +24,7 @@ class CustomOutLineInputDateTime extends StatefulWidget {
   String icon;
   CustomOutLineInputDateTime(
       {Key? key,
-      this.statusTypeInput = StatusTypeInput.VALID,
+      this.statusTypeInput = StatusTypeInput.valid,
       required this.controller,
       this.validator,
       this.backgroundColorLabel = CustomColor.white,
@@ -48,14 +50,14 @@ class _CustomOutLineInputState extends State<CustomOutLineInputDateTime> {
     super.initState();
 
     switch (widget.statusTypeInput) {
-      case StatusTypeInput.VALID:
+      case StatusTypeInput.valid:
         {
           colorLabel = Colors.black;
           colorBorder = CustomColor.black[3]!;
           break;
         }
 
-      case StatusTypeInput.DISABLE:
+      case StatusTypeInput.disable:
         {
           colorLabel = CustomColor.black[3]!;
           colorBorder = CustomColor.black[3]!;
@@ -89,7 +91,7 @@ class _CustomOutLineInputState extends State<CustomOutLineInputDateTime> {
         setStateIfMounted(() {
           colorBorder = Colors.red;
           colorLabel = Colors.red;
-          widget.statusTypeInput = StatusTypeInput.INVALID;
+          widget.statusTypeInput = StatusTypeInput.invalid;
         });
 
         return;
@@ -97,119 +99,123 @@ class _CustomOutLineInputState extends State<CustomOutLineInputDateTime> {
       setStateIfMounted(() {
         colorBorder = CustomColor.black[3]!;
         colorLabel = Colors.black;
-        widget.statusTypeInput = StatusTypeInput.VALID;
+        widget.statusTypeInput = StatusTypeInput.valid;
       });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        if (widget.labelText!.isNotEmpty)
-          Column(
-            children: [
-              CustomText(
-                  text: widget.labelText!,
-                  color: CustomColor.black,
-                  fontWeight: FontWeight.bold,
-                  context: context,
-                  fontSize: 16),
-              CustomSizedBox(context: context, height: 8),
-            ],
-          ),
-        Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  TextFormField(
-                    onTap: () async {
-                      DateTime? date = DateTime(1900);
-                      FocusScope.of(context).requestFocus(FocusNode());
-                      date = await showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime(1900),
-                        lastDate: DateTime(2100),
-                      );
-                      widget.controller?.text = DateFormat("dd/MM/yyyy").format(date!);
-                    },
-                    obscureText: widget.isSecure!,
-                    validator:
-                        widget.validator == null ? null : widget.validator!(),
-                    maxLines: 1,
-                    keyboardType: widget.textInputType,
-                    style: TextStyle(color: colorLabel, fontSize: 16),
-                    enabled: !widget.isDisable!,
-                    textInputAction: widget.nextNode != null
-                        ? TextInputAction.next
-                        : TextInputAction.done,
-                    onFieldSubmitted: (term) {
-                      widget.focusNode!.unfocus();
-                      if (widget.nextNode != null) {
-                        FocusScope.of(context).requestFocus(widget.nextNode);
-                      }
-                    },
-                    controller: widget.controller,
-                    focusNode: widget.focusNode,
-                    cursorColor: CustomColor.blue,
-                    decoration: InputDecoration(
-                      contentPadding: const EdgeInsets.symmetric(
-                          vertical: 16, horizontal: 12),
-                      isCollapsed: true,
-                      hintStyle: TextStyle(fontSize: 14),
-                      hintText: "dd/mm/yyyy",
-                      suffixIcon: Image.asset(
-                        widget.icon,
-                      ),
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(color: colorBorder, width: 1),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: colorBorder, width: 1),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: colorBorder, width: 1),
-                      ),
-                      errorBorder: const OutlineInputBorder(
-                        borderSide:
-                            BorderSide(color: CustomColor.red, width: 1),
-                      ),
-                      disabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: colorBorder, width: 1),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              if (widget.statusTypeInput == StatusTypeInput.INVALID)
-                CustomSizedBox(
-                  context: context,
-                  height: 8,
-                ),
-              if (widget.statusTypeInput == StatusTypeInput.INVALID)
+    return GestureDetector(
+      onTap: () async {
+        DateTime? date = DateTime(1900);
+        FocusScope.of(context).requestFocus(FocusNode());
+        date = await showDatePicker(
+          context: context,
+          initialDate: DateTime.now(),
+          firstDate: DateTime(1900),
+          lastDate: DateTime(2100),
+        );
+        if (date != null) {
+          widget.controller?.text = DateFormat("dd/MM/yyyy").format(date);
+        }
+      },
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 16),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          if (widget.labelText!.isNotEmpty)
+            Column(
+              children: [
                 CustomText(
-                  text: '* Required',
-                  color: Colors.red,
-                  context: context,
-                  textAlign: TextAlign.start,
-                  fontSize: 14,
-                ),
-              widget.statusTypeInput == StatusTypeInput.INVALID
-                  ? CustomSizedBox(
-                      context: context,
-                      height: 8,
-                    )
-                  : CustomSizedBox(
-                      context: context,
-                      height: 4,
+                    text: widget.labelText!,
+                    color: CustomColor.black,
+                    fontWeight: FontWeight.bold,
+                    context: context,
+                    fontSize: 16),
+                CustomSizedBox(context: context, height: 8),
+              ],
+            ),
+          Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    TextFormField(
+                      obscureText: widget.isSecure!,
+                      validator:
+                          widget.validator == null ? null : widget.validator!(),
+                      maxLines: 1,
+                      keyboardType: widget.textInputType,
+                      style: TextStyle(color: colorLabel, fontSize: 16),
+                      enabled: !widget.isDisable!,
+                      textInputAction: widget.nextNode != null
+                          ? TextInputAction.next
+                          : TextInputAction.done,
+                      onFieldSubmitted: (term) {
+                        widget.focusNode!.unfocus();
+                        if (widget.nextNode != null) {
+                          FocusScope.of(context).requestFocus(widget.nextNode);
+                        }
+                      },
+                      controller: widget.controller,
+                      focusNode: widget.focusNode,
+                      cursorColor: CustomColor.blue,
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.symmetric(
+                            vertical: 16, horizontal: 12),
+                        isCollapsed: true,
+                        hintStyle: TextStyle(fontSize: 14),
+                        hintText: "dd/mm/yyyy",
+                        suffixIcon: Image.asset(
+                          widget.icon,
+                        ),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(color: colorBorder, width: 1),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: colorBorder, width: 1),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: colorBorder, width: 1),
+                        ),
+                        errorBorder: const OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: CustomColor.red, width: 1),
+                        ),
+                        disabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: colorBorder, width: 1),
+                        ),
+                      ),
                     ),
-            ]),
-      ]),
+                  ],
+                ),
+                if (widget.statusTypeInput == StatusTypeInput.invalid)
+                  CustomSizedBox(
+                    context: context,
+                    height: 8,
+                  ),
+                if (widget.statusTypeInput == StatusTypeInput.invalid)
+                  CustomText(
+                    text: '* Required',
+                    color: Colors.red,
+                    context: context,
+                    textAlign: TextAlign.start,
+                    fontSize: 14,
+                  ),
+                widget.statusTypeInput == StatusTypeInput.invalid
+                    ? CustomSizedBox(
+                        context: context,
+                        height: 8,
+                      )
+                    : CustomSizedBox(
+                        context: context,
+                        height: 4,
+                      ),
+              ]),
+        ]),
+      ),
     );
   }
 }

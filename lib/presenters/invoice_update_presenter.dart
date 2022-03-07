@@ -1,4 +1,3 @@
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:rssms/api/api_services.dart';
 import 'package:rssms/helpers/firebase_storage_helper.dart';
 import 'package:rssms/models/entity/imageEntity.dart';
@@ -45,6 +44,7 @@ class InvoiceUpdatePresenter {
   Future<bool> updateOrder(Users user, Invoice invoice) async {
     try {
       view.updateLoadingUpdate();
+      invoice = invoice.copyWith(status: 3);
       var response = await ApiServices.updateOrder(invoice, user.idToken!);
       if (response.statusCode == 200) {
         return true;
@@ -74,6 +74,23 @@ class InvoiceUpdatePresenter {
         if (response.statusCode == 200) {
           return true;
         }
+      }
+    } catch (e) {
+      throw Exception(e);
+    } finally {
+      view.updateLoadingUpdate();
+    }
+
+    return false;
+  }
+
+  Future<bool?> doneOrder(Users user, Invoice invoice) async {
+    try {
+      view.updateLoadingUpdate();
+
+      var response = await ApiServices.doneOrder(invoice, user.idToken!);
+      if (response.statusCode == 200) {
+        return true;
       }
     } catch (e) {
       throw Exception(e);

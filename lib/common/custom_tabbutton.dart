@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:rssms/common/custom_color.dart';
+import 'package:rssms/common/custom_text.dart';
 
 class TabButton extends StatelessWidget {
   final String text;
@@ -20,10 +22,9 @@ class TabButton extends StatelessWidget {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
         curve: Curves.fastLinearToSlowEaseIn,
+   
         padding: const EdgeInsets.symmetric(vertical: 10),
-        child: Text(
-          text,
-        ),
+        child: CustomText(text: text, color: CustomColor.black, context: context, fontSize: 16),
       ),
     );
   }

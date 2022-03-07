@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/order_booking.dart';
-import 'package:rssms/models/entity/order_detail.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/constants/constants.dart' as constants;
 
@@ -24,12 +23,10 @@ class ApiServices {
 
   static Future<dynamic> logInWithEmail(
       String email, String password, String deviceToken) {
-    print(deviceToken);
-
     try {
       Map<String, String> headers = {"Content-type": "application/json"};
 
-      final url = Uri.parse('$_domain/api/v1/users/login');
+      final url = Uri.parse('$_domain/api/v1/accounts/login');
       return http.post(url,
           headers: headers,
           body: jsonEncode({
@@ -48,7 +45,7 @@ class ApiServices {
     try {
       Map<String, String> headers = {"Content-type": "application/json"};
 
-      final url = Uri.parse('$_domain/api/v1/users');
+      final url = Uri.parse('$_domain/api/v1/accounts');
       return http.post(url,
           headers: headers,
           body: jsonEncode({
@@ -75,7 +72,7 @@ class ApiServices {
         'Authorization': 'Bearer $idToken'
       };
 
-      final url = Uri.parse('$_domain/api/v1/users/changepassword');
+      final url = Uri.parse('$_domain/api/v1/accounts/changepassword');
       return http.post(url,
           headers: headers,
           body: jsonEncode({
@@ -89,14 +86,14 @@ class ApiServices {
     }
   }
 
-  static Future<dynamic> getProduct(String idToken) {
+  static Future<dynamic> getService(String idToken) {
     try {
       Map<String, String> headers = {
         "Content-type": "application/json",
         'Authorization': 'Bearer $idToken'
       };
 
-      final url = Uri.parse('$_domain/api/v1/products');
+      final url = Uri.parse('$_domain/api/v1/services');
       return http.get(
         url,
         headers: headers,
@@ -149,7 +146,7 @@ class ApiServices {
         'Authorization': 'Bearer $idToken'
       };
 
-      final url = Uri.parse('$_domain/api/v1/requests');
+      final url = Uri.parse('$_domain/api/v1/requests?page=1&size=10');
       return http.get(
         url,
         headers: headers,
@@ -397,9 +394,24 @@ class ApiServices {
         "Content-type": "application/json",
         'Authorization': 'Bearer $idToken'
       };
-
+      final test = invoice.toMap();
       final url = Uri.parse('$_domain/api/v1/orders/${invoice.id}');
       return http.put(url, headers: headers, body: jsonEncode(invoice.toMap()));
+    } catch (e) {
+      print(e.toString());
+      throw Exception('Update Failed');
+    }
+  }
+
+  static Future<dynamic> doneOrder(Invoice invoice, String idToken) {
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        'Authorization': 'Bearer $idToken'
+      };
+
+      final url = Uri.parse('$_domain/api/v1/orders/done/${invoice.id}');
+      return http.put(url, headers: headers);
     } catch (e) {
       print(e.toString());
       throw Exception('Update Failed');
@@ -457,6 +469,22 @@ class ApiServices {
       final url = Uri.parse('$_domain/api/v1/notifications');
       return http.put(url,
           headers: headers, body: jsonEncode({"ids": listNoti}));
+    } catch (e) {
+      print(e.toString());
+      throw Exception('Update Failed');
+    }
+  }
+
+  static Future<dynamic> updateListOrders(
+      String idToken, List<Map<dynamic, dynamic>> listOrderStatus) {
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        'Authorization': 'Bearer $idToken'
+      };
+
+      final url = Uri.parse('$_domain/api/v1/orders');
+      return http.put(url, headers: headers, body: jsonEncode(listOrderStatus));
     } catch (e) {
       print(e.toString());
       throw Exception('Update Failed');

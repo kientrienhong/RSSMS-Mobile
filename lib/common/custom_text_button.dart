@@ -24,11 +24,14 @@ class CustomTextButton extends Container {
                     valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                   ),
                 )
-              : CustomText(
-                  text: text,
-                  fontWeight: FontWeight.bold,
-                  color: textColor,
-                  context: context,
-                  fontSize: fontSize),
+              : Flexible(
+                  child: CustomText(
+                      text: text,
+                      maxLines: 2,
+                      fontWeight: FontWeight.bold,
+                      color: textColor,
+                      context: context,
+                      fontSize: fontSize),
+                ),
         );
 }

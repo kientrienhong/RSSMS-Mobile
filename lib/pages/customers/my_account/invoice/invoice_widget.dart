@@ -67,15 +67,20 @@ class InvoiceWidget extends StatelessWidget {
                               context: context,
                               fontWeight: FontWeight.bold,
                               fontSize: 20),
-                          CustomText(
-                              text: constants.LIST_STATUS_ORDER[invoice!.status]
-                                  ['name']! as String,
-                              color:
-                                  constants.LIST_STATUS_ORDER[invoice!.status]
-                                      ['color'] as Color,
-                              context: context,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20),
+                          Flexible(
+                            child: CustomText(
+                                textAlign: TextAlign.right,
+                                text:
+                                    constants.LIST_STATUS_ORDER[invoice!.status]
+                                        ['name']! as String,
+                                color:
+                                    constants.LIST_STATUS_ORDER[invoice!.status]
+                                        ['color'] as Color,
+                                context: context,
+                                maxLines: 2,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20),
+                          ),
                         ],
                       ),
                       CustomSizedBox(
