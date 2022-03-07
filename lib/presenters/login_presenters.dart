@@ -102,7 +102,6 @@ class LoginPresenter {
 
       throw Exception();
     } catch (e) {
-      print(e.toString());
       throw Exception('Invalid email or password');
     } finally {
       _view!.updateLoading();
