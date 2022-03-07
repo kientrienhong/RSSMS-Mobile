@@ -105,8 +105,9 @@ class _InvoiceCancelWidgetState extends State<InvoiceCancelWidget>
             controller: _model.controllerReason,
             keyboardType: TextInputType.multiline,
             maxLines: null,
-            decoration: const InputDecoration.collapsed(
+            decoration: const InputDecoration(
               hintText: "",
+              contentPadding: EdgeInsets.all(8),
               border: OutlineInputBorder(
                 borderSide: BorderSide(color: CustomColor.black),
               ),

@@ -224,7 +224,8 @@ class ApiServices {
           "duration": orderBooking.typeOrder == TypeOrder.selfStorage
               ? orderBooking.months
               : orderBooking.diffDay,
-          "listProduct": listProduct
+          "listService": listProduct,
+          'status': 1
         }),
         headers: headers,
       );

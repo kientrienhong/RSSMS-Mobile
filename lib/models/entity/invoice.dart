@@ -13,6 +13,7 @@ class Invoice with ChangeNotifier {
   late int totalPrice;
   late String rejectedReason;
   late int typeOrder;
+  late String name;
   late bool isUserDelivery;
   late String deliveryDate;
   late String deliveryTime;
@@ -41,6 +42,7 @@ class Invoice with ChangeNotifier {
     required this.paymentMethod,
     required this.durationDays,
     required this.durationMonths,
+    required this.name,
     required this.status,
     required this.isPaid,
     required this.orderDetails,
@@ -51,6 +53,7 @@ class Invoice with ChangeNotifier {
     customerName = '';
     customerPhone = '';
     deliveryAddress = '';
+    name = '';
     addressReturn = '';
     totalPrice = -1;
     rejectedReason = '';
@@ -85,12 +88,14 @@ class Invoice with ChangeNotifier {
     int? paymentMethod,
     int? durationDays,
     int? durationMonths,
+    String? name,
     int? status,
     bool? isPaid,
     List<OrderDetail>? orderDetails,
   }) {
     return Invoice(
       id: id ?? this.id,
+      name: name ?? this.name,
       customerName: customerName ?? this.customerName,
       customerPhone: customerPhone ?? this.customerPhone,
       deliveryAddress: deliveryAddress ?? this.deliveryAddress,
@@ -127,6 +132,7 @@ class Invoice with ChangeNotifier {
       'deliveryTime': deliveryTime,
       'returnDate': returnDate,
       'returnTime': returnTime,
+      'name': name,
       'paymentMethod': paymentMethod,
       'durationDays': durationDays,
       'durationMonths': durationMonths,
@@ -139,6 +145,7 @@ class Invoice with ChangeNotifier {
   factory Invoice.fromMap(Map<String, dynamic> map) {
     return Invoice(
       id: map['id'] ?? '',
+      name: map['name'] ?? '',
       customerName: map['customerName'] ?? '',
       customerPhone: map['customerPhone'] ?? '',
       deliveryAddress: map['deliveryAddress'] ?? '',

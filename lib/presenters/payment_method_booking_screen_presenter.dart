@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:rssms/api/api_services.dart';
 import 'package:rssms/models/entity/order_booking.dart';
 import 'package:rssms/models/entity/user.dart';
@@ -22,8 +24,8 @@ class PaymentMethodBookingScreenPresenter {
       for (var element in listKeys) {
         for (var ele in orderBooking.productOrder![element]!) {
           listProduct.add({
-            "productId": ele['id'],
-            "productName": ele['name'],
+            "serviceId": ele['id'],
+            "serviceName": ele['name'],
             "price": ele['price'],
             "type": ele['type'],
             "amount": ele['quantity'],
@@ -34,6 +36,7 @@ class PaymentMethodBookingScreenPresenter {
 
       final response =
           await ApiServices.createOrder(listProduct, orderBooking, user);
+      final decodedReponse = jsonDecode(response.body);
 
       if (response.statusCode == 200) {
         return true;
