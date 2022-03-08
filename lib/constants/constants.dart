@@ -8,6 +8,9 @@ const List<Map<String, String>> TAB_INVOICE_DETAIL = [
   {"name": "Đồ đạc"}
 ];
 
+const DOOR_TO_DOOR_TYPE_ORDER = 1;
+const SELF_STORAGE_TYPE_ORDER = 0;
+
 const List<Map<String, String>> LIST_CUSTOMER_BOTTOM_NAVIGATION = [
   {'url': "assets/images/profile.png", 'label': 'Profile'},
   {'url': "assets/images/addIcon.png", 'label': 'Cart'},
@@ -27,7 +30,7 @@ const List<Map<String, String>> LIST_OFFICE_BOTTOM_NAVIGATION = [
 ];
 
 const DOOR_TO_DOOR_TAB = 0;
-const SELF_STORAGE_TAB = 0;
+const SELF_STORAGE_TAB = 1;
 
 const TYPE_PRODUCT = {
   "SELF_STORAGE": 0,

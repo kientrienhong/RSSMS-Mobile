@@ -20,7 +20,6 @@ class InvoiceTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(invoice!.id);
     return Column(
       children: [
         CustomText(
