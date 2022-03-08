@@ -10,6 +10,7 @@ import 'package:rssms/common/custom_radio_button.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_snack_bar.dart';
 import 'package:rssms/common/custom_text.dart';
+import 'package:rssms/helpers/validator.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/models/profile_model.dart';
 import 'package:rssms/presenters/profile_presenter.dart';
@@ -56,7 +57,6 @@ class FormProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<FormProfileScreen>
-
     implements ProfileView {
   late ProfilePresenter profilePresenter;
   late ProfileModel _model;
@@ -70,47 +70,6 @@ class _ProfileScreenState extends State<FormProfileScreen>
   final _focusNodeWard = FocusNode();
   final _focusNodeBirthDate = FocusNode();
   final _focusNodeDistrict = FocusNode();
-
-  @override
-  void updateStatusOfButtonChangePassword(
-      String oldPassword, String newPassword, String confirmPassword) {
-    if (oldPassword.isNotEmpty &&
-        newPassword.isNotEmpty &&
-        confirmPassword.isNotEmpty) {
-      setState(() {
-        _model.isDisableUpdatePass = false;
-      });
-    } else {
-      setState(() {
-        _model.isDisableUpdatePass = true;
-      });
-    }
-  }
-
-  @override
-  void updateStatusOfButtonUpdateProfile(
-      String fullname, String phone, String address, String birthDay) {
-    if (fullname.isNotEmpty && phone.isNotEmpty && address.isNotEmpty) {
-      Users user = Provider.of<Users>(context, listen: false);
-      String birth = DateFormat("dd/MM/yyyy").format(user.birthDate!);
-      if (user.name != fullname ||
-          user.phone != phone ||
-          user.address != address ||
-          birth != birthDay) {
-        setState(() {
-          _model.isDisableUpdateProfile = false;
-        });
-      } else {
-        setState(() {
-          _model.isDisableUpdateProfile = true;
-        });
-      }
-    } else {
-      setState(() {
-        _model.isDisableUpdateProfile = true;
-      });
-    }
-  }
 
   @override
   void updateLoadingPassword() {
@@ -161,17 +120,10 @@ class _ProfileScreenState extends State<FormProfileScreen>
   }
 
   void onChangeGender(String value) {
-    if (_model.txtGender == value) {
-      setState(() {
-        _model.isDisableUpdateProfile = true;
-        _model.txtGender = value;
-      });
-    } else {
-      setState(() {
-        _model.isDisableUpdateProfile = false;
-        _model.txtGender = value;
-      });
-    }
+    print(value);
+    setState(() {
+      _model.txtGender = value;
+    });
   }
 
   @override
@@ -245,7 +197,8 @@ class _ProfileScreenState extends State<FormProfileScreen>
   }
 
   final _formKey = GlobalKey<FormState>();
-  
+  final _formKeyPassword = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -373,6 +326,18 @@ class _ProfileScreenState extends State<FormProfileScreen>
                                     state: _model.txtGender,
                                     value: "Nữ"),
                               ),
+                              Expanded(
+                                child: CustomRadioButton(
+                                    function: () {
+                                      onChangeGender("Khác");
+                                    },
+                                    text: "Khác",
+                                    color: _model.txtGender == "Khác"
+                                        ? CustomColor.blue
+                                        : CustomColor.white,
+                                    state: _model.txtGender,
+                                    value: "Khác"),
+                              ),
                             ],
                           )
                         ],
@@ -411,22 +376,17 @@ class _ProfileScreenState extends State<FormProfileScreen>
                             text: 'Cập Nhật',
                             width: widget.deviceSize.width / 3,
                             textColor: CustomColor.white,
-                            onPressFunction:
-                                _model.isDisableUpdateProfile == true
-                                    ? null
-                                    : () {
-                                        if (_formKey.currentState!.validate()) {
-                                          onClickUpdateProfile(
-                                              _model.controllerFullname.text,
-                                              _model.controllerPhone.text,
-                                              _model.controllerBirthDate.text,
-                                              _model.txtGender,
-                                              _model.controllerStreet.text);
-                                        }
-                                      },
-                            buttonColor: _model.isDisableUpdateProfile == false
-                                ? CustomColor.blue
-                                : CustomColor.black[3],
+                            onPressFunction: () {
+                              if (_formKey.currentState!.validate()) {
+                                onClickUpdateProfile(
+                                    _model.controllerFullname.text,
+                                    _model.controllerPhone.text,
+                                    _model.controllerBirthDate.text,
+                                    _model.txtGender,
+                                    _model.controllerStreet.text);
+                              }
+                            },
+                            buttonColor: CustomColor.blue,
                             borderRadius: 6),
                       ),
                     ],
@@ -442,95 +402,101 @@ class _ProfileScreenState extends State<FormProfileScreen>
                 fontSize: 17,
                 fontWeight: FontWeight.bold,
               ),
-              CustomSizedBox(
-                context: context,
-                height: 16,
-              ),
-              CustomOutLineInputWithHint(
-                deviceSize: widget.deviceSize,
-                hintText: 'Mật khẩu cũ',
-                isDisable: false,
-                isSecure: true,
-                focusNode: _focusNodeOldPassword,
-                nextNode: _focusNodePassword,
-                controller: _model.controllerOldPassword,
-              ),
-              CustomOutLineInputWithHint(
-                deviceSize: widget.deviceSize,
-                hintText: 'Mật khẩu mới',
-                isDisable: false,
-                nextNode: _focusNodeConfirmPassword,
-                isSecure: true,
-                focusNode: _focusNodePassword,
-                controller: _model.controllerPassword,
-                validator: (value) {
-                  if (value!.length < 6) {
-                    return "Mật khẩu quá ngắn (ít nhất 6 kí tự)";
-                  } else {
-                    return null;
-                  }
-                },
-              ),
-              CustomOutLineInputWithHint(
-                deviceSize: widget.deviceSize,
-                hintText: 'Xác nhận mật khẩu mới',
-                isDisable: false,
-                isSecure: true,
-                focusNode: _focusNodeConfirmPassword,
-                validator: (value) {
-                  if (_model.controllerPassword.text ==
-                      _model.controllerConfirmPassword.text) {
-                    return "Xác nhận mật khẩu không trùng.";
-                  } else {
-                    return null;
-                  }
-                },
-                controller: _model.controllerConfirmPassword,
-              ),
-              if (_model.errorMsgChangePassword.isNotEmpty)
-                Column(
+              Form(
+                key: _formKeyPassword,
+                child: Column(
                   children: [
-                    SizedBox(
-                      width: double.infinity,
-                      child: CustomText(
-                        text: _model.errorMsgChangePassword,
-                        maxLines: 2,
-                        color: CustomColor.red,
-                        context: context,
-                        textAlign: TextAlign.center,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
                     CustomSizedBox(
                       context: context,
                       height: 16,
-                    )
+                    ),
+                    CustomOutLineInputWithHint(
+                      deviceSize: widget.deviceSize,
+                      validator: Validator.notEmpty,
+                      hintText: 'Mật khẩu cũ',
+                      isDisable: false,
+                      isSecure: true,
+                      focusNode: _focusNodeOldPassword,
+                      nextNode: _focusNodePassword,
+                      controller: _model.controllerOldPassword,
+                    ),
+                    CustomOutLineInputWithHint(
+                      deviceSize: widget.deviceSize,
+                      hintText: 'Mật khẩu mới',
+                      isDisable: false,
+                      nextNode: _focusNodeConfirmPassword,
+                      isSecure: true,
+                      focusNode: _focusNodePassword,
+                      controller: _model.controllerPassword,
+                      validator: (value) {
+                        if (value!.length < 6) {
+                          return "Mật khẩu quá ngắn (ít nhất 6 kí tự)";
+                        } else {
+                          return null;
+                        }
+                      },
+                    ),
+                    CustomOutLineInputWithHint(
+                      deviceSize: widget.deviceSize,
+                      hintText: 'Xác nhận mật khẩu mới',
+                      isDisable: false,
+                      isSecure: true,
+                      focusNode: _focusNodeConfirmPassword,
+                      validator: (value) {
+                        if (_model.controllerPassword.text ==
+                            _model.controllerConfirmPassword.text) {
+                          return "Xác nhận mật khẩu không trùng.";
+                        } else {
+                          return null;
+                        }
+                      },
+                      controller: _model.controllerConfirmPassword,
+                    ),
+                    if (_model.errorMsgChangePassword.isNotEmpty)
+                      Column(
+                        children: [
+                          SizedBox(
+                            width: double.infinity,
+                            child: CustomText(
+                              text: _model.errorMsgChangePassword,
+                              maxLines: 2,
+                              color: CustomColor.red,
+                              context: context,
+                              textAlign: TextAlign.center,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          CustomSizedBox(
+                            context: context,
+                            height: 16,
+                          )
+                        ],
+                      ),
+                    Center(
+                      child: CustomButton(
+                          height: 24,
+                          isLoading: _model.isLoadingChangePassword,
+                          text: 'Cập Nhật',
+                          width: widget.deviceSize.width / 3,
+                          textColor: CustomColor.white,
+                          onPressFunction: () {
+                            if (_formKeyPassword.currentState!.validate()) {
+                              onClickChangePassword(
+                                  _model.controllerOldPassword.text,
+                                  _model.controllerPassword.text,
+                                  _model.controllerConfirmPassword.text);
+                            }
+                          },
+                          buttonColor: CustomColor.blue,
+                          borderRadius: 6),
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
                   ],
                 ),
-              Center(
-                child: CustomButton(
-                    height: 24,
-                    isLoading: _model.isLoadingChangePassword,
-                    text: 'Cập Nhật',
-                    width: widget.deviceSize.width / 3,
-                    textColor: CustomColor.white,
-                    onPressFunction: _model.isDisableUpdatePass == true
-                        ? null
-                        : () {
-                            onClickChangePassword(
-                                _model.controllerOldPassword.text,
-                                _model.controllerPassword.text,
-                                _model.controllerConfirmPassword.text);
-                          },
-                    buttonColor: _model.isDisableUpdatePass == false
-                        ? CustomColor.blue
-                        : CustomColor.black[3],
-                    borderRadius: 6),
-              ),
-              const SizedBox(
-                height: 16,
-              ),
+              )
             ],
           ),
         ),

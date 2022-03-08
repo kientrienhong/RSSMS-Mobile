@@ -20,17 +20,6 @@ class ProfilePresenter {
     _model = ProfileModel(user);
   }
 
-  void handleOnChangeInputChangePassword(
-      String oldPassword, String newPassword, String confirmPassword) {
-    _view!.updateStatusOfButtonChangePassword(
-        oldPassword, newPassword, confirmPassword);
-  }
-
-  void handleOnChangeInputProfile(
-      String fullname, String phone, String address, String birthDate) {
-    _view!
-        .updateStatusOfButtonUpdateProfile(fullname, phone, address, birthDate);
-  }
   // void handleOnChangeInput(String email, String password,
   //     String confirmPassword, String firstname, String lastname, String phone) {
   //   _view!.updateViewStatusButton(

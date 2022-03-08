@@ -58,7 +58,7 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation>
       //     .resolvePlatformSpecificImplementation<
       //         AndroidFlutterLocalNotificationsPlugin>()
       //     ?.createNotificationChannel(channel);
-      const  AndroidInitializationSettings initializationSettingsAndroid =
+      const AndroidInitializationSettings initializationSettingsAndroid =
           AndroidInitializationSettings('app_icon');
       await flutterLocalNotificationsPlugin.initialize(
           const InitializationSettings(
@@ -121,7 +121,7 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation>
                   final listNewReadNoti = user.listNoti!
                       .map<NotificationEntity>((e) => e.copyWith(isRead: true))
                       .toList();
-                  List<int> listIdsUnread =
+                  List<String> listIdsUnread =
                       user.listUnreadNoti!.map((e) => e.id).toList();
                   ApiServices.updateListNotification(
                       user.idToken!, listIdsUnread);

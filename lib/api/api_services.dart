@@ -341,7 +341,7 @@ class ApiServices {
         'Authorization': 'Bearer $idToken'
       };
 
-      final url = Uri.parse('$_domain/api/v1/users/$userId');
+      final url = Uri.parse('$_domain/api/v1/accounts/$userId');
       return http.put(url,
           headers: headers,
           body: jsonEncode({
@@ -464,7 +464,7 @@ class ApiServices {
   }
 
   static Future<dynamic> updateListNotification(
-      String idToken, List<int> listNoti) {
+      String idToken, List<String> listNoti) {
     try {
       Map<String, String> headers = {
         "Content-type": "application/json",

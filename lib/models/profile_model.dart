@@ -4,8 +4,6 @@ import 'package:intl/intl.dart';
 import '/models/entity/user.dart';
 
 class ProfileModel {
-  bool? _isDisableUpdatePass;
-  bool? _isDisableUpdateProfile;
   String? _errorMsgChangePassword;
   bool? _isLoadingChangePassword;
   bool? _isLoadingUpdateProfile;
@@ -21,8 +19,6 @@ class ProfileModel {
   String? _textGender;
 
   ProfileModel(Users user) {
-    _isDisableUpdatePass = true;
-    _isDisableUpdateProfile = true;
     _errorMsgChangePassword = '';
     _isLoadingChangePassword = false;
     _isLoadingUpdateProfile = false;
@@ -60,14 +56,6 @@ class ProfileModel {
   String get errorMsgChangePassword => _errorMsgChangePassword!;
 
   set errorMsgChangePassword(String value) => _errorMsgChangePassword = value;
-
-  bool get isDisableUpdateProfile => _isDisableUpdateProfile!;
-
-  set isDisableUpdateProfile(bool value) => _isDisableUpdateProfile = value;
-
-  bool get isDisableUpdatePass => _isDisableUpdatePass!;
-
-  set isDisableUpdatePass(bool value) => _isDisableUpdatePass = value;
 
   get controllerFullname => _controllerFullname;
 
