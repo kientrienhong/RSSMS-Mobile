@@ -29,6 +29,9 @@ class ImageEntity {
   }
 
   Map<String, dynamic> toMap() {
+    if (id == '') {
+      return {'url': url, 'note': note, 'name': name, 'file': base64};
+    }
     return {'id': id, 'url': url, 'note': note, 'name': name, 'file': base64};
   }
 

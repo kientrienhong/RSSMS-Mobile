@@ -179,6 +179,7 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.max,
               children: [
                 CustomSizedBox(
                   context: context,

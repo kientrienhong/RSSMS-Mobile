@@ -132,7 +132,7 @@ class Invoice with ChangeNotifier {
       'deliveryTime': deliveryTime,
       'returnDate': returnDate,
       'returnTime': returnTime,
-      'name': name,
+      'Name': name,
       'paymentMethod': paymentMethod,
       'durationDays': durationDays,
       'durationMonths': durationMonths,
@@ -170,6 +170,7 @@ class Invoice with ChangeNotifier {
 
   void setInvoice({required Invoice invoice}) {
     id = invoice.id;
+    name = invoice.name;
     customerName = invoice.customerName;
     customerPhone = invoice.customerPhone;
     deliveryAddress = invoice.deliveryAddress;

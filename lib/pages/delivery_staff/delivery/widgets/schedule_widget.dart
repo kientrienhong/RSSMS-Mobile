@@ -107,6 +107,7 @@ class ScheduleWidget extends StatelessWidget {
                   users.idToken!, invoice.id.toString());
               if (response.statusCode == 200) {
                 Invoice invoiceReponse = Invoice.fromJson(response.body);
+
                 invoiceProvider.setInvoice(invoice: invoiceReponse);
                 Navigator.push(
                   context,
@@ -157,7 +158,7 @@ class ScheduleWidget extends StatelessWidget {
                             Row(
                               children: [
                                 CustomText(
-                                    text: 'Mã đơn: #${schedule['id']}',
+                                    text: 'Mã đơn: #${schedule['name']}',
                                     color: CustomColor.black,
                                     fontWeight: FontWeight.bold,
                                     context: context,

@@ -383,7 +383,7 @@ class ApiServices {
         "Content-type": "application/json",
         'Authorization': 'Bearer $idToken'
       };
-      invoice.toJson();
+      var test = jsonEncode(invoice.toMap());
       final url = Uri.parse('$_domain/api/v1/orders/${invoice.id}');
       return http.post(url,
           headers: headers, body: jsonEncode(invoice.toMap()));

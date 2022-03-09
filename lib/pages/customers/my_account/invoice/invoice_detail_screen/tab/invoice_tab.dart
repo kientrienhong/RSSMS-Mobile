@@ -61,7 +61,7 @@ class InvoiceTab extends StatelessWidget {
                     data: invoice!.id,
                     size: 88.0,
                     gapless: true,
-                    version: 10,
+                    version: 4,
                   ),
                 ),
               ),
