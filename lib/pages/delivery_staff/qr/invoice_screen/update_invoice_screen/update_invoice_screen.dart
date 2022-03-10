@@ -21,6 +21,8 @@ import 'package:rssms/pages/customers/notification/notification_screen.dart';
 import 'package:rssms/pages/delivery_staff/delivery/delivery_screen.dart';
 import 'package:rssms/pages/delivery_staff/my_account/my_account_delivery.dart';
 import 'package:rssms/pages/delivery_staff/notifcation/notification_delivery.dart';
+import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_screen/widget/addition_cost.dart';
+import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_screen/widget/dialog_add_cost.dart';
 import 'package:rssms/pages/delivery_staff/qr/qr_screen.dart';
 import 'package:rssms/presenters/invoice_update_presenter.dart';
 import 'package:rssms/views/invoice_update_view.dart';
@@ -69,6 +71,11 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
       _presenter.model.isLoadingUpdateInvoice =
           !_presenter.model.isLoadingUpdateInvoice;
     });
+  }
+
+  @override
+  void updateView() {
+    setState(() {});
   }
 
   void doneOrder() async {
@@ -137,6 +144,12 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
     } else if (widget.isScanQR == null && widget.isView == true) {
       updateOrder();
     }
+  }
+
+  List<AddtionCost> buildListAdditionCost() {
+    return _model.listAdditionCost
+        .map((e) => AddtionCost(additionCost: e))
+        .toList();
   }
 
   void sendNoti() async {
@@ -258,6 +271,68 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                           .toList()),
                     );
                   },
+                ),
+                CustomSizedBox(
+                  context: context,
+                  height: 16,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CustomText(
+                      text: "Chí phí thêm",
+                      color: CustomColor.black,
+                      context: context,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return DialogAddCost(
+                                listAdditionCost: _model.listAdditionCost,
+                                addAdditionCost: _presenter.addAdditionCost,
+                                updateAdditionCost:
+                                    _presenter.updateAdditionCost,
+                              );
+                            });
+                      },
+                      child: Row(
+                        children: [
+                          CustomText(
+                            text: "Thêm",
+                            color: CustomColor.blue,
+                            context: context,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          CustomSizedBox(
+                            context: context,
+                            width: 8,
+                          ),
+                          Container(
+                            height: 24,
+                            width: 24,
+                            decoration: BoxDecoration(
+                                color: CustomColor.blue,
+                                borderRadius: BorderRadius.circular(4)),
+                            child: Center(
+                              child: CustomText(
+                                  text: '+',
+                                  color: CustomColor.white,
+                                  context: context,
+                                  fontSize: 16),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+                Column(
+                  children: buildListAdditionCost(),
                 ),
                 CustomSizedBox(
                   context: context,

@@ -97,6 +97,7 @@ class _ItemWidgetState extends State<ItemWidget> implements ItemWidgetView {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,

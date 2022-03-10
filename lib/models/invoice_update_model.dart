@@ -10,7 +10,9 @@ class InvoiceUpdateModel {
   TextEditingController? _controllerPhone;
   String? _txtStatus;
   bool? _isPaid;
+  late List<Map<String, dynamic>> listAdditionCost;
   InvoiceUpdateModel(Users user, Invoice invoice) {
+    listAdditionCost = [];
     _isDisableUpdateInvoice = true;
     _isLoadingUpdateInvoice = false;
     _isPaid = invoice.isPaid;
