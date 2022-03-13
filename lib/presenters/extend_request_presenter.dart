@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:rssms/api/api_services.dart';
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/request.dart';
 import 'package:rssms/models/extend_request_model.dart';
@@ -17,7 +16,7 @@ class ExtendRequestPresenter {
   Future<void> getRequest(String id, String idToken) async {
     view!.changeLoadingStatus();
     try {
-      final responseRequest = await ApiServices.getRequestbyId(idToken, id);
+      final responseRequest = await model!.getRequestById(idToken, id);
       if (responseRequest.statusCode == 200) {
         final decodedReponse = jsonDecode(responseRequest.body);
         Request? request = Request.fromMap(decodedReponse);
@@ -37,7 +36,7 @@ class ExtendRequestPresenter {
   Future<void> loadInvoice(String idToken, String id) async {
     view!.changeLoadingStatus();
     try {
-      final responseInvoice = await ApiServices.getInvoicebyId(idToken, id);
+      final responseInvoice = await model!.getInvoiceById(idToken, id);
       if (responseInvoice.statusCode == 200) {
         Invoice invoice = Invoice.fromJson(responseInvoice.body);
         model!.invoice = invoice;

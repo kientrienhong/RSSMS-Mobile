@@ -29,7 +29,7 @@ class _CartScreenState extends State<CartScreen> implements CartScreenView {
     Users user = Provider.of<Users>(context, listen: false);
     _presenter = CartScreenPresenter();
     _presenter.view = this;
-    _model = _presenter.model!;
+    _model = _presenter.model;
     _presenter.loadProduct(user.idToken!);
   }
 

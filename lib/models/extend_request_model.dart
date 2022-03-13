@@ -1,3 +1,4 @@
+import 'package:rssms/api/api_services.dart';
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/request.dart';
 
@@ -22,4 +23,12 @@ class ExtendRequestModel {
 
   set setIsLoadingRequest(isLoadingRequest) =>
       this.isLoadingRequest = isLoadingRequest;
+
+  Future<dynamic> getRequestById(String idToken, String id) async {
+    return await ApiServices.getRequestbyId(idToken, id);
+  }
+
+  Future<dynamic> getInvoiceById(String idToken, String id) async {
+    return await ApiServices.getInvoicebyId(idToken, id);
+  }
 }

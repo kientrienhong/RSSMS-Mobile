@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:rssms/api/api_services.dart';
 import 'package:rssms/models/entity/order_booking.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/models/payment_method_booking_screen_model.dart';
@@ -34,8 +33,7 @@ class PaymentMethodBookingScreenPresenter {
         }
       }
 
-      final response =
-          await ApiServices.createOrder(listProduct, orderBooking, user);
+      final response = await model.createOrder(listProduct, orderBooking, user);
       final decodedReponse = jsonDecode(response.body);
 
       if (response.statusCode == 200) {

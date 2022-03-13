@@ -38,7 +38,7 @@ class SignUpPresenter {
       Users user, String password, String deviceToken) async {
     _view!.updateLoading();
     try {
-      final response = await ApiServices.signUp(user, password, deviceToken);
+      final response = await model.signUp(user, password, deviceToken);
 
       if (response.statusCode == 200) {
         return Users.fromMap(jsonDecode(response.body));

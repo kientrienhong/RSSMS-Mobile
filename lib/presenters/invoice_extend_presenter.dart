@@ -1,5 +1,3 @@
-
-import 'package:rssms/api/api_services.dart';
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/models/invoice_extends_model.dart';
@@ -17,8 +15,7 @@ class InvoiceExtendPresenter {
       Map<String, dynamic> extendInvoice, Users user, Invoice invoice) async {
     view!.updateLoading();
     try {
-      final response =
-          await ApiServices.createExtendRequest(extendInvoice, user);
+      final response = await model!.createExtendRequest(extendInvoice, user);
 
       if (response.statusCode == 200) {
         return true;

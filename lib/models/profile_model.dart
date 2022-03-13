@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
+import 'package:rssms/api/api_services.dart';
 
 import '/models/entity/user.dart';
 
@@ -96,4 +97,16 @@ class ProfileModel {
   get txtGender => _textGender;
 
   set txtGender(value) => _textGender = value;
+
+  Future<dynamic> updateProfile(String name, int gender, DateTime birthday,
+      String address, String phone, String idToken, String userId) async {
+    return await ApiServices.updateProfile(
+        name, phone, birthday, gender, address, idToken, userId);
+  }
+
+  Future<dynamic> changePassword(String oldPassword, String confirmPassword,
+      String newPassword, String idToken, String userId) async {
+    return await ApiServices.changePassword(
+        oldPassword, confirmPassword, newPassword, userId, idToken);
+  }
 }

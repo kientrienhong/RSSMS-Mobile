@@ -31,8 +31,8 @@ class ProfilePresenter {
     _view!.updateLoadingProfile();
 
     try {
-      final response = await ApiServices.updateProfile(
-          name, phone, birthday, gender, address, idToken, userId);
+      final response = await model.updateProfile(
+          name, gender, birthday, address, phone, idToken, userId);
       if (response.statusCode == 200) return true;
       return false;
     } catch (e) {
@@ -52,7 +52,7 @@ class ProfilePresenter {
             "Vui lòng nhập mật khẩu mới trùng với xác nhận mật khẩu");
       }
 
-      final response = await ApiServices.changePassword(
+      final response = await model.changePassword(
           oldPassword, confirmPassword, newPassword, userId, idToken);
 
       if (response.statusCode == 200) return true;

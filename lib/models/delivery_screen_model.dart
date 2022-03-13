@@ -1,3 +1,4 @@
+import 'package:rssms/api/api_services.dart';
 import 'package:rssms/models/entity/invoice.dart';
 
 class DeliveryScreenModel {
@@ -12,5 +13,9 @@ class DeliveryScreenModel {
     currentIndex = -1;
     isLoadingStartDelivery = false;
     listDateTime = [];
+  }
+
+  Future<dynamic> updateListOrders(idToken, listOrderStatus) async {
+    return await ApiServices.updateListOrders(idToken, listOrderStatus);
   }
 }

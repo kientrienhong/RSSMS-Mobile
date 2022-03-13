@@ -1,5 +1,3 @@
-
-import 'package:rssms/api/api_services.dart';
 import 'package:rssms/models/dialog_confirm_cancel_model.dart';
 import 'package:rssms/views/dialog_confirm_cancel_view.dart';
 
@@ -14,8 +12,7 @@ class DialogConfirmCancelPresenter {
   Future<bool> submit(String note, String dateCancel, String idToken) async {
     try {
       view.updateLoading();
-      final response =
-          await ApiServices.requestCancel(note, 0, dateCancel, idToken);
+      final response = await model.requestCancel(note, dateCancel, idToken);
       if (response.statusCode == 200) {
         return true;
       }

@@ -62,7 +62,7 @@ class InvoiceUpdatePresenter {
     try {
       view.updateLoadingUpdate();
       invoice = invoice.copyWith(status: 3);
-      var response = await ApiServices.updateOrder(invoice, user.idToken!);
+      var response = await model.updateOrder(invoice, user.idToken!);
       if (response.statusCode == 200) {
         return true;
       }
@@ -86,8 +86,7 @@ class InvoiceUpdatePresenter {
         invoice.setInvoice(
             invoice: invoice.copyWith(
                 orderDetails: listOrderDetail, isPaid: model.getIsPaid));
-        var response =
-            await ApiServices.sendNotification(invoice, user.idToken!);
+        var response = await model.sendNotification(invoice, user.idToken!);
         if (response.statusCode == 200) {
           return true;
         }
@@ -105,7 +104,7 @@ class InvoiceUpdatePresenter {
     try {
       view.updateLoadingUpdate();
 
-      var response = await ApiServices.doneOrder(invoice, user.idToken!);
+      var response = await model.doneOrder(invoice, user.idToken!);
       if (response.statusCode == 200) {
         return true;
       }

@@ -1,3 +1,4 @@
+import 'package:rssms/api/api_services.dart';
 import 'package:rssms/models/entity/product.dart';
 
 class CartScreenModel {
@@ -10,5 +11,9 @@ class CartScreenModel {
     selfStorageTab = {};
     unweildyTab = {};
     index = 0;
+  }
+
+  Future<dynamic> loadProduct(String idToken) async {
+    return await ApiServices.getService(idToken);
   }
 }

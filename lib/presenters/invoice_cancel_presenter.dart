@@ -1,4 +1,3 @@
-import 'package:rssms/api/api_services.dart';
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/models/invoice_cancel_model.dart';
@@ -17,7 +16,7 @@ class InvoiceCancelPresenter {
     view.updateLoadingCancel();
     try {
       final response =
-          await ApiServices.createCancelRequest(cancelRequest, user, invoice);
+          await model.createCancelRequest(cancelRequest, user, invoice);
 
       if (response.statusCode == 200) {
         return true;

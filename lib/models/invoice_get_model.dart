@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:rssms/api/api_services.dart';
+import 'package:rssms/models/entity/user.dart';
 
 class InvoiceGetModel {
   late bool isLoadingButton;
@@ -13,8 +15,7 @@ class InvoiceGetModel {
 
   get getIsLoadingButton => isLoadingButton;
 
-  set setIsLoadingButton(isLoadingButton) =>
-      isLoadingButton = isLoadingButton;
+  set setIsLoadingButton(isLoadingButton) => isLoadingButton = isLoadingButton;
 
   get controllerBirthDate => _controllerBirthDate;
 
@@ -23,4 +24,9 @@ class InvoiceGetModel {
   get controllerStreet => _controllerStreet;
 
   set controllerStreet(value) => _controllerStreet = value;
+
+  Future<dynamic> createGetInvoicedRequest(
+      Map<String, dynamic> request, Users user) async {
+    return await ApiServices.createGetInvoicedRequest(request, user);
+  }
 }

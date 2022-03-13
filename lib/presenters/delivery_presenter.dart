@@ -57,8 +57,7 @@ class DeliveryPresenter {
       }).toList();
 
       if (currentListInvoice != null) {
-        final response =
-            await ApiServices.updateListOrders(idToken, listOrderStatus);
+        final response = await model.updateListOrders(idToken, listOrderStatus);
         if (response.statusCode == 204) {
           return true;
         } else {
