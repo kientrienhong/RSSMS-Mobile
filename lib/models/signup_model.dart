@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:rssms/api/api_services.dart';
 
 import '/models/entity/user.dart';
 
@@ -66,4 +67,9 @@ class SignUpModel {
   get controllerBirthDate => _controllerBirthDate;
 
   set controllerBirthDate(value) => _controllerBirthDate = value;
+
+  Future<dynamic> signUp(
+      Users user, String password, String deviceToken) async {
+    return await ApiServices.signUp(user, password, deviceToken);
+  }
 }

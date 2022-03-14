@@ -31,6 +31,7 @@ class InvoiceProductWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(invoice!.orderDetails);
     List<OrderDetail> listTemp = invoice!.orderDetails;
     List<OrderDetail> listProduct = listTemp
         .where((element) =>
@@ -68,7 +69,9 @@ class InvoiceProductWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CustomText(
-                text: "Kho",
+                text: invoice!.typeOrder == constants.SELF_STORAGE_TYPE_ORDER
+                    ? "Kho"
+                    : "Dịch vụ",
                 color: CustomColor.blue,
                 context: context,
                 fontWeight: FontWeight.bold,
@@ -191,7 +194,10 @@ class InvoiceProductWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CustomText(
-                    text: "Tổng tiền thuê kho",
+                    text:
+                        invoice!.typeOrder == constants.SELF_STORAGE_TYPE_ORDER
+                            ? "Tổng tiền thuê kho"
+                            : "Tổng tiền thuê dịch vụ",
                     color: Colors.black,
                     context: context,
                     fontWeight: FontWeight.bold,

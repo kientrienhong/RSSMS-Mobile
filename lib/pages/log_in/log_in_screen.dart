@@ -115,16 +115,10 @@ class FormLogIn extends StatefulWidget {
 class _FormLogInState extends State<FormLogIn> implements LoginView {
   late LoginPresenter loginPresenter;
   late FirebaseMessaging _firebaseMessaging;
-  late String _token;
   late LoginModel _model;
 
   final _focusNodeEmail = FocusNode();
   final _focusNodePassword = FocusNode();
-  final _controllerEmail = TextEditingController();
-  final _controllerPassword = TextEditingController();
-
-  String get _email => _controllerEmail.text;
-  String get _password => _controllerPassword.text;
 
   @override
   void initState() {
@@ -133,14 +127,14 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
     loginPresenter = LoginPresenter();
     loginPresenter.setView(this);
     _model = loginPresenter.model;
-    _controllerEmail.addListener(onChangeInput);
-    _controllerPassword.addListener(onChangeInput);
+    _model.controllerEmail.addListener(onChangeInput);
+    _model.controllerPassword.addListener(onChangeInput);
     firebaseCloudMessagingListeners();
   }
 
   void firebaseCloudMessagingListeners() {
     _firebaseMessaging.getToken().then((token) {
-      _token = token!;
+      _model.deviceToken = token!;
     });
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
@@ -169,12 +163,13 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
 
   @override
   void onChangeInput() {
-    loginPresenter.handleOnChangeInput(_email, _password);
+    loginPresenter.handleOnChangeInput(
+        _model.controllerEmail.text, _model.controllerPassword.text);
   }
 
   @override
   void onClickSignInFaceBook() async {
-    final result = await loginPresenter.handleSignInFacebook(_token);
+    final result = await loginPresenter.handleSignInFacebook();
     Users user = Provider.of<Users>(context, listen: false);
     if (result != null) {
       user.setUser(user: result);
@@ -197,7 +192,7 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
 
   @override
   void onClickSignInGoogle() async {
-    final result = await loginPresenter.handleSignInGoogle(_token);
+    final result = await loginPresenter.handleSignInGoogle();
     Users user = Provider.of<Users>(context, listen: false);
     if (result != null) {
       user.setUser(user: result);
@@ -219,7 +214,7 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
   }
 
   @override
-  void onClickSignIn(String email, String password) async {
+  void onClickSignIn() async {
     try {
       // if (email.contains('delivery')) {
       //   Navigator.push(
@@ -243,7 +238,7 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
       _model.errorMsg = "";
       Users user = Provider.of<Users>(context, listen: false);
 
-      final result = await loginPresenter.handleSignIn(email, password, _token);
+      final result = await loginPresenter.handleSignIn();
       if (result != null) {
         user.setUser(user: result);
         if (user.roleName == 'Customer') {
@@ -312,8 +307,8 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
     super.dispose();
     _focusNodeEmail.dispose();
     _focusNodePassword.dispose();
-    _controllerEmail.dispose();
-    _controllerPassword.dispose();
+    _model.controllerEmail.dispose();
+    _model.controllerPassword.dispose();
   }
 
   @override
@@ -349,7 +344,7 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
             isDisable: false,
             focusNode: _focusNodeEmail,
             nextNode: _focusNodePassword,
-            controller: _controllerEmail,
+            controller: _model.controllerEmail,
           ),
           CustomOutLineInput(
             deviceSize: widget.deviceSize,
@@ -357,7 +352,7 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
             isDisable: false,
             isSecure: true,
             focusNode: _focusNodePassword,
-            controller: _controllerPassword,
+            controller: _model.controllerPassword,
           ),
           if (_model.errorMsg.isNotEmpty)
             SizedBox(
@@ -413,9 +408,8 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
               text: 'Đăng nhập',
               width: double.infinity,
               textColor: CustomColor.white,
-              onPressFunction: _model.isDisableLogin == false
-                  ? () => onClickSignIn(_email, _password)
-                  : null,
+              onPressFunction:
+                  _model.isDisableLogin == false ? () => onClickSignIn() : null,
               buttonColor: _model.isDisableLogin == false
                   ? CustomColor.purple
                   : CustomColor.black[3],

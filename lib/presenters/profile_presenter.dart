@@ -20,16 +20,6 @@ class ProfilePresenter {
     _model = ProfileModel(user);
   }
 
-  void handleOnChangeInputChangePassword(
-      String oldPassword, String newPassword, String confirmPassword) {
-    _view!.updateStatusOfButtonChangePassword(
-        oldPassword, newPassword, confirmPassword);
-  }
-
-  void handleOnChangeInputProfile(
-      String fullname, String phone, String address, String birthDate) {
-    _view!.updateStatusOfButtonUpdateProfile(fullname, phone, address, birthDate);
-  }
   // void handleOnChangeInput(String email, String password,
   //     String confirmPassword, String firstname, String lastname, String phone) {
   //   _view!.updateViewStatusButton(
@@ -37,12 +27,12 @@ class ProfilePresenter {
   // }
 
   Future<bool> updateProfile(String name, int gender, DateTime birthday,
-      String address, String phone, String idToken, int userId) async {
+      String address, String phone, String idToken, String userId) async {
     _view!.updateLoadingProfile();
 
     try {
-      final response = await ApiServices.updateProfile(
-          name, phone, birthday, gender, address, idToken, userId);
+      final response = await model.updateProfile(
+          name, gender, birthday, address, phone, idToken, userId);
       if (response.statusCode == 200) return true;
       return false;
     } catch (e) {
@@ -54,23 +44,23 @@ class ProfilePresenter {
   }
 
   Future<bool> changePassword(String newPassword, String oldPassword,
-      String confirmPassword, String idToken, int userId) async {
+      String confirmPassword, String idToken, String userId) async {
     _view!.updateLoadingPassword();
     try {
       if (newPassword != confirmPassword) {
         throw Exception(
             "Vui lòng nhập mật khẩu mới trùng với xác nhận mật khẩu");
       }
-      
-      final response = await ApiServices.changePassword(
+
+      final response = await model.changePassword(
           oldPassword, confirmPassword, newPassword, userId, idToken);
 
       if (response.statusCode == 200) return true;
-      if(response.statusCode == 400){
+      if (response.statusCode == 400) {
         model.errorMsgChangePassword = "Mật khẩu cũ không đúng";
       }
       return false;
-    } catch (e) { 
+    } catch (e) {
       print(e.toString());
       throw Exception(e.toString());
     } finally {

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rssms/common/custom_color.dart';
+import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/models/cart_screen_model.dart';
 import 'package:rssms/models/entity/order_booking.dart';
 import 'package:rssms/models/entity/user.dart';
@@ -27,7 +29,7 @@ class _CartScreenState extends State<CartScreen> implements CartScreenView {
     Users user = Provider.of<Users>(context, listen: false);
     _presenter = CartScreenPresenter();
     _presenter.view = this;
-    _model = _presenter.model!;
+    _model = _presenter.model;
     _presenter.loadProduct(user.idToken!);
   }
 

@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 class NotificationEntity {
-  final int id;
-  final int orderId;
-  final int requestId;
+  final String id;
+  final String orderId;
+  final String requestId;
   final String description;
   final int type;
   final bool isOwn;
@@ -19,9 +19,9 @@ class NotificationEntity {
   });
 
   NotificationEntity copyWith({
-    int? id,
-    int? orderId,
-    int? requestId,
+    String? id,
+    String? orderId,
+    String? requestId,
     String? description,
     int? type,
     bool? isOwn,
@@ -52,9 +52,9 @@ class NotificationEntity {
 
   factory NotificationEntity.fromMap(Map<String, dynamic> map) {
     return NotificationEntity(
-      id: map['id']?.toInt() ?? 0,
-      orderId: map['orderId']?.toInt() ?? 0,
-      requestId: map['requestId']?.toInt() ?? 0,
+      id: map['id'] ?? '',
+      orderId: map['orderId'] ?? '',
+      requestId: map['requestId'] ?? '',
       description: map['description'] ?? '',
       type: map['type']?.toInt() ?? 0,
       isOwn: map['isOwn'] ?? false,

@@ -35,7 +35,6 @@ class _InvoiceScreenState extends State<InvoiceScreen> implements InvoiceView {
     scrollController.addListener(() {
       if (scrollController.position.maxScrollExtent ==
           scrollController.offset) {
-        print(_model.hasMore!);
         if (_model.hasMore!) {
           _model.page = _model.page! + 1;
           _presenter.loadInvoice(idToken: user.idToken);

@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
@@ -21,8 +24,59 @@ class QrScreen extends StatefulWidget {
 
 class _QrScreenState extends State<QrScreen> implements QRInvoiceView {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
+  QRViewController? controller;
+  Barcode? result;
+
   String qrCode = "";
   QRScanPresenter? _presenter;
+  @override
+  void reassemble() {
+    super.reassemble();
+    if (Platform.isAndroid) {
+      controller!.pauseCamera();
+    }
+    controller!.resumeCamera();
+  }
+
+  Widget _buildQrView(BuildContext context) {
+    // For this example we check how width or tall the device is and change the scanArea and overlay accordingly.
+    var scanArea = (MediaQuery.of(context).size.width < 400 ||
+            MediaQuery.of(context).size.height < 400)
+        ? 150.0
+        : 300.0;
+    // To ensure the Scanner view is properly sizes after rotation
+    // we need to listen for Flutter SizeChanged notification and update controller
+    return QRView(
+      key: qrKey,
+      onQRViewCreated: _onQRViewCreated,
+      overlay: QrScannerOverlayShape(
+          borderColor: Colors.red,
+          borderRadius: 10,
+          borderLength: 30,
+          borderWidth: 10,
+          cutOutSize: scanArea),
+      onPermissionSet: (ctrl, p) => _onPermissionSet(context, ctrl, p),
+    );
+  }
+
+  void _onQRViewCreated(QRViewController controller) {
+    setState(() {
+      this.controller = controller;
+    });
+    controller.scannedDataStream.listen((scanData) {
+      setState(() {
+        result = scanData;
+      });
+    });
+  }
+
+  void _onPermissionSet(BuildContext context, QRViewController ctrl, bool p) {
+    if (!p) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('no Permission')),
+      );
+    }
+  }
 
   @override
   void initState() {
@@ -51,8 +105,8 @@ class _QrScreenState extends State<QrScreen> implements QRInvoiceView {
     Users user = Provider.of<Users>(context, listen: false);
     bool result = await _presenter?.loadInvoice(user.idToken!, qrCode) as bool;
     Invoice invoice = Provider.of<Invoice>(context, listen: false);
-    invoice.setInvoice(invoice: _presenter!.model!.invoice!);
     if (result) {
+      invoice.setInvoice(invoice: _presenter!.model!.invoice!);
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -72,6 +126,7 @@ class _QrScreenState extends State<QrScreen> implements QRInvoiceView {
   @override
   Widget build(BuildContext context) {
     var deviceSize = MediaQuery.of(context).size;
+    // return Scaffold(body: _buildQrView(context));
     return Scaffold(
       backgroundColor: CustomColor.white,
       body: SingleChildScrollView(
@@ -88,6 +143,8 @@ class _QrScreenState extends State<QrScreen> implements QRInvoiceView {
                 size: 200.0,
               ),
             ),
+            // _buildQrView(context),
+
             CustomSizedBox(
               context: context,
               height: deviceSize.height / 5,
@@ -101,17 +158,6 @@ class _QrScreenState extends State<QrScreen> implements QRInvoiceView {
                   onPressFunction: () {
                     scanQR(deviceSize);
                   },
-                  //  {
-
-                  //   Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //         builder: (context) => InvoiceDetailsScreen(
-                  //               invoice: listInvoice[0],
-                  //               deviceSize: deviceSize,
-                  //             )),
-                  //   );
-                  // },
                   width: deviceSize.width,
                   buttonColor: CustomColor.blue,
                   borderRadius: 6),

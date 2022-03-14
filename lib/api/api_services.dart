@@ -64,8 +64,12 @@ class ApiServices {
     }
   }
 
-  static Future<dynamic> changePassword(String oldPassword,
-      String confirmPassword, String newPassword, int userId, String idToken) {
+  static Future<dynamic> changePassword(
+      String oldPassword,
+      String confirmPassword,
+      String newPassword,
+      String userId,
+      String idToken) {
     try {
       Map<String, String> headers = {
         "Content-type": "application/json",
@@ -220,7 +224,8 @@ class ApiServices {
           "duration": orderBooking.typeOrder == TypeOrder.selfStorage
               ? orderBooking.months
               : orderBooking.diffDay,
-          "listProduct": listProduct
+          "listService": listProduct,
+          'status': 1
         }),
         headers: headers,
       );
@@ -329,14 +334,14 @@ class ApiServices {
       int gender,
       String address,
       String idToken,
-      int userId) {
+      String userId) {
     try {
       Map<String, String> headers = {
         "Content-type": "application/json",
         'Authorization': 'Bearer $idToken'
       };
 
-      final url = Uri.parse('$_domain/api/v1/users/$userId');
+      final url = Uri.parse('$_domain/api/v1/accounts/$userId');
       return http.put(url,
           headers: headers,
           body: jsonEncode({
@@ -378,7 +383,7 @@ class ApiServices {
         "Content-type": "application/json",
         'Authorization': 'Bearer $idToken'
       };
-      invoice.toJson();
+      var test = jsonEncode(invoice.toMap());
       final url = Uri.parse('$_domain/api/v1/orders/${invoice.id}');
       return http.post(url,
           headers: headers, body: jsonEncode(invoice.toMap()));
@@ -439,7 +444,7 @@ class ApiServices {
     }
   }
 
-  static Future<dynamic> loadListNotification(String idToken, int userId) {
+  static Future<dynamic> loadListNotification(String idToken, String userId) {
     try {
       Map<String, String> headers = {
         "Content-type": "application/json",
@@ -459,7 +464,7 @@ class ApiServices {
   }
 
   static Future<dynamic> updateListNotification(
-      String idToken, List<int> listNoti) {
+      String idToken, List<String> listNoti) {
     try {
       Map<String, String> headers = {
         "Content-type": "application/json",

@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:rssms/api/api_services.dart';
 import 'package:rssms/models/entity/invoice.dart';
 
 import '/models/entity/user.dart';
@@ -10,7 +11,9 @@ class InvoiceUpdateModel {
   TextEditingController? _controllerPhone;
   String? _txtStatus;
   bool? _isPaid;
+  late List<Map<String, dynamic>> listAdditionCost;
   InvoiceUpdateModel(Users user, Invoice invoice) {
+    listAdditionCost = [];
     _isDisableUpdateInvoice = true;
     _isLoadingUpdateInvoice = false;
     _isPaid = invoice.isPaid;
@@ -55,4 +58,16 @@ class InvoiceUpdateModel {
   get getIsPaid => _isPaid;
 
   set setIsPaid(isPaid) => _isPaid = isPaid;
+
+  Future<dynamic> updateOrder(Invoice invoice, String idToken) async {
+    return await ApiServices.updateOrder(invoice, idToken);
+  }
+
+  Future<dynamic> sendNotification(Invoice invoice, String idToken) async {
+    return await ApiServices.sendNotification(invoice, idToken);
+  }
+
+  Future<dynamic> doneOrder(Invoice invoice, String idToken) async {
+    return await ApiServices.doneOrder(invoice, idToken);
+  }
 }

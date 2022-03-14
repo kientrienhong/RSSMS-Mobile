@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 class Request {
-  final int id;
-  final int orderId;
-  final int userId;
+  final String id;
+  final String orderId;
+  final String userId;
   final double totalPrice;
   final String returnAddress;
   final String returnTime;
@@ -35,9 +35,9 @@ class Request {
   });
 
   Request copyWith({
-    int? id,
-    int? orderId,
-    int? userId,
+    String? id,
+    String? orderId,
+    String? userId,
     double? totalPrice,
     String? returnAddress,
     String? returnTime,
@@ -92,9 +92,9 @@ class Request {
 
   factory Request.fromMap(Map<String, dynamic> map) {
     return Request(
-      id: map['id']?.toInt() ?? 0,
-      orderId: map['orderId']?.toInt() ?? 0,
-      userId: map['userId']?.toInt() ?? 0,
+      id: map['id'] ?? '',
+      orderId: map['orderId'] ?? '',
+      userId: map['userId'] ?? '',
       totalPrice: map['totalPrice'] ?? 0.0,
       returnAddress: map['returnAddress'] ?? '',
       returnTime: map['returnTime'] ?? '',

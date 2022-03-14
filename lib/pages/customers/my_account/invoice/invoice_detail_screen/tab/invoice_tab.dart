@@ -15,7 +15,8 @@ class InvoiceTab extends StatelessWidget {
   Invoice? invoice;
   final Size deviceSize;
 
-  InvoiceTab({Key? key, required this.deviceSize, this.invoice}) : super(key: key);
+  InvoiceTab({Key? key, required this.deviceSize, this.invoice})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

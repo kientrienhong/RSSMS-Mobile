@@ -9,19 +9,36 @@ import 'package:rssms/views/invoice_update_view.dart';
 import '/models/entity/user.dart';
 
 class InvoiceUpdatePresenter {
-  InvoiceUpdateModel? _model;
-  UpdateInvoiceView? _view;
+  late InvoiceUpdateModel _model;
+  late UpdateInvoiceView _view;
 
-  UpdateInvoiceView get view => _view!;
+  UpdateInvoiceView get view => _view;
 
   setView(UpdateInvoiceView value) {
     _view = value;
   }
 
-  InvoiceUpdateModel get model => _model!;
+  InvoiceUpdateModel get model => _model;
 
   InvoiceUpdatePresenter(Users user, Invoice invoice) {
     _model = InvoiceUpdateModel(user, invoice);
+  }
+
+  void addAdditionCost(Map<String, dynamic> additionCost) {
+    _model.listAdditionCost.add(additionCost);
+    _view.updateView();
+  }
+
+  void deleteAdditionCost(int id) {
+    _model.listAdditionCost.removeWhere((element) => element['id'] == id);
+    _view.updateView();
+  }
+
+  void updateAdditionCost(Map<String, dynamic> additionCost) {
+    int indexFound = _model.listAdditionCost
+        .indexWhere((element) => element['id'] == additionCost['id']);
+    _model.listAdditionCost[indexFound] = additionCost;
+    _view.updateView();
   }
 
   Future<List<OrderDetail>?> formatListImageEntity(
@@ -45,7 +62,7 @@ class InvoiceUpdatePresenter {
     try {
       view.updateLoadingUpdate();
       invoice = invoice.copyWith(status: 3);
-      var response = await ApiServices.updateOrder(invoice, user.idToken!);
+      var response = await model.updateOrder(invoice, user.idToken!);
       if (response.statusCode == 200) {
         return true;
       }
@@ -69,8 +86,7 @@ class InvoiceUpdatePresenter {
         invoice.setInvoice(
             invoice: invoice.copyWith(
                 orderDetails: listOrderDetail, isPaid: model.getIsPaid));
-        var response =
-            await ApiServices.sendNotification(invoice, user.idToken!);
+        var response = await model.sendNotification(invoice, user.idToken!);
         if (response.statusCode == 200) {
           return true;
         }
@@ -88,7 +104,7 @@ class InvoiceUpdatePresenter {
     try {
       view.updateLoadingUpdate();
 
-      var response = await ApiServices.doneOrder(invoice, user.idToken!);
+      var response = await model.doneOrder(invoice, user.idToken!);
       if (response.statusCode == 200) {
         return true;
       }

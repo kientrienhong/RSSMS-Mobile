@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_login_facebook/flutter_login_facebook.dart';
+import 'package:rssms/api/api_services.dart';
 
 import '/models/entity/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,7 +11,11 @@ class LoginModel {
   bool? _isLoading;
   bool? _isLoadingGoogle;
   bool? _isLoadingFacebook;
-
+  late TextEditingController controllerEmail;
+  late TextEditingController controllerPassword;
+  late String deviceToken;
+  String get _email => controllerEmail.text;
+  String get _password => controllerPassword.text;
   Users? _user;
   FirebaseAuth? _auth;
   FacebookLogin? _fb;
@@ -23,6 +29,8 @@ class LoginModel {
     _user = Users.empty();
     _auth = FirebaseAuth.instance;
     _fb = FacebookLogin();
+    controllerEmail = TextEditingController();
+    controllerPassword = TextEditingController();
   }
   get user => _user;
 
@@ -55,4 +63,8 @@ class LoginModel {
   FacebookLogin? get fb => _fb;
 
   set fb(FacebookLogin? value) => _fb = value;
+
+  Future<dynamic> logInAccount() async {
+    return await ApiServices.logInWithEmail(_email, _password, deviceToken);
+  }
 }

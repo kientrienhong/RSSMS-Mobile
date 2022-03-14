@@ -5,11 +5,7 @@ abstract class ProfileView {
   void updateViewPasswordErrorMsg(String error);
   void updateLoadingPassword();
   void updateLoadingProfile();
-  void updateStatusOfButtonChangePassword(
-      String oldPassword, String newPassword, String confirmPassword);
 
-  void updateStatusOfButtonUpdateProfile(
-      String fullname, String phone, String address, String birthDay);
   void onClickUpdateProfile(String fullname, String phone, String birthdate,
       String gender, String address);
   void onClickChangePassword(

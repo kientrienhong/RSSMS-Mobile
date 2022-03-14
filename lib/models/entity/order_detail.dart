@@ -6,32 +6,33 @@ import 'package:rssms/models/entity/imageEntity.dart';
 import 'image.dart';
 
 class OrderDetail {
-  final int id;
-  final int productId;
+  final String id;
+  final String productId;
   final String productName;
   final int price;
   final int amount;
   final int productType;
   final String note;
   final List<ImageEntity> images;
-  final List<ImageEntity> imageProduct;
+  final String serviceImageUrl;
   OrderDetail({
     required this.id,
     required this.productId,
     required this.productName,
     required this.price,
     required this.amount,
+    required this.serviceImageUrl,
     required this.productType,
     required this.note,
     required this.images,
-    required this.imageProduct,
   });
 
   OrderDetail copyWith({
-    int? id,
-    int? productId,
+    String? id,
+    String? productId,
     String? productName,
     int? price,
+    String? serviceImageUrl,
     int? amount,
     int? productType,
     String? note,
@@ -43,41 +44,39 @@ class OrderDetail {
         productId: productId ?? this.productId,
         productName: productName ?? this.productName,
         price: price ?? this.price,
+        serviceImageUrl: serviceImageUrl ?? this.serviceImageUrl,
         amount: amount ?? this.amount,
         productType: productType ?? this.productType,
         note: note ?? this.note,
-        images: images ?? this.images,
-        imageProduct: imageProduct ?? this.imageProduct);
+        images: images ?? this.images);
   }
 
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'productId': productId,
-      'productName': productName,
+      'serviceId': productId,
+      'serviceName': productName,
       'price': price,
       'amount': amount,
-      'productType': productType,
+      'serviceImageUrl': serviceImageUrl,
+      'serviceType': productType,
       'note': note,
       'images': images.map((x) => x.toMap()).toList(),
-      'productImages': imageProduct.map((x) => x.toMap()).toList(),
     };
   }
 
   factory OrderDetail.fromMap(Map<String, dynamic> map) {
     return OrderDetail(
-      id: map['id']?.toInt() ?? 0,
+      id: map['id'] ?? '',
       note: map['note'] ?? '',
-      productId: map['productId']?.toInt() ?? 0,
-      productName: map['productName'] ?? '',
+      productId: map['serviceId'] ?? 0,
+      productName: map['serviceName'] ?? '',
       price: map['price']?.toInt() ?? 0,
       amount: map['amount']?.toInt() ?? 0,
-      productType: map['productType']?.toInt() ?? 0,
+      serviceImageUrl: map['serviceImageUrl'] ?? '',
+      productType: map['serviceType']?.toInt() ?? 0,
       images: List<ImageEntity>.from(
           map['images']?.map((x) => ImageEntity.fromMap(x))),
-      imageProduct: List<ImageEntity>.from(
-          map['productImages']?.map((x) => ImageEntity.fromMap(x))),
-      // currentBox: map['listImageUpdate'] ?? []);
     );
   }
 

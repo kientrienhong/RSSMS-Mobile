@@ -40,7 +40,6 @@ class _RequestScreenState extends State<RequestScreen> with RequestScreenView {
     scrollController.addListener(() {
       if (scrollController.position.maxScrollExtent ==
           scrollController.offset) {
-        print(_model.hasMore!);
         if (_model.hasMore!) {
           _model.page = _model.page! + 1;
           _presenter.loadCusRequest(idToken: users.idToken!);

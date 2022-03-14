@@ -40,7 +40,6 @@ class RequestScreenPresenter {
         model!.data!.addAll(model!.listRequestFull!);
         model!.hasMore = !(model!.page == model!.metadata!["totalPage"]);
         model!.controller.add(model!.data);
-        print(model!.listRequestFull!.length);
       }
     } catch (e) {
       print(e);

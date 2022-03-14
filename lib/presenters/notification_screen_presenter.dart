@@ -16,21 +16,8 @@ class NotificationScreenPresenter {
 
   Future<void> loadListNotification(Users user) async {
     try {
-      var response =
-          await ApiServices.loadListNotification(user.idToken!, user.userId!);
-      if (response.statusCode == 200) {
-        final decodedReponse = jsonDecode(response.body);
-        List<NotificationEntity> listNotification = decodedReponse['data']!
-            .map<NotificationEntity>((e) => NotificationEntity.fromMap(e))
-            .toList();
-        user.setUser(
-            user: user.copyWith(
-                listNoti: listNotification,
-                listUnreadNoti: listNotification
-                    .where((element) => element.isRead == false)
-                    .toList()));
-
-        model.list = listNotification;
+      await model.loadListNotification(user);
+      if (model.list.isNotEmpty) {
         view.updateView();
       }
     } catch (e) {

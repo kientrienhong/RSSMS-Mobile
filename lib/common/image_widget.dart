@@ -7,7 +7,7 @@ import 'package:rssms/models/entity/imageEntity.dart';
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/order_detail.dart';
 import 'package:rssms/common/image_pop_up.dart';
-import 'package:rssms/common/image_item.dart';
+import './image_item.dart';
 
 class ImageWidget extends StatefulWidget {
   OrderDetail orderDetail;

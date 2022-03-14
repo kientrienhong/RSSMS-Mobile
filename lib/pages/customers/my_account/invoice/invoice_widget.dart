@@ -62,7 +62,7 @@ class InvoiceWidget extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           CustomText(
-                              text: "#" + invoice!.id.toString(),
+                              text: "#" + invoice!.name,
                               color: CustomColor.black,
                               context: context,
                               fontWeight: FontWeight.bold,

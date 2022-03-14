@@ -1,11 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
+import 'package:rssms/api/api_services.dart';
 
 import '/models/entity/user.dart';
 
 class ProfileModel {
-  bool? _isDisableUpdatePass;
-  bool? _isDisableUpdateProfile;
   String? _errorMsgChangePassword;
   bool? _isLoadingChangePassword;
   bool? _isLoadingUpdateProfile;
@@ -22,8 +21,6 @@ class ProfileModel {
   String? _textGenderChange;
 
   ProfileModel(Users user) {
-    _isDisableUpdatePass = true;
-    _isDisableUpdateProfile = true;
     _errorMsgChangePassword = '';
     _isLoadingChangePassword = false;
     _isLoadingUpdateProfile = false;
@@ -62,14 +59,6 @@ class ProfileModel {
   String get errorMsgChangePassword => _errorMsgChangePassword!;
 
   set errorMsgChangePassword(String value) => _errorMsgChangePassword = value;
-
-  bool get isDisableUpdateProfile => _isDisableUpdateProfile!;
-
-  set isDisableUpdateProfile(bool value) => _isDisableUpdateProfile = value;
-
-  bool get isDisableUpdatePass => _isDisableUpdatePass!;
-
-  set isDisableUpdatePass(bool value) => _isDisableUpdatePass = value;
 
   get controllerFullname => _controllerFullname;
 
@@ -111,7 +100,19 @@ class ProfileModel {
 
   set txtGender(value) => _textGender = value;
 
-  String? get textGenderChange => _textGenderChange;
+  get textGenderChange => _textGenderChange;
 
-  set textGenderChange(String? value) => _textGenderChange = value;
+  set textGenderChange(value) => _textGenderChange = value;
+
+  Future<dynamic> updateProfile(String name, int gender, DateTime birthday,
+      String address, String phone, String idToken, String userId) async {
+    return await ApiServices.updateProfile(
+        name, phone, birthday, gender, address, idToken, userId);
+  }
+
+  Future<dynamic> changePassword(String oldPassword, String confirmPassword,
+      String newPassword, String idToken, String userId) async {
+    return await ApiServices.changePassword(
+        oldPassword, confirmPassword, newPassword, userId, idToken);
+  }
 }
