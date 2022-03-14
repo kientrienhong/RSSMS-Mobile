@@ -81,10 +81,10 @@ class _DoorToDoorTabState extends State<DoorToDoorTab>
             tabs: [
               TabButton(
                 text: CustomText(
-                  text: "Ít đồ",
+                  text: "Gửi theo loại",
                   color: CustomColor.black,
                   context: context,
-                  fontSize: 20,
+                  fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),
                 pageNumber: 1,
@@ -92,10 +92,10 @@ class _DoorToDoorTabState extends State<DoorToDoorTab>
               ),
               TabButton(
                 text: CustomText(
-                  text: "Nhiều đồ",
+                  text: "Gửi theo diện tích",
                   color: CustomColor.black,
                   context: context,
-                  fontSize: 20,
+                  fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),
                 pageNumber: 2,
