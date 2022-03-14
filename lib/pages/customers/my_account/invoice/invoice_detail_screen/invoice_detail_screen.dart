@@ -81,10 +81,8 @@ class _InvoiceDetailScreenState extends State<InvoiceDetailScreen>
     return DefaultTabController(
       length: 2,
       initialIndex: 0,
-
       child: Scaffold(
           appBar: AppBar(
-            
             leading: SizedBox(
               width: 24,
               height: 24,
@@ -106,12 +104,24 @@ class _InvoiceDetailScreenState extends State<InvoiceDetailScreen>
             bottom: TabBar(
               tabs: [
                 TabButton(
-                  text: "Đơn hàng",
+                  text: CustomText(
+                    text: "Đơn hàng",
+                    color: CustomColor.black,
+                    context: context,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
                   pageNumber: 1,
                   onPressed: () {},
                 ),
                 TabButton(
-                  text: "Hình ảnh",
+                  text: CustomText(
+                    text: "Hình ảnh",
+                    color: CustomColor.black,
+                    context: context,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
                   pageNumber: 2,
                   onPressed: () {},
                 )

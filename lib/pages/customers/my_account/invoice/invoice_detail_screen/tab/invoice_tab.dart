@@ -22,15 +22,15 @@ class InvoiceTab extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
-          CustomText(
-              text: "Chi tiết đơn hàng",
-              color: Colors.black,
-              context: context,
-              fontWeight: FontWeight.bold,
-              fontSize: 25),
+          // CustomText(
+          //     text: "Chi tiết đơn hàng",
+          //     color: Colors.black,
+          //     context: context,
+          //     fontWeight: FontWeight.bold,
+          //     fontSize: 25),
           CustomSizedBox(
             context: context,
-            height: 32,
+            height: 16,
           ),
           InvoiceInfoWidget(
               deviceSize: deviceSize, invoice: invoice),

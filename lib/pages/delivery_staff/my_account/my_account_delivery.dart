@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_tabbutton.dart';
+import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/pages/delivery_staff/request/request_screen.dart';
 import 'package:rssms/pages/log_in/log_in_screen.dart';
 import 'package:rssms/pages/profile/profile_screen.dart';
@@ -65,12 +66,24 @@ class _MyAccountDeliveryScreenState extends State<MyAccountDeliveryScreen>
                       fontSize: 18),
                   tabs: <TabButton>[
                     TabButton(
-                      text: "Thông Tin",
+                      text: CustomText(
+                        text: "Thông tin",
+                        color: CustomColor.black,
+                        context: context,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
                       pageNumber: 0,
                       onPressed: () {},
                     ),
                     TabButton(
-                      text: "Yêu Cầu",
+                      text: CustomText(
+                        text: "Yêu cầu",
+                        color: CustomColor.black,
+                        context: context,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
                       pageNumber: 1,
                       onPressed: () {},
                     )

@@ -80,12 +80,24 @@ class _DoorToDoorTabState extends State<DoorToDoorTab>
           bottom: TabBar(
             tabs: [
               TabButton(
-                text: "Ít đồ",
+                text: CustomText(
+                  text: "Ít đồ",
+                  color: CustomColor.black,
+                  context: context,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
                 pageNumber: 1,
                 onPressed: () {},
               ),
               TabButton(
-                text: "Nhiều đồ",
+                text: CustomText(
+                  text: "Nhiều đồ",
+                  color: CustomColor.black,
+                  context: context,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
                 pageNumber: 2,
                 onPressed: () {},
               )
