@@ -19,6 +19,7 @@ class ProfileModel {
   TextEditingController? _controllerBirthDate;
   TextEditingController? _controllerDistrict;
   String? _textGender;
+  String? _textGenderChange;
 
   ProfileModel(Users user) {
     _isDisableUpdatePass = true;
@@ -47,6 +48,7 @@ class ProfileModel {
         _textGender = "Nam";
         break;
     }
+    _textGenderChange = _textGender;
   }
 
   bool get isLoadingChangePassword => _isLoadingChangePassword!;
@@ -108,4 +110,8 @@ class ProfileModel {
   get txtGender => _textGender;
 
   set txtGender(value) => _textGender = value;
+
+  String? get textGenderChange => _textGenderChange;
+
+  set textGenderChange(String? value) => _textGenderChange = value;
 }

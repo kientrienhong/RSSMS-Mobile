@@ -9,6 +9,7 @@ class InvoiceModel {
 
   TextEditingController? _searchValue;
   Invoice? searchInvoice;
+  Invoice? notiInvoice;
   String? filterIndex = "10";
   bool? isLoadingInvoice;
 

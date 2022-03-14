@@ -36,6 +36,21 @@ class InvoicePresenter {
     view!.refreshList(searchValue);
   }
 
+  Future<void> loadInvoiceByID(String idToken, String id) async {
+    try {
+      final response = await ApiServices.getInvoicebyId(idToken, id);
+
+      if (response.statusCode == 200) {
+        Invoice invoice = Invoice.fromJson(response.body);
+        model!.notiInvoice = invoice;
+      } else {
+        throw Exception();
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
   Future<void> loadInvoice({idToken = "", clearCachedDate = false}) async {
     try {
       if (clearCachedDate) {

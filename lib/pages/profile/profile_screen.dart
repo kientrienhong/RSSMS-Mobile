@@ -10,6 +10,7 @@ import 'package:rssms/common/custom_radio_button.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_snack_bar.dart';
 import 'package:rssms/common/custom_text.dart';
+import 'package:rssms/helpers/validator.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/models/profile_model.dart';
 import 'package:rssms/presenters/profile_presenter.dart';
@@ -56,7 +57,6 @@ class FormProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<FormProfileScreen>
-
     implements ProfileView {
   late ProfilePresenter profilePresenter;
   late ProfileModel _model;
@@ -164,12 +164,12 @@ class _ProfileScreenState extends State<FormProfileScreen>
     if (_model.txtGender == value) {
       setState(() {
         _model.isDisableUpdateProfile = true;
-        _model.txtGender = value;
+        _model.textGenderChange = value;
       });
     } else {
       setState(() {
         _model.isDisableUpdateProfile = false;
-        _model.txtGender = value;
+        _model.textGenderChange = value;
       });
     }
   }
@@ -245,7 +245,7 @@ class _ProfileScreenState extends State<FormProfileScreen>
   }
 
   final _formKey = GlobalKey<FormState>();
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -286,15 +286,7 @@ class _ProfileScreenState extends State<FormProfileScreen>
                         isDisable: false,
                         focusNode: _focusNodeFullname,
                         nextNode: _focusNodePhone,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return "Vui lòng nhập đầy đủ họ và tên.";
-                          } else if (value.length < 5) {
-                            return "Vui lòng nhập đầy đủ họ và tên.";
-                          } else {
-                            return null;
-                          }
-                        },
+                        validator: Validator.checkFullname,
                         controller: _model.controllerFullname,
                       ),
                       CustomOutLineInputWithHint(
@@ -302,16 +294,7 @@ class _ProfileScreenState extends State<FormProfileScreen>
                         hintText: 'Số Điện Thoại',
                         isDisable: false,
                         focusNode: _focusNodePhone,
-                        validator: (value) {
-                          if (value!.length < 10) {
-                            return "Sai định dạng";
-                          } else if (value.contains(RegExp(
-                              r'/^(0|\+84)(\s|\.)?((3[2-9])|(5[689])|(7[06-9])|(8[1-689])|(9[0-46-9]))(\d)(\s|\.)?(\d{3})(\s|\.)?(\d{3})$/;{10,10}'))) {
-                            return "Sai định dạng.";
-                          } else {
-                            return null;
-                          }
-                        },
+                        validator: Validator.checkPhoneNumber,
                         nextNode: _focusNodeBirthDate,
                         controller: _model.controllerPhone,
                         textInputType: TextInputType.number,
@@ -355,10 +338,10 @@ class _ProfileScreenState extends State<FormProfileScreen>
                                       onChangeGender("Nam");
                                     },
                                     text: "Nam",
-                                    color: _model.txtGender == "Nam"
+                                    color: _model.textGenderChange == "Nam"
                                         ? CustomColor.blue
                                         : CustomColor.white,
-                                    state: _model.txtGender,
+                                    state: _model.textGenderChange,
                                     value: "Nam"),
                               ),
                               Expanded(
@@ -367,10 +350,10 @@ class _ProfileScreenState extends State<FormProfileScreen>
                                       onChangeGender("Nữ");
                                     },
                                     text: "Nữ",
-                                    color: _model.txtGender == "Nữ"
+                                    color: _model.textGenderChange == "Nữ"
                                         ? CustomColor.blue
                                         : CustomColor.white,
-                                    state: _model.txtGender,
+                                    state: _model.textGenderChange,
                                     value: "Nữ"),
                               ),
                             ],

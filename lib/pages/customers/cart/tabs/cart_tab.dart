@@ -38,7 +38,7 @@ class CartTab extends StatelessWidget {
             child: Theme(
               data: Theme.of(context).copyWith(canvasColor: Colors.transparent),
               child: BottomNavigationBar(
-                selectedItemColor: CustomColor.purple,
+                selectedItemColor: CustomColor.blue,
                 backgroundColor: CustomColor.white,
                 type: BottomNavigationBarType.fixed,
                 currentIndex: index,

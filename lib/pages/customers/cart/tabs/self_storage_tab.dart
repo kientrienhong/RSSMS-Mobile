@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
+import 'package:rssms/common/custom_tabbutton.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/models/entity/order_booking.dart';
 import 'package:rssms/models/entity/product.dart';
@@ -36,125 +37,141 @@ class SelfStorageTab extends StatelessWidget {
                 .map((e) => e.copyWith(quantity: 0))
                 .toList();
 
-    return SingleChildScrollView(
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Column(
-          children: [
-            CustomSizedBox(
-              context: context,
-              height: 16,
-            ),
-            Row(
-              children: [
-                CustomText(
-                    text: 'Chọn ',
-                    color: CustomColor.blue,
-                    fontWeight: FontWeight.bold,
-                    context: context,
-                    fontSize: 24),
-                CustomText(
-                    text: 'diện tích ',
-                    color: CustomColor.black[3]!,
-                    context: context,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 24)
-              ],
-            ),
-            ListView(
-              padding: const EdgeInsets.all(0),
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              children: mapProductWidget(listSelfStorage),
-            ),
-            CustomSizedBox(
-              context: context,
-              height: 8,
-            ),
-            Row(
-              children: [
-                CustomText(
-                    text: 'Phụ kiện ',
-                    color: CustomColor.blue,
-                    fontWeight: FontWeight.bold,
-                    context: context,
-                    fontSize: 24),
-                CustomText(
-                    text: 'đóng gói ',
-                    color: CustomColor.black[3]!,
-                    context: context,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 24)
-              ],
-            ),
-            CustomSizedBox(
-              context: context,
-              height: 8,
-            ),
-            GridView.builder(
-              padding: const EdgeInsets.all(0),
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 0.6,
-                crossAxisSpacing: 16.0,
+    return Scaffold(
+      appBar: AppBar(
+        title: CustomText(
+            text: "Dịch vụ thuê kho",
+            color: Colors.black,
+            context: context,
+            fontWeight: FontWeight.bold,
+            fontSize: 24),
+        elevation: 0,
+        backgroundColor: CustomColor.white,
+        centerTitle: true,
+        automaticallyImplyLeading: false,
+      ),
+      body: SingleChildScrollView(
+        child: Container(
+          color: CustomColor.white,
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          
+          child: Column(
+            children: [
+              // CustomSizedBox(
+              //   context: context,
+              //   height: 16,
+              // ),
+              // Row(
+              //   children: [
+              //     CustomText(
+              //         text: 'Chọn ',
+              //         color: CustomColor.blue,
+              //         fontWeight: FontWeight.bold,
+              //         context: context,
+              //         fontSize: 24),
+              //     CustomText(
+              //         text: 'diện tích ',
+              //         color: CustomColor.black[3]!,
+              //         context: context,
+              //         fontWeight: FontWeight.bold,
+              //         fontSize: 24)
+              //   ],
+              // ),
+              ListView(
+                padding: const EdgeInsets.all(0),
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                children: mapProductWidget(listSelfStorage),
               ),
-              itemBuilder: (ctx, i) {
-                return AccessoryWidget(
-                  product: listAccessory[i],
-                );
-              },
-              itemCount: listAccessory.length,
-            ),
-            CustomSizedBox(
-              context: context,
-              height: 16,
-            ),
-            CustomButton(
-                height: 24,
-                text: 'Đặt',
-                width: double.infinity,
-                onPressFunction: () {
-                  OrderBooking orderBooking =
-                      Provider.of<OrderBooking>(context, listen: false);
-                  List<dynamic> listBooking =
-                      orderBooking.productOrder!['product'];
-                  if (listBooking.isNotEmpty) {
-                    showDialog(
-                        context: context,
-                        builder: (ctx) {
-                          return const BookingPopUpSelfStorage();
-                        });
-                  } else {
-                    showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: const Text("Thông báo"),
-                            content: const Text(
-                                "Vui lòng chọn ít nhất một dịch vụ!"),
-                            actions: [
-                              TextButton(
-                                child: const Text("Đồng ý"),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                              )
-                            ],
-                          );
-                        });
-                  }
+              CustomSizedBox(
+                context: context,
+                height: 8,
+              ),
+              Row(
+                children: [
+                  CustomText(
+                      text: 'Phụ kiện ',
+                      color: CustomColor.blue,
+                      fontWeight: FontWeight.bold,
+                      context: context,
+                      fontSize: 24),
+                  CustomText(
+                      text: 'đóng gói ',
+                      color: CustomColor.black[3]!,
+                      context: context,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 24)
+                ],
+              ),
+              CustomSizedBox(
+                context: context,
+                height: 8,
+              ),
+              GridView.builder(
+                padding: const EdgeInsets.all(0),
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  childAspectRatio: 0.6,
+                  crossAxisSpacing: 16.0,
+                ),
+                itemBuilder: (ctx, i) {
+                  return AccessoryWidget(
+                    product: listAccessory[i],
+                  );
                 },
-                isLoading: false,
-                textColor: CustomColor.white,
-                buttonColor: CustomColor.blue,
-                borderRadius: 6),
-            CustomSizedBox(
-              context: context,
-              height: 88,
-            ),
-          ],
+                itemCount: listAccessory.length,
+              ),
+              CustomSizedBox(
+                context: context,
+                height: 16,
+              ),
+              CustomButton(
+                  height: 24,
+                  text: 'Đặt',
+                  width: double.infinity,
+                  onPressFunction: () {
+                    OrderBooking orderBooking =
+                        Provider.of<OrderBooking>(context, listen: false);
+                    List<dynamic> listBooking =
+                        orderBooking.productOrder!['product'];
+                    if (listBooking.isNotEmpty) {
+                      showDialog(
+                          context: context,
+                          builder: (ctx) {
+                            return const BookingPopUpSelfStorage();
+                          });
+                    } else {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: const Text("Thông báo"),
+                              content: const Text(
+                                  "Vui lòng chọn ít nhất một dịch vụ!"),
+                              actions: [
+                                TextButton(
+                                  child: const Text("Đồng ý"),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                )
+                              ],
+                            );
+                          });
+                    }
+                  },
+                  isLoading: false,
+                  textColor: CustomColor.white,
+                  buttonColor: CustomColor.blue,
+                  borderRadius: 6),
+              CustomSizedBox(
+                context: context,
+                height: 88,
+              ),
+            ],
+          ),
         ),
       ),
     );
