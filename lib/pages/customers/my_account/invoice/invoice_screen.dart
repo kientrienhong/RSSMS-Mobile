@@ -27,6 +27,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> implements InvoiceView {
     super.initState();
     _isFound = false;
     Users user = Provider.of<Users>(context, listen: false);
+    print(user.idToken);
     _presenter = InvoicePresenter();
     _presenter.view = this;
     _model = _presenter.model!;

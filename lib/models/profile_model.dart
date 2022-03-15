@@ -18,8 +18,6 @@ class ProfileModel {
   TextEditingController? _controllerBirthDate;
   TextEditingController? _controllerDistrict;
   String? _textGender;
-  String? _textGenderChange;
-
   ProfileModel(Users user) {
     _errorMsgChangePassword = '';
     _isLoadingChangePassword = false;
@@ -42,10 +40,10 @@ class ProfileModel {
         _textGender = "Nữ";
         break;
       case 2:
-        _textGender = "Nam";
+        _textGender = "Khác";
         break;
     }
-    _textGenderChange = _textGender;
+
   }
 
   bool get isLoadingChangePassword => _isLoadingChangePassword!;
@@ -99,10 +97,6 @@ class ProfileModel {
   get txtGender => _textGender;
 
   set txtGender(value) => _textGender = value;
-
-  get textGenderChange => _textGenderChange;
-
-  set textGenderChange(value) => _textGenderChange = value;
 
   Future<dynamic> updateProfile(String name, int gender, DateTime birthday,
       String address, String phone, String idToken, String userId) async {

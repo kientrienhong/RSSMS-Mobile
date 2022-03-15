@@ -66,7 +66,7 @@ class InvoiceWidget extends StatelessWidget {
                               color: CustomColor.black,
                               context: context,
                               fontWeight: FontWeight.bold,
-                              fontSize: 20),
+                              fontSize: 17),
                           Flexible(
                             child: CustomText(
                                 textAlign: TextAlign.right,
@@ -79,7 +79,7 @@ class InvoiceWidget extends StatelessWidget {
                                 context: context,
                                 maxLines: 2,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 20),
+                                fontSize: 17),
                           ),
                         ],
                       ),

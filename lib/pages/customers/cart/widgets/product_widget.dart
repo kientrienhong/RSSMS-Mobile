@@ -81,8 +81,8 @@ class _ProductWidgetState extends State<ProductWidget> implements ProductView {
       curve: Curves.easeOut,
       duration: const Duration(milliseconds: 400),
       height: deviceSize.height > 640
-          ? SizeConfig.blockSizeVertical! * 18 + additionHeight
-          : SizeConfig.blockSizeVertical! * 24 + additionHeight,
+          ? SizeConfig.blockSizeVertical! * 20 + additionHeight
+          : SizeConfig.blockSizeVertical! * 25 + additionHeight,
       width: deviceSize.width - 32,
       padding: EdgeInsets.only(top: deviceSize.height / 45, left: 16),
       margin: const EdgeInsets.symmetric(vertical: 16),
@@ -165,7 +165,8 @@ class _ProductWidgetState extends State<ProductWidget> implements ProductView {
                     width: (deviceSize.width - 32) / 8,
                     child: QuantityWidget(
                       product: widget.product,
-                      width: deviceSize.width / 8,
+                      width: deviceSize.width / 9,
+
                       addQuantity: () =>
                           onAddQuantity(SizeConfig.blockSizeVertical!),
                       minusQuantity: () =>

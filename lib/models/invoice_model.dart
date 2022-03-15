@@ -1,9 +1,13 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:rssms/api/api_services.dart';
 import 'package:rssms/models/entity/invoice.dart';
 
 class InvoiceModel {
+  
+
   List<Invoice>? _listInvoiceFull;
   List<Invoice>? _listInvoice;
 
@@ -96,4 +100,58 @@ class InvoiceModel {
   get getMetadata => metadata;
 
   set setMetadata(metadata) => metadata = metadata;
+
+  Future<void> loadInvoiceByID(String idToken, String id) async {
+    try {
+      final response = await ApiServices.getInvoicebyId(idToken, id);
+
+      if (response.statusCode == 200) {
+        Invoice invoice = Invoice.fromJson(response.body);
+        notiInvoice = invoice;
+      } else {
+        throw Exception();
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<void> loadInvoice({idToken = "", clearCachedDate = false}) async {
+    try {
+      if (clearCachedDate) {
+        data = List<Invoice>.empty(growable: true);
+        hasMore = true;
+        listInvoiceFull!.clear();
+        page = 1;
+      }
+      if (isLoadingInvoice! || !hasMore!) {
+        return Future.value();
+      }
+     
+      final response =
+          await ApiServices.getInvoice(idToken, page.toString(), "10");
+      List<Invoice>? listInvoice;
+      if (response.statusCode == 200) {
+        final decodedReponse = jsonDecode(response.body);
+        metadata = decodedReponse["metadata"];
+        if (decodedReponse['data'].isNotEmpty) {
+          List<Invoice>? listTemp = decodedReponse['data']!
+              .map<Invoice>((e) => Invoice.fromMap(e))
+              .toList();
+          listInvoiceFull!.addAll(listTemp!);
+          listInvoice = listInvoiceFull;
+          data!.addAll(listTemp);
+          hasMore = !(page == metadata!["totalPage"]);
+          controller.add(data);
+        }
+      } else if (response.statusCode >= 500) {
+        throw Exception("Máy chủ bị lỗi vui lòng thử lại sau");
+      } else if (response.statusCode == 404) {
+        listInvoice = [];
+        listInvoiceFull!.addAll(listInvoice);
+      }
+    } catch (e) {
+      print(e);
+    } 
+  }
 }

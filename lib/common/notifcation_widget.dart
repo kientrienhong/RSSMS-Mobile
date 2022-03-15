@@ -21,7 +21,7 @@ class NotificationWidget extends StatelessWidget {
           context,
           MaterialPageRoute(
               builder: (context) => InvoiceDetailScreen(
-                    invoiceID: notification.orderId,
+                    invoiceID: notification.orderId as int,
                     deviceSize: deviceSize,
                   )),
         );

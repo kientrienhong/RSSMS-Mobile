@@ -147,9 +147,11 @@ class _ProfileScreenState extends State<FormProfileScreen>
     DateTime tempDate = DateFormat("dd/MM/yyyy").parse(birthdate);
     try {
       Users user = Provider.of<Users>(context, listen: false);
+
       bool response = await profilePresenter.updateProfile(fullname, genderCode,
           tempDate, address, phone, user.idToken!, user.userId!);
       if (response) {
+        user.gender = genderCode;
         CustomSnackBar.buildErrorSnackbar(
             context: context,
             message: 'Cập nhật thông tin thành công',
@@ -291,10 +293,10 @@ class _ProfileScreenState extends State<FormProfileScreen>
                                       onChangeGender("Nam");
                                     },
                                     text: "Nam",
-                                    color: _model.textGenderChange == "Nam"
+                                    color: _model.txtGender == "Nam"
                                         ? CustomColor.blue
                                         : CustomColor.white,
-                                    state: _model.textGenderChange,
+                                    state: _model.txtGender,
                                     value: "Nam"),
                               ),
                               Expanded(
@@ -303,10 +305,10 @@ class _ProfileScreenState extends State<FormProfileScreen>
                                       onChangeGender("Nữ");
                                     },
                                     text: "Nữ",
-                                    color: _model.textGenderChange == "Nữ"
+                                    color: _model.txtGender == "Nữ"
                                         ? CustomColor.blue
                                         : CustomColor.white,
-                                    state: _model.textGenderChange,
+                                    state: _model.txtGender,
                                     value: "Nữ"),
                               ),
                               Expanded(

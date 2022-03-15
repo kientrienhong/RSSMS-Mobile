@@ -37,54 +37,13 @@ class InvoicePresenter {
   }
 
   Future<void> loadInvoiceByID(String idToken, String id) async {
-    try {
-      final response = await ApiServices.getInvoicebyId(idToken, id);
-
-      if (response.statusCode == 200) {
-        Invoice invoice = Invoice.fromJson(response.body);
-        model!.notiInvoice = invoice;
-      } else {
-        throw Exception();
-      }
-    } catch (e) {
-      print(e);
-    }
+    model!.loadInvoiceByID(idToken, id);
   }
 
   Future<void> loadInvoice({idToken = "", clearCachedDate = false}) async {
     try {
-      if (clearCachedDate) {
-        model!.data = List<Invoice>.empty(growable: true);
-        model!.hasMore = true;
-        model!.listInvoiceFull!.clear();
-        model!.page = 1;
-      }
-      if (model!.isLoadingInvoice! || !model!.hasMore!) {
-        return Future.value();
-      }
+      model!.loadInvoice(idToken: idToken, clearCachedDate: clearCachedDate );
       view!.updateIsLoadingInvoice();
-      final response =
-          await ApiServices.getInvoice(idToken, model!.page.toString(), "10");
-      List<Invoice>? listInvoice;
-      if (response.statusCode == 200) {
-        final decodedReponse = jsonDecode(response.body);
-        model!.metadata = decodedReponse["metadata"];
-        if (decodedReponse['data'].isNotEmpty) {
-          List<Invoice>? listTemp = decodedReponse['data']!
-              .map<Invoice>((e) => Invoice.fromMap(e))
-              .toList();
-          model!.listInvoiceFull!.addAll(listTemp!);
-          model!.listInvoice = model!.listInvoiceFull;
-          model!.data!.addAll(listTemp);
-          model!.hasMore = !(model!.page == model!.metadata!["totalPage"]);
-          model!.controller.add(model!.data);
-        }
-      } else if (response.statusCode >= 500) {
-        throw Exception("Máy chủ bị lỗi vui lòng thử lại sau");
-      } else if (response.statusCode == 404) {
-        listInvoice = [];
-        model!.listInvoiceFull!.addAll(listInvoice);
-      }
     } catch (e) {
       print(e);
     } finally {
