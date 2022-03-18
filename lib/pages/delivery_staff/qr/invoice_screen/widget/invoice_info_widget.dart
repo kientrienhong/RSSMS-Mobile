@@ -60,46 +60,46 @@ class InvoiceInfoWidget extends StatelessWidget {
         context: context,
         height: 24,
       ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          CustomText(
-              text: "Ngày nhận hàng:",
-              color: Colors.black,
-              context: context,
-              fontWeight: FontWeight.bold,
-              fontSize: 17),
-          CustomText(
-              text: invoice!.deliveryDate
-                  .substring(0, invoice!.deliveryDate.indexOf("T")),
-              color: Colors.black,
-              context: context,
-              fontWeight: FontWeight.bold,
-              fontSize: 16),
-        ],
-      ),
+      // Row(
+      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //   children: [
+      //     CustomText(
+      //         text: "Ngày nhận hàng:",
+      //         color: Colors.black,
+      //         context: context,
+      //         fontWeight: FontWeight.bold,
+      //         fontSize: 17),
+      //     CustomText(
+      //         text: invoice!.deliveryDate
+      //             .substring(0, invoice!.deliveryDate.indexOf("T")),
+      //         color: Colors.black,
+      //         context: context,
+      //         fontWeight: FontWeight.bold,
+      //         fontSize: 16),
+      //   ],
+      // ),
       CustomSizedBox(
         context: context,
         height: 24,
       ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          CustomText(
-              text: "Ngày trả hàng:",
-              color: Colors.black,
-              context: context,
-              fontWeight: FontWeight.bold,
-              fontSize: 17),
-          CustomText(
-              text: invoice!.returnDate
-                  .substring(0, invoice!.returnDate.indexOf("T")),
-              color: Colors.black,
-              context: context,
-              fontWeight: FontWeight.bold,
-              fontSize: 16),
-        ],
-      ),
+      // Row(
+      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //   children: [
+      //     CustomText(
+      //         text: "Ngày trả hàng:",
+      //         color: Colors.black,
+      //         context: context,
+      //         fontWeight: FontWeight.bold,
+      //         fontSize: 17),
+      //     CustomText(
+      //         text: invoice!.returnDate
+      //             .substring(0, invoice!.returnDate.indexOf("T")),
+      //         color: Colors.black,
+      //         context: context,
+      //         fontWeight: FontWeight.bold,
+      //         fontSize: 16),
+      //   ],
+      // ),
       CustomSizedBox(
         context: context,
         height: 24,

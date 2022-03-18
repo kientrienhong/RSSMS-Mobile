@@ -169,10 +169,23 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
     }
   }
 
+  void deleteImageEntity(String id) {
+    Invoice invoice = Provider.of<Invoice>(context, listen: false);
+    Invoice invoiceTemp = invoice.copyWith();
+    int indexFound = invoiceTemp.orderDetails.indexWhere((e) => e.id == id);
+    setState(() {
+      if (indexFound != -1) {
+        invoiceTemp.orderDetails.removeAt(indexFound);
+        invoice.setInvoice(invoice: invoiceTemp);
+      }
+    });
+  }
+
   List<Widget> mapInvoiceWidget(List<OrderDetail> listOrderDetail) =>
       listOrderDetail
           .map<Widget>((e) => ImageWidget(
                 orderDetail: e,
+                deleteItem: deleteImageEntity,
                 isView: widget.isView ?? false,
               ))
           .toList();
@@ -250,12 +263,26 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                     focusNode: _focusNodePhone,
                     validator: Validator.checkPhoneNumber,
                     deviceSize: deviceSize),
-                CustomText(
-                  text: "Hình ảnh",
-                  color: CustomColor.black,
-                  context: context,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CustomText(
+                      text: "Dịch vụ",
+                      color: CustomColor.black,
+                      context: context,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    CustomButton(
+                        height: 16,
+                        text: 'Thêm dịch vụ',
+                        width: deviceSize.width * 1 / 3.5,
+                        onPressFunction: () {},
+                        isLoading: false,
+                        textColor: CustomColor.white,
+                        buttonColor: CustomColor.blue,
+                        borderRadius: 6)
+                  ],
                 ),
                 CustomSizedBox(
                   context: context,

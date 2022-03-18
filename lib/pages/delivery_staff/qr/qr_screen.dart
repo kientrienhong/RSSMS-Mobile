@@ -103,7 +103,7 @@ class _QrScreenState extends State<QrScreen> implements QRInvoiceView {
       qrCode = barcodeScanRes;
     });
     Users user = Provider.of<Users>(context, listen: false);
-    bool result = await _presenter?.loadInvoice(user.idToken!, qrCode) as bool;
+    bool result = await _presenter?.loadRequest(user.idToken!, qrCode) as bool;
     Invoice invoice = Provider.of<Invoice>(context, listen: false);
     if (result) {
       invoice.setInvoice(invoice: _presenter!.model!.invoice!);

@@ -76,46 +76,46 @@ class InvoiceDetailsScreen extends StatelessWidget {
                       height: 16,
                     ),
                     if (isScanQR == true)
-                      if (invoice.status == constants.ASSIGNED)
-                        Center(
-                          child: CustomButton(
-                              height: 24,
-                              isLoading: false,
-                              text: 'Cập nhật đơn',
-                              textColor: CustomColor.white,
-                              onPressFunction: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          UpdateInvoiceScreen()),
-                                );
-                              },
-                              width: deviceSize.width / 2.5,
-                              buttonColor: CustomColor.blue,
-                              borderRadius: 6),
-                        )
-                      else if (invoice.status == constants.DELIVERIED_RETURN)
-                        Center(
-                          child: CustomButton(
-                              height: 24,
-                              isLoading: false,
-                              text: 'Trả đơn',
-                              textColor: CustomColor.white,
-                              onPressFunction: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => UpdateInvoiceScreen(
-                                            isView: true,
-                                            isScanQR: true,
-                                          )),
-                                );
-                              },
-                              width: deviceSize.width / 2.5,
-                              buttonColor: CustomColor.blue,
-                              borderRadius: 6),
-                        )
+                      // if (invoice.status == constants.ASSIGNED)
+                      Center(
+                        child: CustomButton(
+                            height: 24,
+                            isLoading: false,
+                            text: 'Cập nhật đơn',
+                            textColor: CustomColor.white,
+                            onPressFunction: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        UpdateInvoiceScreen()),
+                              );
+                            },
+                            width: deviceSize.width / 2.5,
+                            buttonColor: CustomColor.blue,
+                            borderRadius: 6),
+                      )
+                    // else if (invoice.status == constants.DELIVERIED_RETURN)
+                    //   Center(
+                    //     child: CustomButton(
+                    //         height: 24,
+                    //         isLoading: false,
+                    //         text: 'Trả đơn',
+                    //         textColor: CustomColor.white,
+                    //         onPressFunction: () {
+                    //           Navigator.push(
+                    //             context,
+                    //             MaterialPageRoute(
+                    //                 builder: (context) => UpdateInvoiceScreen(
+                    //                       isView: true,
+                    //                       isScanQR: true,
+                    //                     )),
+                    //           );
+                    //         },
+                    //         width: deviceSize.width / 2.5,
+                    //         buttonColor: CustomColor.blue,
+                    //         borderRadius: 6),
+                    //   )
                   ],
                 ),
               ),
