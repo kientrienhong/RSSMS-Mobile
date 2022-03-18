@@ -79,9 +79,9 @@ class InvoiceTab extends StatelessWidget {
                   width: double.infinity,
                   child: Center(
                     child: QrImage(
-                      data: invoice!.id.toString(),
-                      size: 88.0,
-                      version: 2,
+                      data: invoice!.id,
+                      size: 100,
+                      version: QrVersions.auto,
                     ),
                   ),
                 ),

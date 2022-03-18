@@ -152,6 +152,10 @@ class _ProfileScreenState extends State<FormProfileScreen>
           tempDate, address, phone, user.idToken!, user.userId!);
       if (response) {
         user.gender = genderCode;
+        user.name = fullname;
+        user.phone = phone;
+        user.birthDate = tempDate;
+        user.address = address;
         CustomSnackBar.buildErrorSnackbar(
             context: context,
             message: 'Cập nhật thông tin thành công',

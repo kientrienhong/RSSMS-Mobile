@@ -35,7 +35,7 @@ class _CartScreenState extends State<CartScreen> implements CartScreenView {
 
   @override
   void setChangeList() {
-    setState(() {});
+ 
   }
 
   @override

@@ -1,3 +1,4 @@
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:provider/provider.dart';
 import 'package:rssms/constants/constants.dart' as constant;
 import 'package:rssms/common/custom_bottom_navigation.dart';
@@ -25,13 +26,81 @@ import '/views/login_view.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
-class LogInScreen extends StatelessWidget {
+class LogInScreen extends StatefulWidget {
   const LogInScreen({Key? key}) : super(key: key);
+
+  @override
+  State<LogInScreen> createState() => _LogInScreenState();
+}
+
+class _LogInScreenState extends State<LogInScreen> {
+  checkConnection(deviceSize) async {
+    InternetConnectionChecker().onStatusChange.listen((status) async {
+      final hasInternet = status == InternetConnectionStatus.connected;
+      if (!hasInternet) {
+        print("Lost connection");
+        showDialog(
+          // barrierDismissible: false,
+          context: context,
+          builder: (BuildContext context) {
+            return WillPopScope(
+                onWillPop: () => Future.value(false),
+                child: AlertDialog(
+                  title: Center(child: CircularProgressIndicator.adaptive()),
+                  content: SingleChildScrollView(
+                    physics: NeverScrollableScrollPhysics(),
+                    child: Center(
+                      child: CustomText(
+                          text: "Đang kiểm tra kết nối internet",
+                          color: CustomColor.black,
+                          context: context,
+                          fontSize: 16),
+                    ),
+                  ),
+                ));
+          },
+        );
+        await Future.delayed(const Duration(seconds: 10), () {
+          Navigator.pop(context);
+          showConfirmDialog();
+        });
+      } else {
+        // Navigator.pop(context);
+      }
+    });
+  }
+
+  showConfirmDialog() {
+    Widget cancelButton = TextButton(
+      child: const Text("Đồng ý"),
+      onPressed: () {
+        setState(() {
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => LogInScreen()),
+              (Route<dynamic> route) => false);
+        });
+      },
+    );
+    AlertDialog alert = AlertDialog(
+      title: const Text("Không thể kết nối mạng internet"),
+      content: const Text("Bạn vui lòng kiểm tra lại kết nối mạng"),
+      actions: [
+        cancelButton,
+      ],
+    );
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
-
+    checkConnection(deviceSize);
     return Scaffold(
         backgroundColor: CustomColor.white,
         body: SingleChildScrollView(
