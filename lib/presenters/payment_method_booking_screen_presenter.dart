@@ -24,15 +24,12 @@ class PaymentMethodBookingScreenPresenter {
         for (var ele in orderBooking.productOrder![element]!) {
           listProduct.add({
             "serviceId": ele['id'],
-            "serviceName": ele['name'],
             "price": ele['price'],
-            "type": ele['type'],
             "amount": ele['quantity'],
             'note': ele['note']
           });
         }
       }
-
       final response = await model.createOrder(listProduct, orderBooking, user);
       final decodedReponse = jsonDecode(response.body);
 

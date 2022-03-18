@@ -279,6 +279,40 @@ class ApiServices {
     }
   }
 
+  static Future<dynamic> createOrderRequest(
+      List<Map<String, dynamic>> listProduct,
+      OrderBooking orderBooking,
+      Users user) {
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        'Authorization': 'Bearer ${user.idToken}'
+      };
+
+      final url = Uri.parse('$_domain/api/v1/requests');
+      return http.post(
+        url,
+        body: jsonEncode({
+          "isPaid": orderBooking.isPaid,
+          "isCustomerDelivery": orderBooking.isCustomerDelivery,
+          "orderId": null,
+          "totalPrice": 0,
+          "deliveryAddress": orderBooking.addressDelivery,
+          "deliveryTime": orderBooking.currentSelectTime != -1
+              ? constants.LIST_TIME_PICK_UP[orderBooking.currentSelectTime]
+              : '',
+          "deliveryDate": orderBooking.dateTimeDelivery.toIso8601String(),
+          "type": 1,
+          "note": orderBooking.note,
+          "requestDetails": listProduct
+        }),
+        headers: headers,
+      );
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
   static Future<dynamic> createCancelRequest(
       Map<String, dynamic> cancelRequest, Users user, Invoice invoice) {
     try {

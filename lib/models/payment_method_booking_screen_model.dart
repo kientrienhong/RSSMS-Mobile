@@ -16,6 +16,7 @@ class PaymentMethodBookingScreenModel {
 
   Future<dynamic> createOrder(List<Map<String, dynamic>> listProduct,
       OrderBooking orderBooking, Users user) async {
-    return await ApiServices.createOrder(listProduct, orderBooking, user);
+    return await ApiServices.createOrderRequest(
+        listProduct, orderBooking, user);
   }
 }

@@ -75,8 +75,10 @@ class OrderDetail {
       amount: map['amount']?.toInt() ?? 0,
       serviceImageUrl: map['serviceImageUrl'] ?? '',
       productType: map['serviceType']?.toInt() ?? 0,
-      images: List<ImageEntity>.from(
-          map['images']?.map((x) => ImageEntity.fromMap(x))),
+      images: map['images'] != null
+          ? List<ImageEntity>.from(
+              map['images']?.map((x) => ImageEntity.fromMap(x)))
+          : [],
     );
   }
 

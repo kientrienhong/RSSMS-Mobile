@@ -163,8 +163,10 @@ class Invoice with ChangeNotifier {
       durationMonths: map['durationMonths']?.toInt() ?? 0,
       status: map['status']?.toInt() ?? 0,
       isPaid: map['isPaid'] ?? false,
-      orderDetails: List<OrderDetail>.from(
-          map['orderDetails']?.map((x) => OrderDetail.fromMap(x))),
+      orderDetails: map['orderDetails'] != null
+          ? List<OrderDetail>.from(
+              map['orderDetails']?.map((x) => OrderDetail.fromMap(x)))
+          : [],
     );
   }
 
