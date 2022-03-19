@@ -4,6 +4,7 @@ import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/models/entity/imageEntity.dart';
+import 'package:rssms/models/entity/order_detail.dart';
 
 class ImageItem extends StatefulWidget {
   ImageEntity image;
@@ -62,7 +63,7 @@ class _ImageItemState extends State<ImageItem> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomText(
-                      text: widget.image.name!,
+                      text: '${widget.image.name!} ',
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
                       context: context,

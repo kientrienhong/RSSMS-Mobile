@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:rssms/models/entity/imageEntity.dart';
+import 'package:rssms/models/entity/product.dart';
 
 import 'image.dart';
 
@@ -14,18 +15,25 @@ class OrderDetail {
   final int productType;
   final String note;
   final List<ImageEntity> images;
+  final int? width;
+  final int? height;
+  final int? length;
   final String serviceImageUrl;
-  OrderDetail({
-    required this.id,
-    required this.productId,
-    required this.productName,
-    required this.price,
-    required this.amount,
-    required this.serviceImageUrl,
-    required this.productType,
-    required this.note,
-    required this.images,
-  });
+  List<Product>? listAdditionService;
+  OrderDetail(
+      {required this.id,
+      required this.productId,
+      this.width,
+      this.height,
+      this.length,
+      required this.productName,
+      required this.price,
+      required this.amount,
+      required this.serviceImageUrl,
+      required this.productType,
+      required this.note,
+      required this.images,
+      this.listAdditionService = const []});
 
   OrderDetail copyWith({
     String? id,
@@ -35,12 +43,19 @@ class OrderDetail {
     String? serviceImageUrl,
     int? amount,
     int? productType,
+    int? height,
+    int? length,
+    int? width,
     String? note,
     List<ImageEntity>? images,
     List<ImageEntity>? imageProduct,
+    List<Product>? listAdditionService,
   }) {
     return OrderDetail(
         id: id ?? this.id,
+        height: height ?? this.height,
+        length: length ?? this.length,
+        width: width ?? this.width,
         productId: productId ?? this.productId,
         productName: productName ?? this.productName,
         price: price ?? this.price,
@@ -48,6 +63,7 @@ class OrderDetail {
         amount: amount ?? this.amount,
         productType: productType ?? this.productType,
         note: note ?? this.note,
+        listAdditionService: listAdditionService ?? this.listAdditionService,
         images: images ?? this.images);
   }
 
@@ -69,11 +85,15 @@ class OrderDetail {
     return OrderDetail(
       id: map['id'] ?? '',
       note: map['note'] ?? '',
+      width: 0,
+      height: 0,
+      length: 0,
       productId: map['serviceId'] ?? 0,
       productName: map['serviceName'] ?? '',
       price: map['price']?.toInt() ?? 0,
       amount: map['amount']?.toInt() ?? 0,
       serviceImageUrl: map['serviceImageUrl'] ?? '',
+      listAdditionService: [],
       productType: map['serviceType']?.toInt() ?? 0,
       images: map['images'] != null
           ? List<ImageEntity>.from(

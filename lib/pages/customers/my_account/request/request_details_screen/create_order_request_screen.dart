@@ -64,7 +64,7 @@ class _CreateOrderRequestScreenState extends State<CreateOrderRequestScreen>
     return Scaffold(
       body: SingleChildScrollView(
         child: _model.isLoading
-            ? Container(
+            ? SizedBox(
                 width: deviceSize.width,
                 height: deviceSize.height,
                 child: Column(

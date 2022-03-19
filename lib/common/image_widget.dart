@@ -9,6 +9,8 @@ import 'package:rssms/models/entity/imageEntity.dart';
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/order_detail.dart';
 import 'package:rssms/common/image_pop_up.dart';
+import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_screen/widget/addition_service_widget.dart';
+import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_screen/widget/dialog_add_service.dart';
 import './image_item.dart';
 
 class ImageWidget extends StatefulWidget {
@@ -99,7 +101,8 @@ class _ImageWidgetState extends State<ImageWidget> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             CustomText(
-                text: widget.orderDetail.productName,
+                text:
+                    '${widget.orderDetail.productName} (${widget.orderDetail.width ?? 0}m x ${widget.orderDetail.height ?? 0}m x ${widget.orderDetail.length ?? 0}m)',
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
                 context: context,
@@ -127,6 +130,15 @@ class _ImageWidgetState extends State<ImageWidget> {
                   index: i,
                   image: widget.orderDetail.images[i],
                 ),
+              if (widget.orderDetail.listAdditionService!.isNotEmpty)
+                const Divider(),
+
+              for (var i = 0;
+                  i < widget.orderDetail.listAdditionService!.length;
+                  i++)
+                AdditionServiceWidget(
+                    currentOrderDetail: widget.orderDetail,
+                    product: widget.orderDetail.listAdditionService![i]),
               widget.isView == false
                   ? Column(
                       children: [
@@ -139,9 +151,9 @@ class _ImageWidgetState extends State<ImageWidget> {
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             CustomButton(
-                                height: 16,
+                                height: 24,
                                 text: 'Thêm hình ảnh',
-                                width: deviceSize.width / 3,
+                                width: deviceSize.width / 2 - 40,
                                 onPressFunction: () {
                                   showDialog(
                                       context: context,
@@ -158,18 +170,46 @@ class _ImageWidgetState extends State<ImageWidget> {
                                 buttonColor: CustomColor.blue,
                                 borderRadius: 4),
                             CustomButton(
-                                height: 16,
+                                height: 24,
                                 text: 'Thêm phụ kiện',
-                                width: deviceSize.width / 4,
-                                onPressFunction: () {},
+                                width: deviceSize.width / 2 - 40,
+                                onPressFunction: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return DialogAddService(
+                                          idOrderDetail: widget.orderDetail.id,
+                                        );
+                                      });
+                                },
                                 isLoading: false,
                                 textColor: CustomColor.white,
                                 buttonColor: CustomColor.green,
                                 borderRadius: 4),
+                          ],
+                        ),
+                        CustomSizedBox(
+                          context: context,
+                          height: 16,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
                             CustomButton(
-                                height: 16,
+                                height: 24,
+                                text: 'Chỉnh sửa kích thước',
+                                width: deviceSize.width / 2 - 40,
+                                onPressFunction: () {
+                                  widget.deleteItem!(widget.orderDetail.id);
+                                },
+                                isLoading: false,
+                                textColor: CustomColor.white,
+                                buttonColor: CustomColor.purple,
+                                borderRadius: 4),
+                            CustomButton(
+                                height: 24,
                                 text: 'Xóa',
-                                width: deviceSize.width / 4,
+                                width: deviceSize.width / 2 - 40,
                                 onPressFunction: () {
                                   widget.deleteItem!(widget.orderDetail.id);
                                 },

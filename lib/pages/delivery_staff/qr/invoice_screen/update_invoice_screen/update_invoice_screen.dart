@@ -23,6 +23,7 @@ import 'package:rssms/pages/delivery_staff/my_account/my_account_delivery.dart';
 import 'package:rssms/pages/delivery_staff/notifcation/notification_delivery.dart';
 import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_screen/widget/addition_cost.dart';
 import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_screen/widget/dialog_add_cost.dart';
+import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_screen/widget/dialog_add_service.dart';
 import 'package:rssms/pages/delivery_staff/qr/qr_screen.dart';
 import 'package:rssms/presenters/invoice_update_presenter.dart';
 import 'package:rssms/views/invoice_update_view.dart';
@@ -277,7 +278,13 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                         height: 16,
                         text: 'Thêm dịch vụ',
                         width: deviceSize.width * 1 / 3.5,
-                        onPressFunction: () {},
+                        onPressFunction: () {
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return DialogAddService();
+                              });
+                        },
                         isLoading: false,
                         textColor: CustomColor.white,
                         buttonColor: CustomColor.blue,
