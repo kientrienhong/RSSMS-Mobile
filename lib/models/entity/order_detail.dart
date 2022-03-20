@@ -11,13 +11,13 @@ class OrderDetail {
   final String productId;
   final String productName;
   final int price;
-  final int amount;
+  int amount;
   final int productType;
   final String note;
   final List<ImageEntity> images;
-  final int? width;
-  final int? height;
-  final int? length;
+  final double? width;
+  final double? height;
+  final double? length;
   final String serviceImageUrl;
   List<Product>? listAdditionService;
   OrderDetail(
@@ -43,9 +43,9 @@ class OrderDetail {
     String? serviceImageUrl,
     int? amount,
     int? productType,
-    int? height,
-    int? length,
-    int? width,
+    double? height,
+    double? length,
+    double? width,
     String? note,
     List<ImageEntity>? images,
     List<ImageEntity>? imageProduct,

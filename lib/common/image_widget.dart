@@ -9,8 +9,10 @@ import 'package:rssms/models/entity/imageEntity.dart';
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/order_detail.dart';
 import 'package:rssms/common/image_pop_up.dart';
+import 'package:rssms/models/entity/product.dart';
 import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_screen/widget/addition_service_widget.dart';
 import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_screen/widget/dialog_add_service.dart';
+import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_screen/widget/update_real_size.dart';
 import './image_item.dart';
 
 class ImageWidget extends StatefulWidget {
@@ -63,6 +65,45 @@ class _ImageWidgetState extends State<ImageWidget> {
         return alert;
       },
     );
+  }
+
+  void onAddAddition(Product product) {
+    Invoice invoice = Provider.of<Invoice>(context, listen: false);
+    Invoice invoiceTemp = invoice.copyWith();
+    int index = invoiceTemp.orderDetails
+        .indexWhere((element) => element.id == widget.orderDetail.id);
+    int indexFoundAddionProduct = invoiceTemp
+        .orderDetails[index].listAdditionService!
+        .indexWhere((element) => element.id == product.id);
+    if (indexFoundAddionProduct != -1) {
+      int quantity = product.quantity!;
+      invoiceTemp.orderDetails[index]
+          .listAdditionService![indexFoundAddionProduct].quantity = ++quantity;
+    }
+    invoice.setInvoice(invoice: invoice);
+  }
+
+  void onMinusAddition(Product product) {
+    Invoice invoice = Provider.of<Invoice>(context, listen: false);
+    Invoice invoiceTemp = invoice.copyWith();
+    int index = invoiceTemp.orderDetails
+        .indexWhere((element) => element.id == widget.orderDetail.id);
+    int indexFoundAddionProduct = invoiceTemp
+        .orderDetails[index].listAdditionService!
+        .indexWhere((element) => element.id == product.id);
+    if (indexFoundAddionProduct != -1) {
+      int quantity = product.quantity!;
+      if (quantity == 1) {
+        invoiceTemp.orderDetails[index].listAdditionService!
+            .removeAt(indexFoundAddionProduct);
+      } else {
+        invoiceTemp
+            .orderDetails[index]
+            .listAdditionService![indexFoundAddionProduct]
+            .quantity = --quantity;
+      }
+    }
+    invoice.setInvoice(invoice: invoice);
   }
 
   onPressDetailImage(ImageEntity image) {
@@ -137,8 +178,10 @@ class _ImageWidgetState extends State<ImageWidget> {
                   i < widget.orderDetail.listAdditionService!.length;
                   i++)
                 AdditionServiceWidget(
-                    currentOrderDetail: widget.orderDetail,
-                    product: widget.orderDetail.listAdditionService![i]),
+                  product: widget.orderDetail.listAdditionService![i],
+                  onAddAddition: onAddAddition,
+                  onMinusAddition: onMinusAddition,
+                ),
               widget.isView == false
                   ? Column(
                       children: [
@@ -179,6 +222,7 @@ class _ImageWidgetState extends State<ImageWidget> {
                                       builder: (context) {
                                         return DialogAddService(
                                           idOrderDetail: widget.orderDetail.id,
+                                          isSeperate: false,
                                         );
                                       });
                                 },
@@ -200,7 +244,11 @@ class _ImageWidgetState extends State<ImageWidget> {
                                 text: 'Chỉnh sửa kích thước',
                                 width: deviceSize.width / 2 - 40,
                                 onPressFunction: () {
-                                  widget.deleteItem!(widget.orderDetail.id);
+                                  showDialog(
+                                      context: context,
+                                      builder: (_) => DialogUpdateRealSize(
+                                            orderDetail: widget.orderDetail,
+                                          ));
                                 },
                                 isLoading: false,
                                 textColor: CustomColor.white,

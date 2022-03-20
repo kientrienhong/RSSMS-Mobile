@@ -12,7 +12,12 @@ import 'package:rssms/models/entity/product.dart';
 class AddProduct extends StatelessWidget {
   final String? orderDetail;
   final Product product;
-  const AddProduct({Key? key, required this.product, this.orderDetail})
+  final bool isSeperate;
+  const AddProduct(
+      {Key? key,
+      required this.product,
+      this.orderDetail,
+      required this.isSeperate})
       : super(key: key);
 
   @override
@@ -41,24 +46,45 @@ class AddProduct extends StatelessWidget {
 
     void addAddtion() {
       Invoice invoice = Provider.of<Invoice>(context, listen: false);
-      int index = invoice.orderDetails
-          .indexWhere((element) => element.id == orderDetail);
       Invoice invoiceTemp = invoice.copyWith();
-      if (invoice.orderDetails[index].listAdditionService!.isEmpty) {
-        invoiceTemp.orderDetails[index].listAdditionService = [];
-      }
 
-      int indexFound = invoiceTemp.orderDetails[index].listAdditionService!
-          .indexWhere((element) => element.id == product.id);
-      if (indexFound == -1) {
-        invoiceTemp.orderDetails[index].listAdditionService!
-            .add(product.copyWith(quantity: 1));
+      if (!isSeperate) {
+        int index = invoice.orderDetails
+            .indexWhere((element) => element.id == orderDetail);
+        if (invoice.orderDetails[index].listAdditionService!.isEmpty) {
+          invoiceTemp.orderDetails[index].listAdditionService = [];
+        }
+
+        int indexFound = invoiceTemp.orderDetails[index].listAdditionService!
+            .indexWhere((element) => element.id == product.id);
+        if (indexFound == -1) {
+          invoiceTemp.orderDetails[index].listAdditionService!
+              .add(product.copyWith(quantity: 1));
+        } else {
+          int quantity = invoiceTemp
+              .orderDetails[index].listAdditionService![indexFound].quantity!;
+          invoiceTemp.orderDetails[index].listAdditionService![indexFound] =
+              invoiceTemp.orderDetails[index].listAdditionService![indexFound]
+                  .copyWith(quantity: ++quantity);
+        }
       } else {
-        int quantity = invoiceTemp
-            .orderDetails[index].listAdditionService![indexFound].quantity!;
-        invoiceTemp.orderDetails[index].listAdditionService![indexFound] =
-            invoiceTemp.orderDetails[index].listAdditionService![indexFound]
-                .copyWith(quantity: ++quantity);
+        int index = invoice.orderDetails
+            .indexWhere((element) => element.id == orderDetail);
+        if (index == -1) {
+          invoiceTemp.orderDetails.add(OrderDetail(
+              id: '${invoiceTemp.orderDetails.length.toString()} + ${product.name}',
+              productId: product.id,
+              productName: product.name,
+              price: product.price,
+              amount: 1,
+              serviceImageUrl: product.imageUrl,
+              productType: product.type,
+              note: '',
+              images: []));
+        } else {
+          int quantity = invoiceTemp.orderDetails[index].amount;
+          invoiceTemp.orderDetails[index].amount = ++quantity;
+        }
       }
 
       invoice.setInvoice(invoice: invoiceTemp);

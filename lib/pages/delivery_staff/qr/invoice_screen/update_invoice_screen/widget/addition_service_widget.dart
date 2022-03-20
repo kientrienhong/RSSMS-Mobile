@@ -9,10 +9,16 @@ import 'package:rssms/models/entity/order_detail.dart';
 import 'package:rssms/models/entity/product.dart';
 
 class AdditionServiceWidget extends StatefulWidget {
-  final OrderDetail currentOrderDetail;
-  final Product product;
-  const AdditionServiceWidget(
-      {Key? key, required this.currentOrderDetail, required this.product})
+  final Product? product;
+  final OrderDetail? orderDetail;
+  Function onAddAddition;
+  Function onMinusAddition;
+  AdditionServiceWidget(
+      {Key? key,
+      this.product,
+      this.orderDetail,
+      required this.onAddAddition,
+      required this.onMinusAddition})
       : super(key: key);
 
   @override
@@ -20,45 +26,6 @@ class AdditionServiceWidget extends StatefulWidget {
 }
 
 class _AdditionServiceWidgetState extends State<AdditionServiceWidget> {
-  void minusQuantity() {
-    Invoice invoice = Provider.of<Invoice>(context, listen: false);
-    Invoice invoiceTemp = invoice.copyWith();
-    int index = invoiceTemp.orderDetails
-        .indexWhere((element) => element.id == widget.currentOrderDetail.id);
-    int indexFoundAddionProduct = invoiceTemp
-        .orderDetails[index].listAdditionService!
-        .indexWhere((element) => element.id == widget.product.id);
-    if (indexFoundAddionProduct != -1) {
-      int quantity = widget.product.quantity!;
-      if (quantity == 1) {
-        invoiceTemp.orderDetails[index].listAdditionService!
-            .removeAt(indexFoundAddionProduct);
-      } else {
-        invoiceTemp
-            .orderDetails[index]
-            .listAdditionService![indexFoundAddionProduct]
-            .quantity = --quantity;
-      }
-    }
-    invoice.setInvoice(invoice: invoice);
-  }
-
-  void addQuantity() {
-    Invoice invoice = Provider.of<Invoice>(context, listen: false);
-    Invoice invoiceTemp = invoice.copyWith();
-    int index = invoiceTemp.orderDetails
-        .indexWhere((element) => element.id == widget.currentOrderDetail.id);
-    int indexFoundAddionProduct = invoiceTemp
-        .orderDetails[index].listAdditionService!
-        .indexWhere((element) => element.id == widget.product.id);
-    if (indexFoundAddionProduct != -1) {
-      int quantity = widget.product.quantity!;
-      invoiceTemp.orderDetails[index]
-          .listAdditionService![indexFoundAddionProduct].quantity = ++quantity;
-    }
-    invoice.setInvoice(invoice: invoice);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -74,7 +41,9 @@ class _AdditionServiceWidgetState extends State<AdditionServiceWidget> {
                   height: 40,
                   width: 40,
                   child: Image.network(
-                    widget.product.imageUrl,
+                    widget.product == null
+                        ? widget.orderDetail!.serviceImageUrl
+                        : widget.product!.imageUrl,
                     fit: BoxFit.contain,
                   )),
               CustomSizedBox(
@@ -86,7 +55,9 @@ class _AdditionServiceWidgetState extends State<AdditionServiceWidget> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   CustomText(
-                    text: widget.product.name,
+                    text: widget.product == null
+                        ? widget.orderDetail!.productName
+                        : widget.product!.name,
                     color: CustomColor.black,
                     context: context,
                     fontSize: 16,
@@ -97,8 +68,9 @@ class _AdditionServiceWidgetState extends State<AdditionServiceWidget> {
                     height: 6,
                   ),
                   CustomText(
-                      text:
-                          '${widget.product.price.toString()} / ${widget.product.unit}',
+                      text: widget.product == null
+                          ? '${widget.orderDetail!.price.toString()} / số lượng'
+                          : '${widget.product!.price.toString()} / ${widget.product!.unit}',
                       color: CustomColor.blue,
                       context: context,
                       fontSize: 16)
@@ -109,7 +81,13 @@ class _AdditionServiceWidgetState extends State<AdditionServiceWidget> {
           Row(
             children: [
               GestureDetector(
-                onTap: minusQuantity,
+                onTap: () {
+                  if (widget.product != null) {
+                    widget.onMinusAddition(widget.product);
+                  } else {
+                    widget.onMinusAddition(widget.orderDetail);
+                  }
+                },
                 child: Container(
                   height: 40,
                   width: 40,
@@ -130,7 +108,9 @@ class _AdditionServiceWidgetState extends State<AdditionServiceWidget> {
                 width: 8,
               ),
               CustomText(
-                text: widget.product.quantity.toString(),
+                text: widget.product == null
+                    ? widget.orderDetail!.amount.toString()
+                    : widget.product!.quantity.toString(),
                 color: CustomColor.blue,
                 context: context,
                 fontSize: 20,
@@ -141,7 +121,13 @@ class _AdditionServiceWidgetState extends State<AdditionServiceWidget> {
                 width: 8,
               ),
               GestureDetector(
-                onTap: addQuantity,
+                onTap: () {
+                  if (widget.product != null) {
+                    widget.onAddAddition(widget.product);
+                  } else {
+                    widget.onAddAddition(widget.orderDetail);
+                  }
+                },
                 child: Container(
                   height: 40,
                   width: 40,

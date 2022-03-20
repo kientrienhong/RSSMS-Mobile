@@ -13,6 +13,7 @@ import 'package:rssms/constants/constants.dart';
 import 'package:rssms/helpers/validator.dart';
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/order_detail.dart';
+import 'package:rssms/models/entity/product.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/models/invoice_update_model.dart';
 import 'package:rssms/pages/customers/cart/cart_screen.dart';
@@ -22,6 +23,7 @@ import 'package:rssms/pages/delivery_staff/delivery/delivery_screen.dart';
 import 'package:rssms/pages/delivery_staff/my_account/my_account_delivery.dart';
 import 'package:rssms/pages/delivery_staff/notifcation/notification_delivery.dart';
 import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_screen/widget/addition_cost.dart';
+import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_screen/widget/addition_service_widget.dart';
 import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_screen/widget/dialog_add_cost.dart';
 import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_screen/widget/dialog_add_service.dart';
 import 'package:rssms/pages/delivery_staff/qr/qr_screen.dart';
@@ -72,6 +74,46 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
       _presenter.model.isLoadingUpdateInvoice =
           !_presenter.model.isLoadingUpdateInvoice;
     });
+  }
+
+  void onAddAdditionSeperate(OrderDetail product) {
+    Invoice invoice = Provider.of<Invoice>(context, listen: false);
+    Invoice invoiceTemp = invoice.copyWith();
+    int indexFound = invoiceTemp.orderDetails
+        .indexWhere((element) => element.productId == product.productId);
+
+    if (indexFound == -1) {
+      invoiceTemp.orderDetails.add(OrderDetail(
+          id: '${invoiceTemp.orderDetails.length} - ${product.productName}',
+          productId: product.id,
+          productName: product.productName,
+          price: product.price,
+          amount: 1,
+          serviceImageUrl: product.serviceImageUrl,
+          productType: product.productType,
+          note: '',
+          images: []));
+    } else {
+      int quantity = invoiceTemp.orderDetails[indexFound].amount;
+      invoiceTemp.orderDetails[indexFound] =
+          invoiceTemp.orderDetails[indexFound].copyWith(amount: ++quantity);
+    }
+    invoice.setInvoice(invoice: invoiceTemp);
+  }
+
+  void onMinusAdditionSeperate(OrderDetail product) {
+    Invoice invoice = Provider.of<Invoice>(context, listen: false);
+    Invoice invoiceTemp = invoice.copyWith();
+    int indexFound = invoiceTemp.orderDetails
+        .indexWhere((element) => element.productId == product.productId);
+    int quantity = invoiceTemp.orderDetails[indexFound].amount;
+    if (quantity == 1) {
+      invoiceTemp.orderDetails.removeAt(indexFound);
+    } else {
+      invoiceTemp.orderDetails[indexFound].amount--;
+    }
+
+    invoice.setInvoice(invoice: invoiceTemp);
   }
 
   @override
@@ -191,6 +233,15 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
               ))
           .toList();
 
+  List<Widget> mapAdditionSeperate(List<OrderDetail> listOrderDetail) {
+    return listOrderDetail
+        .map((e) => AdditionServiceWidget(
+            orderDetail: e,
+            onAddAddition: onAddAdditionSeperate,
+            onMinusAddition: onMinusAdditionSeperate))
+        .toList();
+  }
+
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -282,7 +333,9 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                           showDialog(
                               context: context,
                               builder: (context) {
-                                return DialogAddService();
+                                return DialogAddService(
+                                  isSeperate: false,
+                                );
                               });
                         },
                         isLoading: false,
@@ -302,6 +355,46 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                           .where((element) =>
                               element.productType != SERVICES &&
                               element.productType != ACCESSORY)
+                          .toList()),
+                    );
+                  },
+                ),
+                CustomSizedBox(
+                  context: context,
+                  height: 16,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CustomText(
+                      text: "Phụ kiện riêng",
+                      color: CustomColor.black,
+                      context: context,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    CustomButton(
+                        height: 16,
+                        text: 'Thêm phụ kiện',
+                        width: deviceSize.width * 1 / 3.5,
+                        onPressFunction: () {},
+                        isLoading: false,
+                        textColor: CustomColor.white,
+                        buttonColor: CustomColor.blue,
+                        borderRadius: 6)
+                  ],
+                ),
+                CustomSizedBox(
+                  context: context,
+                  height: 16,
+                ),
+                Consumer<Invoice>(
+                  builder: (context, invoiceLocal, child) {
+                    return Column(
+                      children: mapAdditionSeperate(invoiceLocal.orderDetails
+                          .where((element) =>
+                              element.productType == SERVICES ||
+                              element.productType == ACCESSORY)
                           .toList()),
                     );
                   },

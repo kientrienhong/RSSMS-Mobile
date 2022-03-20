@@ -13,7 +13,10 @@ import 'package:rssms/views/dialog_add_service_view.dart';
 
 class DialogAddService extends StatefulWidget {
   final String? idOrderDetail;
-  const DialogAddService({Key? key, this.idOrderDetail}) : super(key: key);
+  final bool isSeperate;
+  const DialogAddService(
+      {Key? key, this.idOrderDetail, required this.isSeperate})
+      : super(key: key);
 
   @override
   State<DialogAddService> createState() => _DialogAddServiceState();
@@ -61,6 +64,7 @@ class _DialogAddServiceState extends State<DialogAddService>
         .map((e) => AddProduct(
               product: e,
               orderDetail: widget.idOrderDetail,
+              isSeperate: widget.isSeperate,
             ))
         .toList();
   }
@@ -192,7 +196,9 @@ class _DialogAddServiceState extends State<DialogAddService>
                 child: SizedBox(
                     width: deviceSize.width,
                     child: _model.idOrderDetail == null
-                        ? _buildMainProduct()
+                        ? widget.isSeperate
+                            ? _buildAddition()
+                            : _buildMainProduct()
                         : _buildAddition()),
               ),
       ),
