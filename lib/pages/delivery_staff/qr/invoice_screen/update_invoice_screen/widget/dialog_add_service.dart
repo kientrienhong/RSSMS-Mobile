@@ -28,7 +28,8 @@ class _DialogAddServiceState extends State<DialogAddService>
   late DialogAddServiceModel _model;
   @override
   void initState() {
-    _presenter = DialogAddServicePresenter(widget.idOrderDetail);
+    _presenter =
+        DialogAddServicePresenter(widget.idOrderDetail, widget.isSeperate);
     _presenter.view = this;
     _model = _presenter.model;
     Users user = Provider.of<Users>(context, listen: false);

@@ -180,13 +180,13 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
 
   @override
   void onClickUpdateOrder() async {
-    if (widget.isView == null) {
-      sendNoti();
-    } else if (widget.isScanQR == true && widget.isView == true) {
-      doneOrder();
-    } else if (widget.isScanQR == null && widget.isView == true) {
-      updateOrder();
-    }
+    // if (widget.isView == null) {
+    //   sendNoti();
+    // } else if (widget.isScanQR == true && widget.isView == true) {
+    //   doneOrder();
+    // } else if (widget.isScanQR == null && widget.isView == true) {
+    updateOrder();
+    // }
   }
 
   List<AddtionCost> buildListAdditionCost() {
@@ -377,7 +377,15 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                         height: 16,
                         text: 'Thêm phụ kiện',
                         width: deviceSize.width * 1 / 3.5,
-                        onPressFunction: () {},
+                        onPressFunction: () {
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return DialogAddService(
+                                  isSeperate: true,
+                                );
+                              });
+                        },
                         isLoading: false,
                         textColor: CustomColor.white,
                         buttonColor: CustomColor.blue,

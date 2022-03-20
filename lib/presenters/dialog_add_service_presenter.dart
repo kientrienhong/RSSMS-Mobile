@@ -8,8 +8,8 @@ class DialogAddServicePresenter {
   late DialogAddServiceModel model;
   late DialogAddServiceView view;
 
-  DialogAddServicePresenter(String? id) {
-    model = DialogAddServiceModel(id);
+  DialogAddServicePresenter(String? id, bool isSeperate) {
+    model = DialogAddServiceModel(id, isSeperate);
   }
 
   void getListProduct(String idToken) async {
@@ -23,14 +23,21 @@ class DialogAddServicePresenter {
               .toList();
           view.updateListAddition(listAccessory);
         } else {
-          List<Product> listHandy = decodedReponse['2']!
-              .map<Product>((e) => Product.fromMap(e))
-              .toList();
+          if (model.isSeperate) {
+            List<Product> listAccessory = decodedReponse['1']!
+                .map<Product>((e) => Product.fromMap(e))
+                .toList();
+            view.updateListAddition(listAccessory);
+          } else {
+            List<Product> listHandy = decodedReponse['2']!
+                .map<Product>((e) => Product.fromMap(e))
+                .toList();
 
-          List<Product> listArea = decodedReponse['3']!
-              .map<Product>((e) => Product.fromMap(e))
-              .toList();
-          view.updateListService(listArea, listHandy);
+            List<Product> listArea = decodedReponse['3']!
+                .map<Product>((e) => Product.fromMap(e))
+                .toList();
+            view.updateListService(listArea, listHandy);
+          }
         }
       }
       view.updateLoading();
