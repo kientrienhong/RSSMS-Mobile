@@ -1,18 +1,29 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
+import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/models/entity/imageEntity.dart';
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/order_detail.dart';
 import 'package:rssms/common/image_pop_up.dart';
+import 'package:rssms/models/entity/product.dart';
+import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_screen/widget/addition_service_widget.dart';
+import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_screen/widget/dialog_add_service.dart';
+import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_screen/widget/update_real_size.dart';
 import './image_item.dart';
 
 class ImageWidget extends StatefulWidget {
   OrderDetail orderDetail;
+  Function? deleteItem;
   final bool isView;
-  ImageWidget({Key? key, required this.orderDetail, required this.isView})
+  ImageWidget(
+      {Key? key,
+      required this.orderDetail,
+      required this.isView,
+      this.deleteItem})
       : super(key: key);
 
   @override
@@ -56,6 +67,45 @@ class _ImageWidgetState extends State<ImageWidget> {
     );
   }
 
+  void onAddAddition(Product product) {
+    Invoice invoice = Provider.of<Invoice>(context, listen: false);
+    Invoice invoiceTemp = invoice.copyWith();
+    int index = invoiceTemp.orderDetails
+        .indexWhere((element) => element.id == widget.orderDetail.id);
+    int indexFoundAddionProduct = invoiceTemp
+        .orderDetails[index].listAdditionService!
+        .indexWhere((element) => element.id == product.id);
+    if (indexFoundAddionProduct != -1) {
+      int quantity = product.quantity!;
+      invoiceTemp.orderDetails[index]
+          .listAdditionService![indexFoundAddionProduct].quantity = ++quantity;
+    }
+    invoice.setInvoice(invoice: invoice);
+  }
+
+  void onMinusAddition(Product product) {
+    Invoice invoice = Provider.of<Invoice>(context, listen: false);
+    Invoice invoiceTemp = invoice.copyWith();
+    int index = invoiceTemp.orderDetails
+        .indexWhere((element) => element.id == widget.orderDetail.id);
+    int indexFoundAddionProduct = invoiceTemp
+        .orderDetails[index].listAdditionService!
+        .indexWhere((element) => element.id == product.id);
+    if (indexFoundAddionProduct != -1) {
+      int quantity = product.quantity!;
+      if (quantity == 1) {
+        invoiceTemp.orderDetails[index].listAdditionService!
+            .removeAt(indexFoundAddionProduct);
+      } else {
+        invoiceTemp
+            .orderDetails[index]
+            .listAdditionService![indexFoundAddionProduct]
+            .quantity = --quantity;
+      }
+    }
+    invoice.setInvoice(invoice: invoice);
+  }
+
   onPressDetailImage(ImageEntity image) {
     showDialog(
         context: context,
@@ -92,7 +142,8 @@ class _ImageWidgetState extends State<ImageWidget> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             CustomText(
-                text: widget.orderDetail.productName,
+                text:
+                    '${widget.orderDetail.productName} (${widget.orderDetail.width ?? 0}m x ${widget.orderDetail.height ?? 0}m x ${widget.orderDetail.length ?? 0}m)',
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
                 context: context,
@@ -120,46 +171,150 @@ class _ImageWidgetState extends State<ImageWidget> {
                   index: i,
                   image: widget.orderDetail.images[i],
                 ),
-              if (widget.isView == false)
-                Container(
-                    padding:
-                        const EdgeInsets.only(left: 8.0, right: 8, bottom: 18),
-                    height: deviceSize.width * 1 / 3,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(4),
-                      child: DottedBorder(
-                          color: CustomColor.black,
-                          strokeWidth: 1,
-                          dashPattern: const [8, 4],
-                          child: Center(
-                            child: TextButton(
-                              onPressed: () {
-                                showDialog(
-                                    context: context,
-                                    builder: (ctx) {
-                                      return ImageDetailPopUp(
-                                        isView: false,
-                                        orderDetail: widget.orderDetail,
-                                        imageUpdate: null,
-                                      );
-                                    });
-                              },
-                              clipBehavior: Clip.none,
-                              autofocus: false,
-                              style: ButtonStyle(
-                                  minimumSize: MaterialStateProperty.all(Size(
-                                      deviceSize.width,
-                                      deviceSize.width * 1 / 3))),
-                              child: CustomText(
-                                text: "Thêm hình ảnh",
-                                color: CustomColor.black,
-                                context: context,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          )),
-                    )),
+              if (widget.orderDetail.listAdditionService!.isNotEmpty)
+                const Divider(),
+
+              for (var i = 0;
+                  i < widget.orderDetail.listAdditionService!.length;
+                  i++)
+                AdditionServiceWidget(
+                  product: widget.orderDetail.listAdditionService![i],
+                  onAddAddition: onAddAddition,
+                  onMinusAddition: onMinusAddition,
+                ),
+              widget.isView == false
+                  ? Column(
+                      children: [
+                        const Divider(),
+                        CustomSizedBox(
+                          context: context,
+                          height: 8,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            CustomButton(
+                                height: 24,
+                                text: 'Thêm hình ảnh',
+                                width: deviceSize.width / 2 - 40,
+                                onPressFunction: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (ctx) {
+                                        return ImageDetailPopUp(
+                                          isView: false,
+                                          orderDetail: widget.orderDetail,
+                                          imageUpdate: null,
+                                        );
+                                      });
+                                },
+                                isLoading: false,
+                                textColor: CustomColor.white,
+                                buttonColor: CustomColor.blue,
+                                borderRadius: 4),
+                            CustomButton(
+                                height: 24,
+                                text: 'Thêm phụ kiện',
+                                width: deviceSize.width / 2 - 40,
+                                onPressFunction: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return DialogAddService(
+                                          idOrderDetail: widget.orderDetail.id,
+                                          isSeperate: false,
+                                        );
+                                      });
+                                },
+                                isLoading: false,
+                                textColor: CustomColor.white,
+                                buttonColor: CustomColor.green,
+                                borderRadius: 4),
+                          ],
+                        ),
+                        CustomSizedBox(
+                          context: context,
+                          height: 16,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            CustomButton(
+                                height: 24,
+                                text: 'Chỉnh sửa kích thước',
+                                width: deviceSize.width / 2 - 40,
+                                onPressFunction: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (_) => DialogUpdateRealSize(
+                                            orderDetail: widget.orderDetail,
+                                          ));
+                                },
+                                isLoading: false,
+                                textColor: CustomColor.white,
+                                buttonColor: CustomColor.purple,
+                                borderRadius: 4),
+                            CustomButton(
+                                height: 24,
+                                text: 'Xóa',
+                                width: deviceSize.width / 2 - 40,
+                                onPressFunction: () {
+                                  widget.deleteItem!(widget.orderDetail.id);
+                                },
+                                isLoading: false,
+                                textColor: CustomColor.white,
+                                buttonColor: CustomColor.red,
+                                borderRadius: 4),
+                          ],
+                        ),
+                        CustomSizedBox(
+                          context: context,
+                          height: 8,
+                        ),
+                      ],
+                    )
+                  : Container()
+
+              // Container(
+              //     padding:
+              //         const EdgeInsets.only(left: 8.0, right: 8, bottom: 18),
+              //     height: deviceSize.width * 1 / 3,
+              //     child: ClipRRect(
+              //       borderRadius: BorderRadius.circular(4),
+              //       child: DottedBorder(
+              //           color: CustomColor.black,
+              //           strokeWidth: 1,
+              //           dashPattern: const [8, 4],
+              //           child: Center(
+              //             child: TextButton(
+              //               onPressed: () {
+              // showDialog(
+              //     context: context,
+              //     builder: (ctx) {
+              //       return ImageDetailPopUp(
+              //         updateUI: updateUI,
+              //         isView: false,
+              //         orderDetail: widget.orderDetail,
+              //         imageUpdate: null,
+              //       );
+              //     });
+              //               },
+              //               clipBehavior: Clip.none,
+              //               autofocus: false,
+              //               style: ButtonStyle(
+              //                   minimumSize: MaterialStateProperty.all(Size(
+              //                       deviceSize.width,
+              //                       deviceSize.width * 1 / 3))),
+              //               child: CustomText(
+              //                 text: "Thêm hình ảnh",
+              //                 color: CustomColor.black,
+              //                 context: context,
+              //                 fontSize: 16,
+              //                 fontWeight: FontWeight.bold,
+              //               ),
+              //             ),
+              //           )),
+              //     )),
             ],
           )
         ],

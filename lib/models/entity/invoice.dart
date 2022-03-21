@@ -163,8 +163,38 @@ class Invoice with ChangeNotifier {
       durationMonths: map['durationMonths']?.toInt() ?? 0,
       status: map['status']?.toInt() ?? 0,
       isPaid: map['isPaid'] ?? false,
-      orderDetails: List<OrderDetail>.from(
-          map['orderDetails']?.map((x) => OrderDetail.fromMap(x))),
+      orderDetails: map['orderDetails'] != null
+          ? List<OrderDetail>.from(
+              map['orderDetails']?.map((x) => OrderDetail.fromMap(x)))
+          : [],
+    );
+  }
+
+  factory Invoice.fromRequest(Map<String, dynamic> map) {
+    return Invoice(
+      id: map['id'] ?? '',
+      name: map['name'] ?? '',
+      customerName: map['customerName'] ?? '',
+      customerPhone: map['customerPhone'] ?? '',
+      deliveryAddress: map['deliveryAddress'] ?? '',
+      addressReturn: map['returnAddress'] ?? '',
+      totalPrice: map['totalPrice']?.toInt() ?? 0,
+      rejectedReason: map['rejectedReason'] ?? '',
+      typeOrder: map['typeOrder']?.toInt() ?? 0,
+      isUserDelivery: map['isUserDelivery'] ?? false,
+      deliveryDate: map['deliveryDate'] ?? '',
+      deliveryTime: map['deliveryTime'] ?? '',
+      returnDate: map['returnDate'] ?? '',
+      returnTime: map['returnTime'] ?? '',
+      paymentMethod: map['paymentMethod']?.toInt() ?? 0,
+      durationDays: map['durationDays']?.toInt() ?? 0,
+      durationMonths: map['durationMonths']?.toInt() ?? 0,
+      status: map['status']?.toInt() ?? 0,
+      isPaid: map['isPaid'] ?? false,
+      orderDetails: map['requestDetails'] != null
+          ? List<OrderDetail>.from(
+              map['requestDetails']?.map((x) => OrderDetail.fromMap(x)))
+          : [],
     );
   }
 

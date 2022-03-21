@@ -7,6 +7,7 @@ import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/models/entity/request.dart';
 import 'package:rssms/pages/customers/my_account/request/request_details_screen/cancel_request_screen.dart';
+import 'package:rssms/pages/customers/my_account/request/request_details_screen/create_order_request_screen.dart';
 import 'package:rssms/pages/customers/my_account/request/request_details_screen/extends_request_screen.dart';
 import 'package:rssms/pages/customers/my_account/request/request_details_screen/get_item_request_screen.dart';
 import '../../../../constants/constants.dart' as constants;
@@ -20,7 +21,7 @@ class RequestWidget extends StatelessWidget {
     final deviceSize = MediaQuery.of(context).size;
     return GestureDetector(
       onTap: () {
-        if (request!.type == 1) {
+        if (request!.type == constants.REQUEST_TYPE_EXTEND_ORDER) {
           Navigator.push(
               context,
               MaterialPageRoute(
@@ -28,7 +29,7 @@ class RequestWidget extends StatelessWidget {
                         request: request!,
                       )));
         }
-        if (request!.type == 3) {
+        if (request!.type == constants.REQUEST_TYPE_CANCEL_SCHEDULE) {
           Navigator.push(
               context,
               MaterialPageRoute(
@@ -36,13 +37,20 @@ class RequestWidget extends StatelessWidget {
                         request: request!,
                       )));
         }
-        if (request!.type == 2) {
+        if (request!.type == constants.REQUEST_TYPE_RETURN_ORDER) {
           Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => GetItemRequestScreen(
                         request: request!,
                       )));
+        }
+        if (request!.type == constants.REQUEST_TYPE_CREATE_ORDER) {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      CreateOrderRequestScreen(id: request!.id)));
         }
       },
       child: Container(

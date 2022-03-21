@@ -23,7 +23,11 @@ class OrderBooking with ChangeNotifier {
   TypeOrder? _typeOrder;
   bool? _isPaid;
   double? _totalPrice;
+  late String? _note;
 
+  get note => _note;
+
+  set note(value) => _note = value;
   int? _months;
   int? _diffDay;
   int? _currentSelectTime;
@@ -49,7 +53,8 @@ class OrderBooking with ChangeNotifier {
       String? floorAddressReturn,
       String? phoneCustomer,
       String? emailCustomer,
-      SelectDistrict? selectDistrict}) {
+      SelectDistrict? selectDistrict,
+      String? note}) {
     _typeOrder = typeOrder;
     _productOrder = productOrder;
     _dateTimeDelivery = dateTimeDelivery;
@@ -70,6 +75,7 @@ class OrderBooking with ChangeNotifier {
     _selectDistrict = selectDistrict;
     _isPaid = isPaid;
     _totalPrice = totalPrice;
+    _note = note;
     notifyListeners();
   }
 
@@ -98,6 +104,7 @@ class OrderBooking with ChangeNotifier {
     _selectDistrict = SelectDistrict.same;
     _isPaid = false;
     _totalPrice = 0;
+    _note = '';
     notifyListeners();
   }
 
@@ -120,6 +127,7 @@ class OrderBooking with ChangeNotifier {
       String? phoneCustomer,
       double? totalPrice,
       String? emailCustomer,
+      String? note,
       bool? isPaid,
       SelectDistrict? selectDistrict}) {
     return OrderBooking(
@@ -128,6 +136,7 @@ class OrderBooking with ChangeNotifier {
         dateTimeReturn: dateTimeReturn ?? _dateTimeReturn,
         months: months ?? _months,
         diffDay: diffDay ?? _diffDay,
+        note: note ?? _note,
         typeOrder: typeOrder ?? _typeOrder,
         isPaid: isPaid ?? _isPaid,
         currentSelectTime: currentSelectTime ?? _currentSelectTime,
@@ -153,9 +162,8 @@ class OrderBooking with ChangeNotifier {
       required Users user,
       required bool isPaid,
       required int totalPrice}) {
-    print(returnDateTimeNew);
-    DateTime returnDateOld = DateTime.parse(invoice.returnDate
-        .substring(0, invoice.returnDate.indexOf("T")));
+    DateTime returnDateOld = DateTime.parse(
+        invoice.returnDate.substring(0, invoice.returnDate.indexOf("T")));
     return OrderBooking(
         productOrder: productOrder ?? _productOrder,
         dateTimeDelivery: DateTime.parse(invoice.returnDate),
@@ -202,6 +210,7 @@ class OrderBooking with ChangeNotifier {
     _selectDistrict = orderBooking.selectDistrict;
     _isPaid = orderBooking.isPaid;
     _totalPrice = orderBooking.totalPrice;
+    _note = orderBooking.note;
     notifyListeners();
   }
 

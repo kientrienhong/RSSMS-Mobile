@@ -70,4 +70,8 @@ class InvoiceUpdateModel {
   Future<dynamic> doneOrder(Invoice invoice, String idToken) async {
     return await ApiServices.doneOrder(invoice, idToken);
   }
+
+  Future<dynamic> createOrder(dataRequest, String idToken) async {
+    return await ApiServices.createOrder(dataRequest, idToken);
+  }
 }

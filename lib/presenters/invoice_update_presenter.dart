@@ -62,7 +62,75 @@ class InvoiceUpdatePresenter {
     try {
       view.updateLoadingUpdate();
       invoice = invoice.copyWith(status: 3);
-      var response = await model.updateOrder(invoice, user.idToken!);
+
+      double price = 0;
+
+      invoice.orderDetails.forEach((element) {
+        price += element.price;
+
+        element.listAdditionService!.forEach((ele1) {
+          price += ele1.price * ele1.quantity!;
+        });
+      });
+
+      final orderDetails = [];
+
+      List<OrderDetail> newListOrderDetails =
+          await Future.wait(invoice.orderDetails.map((element) async {
+        List<ImageEntity> listImageEntity =
+            await FirebaseStorageHelper.convertImageToBase64(element);
+        return element.copyWith(images: listImageEntity);
+      }).toList());
+      newListOrderDetails.forEach((element) {
+        final orderDetailImages = element.images.map((e) {
+          return {"file": e.base64};
+        }).toList();
+
+        final orderDetailServices = [
+          {
+            "serviceId": element.productId,
+            "amount": element.amount,
+            "totalPrice": element.price
+          }
+        ];
+
+        element.listAdditionService!.forEach((element) {
+          orderDetailServices.add({
+            "serviceId": element.id,
+            "amount": element.quantity!,
+            "totalPrice": element.price
+          });
+        });
+
+        orderDetails.add({
+          "height": element.height,
+          "width": element.width,
+          "length": element.length,
+          "orderDetailImages": orderDetailImages,
+          "orderDetailServices": orderDetailServices
+        });
+      });
+
+      final dataRequest = {
+        "customerId": "c3bb1c0f-0021-4624-ac51-bef0da994eaf",
+        "deliveryAddress": invoice.deliveryAddress,
+        "returnAddress": invoice.addressReturn,
+        "totalPrice": price,
+        "rejectedReason": "",
+        "duration": 0,
+        "type": invoice.typeOrder,
+        "isPaid": invoice.isPaid,
+        "paymentMethod": invoice.paymentMethod,
+        "isUserDelivery": false,
+        "deliveryDate": invoice.deliveryDate,
+        "deliveryTime": invoice.deliveryTime,
+        "returnDate": invoice.returnDate,
+        "returnTime": invoice.returnTime,
+        "status": invoice.status,
+        "orderDetails": orderDetails
+      };
+
+      var response = await model.createOrder(dataRequest, user.idToken!);
       if (response.statusCode == 200) {
         return true;
       }

@@ -157,6 +157,7 @@ class _HandleInputState extends State<HandleInput>
                 addressDelivery: _model.controllerAddress.text,
                 nameCustomer: _model.controllerName.text,
                 phoneCustomer: _model.controllerPhone.text,
+                note: _model.controllerNote.text,
                 floorAddressDelivery: _model.controllerFloor.text,
                 emailCustomer: _model.controllerEmail.text,
                 addressReturn: _model.controllerAddress.text,
@@ -168,6 +169,7 @@ class _HandleInputState extends State<HandleInput>
                     ? TypeOrder.selfStorage
                     : TypeOrder.doorToDoor,
                 selectDistrict: currentIndex,
+                note: _model.controllerNote.text,
                 addressDelivery: _model.controllerAddress.text,
                 nameCustomer: _model.controllerName.text,
                 phoneCustomer: _model.controllerPhone.text,
@@ -182,6 +184,7 @@ class _HandleInputState extends State<HandleInput>
                     ? TypeOrder.selfStorage
                     : TypeOrder.doorToDoor,
                 selectDistrict: currentIndex,
+                note: _model.controllerNote.text,
                 addressDelivery: _model.controllerAddress.text,
                 nameCustomer: _model.controllerName.text,
                 phoneCustomer: _model.controllerPhone.text,
@@ -233,7 +236,6 @@ class _HandleInputState extends State<HandleInput>
             validator: Validator.checkFullname,
             nextNode: _focusNodePhone,
           ),
-          
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -350,6 +352,9 @@ class _HandleInputState extends State<HandleInput>
                           Border.all(color: CustomColor.black[3]!, width: 1)),
                   child: TextFormField(
                     minLines: 6,
+                    validator: (val) {
+                      return Validator.notEmpty(val);
+                    },
                     controller: _model.controllerNote,
                     keyboardType: TextInputType.multiline,
                     maxLines: null,
