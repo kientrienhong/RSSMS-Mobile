@@ -14,6 +14,7 @@ class CustomOutLineInputWithHint extends StatefulWidget {
   Function(String?)? validator;
   final bool? isDisable;
   final bool? isSecure;
+  final int? maxLine;
   String? hintText;
   CustomOutLineInputWithHint(
       {Key? key,
@@ -25,6 +26,7 @@ class CustomOutLineInputWithHint extends StatefulWidget {
       required this.isDisable,
       this.isSecure = false,
       this.nextNode,
+      this.maxLine = 1,
       required this.focusNode,
       required this.deviceSize,
       this.hintText})
@@ -111,10 +113,9 @@ class _CustomOutLineInputState extends State<CustomOutLineInputWithHint> {
                   ? null
                   : (val) {
                       print(val);
-                      print(widget.validator!(widget.controller!.text));
                       return widget.validator!(widget.controller!.text);
                     },
-              maxLines: 1,
+              maxLines: widget.maxLine,
               keyboardType: widget.textInputType,
               style: TextStyle(color: colorLabel, fontSize: 16),
               enabled: !widget.isDisable!,

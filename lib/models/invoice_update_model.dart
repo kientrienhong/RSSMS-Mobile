@@ -7,8 +7,23 @@ import '/models/entity/user.dart';
 class InvoiceUpdateModel {
   bool? _isDisableUpdateInvoice;
   bool? _isLoadingUpdateInvoice;
+  bool? _isAdditionFee;
+
+  get isAdditionFee => _isAdditionFee;
+
+  set isAdditionFee(value) => _isAdditionFee = value;
   TextEditingController? _controllerFullname;
   TextEditingController? _controllerPhone;
+  TextEditingController? _controllerAdditionFeeDescription;
+  TextEditingController? _controllerAdditionFeePrice;
+  get controllerAdditionFeeDescription => _controllerAdditionFeeDescription;
+
+  set controllerAdditionFeeDescription(value) =>
+      _controllerAdditionFeeDescription = value;
+
+  get controllerAdditionFeePrice => _controllerAdditionFeePrice;
+
+  set controllerAdditionFeePrice(value) => _controllerAdditionFeePrice = value;
   String? _txtStatus;
   bool? _isPaid;
   late List<Map<String, dynamic>> listAdditionCost;
@@ -17,6 +32,9 @@ class InvoiceUpdateModel {
     _isDisableUpdateInvoice = true;
     _isLoadingUpdateInvoice = false;
     _isPaid = invoice.isPaid;
+    _controllerAdditionFeeDescription = TextEditingController();
+    _controllerAdditionFeePrice = TextEditingController();
+    _isAdditionFee = false;
     _controllerFullname = TextEditingController(text: invoice.customerName);
     _controllerPhone = TextEditingController(text: invoice.customerPhone);
     switch (invoice.status) {

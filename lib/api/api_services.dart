@@ -322,6 +322,9 @@ class ApiServices {
               : '',
           "deliveryDate": orderBooking.dateTimeDelivery.toIso8601String(),
           "type": 1,
+          "typeOrder": orderBooking.typeOrder == TypeOrder.selfStorage
+              ? constants.SELF_STORAGE_TYPE_ORDER
+              : constants.DOOR_TO_DOOR_TYPE_ORDER,
           "note": orderBooking.note,
           "requestDetails": listProduct
         }),

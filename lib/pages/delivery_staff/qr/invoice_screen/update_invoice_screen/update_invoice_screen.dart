@@ -47,7 +47,8 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
 
   final _focusNodeFullname = FocusNode();
   final _focusNodePhone = FocusNode();
-
+  final _focusNodeAdditionFeeDescription = FocusNode();
+  final _focusNodeAdditionFeePrice = FocusNode();
   File? image;
 
   @override
@@ -421,51 +422,43 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        showDialog(
-                            context: context,
-                            builder: (context) {
-                              return DialogAddCost(
-                                listAdditionCost: _model.listAdditionCost,
-                                addAdditionCost: _presenter.addAdditionCost,
-                                updateAdditionCost:
-                                    _presenter.updateAdditionCost,
-                              );
-                            });
-                      },
-                      child: Row(
-                        children: [
-                          CustomText(
-                            text: "Thêm",
-                            color: CustomColor.blue,
-                            context: context,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          CustomSizedBox(
-                            context: context,
-                            width: 8,
-                          ),
-                          Container(
-                            height: 24,
-                            width: 24,
-                            decoration: BoxDecoration(
-                                color: CustomColor.blue,
-                                borderRadius: BorderRadius.circular(4)),
-                            child: Center(
-                              child: CustomText(
-                                  text: '+',
-                                  color: CustomColor.white,
-                                  context: context,
-                                  fontSize: 16),
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
+                    Checkbox(
+                        fillColor: MaterialStateProperty.all(CustomColor.blue),
+                        value: _model.isAdditionFee,
+                        onChanged: widget.isView == null
+                            ? (value) {
+                                setState(() {
+                                  _model.isAdditionFee = value;
+                                });
+                              }
+                            : (val) => {})
                   ],
                 ),
+                if (_model.isAdditionFee)
+                  Column(
+                    children: [
+                      CustomSizedBox(
+                        context: context,
+                        height: 8,
+                      ),
+                      CustomOutLineInputWithHint(
+                          controller: _model.controllerAdditionFeeDescription,
+                          isDisable: false,
+                          hintText: "Mô tả",
+                          validator: Validator.notEmpty,
+                          maxLine: 3,
+                          focusNode: _focusNodeAdditionFeeDescription,
+                          nextNode: _focusNodeAdditionFeePrice,
+                          deviceSize: deviceSize),
+                      CustomOutLineInputWithHint(
+                          controller: _model.controllerAdditionFeePrice,
+                          isDisable: false,
+                          hintText: "Giá tiền",
+                          textInputType: TextInputType.number,
+                          focusNode: _focusNodeAdditionFeePrice,
+                          deviceSize: deviceSize),
+                    ],
+                  ),
                 Column(
                   children: buildListAdditionCost(),
                 ),
@@ -507,7 +500,9 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                         List<OrderDetail>? listImage = invoice.orderDetails;
                         bool emptyImage = false;
                         for (var image in listImage) {
-                          if (image.images.isEmpty) {
+                          if (image.images.isEmpty &&
+                              (image.productType == HANDY ||
+                                  image.productType == UNWEILDY)) {
                             emptyImage = true;
                             break;
                           }

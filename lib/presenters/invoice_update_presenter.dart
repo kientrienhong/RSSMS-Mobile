@@ -83,7 +83,7 @@ class InvoiceUpdatePresenter {
       }).toList());
       newListOrderDetails.forEach((element) {
         final orderDetailImages = element.images.map((e) {
-          return {"file": e.base64};
+          return {"file": e.base64, "note": e.note};
         }).toList();
 
         final orderDetailServices = [
@@ -117,9 +117,14 @@ class InvoiceUpdatePresenter {
         "returnAddress": invoice.addressReturn,
         "totalPrice": price,
         "rejectedReason": "",
-        "duration": 0,
+        "additionalFee": _model.isAdditionFee
+            ? double.parse(_model.controllerAdditionFeePrice.text)
+            : 0,
+        "additionalFeeDescription": _model.isAdditionFee
+            ? _model.controllerAdditionFeeDescription.text
+            : '',
         "type": invoice.typeOrder,
-        "isPaid": invoice.isPaid,
+        "isPaid": _model.getIsPaid,
         "paymentMethod": invoice.paymentMethod,
         "isUserDelivery": false,
         "deliveryDate": invoice.deliveryDate,

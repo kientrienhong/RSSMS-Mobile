@@ -90,6 +90,11 @@ class _CreateOrderRequestScreenState extends State<CreateOrderRequestScreen>
                     ),
                     Column(
                       children: [
+                        CustomText(
+                            text: _model.invoice.id,
+                            color: CustomColor.black,
+                            context: context,
+                            fontSize: 24),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -135,24 +140,24 @@ class _CreateOrderRequestScreenState extends State<CreateOrderRequestScreen>
                           context: context,
                           height: 24,
                         ),
-                        // Row(
-                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        //   children: [
-                        //     CustomText(
-                        //         text: "Ngày trả hàng:",
-                        //         color: Colors.black,
-                        //         context: context,
-                        //         fontWeight: FontWeight.bold,
-                        //         fontSize: 17),
-                        //     CustomText(
-                        //         text: _model.invoice.returnDate.substring(
-                        //             0, _model.invoice.returnDate.indexOf("T")),
-                        //         color: Colors.black,
-                        //         context: context,
-                        //         fontWeight: FontWeight.bold,
-                        //         fontSize: 16),
-                        //   ],
-                        // ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            CustomText(
+                                text: "Ngày trả hàng:",
+                                color: Colors.black,
+                                context: context,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 17),
+                            CustomText(
+                                text: _model.invoice.returnDate.substring(
+                                    0, _model.invoice.returnDate.indexOf("T")),
+                                color: Colors.black,
+                                context: context,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16),
+                          ],
+                        ),
                         CustomSizedBox(
                           context: context,
                           height: 24,
