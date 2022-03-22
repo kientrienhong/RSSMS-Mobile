@@ -22,6 +22,7 @@ import 'package:rssms/pages/customers/notification/notification_screen.dart';
 import 'package:rssms/pages/delivery_staff/delivery/delivery_screen.dart';
 import 'package:rssms/pages/delivery_staff/my_account/my_account_delivery.dart';
 import 'package:rssms/pages/delivery_staff/notifcation/notification_delivery.dart';
+import 'package:rssms/pages/delivery_staff/qr/invoice_screen/new_invoice_screen/new_invoice_screen.dart';
 import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_screen/widget/addition_cost.dart';
 import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_screen/widget/addition_service_widget.dart';
 import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_screen/widget/dialog_add_cost.dart';
@@ -488,52 +489,74 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                             : (val) => {})
                   ],
                 ),
-                Center(
-                  child: CustomButton(
-                      height: 24,
-                      isLoading: _model.isLoadingUpdateInvoice,
-                      text: 'Cập nhật đơn',
-                      textColor: CustomColor.white,
-                      onPressFunction: () {
-                        Invoice invoice =
-                            Provider.of<Invoice>(context, listen: false);
-                        List<OrderDetail>? listImage = invoice.orderDetails;
-                        bool emptyImage = false;
-                        for (var image in listImage) {
-                          if (image.images.isEmpty &&
-                              (image.productType == HANDY ||
-                                  image.productType == UNWEILDY)) {
-                            emptyImage = true;
-                            break;
-                          }
-                        }
-                        if (_formKey.currentState!.validate() && !emptyImage) {
-                          onClickUpdateOrder();
-                        }
-                        if (emptyImage) {
-                          showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AlertDialog(
-                                  title: const Text("Thông báo"),
-                                  content: const Text(
-                                      "Vui lòng cập nhật ít nhất 1 ảnh cho 1 box !"),
-                                  actions: [
-                                    TextButton(
-                                      child: const Text("Đồng ý"),
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                    )
-                                  ],
-                                );
-                              });
-                        }
-                      },
-                      width: deviceSize.width / 2.5,
-                      buttonColor: CustomColor.blue,
-                      borderRadius: 6),
-                ),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CustomButton(
+                          height: 24,
+                          isLoading: _model.isLoadingUpdateInvoice,
+                          text: 'Cập nhật đơn',
+                          textColor: CustomColor.white,
+                          onPressFunction: () {
+                            Invoice invoice =
+                                Provider.of<Invoice>(context, listen: false);
+                            List<OrderDetail>? listImage = invoice.orderDetails;
+                            bool emptyImage = false;
+                            for (var image in listImage) {
+                              if (image.images.isEmpty &&
+                                  (image.productType == HANDY ||
+                                      image.productType == UNWEILDY)) {
+                                emptyImage = true;
+                                break;
+                              }
+                            }
+                            if (_formKey.currentState!.validate() &&
+                                !emptyImage) {
+                              onClickUpdateOrder();
+                            }
+                            if (emptyImage) {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      title: const Text("Thông báo"),
+                                      content: const Text(
+                                          "Vui lòng cập nhật ít nhất 1 ảnh cho 1 box !"),
+                                      actions: [
+                                        TextButton(
+                                          child: const Text("Đồng ý"),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        )
+                                      ],
+                                    );
+                                  });
+                            }
+                          },
+                          width: deviceSize.width / 2.5,
+                          buttonColor: CustomColor.blue,
+                          borderRadius: 6),
+                      CustomButton(
+                          height: 24,
+                          isLoading: false,
+                          text: 'Xem trước hóa đơn',
+                          textColor: CustomColor.white,
+                          onPressFunction: () {
+                            Invoice invoice =
+                                Provider.of<Invoice>(context, listen: false);
+
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => NewInvoiceScreen(
+                                          invoice: invoice,
+                                        )));
+                          },
+                          width: deviceSize.width / 2.5,
+                          buttonColor: CustomColor.green,
+                          borderRadius: 6),
+                    ]),
               ],
             ),
           ),
