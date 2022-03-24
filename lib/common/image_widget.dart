@@ -180,6 +180,7 @@ class _ImageWidgetState extends State<ImageWidget> {
                 AdditionServiceWidget(
                   product: widget.orderDetail.listAdditionService![i],
                   onAddAddition: onAddAddition,
+                  isView: widget.isView,
                   onMinusAddition: onMinusAddition,
                 ),
               widget.isView == false

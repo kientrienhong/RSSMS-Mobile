@@ -240,6 +240,7 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
         .map((e) => AdditionServiceWidget(
             orderDetail: e,
             onAddAddition: onAddAdditionSeperate,
+            isView: widget.isView!,
             onMinusAddition: onMinusAdditionSeperate))
         .toList();
   }

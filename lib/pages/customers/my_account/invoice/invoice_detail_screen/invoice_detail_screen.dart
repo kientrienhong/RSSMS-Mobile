@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/invoice_image_widget.dart';
 import 'package:rssms/models/entity/invoice.dart';
+import 'package:rssms/models/entity/user.dart';
+import 'package:rssms/models/invoice_detail_screen.dart';
 import 'package:rssms/pages/customers/cart/widgets/title_tab.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/tab/invoice_tab.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/tab/item_tab.dart';
 import 'package:rssms/constants/constants.dart' as constants;
+import 'package:rssms/presenters/invoice_detail_screen_presenter.dart';
+import 'package:rssms/views/invoice_detail_screen_view.dart';
 
 class InvoiceDetailScreen extends StatefulWidget {
   Invoice? invoice;
@@ -19,12 +24,35 @@ class InvoiceDetailScreen extends StatefulWidget {
   State<InvoiceDetailScreen> createState() => _InvoiceDetailScreenState();
 }
 
-class _InvoiceDetailScreenState extends State<InvoiceDetailScreen> {
+class _InvoiceDetailScreenState extends State<InvoiceDetailScreen>
+    implements InvoiceDetailScreenView {
   late int _index;
+  late InvoiceDetailScreenModel _model;
+  late InvoiceDetailScreenPresenter _presenter;
+  @override
+  void updateLoading() {
+    setState(() {
+      _model.isLoading = !_model.isLoading;
+    });
+  }
+
+  @override
+  void updateView(Invoice invoice, Invoice updatedInvoice) {
+    setState(() {
+      _model.invoice = invoice;
+      _model.showUIInvoice = updatedInvoice;
+    });
+  }
 
   @override
   void initState() {
     super.initState();
+    _presenter = InvoiceDetailScreenPresenter();
+    _model = _presenter.model;
+    _presenter.view = this;
+    Users user = Provider.of<Users>(context, listen: false);
+
+    _presenter.loadingDetailInvoice(widget.invoice!.id, user.idToken!);
     _index = 0;
   }
 
@@ -57,44 +85,61 @@ class _InvoiceDetailScreenState extends State<InvoiceDetailScreen> {
   @override
   Widget build(BuildContext context) {
     // List<Map<String, dynamic>> listImage = invoice!["image"];
-
+    final deviceSize = MediaQuery.of(context).size;
     return Scaffold(
         backgroundColor: CustomColor.white,
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: SizedBox(
-            width: widget.deviceSize.width,
-            height: widget.deviceSize.height,
-            child: ListView(
-              children: [
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: SizedBox(
-                    width: 24,
-                    height: 24,
-                    child: GestureDetector(
-                      onTap: () => {Navigator.of(context).pop()},
-                      child: Image.asset('assets/images/arrowLeft.png'),
-                    ),
+        body: _model.isLoading
+            ? SizedBox(
+                width: deviceSize.width,
+                height: deviceSize.height,
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: const [
+                      SizedBox(
+                        height: 48,
+                        width: 48,
+                        child: CircularProgressIndicator(
+                          backgroundColor: CustomColor.blue,
+                        ),
+                      ),
+                    ]),
+              )
+            : Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: SizedBox(
+                  width: widget.deviceSize.width,
+                  height: widget.deviceSize.height,
+                  child: ListView(
+                    children: [
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: SizedBox(
+                          width: 24,
+                          height: 24,
+                          child: GestureDetector(
+                            onTap: () => {Navigator.of(context).pop()},
+                            child: Image.asset('assets/images/arrowLeft.png'),
+                          ),
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: mapListTab(),
+                      ),
+                      CustomSizedBox(
+                        context: context,
+                        height: 16,
+                      ),
+                      _index == 0
+                          ? InvoiceTab(
+                              deviceSize: widget.deviceSize,
+                              invoice: _model.showUIInvoice,
+                            )
+                          : ItemTab(invoice: _model.invoice)
+                    ],
                   ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: mapListTab(),
-                ),
-                CustomSizedBox(
-                  context: context,
-                  height: 16,
-                ),
-                _index == 0
-                    ? InvoiceTab(
-                        deviceSize: widget.deviceSize,
-                        invoice: widget.invoice,
-                      )
-                    : ItemTab(invoice: widget.invoice)
-              ],
-            ),
-          ),
-        ));
+              ));
   }
 }

@@ -161,7 +161,7 @@ class Invoice with ChangeNotifier {
       name: map['name'] ?? '',
       customerName: map['customerName'] ?? '',
       customerPhone: map['customerPhone'] ?? '',
-      additionFee: map['additionalFee'] ?? 0,
+      additionFee: map['additionalFee']?.toInt() ?? 0,
       additionFeeDescription: map['additionalFeeDescription'] ?? '',
       deliveryAddress: map['deliveryAddress'] ?? '',
       addressReturn: map['addressReturn'] ?? '',

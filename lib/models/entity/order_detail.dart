@@ -9,17 +9,17 @@ import 'image.dart';
 
 class OrderDetail {
   final String id;
-  final String productId;
-  final String productName;
-  final int price;
+  String productId;
+  String productName;
+  int price;
   int amount;
-  final int productType;
+  int productType;
   final String note;
   final List<ImageEntity> images;
   final double? width;
   final double? height;
   final double? length;
-  final String serviceImageUrl;
+  String serviceImageUrl;
   List<Product>? listAdditionService;
   OrderDetail(
       {required this.id,
@@ -86,28 +86,30 @@ class OrderDetail {
     return OrderDetail(
       id: map['id'] ?? '',
       note: map['note'] ?? '',
-      width: map['width']?.toInt() ?? 0,
-      height: map['height']?.toInt() ?? 0,
-      length: map['length']?.toInt() ?? 0,
-      productId: map['serviceId'] ?? 0,
+      width: map['width']?.toDouble() ?? 0,
+      height: map['height']?.toDouble() ?? 0,
+      length: map['length']?.toDouble() ?? 0,
+      productId: map['serviceId'] ?? '',
       productName: map['serviceName'] ?? '',
       price: map['price']?.toInt() ?? 0,
       amount: map['amount']?.toInt() ?? 0,
       serviceImageUrl: map['serviceImageUrl'] ?? '',
       listAdditionService: map['orderDetailServices'] != null
-          ? map['orderDetailServices']?.map((x) => Product(
-                id: map['serviceId'] ?? '',
-                name: map['serviceName'] ?? '',
-                price: map['totalPrice']?.toInt() ?? 0,
-                size: map['size'] ?? '',
-                description: map['description'] ?? '',
-                type: map['serviceType']?.toInt() ?? 0,
-                unit: map['unit'] ?? '',
-                quantity: map['amount'].toInt() ?? 1,
-                tooltip: map['tooltip'] ?? '',
-                status: map['status'] ?? 1,
-                imageUrl: map['serviceUrl'] ?? '',
-              ))
+          ? map['orderDetailServices']?.map<Product>((x) {
+              return Product(
+                id: x['serviceId'] ?? '',
+                name: x['serviceName'] ?? '',
+                price: x['totalPrice']?.toInt() ?? 0,
+                size: x['size'] ?? '',
+                description: x['description'] ?? '',
+                type: x['serviceType']?.toInt() ?? 0,
+                unit: x['unit'] ?? '',
+                quantity: x['amount']?.toInt() ?? 1,
+                tooltip: x['tooltip'] ?? '',
+                status: x['status'] ?? 1,
+                imageUrl: x['serviceUrl'] ?? '',
+              );
+            }).toList()
           : [],
       productType: map['serviceType']?.toInt() ?? 0,
       images: map['images'] != null

@@ -358,7 +358,11 @@ class InvoiceProductWidget extends StatelessWidget {
               ],
             ),
             if (additionalFee > 0)
-              Column(children: [
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                CustomSizedBox(
+                  context: context,
+                  height: 10,
+                ),
                 CustomText(
                     text: "Chi phí thêm: ",
                     color: Colors.black,
@@ -418,7 +422,8 @@ class InvoiceProductWidget extends StatelessWidget {
                                         30)
                                     .ceil() +
                             totalAccessory +
-                            totalPackaging) +
+                            totalPackaging +
+                            invoice!.additionFee! as num) +
                         " đ",
                     color: CustomColor.blue,
                     context: context,
