@@ -182,13 +182,13 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
 
   @override
   void onClickUpdateOrder() async {
-    // if (widget.isView == null) {
-    //   sendNoti();
-    // } else if (widget.isScanQR == true && widget.isView == true) {
-    //   doneOrder();
-    // } else if (widget.isScanQR == null && widget.isView == true) {
-    updateOrder();
-    // }
+    if (widget.isView == null) {
+      sendNoti();
+    } else if (widget.isScanQR == true && widget.isView == true) {
+      doneOrder();
+    } else if (widget.isScanQR == null && widget.isView == true) {
+      updateOrder();
+    }
   }
 
   List<AddtionCost> buildListAdditionCost() {
@@ -447,9 +447,9 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                           isDisable: false,
                           hintText: "Mô tả",
                           validator: Validator.notEmpty,
+                          textInputType: TextInputType.multiline,
                           maxLine: 3,
                           focusNode: _focusNodeAdditionFeeDescription,
-                          nextNode: _focusNodeAdditionFeePrice,
                           deviceSize: deviceSize),
                       CustomOutLineInputWithHint(
                           controller: _model.controllerAdditionFeePrice,
@@ -545,7 +545,15 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                           onPressFunction: () {
                             Invoice invoice =
                                 Provider.of<Invoice>(context, listen: false);
-
+                            if (_model.isAdditionFee) {
+                              invoice.setInvoice(
+                                  invoice: invoice.copyWith(
+                                      additionFee: int.parse(_model
+                                          .controllerAdditionFeePrice.text),
+                                      additionFeeDescription: _model
+                                          .controllerAdditionFeeDescription
+                                          .text));
+                            }
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(

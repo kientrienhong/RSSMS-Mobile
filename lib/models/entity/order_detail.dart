@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:rssms/models/entity/imageEntity.dart';
+import 'package:rssms/models/entity/order_detail_service.dart';
 import 'package:rssms/models/entity/product.dart';
 
 import 'image.dart';
@@ -85,15 +86,29 @@ class OrderDetail {
     return OrderDetail(
       id: map['id'] ?? '',
       note: map['note'] ?? '',
-      width: 0,
-      height: 0,
-      length: 0,
+      width: map['width']?.toInt() ?? 0,
+      height: map['height']?.toInt() ?? 0,
+      length: map['length']?.toInt() ?? 0,
       productId: map['serviceId'] ?? 0,
       productName: map['serviceName'] ?? '',
       price: map['price']?.toInt() ?? 0,
       amount: map['amount']?.toInt() ?? 0,
       serviceImageUrl: map['serviceImageUrl'] ?? '',
-      listAdditionService: [],
+      listAdditionService: map['orderDetailServices'] != null
+          ? map['orderDetailServices']?.map((x) => Product(
+                id: map['serviceId'] ?? '',
+                name: map['serviceName'] ?? '',
+                price: map['totalPrice']?.toInt() ?? 0,
+                size: map['size'] ?? '',
+                description: map['description'] ?? '',
+                type: map['serviceType']?.toInt() ?? 0,
+                unit: map['unit'] ?? '',
+                quantity: map['amount'].toInt() ?? 1,
+                tooltip: map['tooltip'] ?? '',
+                status: map['status'] ?? 1,
+                imageUrl: map['serviceUrl'] ?? '',
+              ))
+          : [],
       productType: map['serviceType']?.toInt() ?? 0,
       images: map['images'] != null
           ? List<ImageEntity>.from(

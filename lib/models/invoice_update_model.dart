@@ -81,8 +81,8 @@ class InvoiceUpdateModel {
     return await ApiServices.updateOrder(invoice, idToken);
   }
 
-  Future<dynamic> sendNotification(Invoice invoice, String idToken) async {
-    return await ApiServices.sendNotification(invoice, idToken);
+  Future<dynamic> sendNotification(dataRequest, String idToken) async {
+    return await ApiServices.sendNotification(dataRequest, idToken);
   }
 
   Future<dynamic> doneOrder(Invoice invoice, String idToken) async {

@@ -10,6 +10,8 @@ class Invoice with ChangeNotifier {
   late String customerPhone;
   late String deliveryAddress;
   late String addressReturn;
+  late String? additionFeeDescription;
+  late int? additionFee;
   late int totalPrice;
   late String rejectedReason;
   late int typeOrder;
@@ -37,6 +39,8 @@ class Invoice with ChangeNotifier {
     required this.isUserDelivery,
     required this.deliveryDate,
     required this.deliveryTime,
+    this.additionFee,
+    this.additionFeeDescription,
     required this.returnDate,
     required this.returnTime,
     required this.paymentMethod,
@@ -69,6 +73,8 @@ class Invoice with ChangeNotifier {
     status = -1;
     isPaid = false;
     orderDetails = [];
+    additionFeeDescription = '';
+    additionFee = 0;
   }
 
   Invoice copyWith({
@@ -92,9 +98,14 @@ class Invoice with ChangeNotifier {
     int? status,
     bool? isPaid,
     List<OrderDetail>? orderDetails,
+    String? additionFeeDescription,
+    int? additionFee,
   }) {
     return Invoice(
       id: id ?? this.id,
+      additionFee: additionFee ?? this.additionFee,
+      additionFeeDescription:
+          additionFeeDescription ?? this.additionFeeDescription,
       name: name ?? this.name,
       customerName: customerName ?? this.customerName,
       customerPhone: customerPhone ?? this.customerPhone,
@@ -132,6 +143,8 @@ class Invoice with ChangeNotifier {
       'deliveryTime': deliveryTime,
       'returnDate': returnDate,
       'returnTime': returnTime,
+      "additionalFee": additionFee,
+      "additionalFeeDescription": additionFeeDescription,
       'Name': name,
       'paymentMethod': paymentMethod,
       'durationDays': durationDays,
@@ -148,6 +161,8 @@ class Invoice with ChangeNotifier {
       name: map['name'] ?? '',
       customerName: map['customerName'] ?? '',
       customerPhone: map['customerPhone'] ?? '',
+      additionFee: map['additionalFee'] ?? 0,
+      additionFeeDescription: map['additionalFeeDescription'] ?? '',
       deliveryAddress: map['deliveryAddress'] ?? '',
       addressReturn: map['addressReturn'] ?? '',
       totalPrice: map['totalPrice']?.toInt() ?? 0,
@@ -177,6 +192,8 @@ class Invoice with ChangeNotifier {
       customerName: map['customerName'] ?? '',
       customerPhone: map['customerPhone'] ?? '',
       deliveryAddress: map['deliveryAddress'] ?? '',
+      additionFee: 0,
+      additionFeeDescription: '',
       addressReturn: map['returnAddress'] ?? '',
       totalPrice: map['totalPrice']?.toInt() ?? 0,
       rejectedReason: map['rejectedReason'] ?? '',
@@ -219,6 +236,8 @@ class Invoice with ChangeNotifier {
     status = invoice.status;
     isPaid = invoice.isPaid;
     orderDetails = invoice.orderDetails;
+    additionFee = invoice.additionFee;
+    additionFeeDescription = invoice.additionFeeDescription;
     notifyListeners();
   }
 

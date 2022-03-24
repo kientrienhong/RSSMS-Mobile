@@ -433,16 +433,14 @@ class ApiServices {
     }
   }
 
-  static Future<dynamic> sendNotification(Invoice invoice, String idToken) {
+  static Future<dynamic> sendNotification(dataRequest, String idToken) {
     try {
       Map<String, String> headers = {
         "Content-type": "application/json",
         'Authorization': 'Bearer $idToken'
       };
-      var test = jsonEncode(invoice.toMap());
-      final url = Uri.parse('$_domain/api/v1/orders/${invoice.id}');
-      return http.post(url,
-          headers: headers, body: jsonEncode(invoice.toMap()));
+      final url = Uri.parse('$_domain/api/v1/orders/send_noti_to_customer');
+      return http.post(url, headers: headers, body: jsonEncode(dataRequest));
     } catch (e) {
       print(e.toString());
       throw Exception('Log In failed');
@@ -546,6 +544,23 @@ class ApiServices {
 
       final url = Uri.parse('$_domain/api/v1/orders');
       return http.put(url, headers: headers, body: jsonEncode(listOrderStatus));
+    } catch (e) {
+      print(e.toString());
+      throw Exception('Update Failed');
+    }
+  }
+
+  static Future<dynamic> cancelOrder(
+      String idToken, Map<dynamic, dynamic> cancelOrder) {
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        'Authorization': 'Bearer $idToken'
+      };
+
+      final url = Uri.parse(
+          '$_domain/api/v1/requests/cancel request to order/${cancelOrder['id']}');
+      return http.put(url, headers: headers, body: jsonEncode(cancelOrder));
     } catch (e) {
       print(e.toString());
       throw Exception('Update Failed');

@@ -121,7 +121,9 @@ class _CustomOutLineInputState extends State<CustomOutLineInputWithHint> {
               enabled: !widget.isDisable!,
               textInputAction: widget.nextNode != null
                   ? TextInputAction.next
-                  : TextInputAction.done,
+                  : widget.maxLine! > 1
+                      ? TextInputAction.newline
+                      : TextInputAction.done,
               onFieldSubmitted: (term) {
                 widget.focusNode!.unfocus();
                 if (widget.nextNode != null) {

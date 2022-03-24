@@ -76,7 +76,7 @@ class RequestWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   SizedBox(
-                      width: (deviceSize.width - 32) / 4,
+                      width: (deviceSize.width - 32) / 6,
                       child: Image.asset(constants
                           .LIST_ICON_REQUEST[request!.type]["name"]
                           .toString())),
@@ -101,8 +101,9 @@ class RequestWidget extends StatelessWidget {
                           height: 14,
                         ),
                         CustomText(
-                            text:
-                                "Mã đơn hàng: #" + request!.orderId.toString(),
+                            text: "Loại yêu cầu: " +
+                                constants.LIST_TYPE_REQUEST[request!.type]
+                                    ['name']!,
                             color: CustomColor.black,
                             context: context,
                             fontWeight: FontWeight.bold,
