@@ -73,9 +73,7 @@ const LIST_NOTE_STATUS_BOX = [
 
 const LIST_STATUS_ORDER = [
   {'color': CustomColor.red, 'name': 'Đã Hủy'},
-  {'color': CustomColor.purple, 'name': 'Đang xử lý'},
-  {'color': CustomColor.blue, 'name': 'Đã được xử lý'},
-  {'color': CustomColor.blue, 'name': 'Đang vận chuyển'},
+  {'color': CustomColor.purple, 'name': 'Đang vận chuyển'},
   {'color': CustomColor.green, 'name': 'Đã về kho'},
   {'color': CustomColor.red, 'name': 'Đã hết hạn'},
   {'color': CustomColor.green, 'name': 'Đã hoàn tất'},
@@ -83,16 +81,17 @@ const LIST_STATUS_ORDER = [
 ];
 
 const LIST_ICON_REQUEST = [
-  {'name': 'assets/images/invoice.png'},
-  {'name': 'assets/images/invoice.png'},
   {'name': 'assets/images/truck1.png'},
+  {'name': 'assets/images/invoice.png'},
+  {'name': 'assets/images/invoice.png'},
   {'name': 'assets/images/error1.png'},
+  {'name': 'assets/images/truck1.png'},
 ];
 
 const LIST_STATUS_REQUEST = [
   {'name': 'Đã hủy'},
   {'name': 'Đang xử lý'},
-  {'name': 'Hoàn thành'},
+  {'name': 'Đã xử lý'},
 ];
 
 const LIST_TYPE_REQUEST = [

@@ -182,13 +182,13 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
 
   @override
   void onClickUpdateOrder() async {
-    if (widget.isView == null) {
-      sendNoti();
-    } else if (widget.isScanQR == true && widget.isView == true) {
-      doneOrder();
-    } else if (widget.isScanQR == null && widget.isView == true) {
-      updateOrder();
-    }
+    // if (widget.isView == false) {
+    //   sendNoti();
+    // } else if (widget.isScanQR == true && widget.isView == true) {
+    //   doneOrder();
+    // } else if (widget.isScanQR == null && widget.isView == true) {
+    updateOrder();
+    // }
   }
 
   List<AddtionCost> buildListAdditionCost() {
@@ -427,7 +427,7 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                     Checkbox(
                         fillColor: MaterialStateProperty.all(CustomColor.blue),
                         value: _model.isAdditionFee,
-                        onChanged: widget.isView == null
+                        onChanged: widget.isView == false
                             ? (value) {
                                 setState(() {
                                   _model.isAdditionFee = value;
@@ -481,7 +481,7 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                     Checkbox(
                         fillColor: MaterialStateProperty.all(CustomColor.blue),
                         value: _model.getIsPaid,
-                        onChanged: widget.isView == null
+                        onChanged: widget.isView == false
                             ? (value) {
                                 setState(() {
                                   _model.setIsPaid = value;

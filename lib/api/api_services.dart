@@ -305,7 +305,26 @@ class ApiServices {
         "Content-type": "application/json",
         'Authorization': 'Bearer ${user.idToken}'
       };
-
+      print({
+        "isPaid": orderBooking.isPaid,
+        "isCustomerDelivery": orderBooking.isCustomerDelivery,
+        "orderId": null,
+        "totalPrice": 0,
+        "customerId": user.userId,
+        "deliveryAddress": orderBooking.addressDelivery,
+        "returnDate": orderBooking.dateTimeReturn.toIso8601String(),
+        "returnAddress": orderBooking.addressReturn,
+        "deliveryTime": orderBooking.currentSelectTime != -1
+            ? constants.LIST_TIME_PICK_UP[orderBooking.currentSelectTime]
+            : '',
+        "deliveryDate": orderBooking.dateTimeDelivery.toIso8601String(),
+        "type": 1,
+        "typeOrder": orderBooking.typeOrder == TypeOrder.selfStorage
+            ? constants.SELF_STORAGE_TYPE_ORDER
+            : constants.DOOR_TO_DOOR_TYPE_ORDER,
+        "note": orderBooking.note,
+        "requestDetails": listProduct
+      });
       final url = Uri.parse('$_domain/api/v1/requests');
       return http.post(
         url,
@@ -314,6 +333,7 @@ class ApiServices {
           "isCustomerDelivery": orderBooking.isCustomerDelivery,
           "orderId": null,
           "totalPrice": 0,
+          "customerId": user.userId,
           "deliveryAddress": orderBooking.addressDelivery,
           "returnDate": orderBooking.dateTimeReturn.toIso8601String(),
           "returnAddress": orderBooking.addressReturn,

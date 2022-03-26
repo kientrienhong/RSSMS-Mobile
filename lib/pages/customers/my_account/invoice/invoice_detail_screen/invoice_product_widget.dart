@@ -69,7 +69,6 @@ class InvoiceProductWidget extends StatelessWidget {
     if (invoice!.additionFee != null) {
       additionalFee = invoice!.additionFee!;
     }
-
     return Container(
       decoration:
           BoxDecoration(border: Border.all(color: CustomColor.blue, width: 2)),

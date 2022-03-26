@@ -167,7 +167,7 @@ class Invoice with ChangeNotifier {
       addressReturn: map['addressReturn'] ?? '',
       totalPrice: map['totalPrice']?.toInt() ?? 0,
       rejectedReason: map['rejectedReason'] ?? '',
-      typeOrder: map['typeOrder']?.toInt() ?? 0,
+      typeOrder: map['type']?.toInt() ?? 0,
       isUserDelivery: map['isUserDelivery'] ?? false,
       deliveryDate: map['deliveryDate'] ?? '',
       deliveryTime: map['deliveryTime'] ?? '',

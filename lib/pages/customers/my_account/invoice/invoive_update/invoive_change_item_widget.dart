@@ -94,7 +94,7 @@ class _ChangeItemWidgetState extends State<ChangeItemWidget>
       "returnAddress": _model.controllerStreet.text,
       "returnTime": constants.LIST_TIME_PICK_UP[_currentIndex],
       "returnDate": DateTime.parse(date![2] + "-" + date[1] + '-' + date[0]),
-      "type": 2
+      "type": 4
     };
     bool result = await _presenter.createRequest(request, users);
     if (result) {

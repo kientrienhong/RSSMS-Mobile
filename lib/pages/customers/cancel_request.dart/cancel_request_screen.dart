@@ -53,7 +53,8 @@ class _InvoiceCancelScreenState extends State<InvoiceCancelScreen>
     Users users = Provider.of<Users>(context, listen: false);
     Map<String, dynamic> cancelRequest = {
       "cancelReason": _model.controllerReason.text,
-      "id": widget.invoice.id
+      "id": widget.invoice.id,
+      'type': constants.REQUEST_TYPE_CANCEL_ORDER
     };
     bool result = await _presenter.createRequest(cancelRequest, users);
     if (result) {

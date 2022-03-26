@@ -87,8 +87,9 @@ class InvoiceDetailsScreen extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        UpdateInvoiceScreen()),
+                                    builder: (context) => UpdateInvoiceScreen(
+                                          isView: false,
+                                        )),
                               );
                             },
                             width: deviceSize.width / 2.5,

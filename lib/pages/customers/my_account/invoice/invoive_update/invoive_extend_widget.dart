@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_bottom_navigation.dart';
 import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
+import 'package:rssms/common/custom_input_date.dart';
 import 'package:rssms/common/custom_radio_button.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_snack_bar.dart';
@@ -97,12 +98,21 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
   @override
   void onClickPayment() async {
     try {
+      if (widget.invoice!.typeOrder == constants.DOOR_TO_DOOR_TYPE_ORDER &&
+          _model.dateExtensionString.isEmpty) {
+        updateError('Vui lòng chọn ngày muốn gia hạn');
+        return;
+      }
+
       Map<String, dynamic> extendInvoice = {
         "oldReturnDate": returnDateOld,
-        "newReturnDate": returnDateNew,
-        "cancelDay": returnDateNew,
+        "newReturnDate":
+            widget.invoice!.typeOrder == constants.DOOR_TO_DOOR_TYPE_ORDER
+                ? _model.dateExtension!.toIso8601String()
+                : returnDateNew,
+        // "cancelDay": returnDateNew,
         "orderId": widget.invoice!.id,
-        "type": 1,
+        "type": 2,
         "status": 1,
         "note": "",
         "totalProduct": totalProduct * durationMonth!
@@ -168,6 +178,37 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
   }
 
   @override
+  void updateError(String error) {
+    setState(() {
+      _model.error = error;
+    });
+  }
+
+  @override
+  void onClickChangeDate() async {
+    DateTime? date = DateTime(1900);
+    // FocusScope.of(context).requestFocus(FocusNode());
+    date = await showDatePicker(
+      context: context,
+      initialDate: DateFormat("yyyy-MM-dd")
+          .parse(widget.invoice!.returnDate.split('T')[0]),
+      firstDate: DateFormat("yyyy-MM-dd")
+          .parse(widget.invoice!.returnDate.split('T')[0]),
+      lastDate: DateTime(2100),
+    );
+    if (date != null) {
+      DateTime dateStart = DateFormat("yyyy-MM-dd")
+          .parse(widget.invoice!.returnDate.split('T')[0]);
+
+      setState(() {
+        _model.dateExtensionString = DateFormat("dd/MM/yyyy").format(date!);
+        _model.dateExtension = date;
+        durationMonth = (date.difference(dateStart).inDays / 30).ceil();
+      });
+    }
+  }
+
+  @override
   void updateLoading() {
     setState(() {
       _model.isLoading = !_model.isLoading;
@@ -177,7 +218,6 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
-    print(returnDateNew!.difference(returnDateOld!).inDays);
     return Column(
       children: [
         Container(
@@ -270,24 +310,69 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
                       context: context,
                       height: 16,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        CustomText(
-                            text: "Số tháng muốn gia hạn",
-                            color: Colors.black,
-                            context: context,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16),
-                        QuantityWidgetCustom(
-                          quantity: durationMonth,
-                          width: deviceSize.width / 10,
-                          addQuantity: () => onAddQuantity(),
-                          minusQuantity: () => onMinusQuantity(),
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        ),
-                      ],
-                    ),
+                    widget.invoice!.typeOrder ==
+                            constants.DOOR_TO_DOOR_TYPE_ORDER
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              CustomText(
+                                  text: "Số ngày muốn gia hạn",
+                                  color: Colors.black,
+                                  context: context,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16),
+                              GestureDetector(
+                                onTap: () {
+                                  onClickChangeDate();
+                                },
+                                child: Row(
+                                  children: [
+                                    CustomText(
+                                        text: _model.dateExtension != null
+                                            ? _model.dateExtension!
+                                                    .difference(
+                                                        DateFormat("yyyy-MM-dd")
+                                                            .parse(widget
+                                                                .invoice!
+                                                                .returnDate
+                                                                .split('T')[0]))
+                                                    .inDays
+                                                    .toString() +
+                                                ' ngày '
+                                            : '0 ngày',
+                                        color: CustomColor.blue,
+                                        context: context,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16),
+                                    CustomSizedBox(
+                                      context: context,
+                                      width: 8,
+                                    ),
+                                    Image.asset('assets/images/calendar.png'),
+                                  ],
+                                ),
+                              )
+                            ],
+                          )
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              CustomText(
+                                  text: "Số tháng muốn gia hạn",
+                                  color: Colors.black,
+                                  context: context,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16),
+                              QuantityWidgetCustom(
+                                quantity: durationMonth,
+                                width: deviceSize.width / 10,
+                                addQuantity: () => onAddQuantity(),
+                                minusQuantity: () => onMinusQuantity(),
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                              ),
+                            ],
+                          ),
                     CustomSizedBox(
                       context: context,
                       height: 6,
@@ -303,7 +388,7 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         CustomText(
-                            text: "Tổng tiền thuê kho",
+                            text: "Tổng tiền",
                             color: Colors.black,
                             context: context,
                             fontWeight: FontWeight.bold,
@@ -330,14 +415,15 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   CustomText(
-                      text: "Ngày trả kho",
+                      text: "Ngày kết thúc",
                       color: Colors.black,
                       context: context,
                       fontWeight: FontWeight.bold,
                       fontSize: 18),
                   CustomText(
-                      text: widget.invoice!.returnDate.substring(
-                          0, widget.invoice!.returnDate.indexOf("T")),
+                      text: DateFormat("dd/MM/yyyy").format(
+                          DateFormat("yyyy-MM-dd")
+                              .parse(widget.invoice!.returnDate)),
                       color: CustomColor.black,
                       context: context,
                       fontWeight: FontWeight.bold,
@@ -354,7 +440,7 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
                   SizedBox(
                     width: deviceSize.width * 1.3 / 3,
                     child: CustomText(
-                      text: "Ngày trả kho sau khi gia hạn",
+                      text: "Ngày kết thúc sau khi gia hạn",
                       color: CustomColor.black,
                       context: context,
                       fontWeight: FontWeight.bold,
@@ -363,14 +449,22 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
                       textOverflow: TextOverflow.ellipsis,
                     ),
                   ),
-                  CustomText(
-                      text: returnDateNew
-                          .toString()
-                          .substring(0, returnDateNew.toString().indexOf(" ")),
-                      color: CustomColor.black,
-                      context: context,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18),
+                  widget.invoice!.typeOrder == constants.DOOR_TO_DOOR_TYPE_ORDER
+                      ? CustomText(
+                          text: _model.dateExtensionString.isEmpty
+                              ? 'Chưa có'
+                              : _model.dateExtensionString,
+                          color: CustomColor.black,
+                          context: context,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18)
+                      : CustomText(
+                          text: returnDateNew.toString().substring(
+                              0, returnDateNew.toString().indexOf(" ")),
+                          color: CustomColor.black,
+                          context: context,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18),
                 ],
               ),
               CustomSizedBox(
@@ -426,6 +520,19 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
           context: context,
           height: 14,
         ),
+        if (_model.error.isNotEmpty)
+          Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
+            CustomText(
+                text: _model.error,
+                color: CustomColor.red,
+                context: context,
+                fontWeight: FontWeight.bold,
+                fontSize: 16),
+            CustomSizedBox(
+              context: context,
+              height: 8,
+            )
+          ]),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: CustomButton(

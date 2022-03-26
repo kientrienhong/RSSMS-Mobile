@@ -32,6 +32,8 @@ class CreateOrderRequestPresenter {
     return Invoice(
       id: map['id'] ?? '',
       name: map['name'] ?? '',
+      additionFee: 0,
+      additionFeeDescription: '',
       customerName: map['customerName'] ?? '',
       customerPhone: map['customerPhone'] ?? '',
       deliveryAddress: map['deliveryAddress'] ?? '',

@@ -17,7 +17,7 @@ class SendRequestScreen extends StatefulWidget {
   SendRequestScreenState createState() => SendRequestScreenState();
 }
 
-enum CurrentRadioState { extendOrder, modifyItem, cancelOrder }
+enum CurrentRadioState { extendOrder, modifyItem }
 
 class SendRequestScreenState extends State<SendRequestScreen> {
   CurrentRadioState? _state = CurrentRadioState.extendOrder;
@@ -96,18 +96,6 @@ class SendRequestScreenState extends State<SendRequestScreen> {
                         : CustomColor.white,
                     state: _state,
                     value: CurrentRadioState.modifyItem),
-              CustomRadioButton(
-                  function: () {
-                    setState(() {
-                      _state = CurrentRadioState.cancelOrder;
-                    });
-                  },
-                  text: "Hủy đơn",
-                  color: _state == CurrentRadioState.cancelOrder
-                      ? CustomColor.blue
-                      : CustomColor.white,
-                  state: _state,
-                  value: CurrentRadioState.cancelOrder),
               const SizedBox(
                 child: Divider(color: CustomColor.black, thickness: 0.5),
               ),
@@ -123,10 +111,6 @@ class SendRequestScreenState extends State<SendRequestScreen> {
                 ChangeItemWidget(
                   invoice: widget.invoice,
                 ),
-              if (_state == CurrentRadioState.cancelOrder)
-                InvoiceCancelWidget(
-                  invoice: widget.invoice,
-                )
             ],
           ),
         ),
