@@ -155,7 +155,6 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
   void updateOrder() async {
     try {
       Invoice invoice = Provider.of<Invoice>(context, listen: false);
-
       Users user = Provider.of<Users>(context, listen: false);
       var response = await _presenter.updateOrder(user, invoice);
       if (response == true) {

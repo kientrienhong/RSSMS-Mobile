@@ -20,8 +20,6 @@ class InvoiceTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final test = invoice;
-    final tests;
     return Column(
       children: [
         CustomText(
@@ -60,7 +58,7 @@ class InvoiceTab extends StatelessWidget {
                 width: double.infinity,
                 child: Center(
                   child: QrImage(
-                    data: invoice!.id,
+                    data: invoice!.requestId!,
                     size: 88.0,
                     gapless: true,
                     version: 4,

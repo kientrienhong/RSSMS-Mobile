@@ -116,6 +116,7 @@ class InvoiceUpdatePresenter {
 
     return {
       "customerId": "c3bb1c0f-0021-4624-ac51-bef0da994eaf",
+      "requestId": invoice.id,
       "deliveryAddress": invoice.deliveryAddress,
       "returnAddress": invoice.addressReturn,
       "totalPrice": price,

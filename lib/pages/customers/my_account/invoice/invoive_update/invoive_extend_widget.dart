@@ -108,7 +108,7 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
         "oldReturnDate": returnDateOld,
         "newReturnDate":
             widget.invoice!.typeOrder == constants.DOOR_TO_DOOR_TYPE_ORDER
-                ? _model.dateExtension!.toIso8601String()
+                ? _model.dateExtension
                 : returnDateNew,
         // "cancelDay": returnDateNew,
         "orderId": widget.invoice!.id,
@@ -120,7 +120,7 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
       Users users = Provider.of<Users>(context, listen: false);
       if (_model.currentIndexPaymentMethod == PaymentMethod.tienmat) {
         bool isSuccess = await _presenter.createRequest(
-            extendInvoice, users, widget.invoice!);
+            {...extendInvoice, "isPaid": false}, users, widget.invoice!);
         if (isSuccess) {
           CustomSnackBar.buildErrorSnackbar(
               context: context,
@@ -150,7 +150,7 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
         BraintreeDropInResult? result = await BraintreeDropIn.start(request);
         if (result != null) {
           bool isSuccess = await _presenter.createRequest(
-              extendInvoice, users, widget.invoice!);
+              {...extendInvoice, "isPaid": true}, users, widget.invoice!);
 
           if (isSuccess) {
             CustomSnackBar.buildErrorSnackbar(

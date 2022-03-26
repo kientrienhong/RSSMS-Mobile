@@ -12,8 +12,10 @@ class Invoice with ChangeNotifier {
   late String addressReturn;
   late String? additionFeeDescription;
   late int? additionFee;
+  late String? orderId;
   late int totalPrice;
   late String rejectedReason;
+  String? requestId;
   late int typeOrder;
   late String name;
   late bool isUserDelivery;
@@ -37,6 +39,7 @@ class Invoice with ChangeNotifier {
     required this.rejectedReason,
     required this.typeOrder,
     required this.isUserDelivery,
+    this.orderId,
     required this.deliveryDate,
     required this.deliveryTime,
     this.additionFee,
@@ -47,6 +50,7 @@ class Invoice with ChangeNotifier {
     required this.durationDays,
     required this.durationMonths,
     required this.name,
+    this.requestId,
     required this.status,
     required this.isPaid,
     required this.orderDetails,
@@ -62,11 +66,13 @@ class Invoice with ChangeNotifier {
     totalPrice = -1;
     rejectedReason = '';
     typeOrder = -1;
+    orderId = '';
     isUserDelivery = false;
     deliveryDate = '';
     deliveryTime = '';
     returnDate = '';
     returnTime = '';
+    requestId = '';
     paymentMethod = -1;
     durationDays = -1;
     durationMonths = -1;
@@ -93,8 +99,10 @@ class Invoice with ChangeNotifier {
     String? returnTime,
     int? paymentMethod,
     int? durationDays,
+    String? orderId,
     int? durationMonths,
     String? name,
+    String? requestId,
     int? status,
     bool? isPaid,
     List<OrderDetail>? orderDetails,
@@ -114,6 +122,8 @@ class Invoice with ChangeNotifier {
       totalPrice: totalPrice ?? this.totalPrice,
       rejectedReason: rejectedReason ?? this.rejectedReason,
       typeOrder: typeOrder ?? this.typeOrder,
+      requestId: requestId ?? this.requestId,
+      orderId: orderId ?? this.orderId,
       isUserDelivery: isUserDelivery ?? this.isUserDelivery,
       deliveryDate: deliveryDate ?? this.deliveryDate,
       deliveryTime: deliveryTime ?? this.deliveryTime,
@@ -143,7 +153,9 @@ class Invoice with ChangeNotifier {
       'deliveryTime': deliveryTime,
       'returnDate': returnDate,
       'returnTime': returnTime,
+      'requestId': requestId,
       "additionalFee": additionFee,
+      'orderId': orderId,
       "additionalFeeDescription": additionFeeDescription,
       'Name': name,
       'paymentMethod': paymentMethod,
@@ -164,8 +176,10 @@ class Invoice with ChangeNotifier {
       additionFee: map['additionalFee']?.toInt() ?? 0,
       additionFeeDescription: map['additionalFeeDescription'] ?? '',
       deliveryAddress: map['deliveryAddress'] ?? '',
+      orderId: map['id'] ?? '',
       addressReturn: map['addressReturn'] ?? '',
       totalPrice: map['totalPrice']?.toInt() ?? 0,
+      requestId: map['requestId'] ?? '',
       rejectedReason: map['rejectedReason'] ?? '',
       typeOrder: map['type']?.toInt() ?? 0,
       isUserDelivery: map['isUserDelivery'] ?? false,
@@ -197,9 +211,11 @@ class Invoice with ChangeNotifier {
       addressReturn: map['returnAddress'] ?? '',
       totalPrice: map['totalPrice']?.toInt() ?? 0,
       rejectedReason: map['rejectedReason'] ?? '',
+      orderId: map['orderId'] ?? '',
       typeOrder: map['typeOrder']?.toInt() ?? 0,
       isUserDelivery: map['isUserDelivery'] ?? false,
       deliveryDate: map['deliveryDate'] ?? '',
+      requestId: map['id'] ?? '',
       deliveryTime: map['deliveryTime'] ?? '',
       returnDate: map['returnDate'] ?? '',
       returnTime: map['returnTime'] ?? '',
@@ -227,6 +243,8 @@ class Invoice with ChangeNotifier {
     typeOrder = invoice.typeOrder;
     isUserDelivery = invoice.isUserDelivery;
     deliveryDate = invoice.deliveryDate;
+    requestId = invoice.requestId;
+    orderId = invoice.orderId;
     deliveryTime = invoice.deliveryTime;
     returnDate = invoice.returnDate;
     returnTime = invoice.returnTime;
