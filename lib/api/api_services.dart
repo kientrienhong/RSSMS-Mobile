@@ -275,17 +275,7 @@ class ApiServices {
         "Content-type": "application/json",
         'Authorization': 'Bearer ${user.idToken}'
       };
-      final test = {
-        "orderId": extendInvoice["orderId"],
-        "totalPrice": extendInvoice["totalPrice"],
-        "oldReturnDate": extendInvoice["oldReturnDate"].toIso8601String(),
-        "returnDate": extendInvoice["newReturnDate"].toIso8601String(),
-        "isPaid": extendInvoice['isPaid'],
-        // "cancelDay": extendInvoice["oldReturnDate"].toIso8601String(),
-        "type": extendInvoice["type"],
-        "status": extendInvoice["status"],
-        "note": extendInvoice["note"],
-      };
+
       final url = Uri.parse('$_domain/api/v1/requests');
       return http.post(
         url,

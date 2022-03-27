@@ -29,6 +29,7 @@ class Invoice with ChangeNotifier {
   late int status;
   late bool isPaid;
   late List<OrderDetail> orderDetails;
+  late List<Map<String, dynamic>>? listRequests;
   Invoice({
     required this.id,
     required this.customerName,
@@ -51,6 +52,7 @@ class Invoice with ChangeNotifier {
     required this.durationMonths,
     required this.name,
     this.requestId,
+    this.listRequests,
     required this.status,
     required this.isPaid,
     required this.orderDetails,
@@ -79,6 +81,7 @@ class Invoice with ChangeNotifier {
     status = -1;
     isPaid = false;
     orderDetails = [];
+    listRequests = [];
     additionFeeDescription = '';
     additionFee = 0;
   }
@@ -106,36 +109,37 @@ class Invoice with ChangeNotifier {
     int? status,
     bool? isPaid,
     List<OrderDetail>? orderDetails,
+    List<Map<String, dynamic>>? listRequests,
     String? additionFeeDescription,
     int? additionFee,
   }) {
     return Invoice(
-      id: id ?? this.id,
-      additionFee: additionFee ?? this.additionFee,
-      additionFeeDescription:
-          additionFeeDescription ?? this.additionFeeDescription,
-      name: name ?? this.name,
-      customerName: customerName ?? this.customerName,
-      customerPhone: customerPhone ?? this.customerPhone,
-      deliveryAddress: deliveryAddress ?? this.deliveryAddress,
-      addressReturn: addressReturn ?? this.addressReturn,
-      totalPrice: totalPrice ?? this.totalPrice,
-      rejectedReason: rejectedReason ?? this.rejectedReason,
-      typeOrder: typeOrder ?? this.typeOrder,
-      requestId: requestId ?? this.requestId,
-      orderId: orderId ?? this.orderId,
-      isUserDelivery: isUserDelivery ?? this.isUserDelivery,
-      deliveryDate: deliveryDate ?? this.deliveryDate,
-      deliveryTime: deliveryTime ?? this.deliveryTime,
-      returnDate: returnDate ?? this.returnDate,
-      returnTime: returnTime ?? this.returnTime,
-      paymentMethod: paymentMethod ?? this.paymentMethod,
-      durationDays: durationDays ?? this.durationDays,
-      durationMonths: durationMonths ?? this.durationMonths,
-      status: status ?? this.status,
-      isPaid: isPaid ?? this.isPaid,
-      orderDetails: orderDetails ?? this.orderDetails,
-    );
+        id: id ?? this.id,
+        additionFee: additionFee ?? this.additionFee,
+        additionFeeDescription:
+            additionFeeDescription ?? this.additionFeeDescription,
+        name: name ?? this.name,
+        customerName: customerName ?? this.customerName,
+        customerPhone: customerPhone ?? this.customerPhone,
+        deliveryAddress: deliveryAddress ?? this.deliveryAddress,
+        addressReturn: addressReturn ?? this.addressReturn,
+        totalPrice: totalPrice ?? this.totalPrice,
+        rejectedReason: rejectedReason ?? this.rejectedReason,
+        typeOrder: typeOrder ?? this.typeOrder,
+        requestId: requestId ?? this.requestId,
+        orderId: orderId ?? this.orderId,
+        isUserDelivery: isUserDelivery ?? this.isUserDelivery,
+        deliveryDate: deliveryDate ?? this.deliveryDate,
+        deliveryTime: deliveryTime ?? this.deliveryTime,
+        returnDate: returnDate ?? this.returnDate,
+        returnTime: returnTime ?? this.returnTime,
+        paymentMethod: paymentMethod ?? this.paymentMethod,
+        durationDays: durationDays ?? this.durationDays,
+        durationMonths: durationMonths ?? this.durationMonths,
+        status: status ?? this.status,
+        isPaid: isPaid ?? this.isPaid,
+        orderDetails: orderDetails ?? this.orderDetails,
+        listRequests: listRequests ?? this.listRequests);
   }
 
   Map<String, dynamic> toMap() {
@@ -168,6 +172,17 @@ class Invoice with ChangeNotifier {
   }
 
   factory Invoice.fromMap(Map<String, dynamic> map) {
+    String requestIdFound = '';
+    if (map['requests'] != null) {
+      if (map['requests'].length > 0) {
+        map['requests'].forEach((e) {
+          if (e['type'] == 1) {
+            requestIdFound = e['id'];
+          }
+        });
+      }
+    }
+
     return Invoice(
       id: map['id'] ?? '',
       name: map['name'] ?? '',
@@ -179,7 +194,7 @@ class Invoice with ChangeNotifier {
       orderId: map['id'] ?? '',
       addressReturn: map['addressReturn'] ?? '',
       totalPrice: map['totalPrice']?.toInt() ?? 0,
-      requestId: map['requestId'] ?? '',
+      requestId: requestIdFound,
       rejectedReason: map['rejectedReason'] ?? '',
       typeOrder: map['type']?.toInt() ?? 0,
       isUserDelivery: map['isUserDelivery'] ?? false,
@@ -189,6 +204,7 @@ class Invoice with ChangeNotifier {
       returnTime: map['returnTime'] ?? '',
       paymentMethod: map['paymentMethod']?.toInt() ?? 0,
       durationDays: map['durationDays']?.toInt() ?? 0,
+      listRequests: map['requests'] ?? [],
       durationMonths: map['durationMonths']?.toInt() ?? 0,
       status: map['status']?.toInt() ?? 0,
       isPaid: map['isPaid'] ?? false,
@@ -207,6 +223,7 @@ class Invoice with ChangeNotifier {
       customerPhone: map['customerPhone'] ?? '',
       deliveryAddress: map['deliveryAddress'] ?? '',
       additionFee: 0,
+      listRequests: map['requests'] ?? [],
       additionFeeDescription: '',
       addressReturn: map['returnAddress'] ?? '',
       totalPrice: map['totalPrice']?.toInt() ?? 0,
@@ -256,7 +273,7 @@ class Invoice with ChangeNotifier {
     orderDetails = invoice.orderDetails;
     additionFee = invoice.additionFee;
     additionFeeDescription = invoice.additionFeeDescription;
-
+    listRequests = invoice.listRequests;
     notifyListeners();
   }
 
