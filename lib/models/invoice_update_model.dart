@@ -32,9 +32,12 @@ class InvoiceUpdateModel {
     _isDisableUpdateInvoice = true;
     _isLoadingUpdateInvoice = false;
     _isPaid = invoice.isPaid;
-    _controllerAdditionFeeDescription = TextEditingController();
-    _controllerAdditionFeePrice = TextEditingController();
-    _isAdditionFee = false;
+
+    _isAdditionFee = invoice.additionFee == 0 ? false : true;
+    _controllerAdditionFeeDescription =
+        TextEditingController(text: invoice.additionFeeDescription);
+    _controllerAdditionFeePrice =
+        TextEditingController(text: invoice.additionFee.toString());
     _controllerFullname = TextEditingController(text: invoice.customerName);
     _controllerPhone = TextEditingController(text: invoice.customerPhone);
     switch (invoice.status) {

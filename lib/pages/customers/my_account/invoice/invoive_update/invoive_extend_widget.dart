@@ -115,12 +115,22 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
         "type": 2,
         "status": 1,
         "note": "",
-        "totalProduct": totalProduct * durationMonth!
+        "totalPrice": totalProduct * durationMonth!
       };
       Users users = Provider.of<Users>(context, listen: false);
-      if (_model.currentIndexPaymentMethod == PaymentMethod.tienmat) {
+
+      var request = BraintreeDropInRequest(
+          tokenizationKey: 'sandbox_x62jjpjk_n5rdrcwx7kv3ppb7',
+          collectDeviceData: true,
+          paypalRequest: BraintreePayPalRequest(
+              currencyCode: 'VND',
+              amount: (totalProduct * durationMonth!).toString(),
+              displayName: users.name));
+      BraintreeDropInResult? result = await BraintreeDropIn.start(request);
+      if (result != null) {
         bool isSuccess = await _presenter.createRequest(
-            {...extendInvoice, "isPaid": false}, users, widget.invoice!);
+            {...extendInvoice, "isPaid": true}, users, widget.invoice!);
+
         if (isSuccess) {
           CustomSnackBar.buildErrorSnackbar(
               context: context,
@@ -138,38 +148,6 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
                             constants.LIST_CUSTOMER_BOTTOM_NAVIGATION,
                       )),
               (Route<dynamic> route) => false);
-        }
-      } else if (_model.currentIndexPaymentMethod == PaymentMethod.mbanking) {
-        var request = BraintreeDropInRequest(
-            tokenizationKey: 'sandbox_x62jjpjk_n5rdrcwx7kv3ppb7',
-            collectDeviceData: true,
-            paypalRequest: BraintreePayPalRequest(
-                currencyCode: 'VND',
-                amount: (totalProduct * durationMonth!).toString(),
-                displayName: users.name));
-        BraintreeDropInResult? result = await BraintreeDropIn.start(request);
-        if (result != null) {
-          bool isSuccess = await _presenter.createRequest(
-              {...extendInvoice, "isPaid": true}, users, widget.invoice!);
-
-          if (isSuccess) {
-            CustomSnackBar.buildErrorSnackbar(
-                context: context,
-                message: 'Gia hạn đơn hàng thành công',
-                color: CustomColor.green);
-            Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(
-                    builder: (context) => const CustomBottomNavigation(
-                          listIndexStack: [
-                            MyAccountScreen(),
-                            CartScreen(),
-                            NotificationDeliveryScreen(),
-                          ],
-                          listNavigator:
-                              constants.LIST_CUSTOMER_BOTTOM_NAVIGATION,
-                        )),
-                (Route<dynamic> route) => false);
-          }
         }
       }
     } catch (e) {
@@ -484,42 +462,26 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
             ],
           ),
         ),
-        SizedBox(
-          child: Column(
-            children: [
-              CustomRadioButton(
-                  function: () {
-                    setState(() {
-                      _model.currentIndexPaymentMethod = PaymentMethod.tienmat;
-                    });
-                  },
-                  text: "Thanh toán tiền mặt",
-                  color:
-                      _model.currentIndexPaymentMethod == PaymentMethod.tienmat
-                          ? CustomColor.blue
-                          : CustomColor.white,
-                  state: PaymentMethod.tienmat,
-                  value: _model.currentIndexPaymentMethod),
-              CustomRadioButton(
-                  function: () {
-                    setState(() {
-                      _model.currentIndexPaymentMethod = PaymentMethod.mbanking;
-                    });
-                  },
-                  text: "Thanh toán thông qua paypal",
-                  color:
-                      _model.currentIndexPaymentMethod == PaymentMethod.mbanking
-                          ? CustomColor.blue
-                          : CustomColor.white,
-                  state: PaymentMethod.mbanking,
-                  value: _model.currentIndexPaymentMethod),
-            ],
-          ),
-        ),
+
         CustomSizedBox(
           context: context,
           height: 14,
         ),
+
+        CustomText(
+            text:
+                'Lưu ý: Yêu cầu gia hạn hơn, chúng tôi chỉ nhận thanh toán chuyển khoản',
+            color: CustomColor.blue,
+            context: context,
+            maxLines: 2,
+            fontWeight: FontWeight.bold,
+            fontSize: 16),
+
+        CustomSizedBox(
+          context: context,
+          height: 14,
+        ),
+
         if (_model.error.isNotEmpty)
           Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
             CustomText(
@@ -533,20 +495,45 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
               height: 8,
             )
           ]),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: CustomButton(
-              height: 24,
-              isLoading: _model.isLoading,
-              text: 'Thanh toán',
-              textColor: CustomColor.white,
-              onPressFunction: () {
-                onClickPayment();
-              },
-              width: deviceSize.width,
-              buttonColor: CustomColor.blue,
-              borderRadius: 6),
-        ),
+        GestureDetector(
+          onTap: () {
+            onClickPayment();
+          },
+          child: Container(
+            width: double.infinity,
+            height: 40,
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            decoration: BoxDecoration(
+              color: CustomColor.lightBlue,
+              borderRadius: BorderRadius.circular(4),
+            ),
+            child: _model.isLoading
+                ? const SizedBox(
+                    height: 16,
+                    width: 16,
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                    ),
+                  )
+                : Center(
+                    child: SizedBox(
+                        height: 40,
+                        child: Image.asset('assets/images/paypal.png'))),
+          ),
+        )
+        // Container(
+        //   child: CustomButton(
+        //       height: 24,
+        //       isLoading: _model.isLoading,
+        //       text: 'Thanh toán',
+        //       textColor: CustomColor.white,
+        //       onPressFunction: () {
+        //         onClickPayment();
+        //       },
+        //       width: deviceSize.width,
+        //       buttonColor: CustomColor.blue,
+        //       borderRadius: 6),
+        // ),
       ],
     );
   }

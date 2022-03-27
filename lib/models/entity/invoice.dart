@@ -256,6 +256,7 @@ class Invoice with ChangeNotifier {
     orderDetails = invoice.orderDetails;
     additionFee = invoice.additionFee;
     additionFeeDescription = invoice.additionFeeDescription;
+
     notifyListeners();
   }
 

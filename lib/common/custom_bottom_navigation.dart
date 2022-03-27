@@ -34,16 +34,14 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation>
       // print(json.decode(payload!));
       final test = json.decode(payload!);
       final data = json.decode(test['data']);
-      Map valueMap = jsonDecode(payload);
-      final zxc;
-      // Invoice invoiceTemp = Invoice.fromJson(json.decode(payload!)['data']);
-      // invoice.setInvoice(invoice: invoiceTemp);
-      // Navigator.push(
-      //     context,
-      //     MaterialPageRoute(
-      //         builder: (context) => UpdateInvoiceScreen(
-      //               isView: true,
-      //             )));
+      Invoice invoiceTemp = Invoice.fromMap(json.decode(test['data']));
+      invoice.setInvoice(invoice: invoiceTemp);
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => UpdateInvoiceScreen(
+                    isView: true,
+                  )));
     } catch (e) {
       print(e);
     }

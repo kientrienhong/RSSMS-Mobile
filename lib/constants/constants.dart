@@ -92,6 +92,7 @@ const LIST_STATUS_REQUEST = [
   {'name': 'Đã hủy'},
   {'name': 'Đang xử lý'},
   {'name': 'Đã xử lý'},
+  {'name': 'Hoàn thành'},
 ];
 
 const LIST_TYPE_REQUEST = [

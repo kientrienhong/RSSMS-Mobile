@@ -59,7 +59,7 @@ class InvoiceUpdatePresenter {
   }
 
   Future<Map<String, dynamic>> formatData(Invoice invoice) async {
-    invoice = invoice.copyWith(status: 3);
+    invoice = invoice.copyWith();
 
     double price = 0;
 
@@ -71,7 +71,7 @@ class InvoiceUpdatePresenter {
       }
 
       element.listAdditionService!.forEach((ele1) {
-        if (element.productType == ACCESSORY || element.productType == SERVICES)
+        if (ele1.type == ACCESSORY || ele1.type == SERVICES)
           price += ele1.price * ele1.quantity!;
       });
     });

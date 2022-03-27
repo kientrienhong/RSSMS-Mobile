@@ -136,7 +136,7 @@ class InvoiceProductWidget extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     fontSize: 16),
                 CustomText(
-                    text: oCcy.format(totalProduct),
+                    text: oCcy.format(totalProduct) + ' đ',
                     color: Colors.black,
                     context: context,
                     fontWeight: FontWeight.bold,
@@ -378,9 +378,8 @@ class InvoiceProductWidget extends StatelessWidget {
                   children: [
                     CustomText(
                         text: additionalDescription,
-                        color: CustomColor.blue,
+                        color: CustomColor.black,
                         context: context,
-                        fontWeight: FontWeight.bold,
                         fontSize: 16),
                     CustomText(
                         text: oCcy.format(additionalFee) + " đ",

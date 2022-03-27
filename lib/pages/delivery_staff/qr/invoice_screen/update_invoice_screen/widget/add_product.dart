@@ -61,6 +61,7 @@ class AddProduct extends StatelessWidget {
         int indexFound = invoiceTemp.orderDetails[index].listAdditionService!
             .indexWhere((element) => element.id == product.id);
         if (indexFound == -1) {
+          final tset = product;
           invoiceTemp.orderDetails[index].listAdditionService!
               .add(product.copyWith(quantity: 1));
         } else {
