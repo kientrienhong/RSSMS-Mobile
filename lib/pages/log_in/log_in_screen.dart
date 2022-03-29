@@ -202,13 +202,16 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
   }
 
   void firebaseCloudMessagingListeners() {
-    _firebaseMessaging.getToken().then((token) {
-      _model.deviceToken = token!;
-    });
-
+    try {
+      _firebaseMessaging.getToken().then((token) {
+        _model.deviceToken = token!;
+      });
+    } catch (e) {
+      print(e);
+    }
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      // RemoteNotification notification = message.notification!;
-      // AndroidNotification? android = message.notification?.android;
+      RemoteNotification notification = message.notification!;
+      AndroidNotification? android = message.notification?.android;
     });
   }
 

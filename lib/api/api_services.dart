@@ -41,7 +41,7 @@ class ApiServices {
   }
 
   static Future<dynamic> signUp(
-      Users user, String password, String deviceToken) {
+      Users user, String password, String deviceToken, String roleId) {
     try {
       Map<String, String> headers = {"Content-type": "application/json"};
 
@@ -57,7 +57,7 @@ class ApiServices {
             "birthdate": user.birthDate!.toIso8601String(),
             "address": user.address,
             "phone": user.phone,
-            "roleId": "7BAD01DC-7DF1-4782-8E65-3A3DBB734A06",
+            "roleId": roleId,
           }));
     } catch (e) {
       throw Exception(e.toString());
@@ -546,6 +546,23 @@ class ApiServices {
     } catch (e) {
       print(e.toString());
       throw Exception('Update Failed');
+    }
+  }
+
+  static Future<dynamic> loadListRole() {
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+      };
+
+      final url = Uri.parse('$_domain/api/v1/roles?&page=1&size=250');
+      return http.get(
+        url,
+        headers: headers,
+      );
+    } catch (e) {
+      print(e.toString());
+      throw Exception('Get Role Failed');
     }
   }
 }

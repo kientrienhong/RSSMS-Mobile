@@ -11,7 +11,6 @@ import 'package:rssms/models/create_order_request_model.dart';
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/invoice_cancelled_screen/invoice_cancelled_screen.dart';
-import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/invoice_info_widget.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/invoice_product_widget.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoive_update/send_request_screen.dart';
 import 'package:rssms/pages/time_line/time_line_screen.dart';
@@ -40,6 +39,7 @@ class _CreateOrderRequestScreenState extends State<CreateOrderRequestScreen>
     _presenter.view = this;
     Users user = Provider.of<Users>(context, listen: false);
     _presenter.getDetailRequest(user.idToken!);
+    print(_model.idRequest);
     super.initState();
   }
 
@@ -131,10 +131,10 @@ class _CreateOrderRequestScreenState extends State<CreateOrderRequestScreen>
                                 fontSize: 16),
                           ],
                         ),
-                        CustomSizedBox(
-                          context: context,
-                          height: 24,
-                        ),
+                        // CustomSizedBox(
+                        //   context: context,
+                        //   height: 24,
+                        // ),
                         // Row(
                         //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         //   children: [
@@ -259,9 +259,8 @@ class _CreateOrderRequestScreenState extends State<CreateOrderRequestScreen>
                                 child: Center(
                                   child: QrImage(
                                     data: _model.invoice.id,
-                                    size: 88.0,
-                                    gapless: true,
-                                    version: 4,
+                                    size: 100,
+                                    version: QrVersions.auto,
                                   ),
                                 ),
                               ),
