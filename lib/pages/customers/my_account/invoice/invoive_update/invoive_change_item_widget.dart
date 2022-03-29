@@ -81,7 +81,9 @@ class _ChangeItemWidgetState extends State<ChangeItemWidget>
 
   @override
   void updateStatusButton() {
-    _model.isLoadingButton = !_model.isLoadingButton;
+    setState(() {
+      _model.isLoadingButton = !_model.isLoadingButton;
+    });
   }
 
   @override

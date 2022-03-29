@@ -82,7 +82,7 @@ class OrderDetail {
     };
   }
 
-  factory OrderDetail.fromMap(Map<String, dynamic> map) {
+  factory OrderDetail.formRequest(Map<String, dynamic> map) {
     return OrderDetail(
       id: map['id'] ?? '',
       note: map['note'] ?? '',
@@ -92,6 +92,45 @@ class OrderDetail {
       productId: map['serviceId'] ?? '',
       productName: map['serviceName'] ?? '',
       price: map['price']?.toInt() ?? 0,
+      amount: map['amount']?.toInt() ?? 0,
+      serviceImageUrl: map['serviceImageUrl'] ?? '',
+      listAdditionService: map['orderDetailServices'] != null
+          ? map['orderDetailServices']?.map<Product>((x) {
+              return Product(
+                id: x['serviceId'] ?? '',
+                name: x['serviceName'] ?? '',
+                price: x['totalPrice']?.toInt() ?? 0,
+                size: x['size'] ?? '',
+                description: x['description'] ?? '',
+                type: x['serviceType']?.toInt() ?? 0,
+                unit: x['unit'] ?? '',
+                quantity: x['amount']?.toInt() ?? 1,
+                tooltip: x['tooltip'] ?? '',
+                status: x['status'] ?? 1,
+                imageUrl: x['serviceUrl'] ?? '',
+              );
+            }).toList()
+          : [],
+      productType: map['serviceType']?.toInt() ?? 0,
+      images: map['images'] != null
+          ? List<ImageEntity>.from(
+              map['images']?.map((x) => ImageEntity.fromMap(x)))
+          : [],
+    );
+  }
+
+  factory OrderDetail.fromMap(Map<String, dynamic> map) {
+    return OrderDetail(
+      id: map['id'] ?? '',
+      note: map['note'] ?? '',
+      width: map['width']?.toDouble() ?? 0,
+      height: map['height']?.toDouble() ?? 0,
+      length: map['length']?.toDouble() ?? 0,
+      productId: map['serviceId'] ?? '',
+      productName: map['serviceName'] ?? '',
+      // price: map['price']?.toInt() ?? 0,
+      price: map['servicePrice']?.toInt() ?? 0,
+
       amount: map['amount']?.toInt() ?? 0,
       serviceImageUrl: map['serviceImageUrl'] ?? '',
       listAdditionService: map['orderDetailServices'] != null

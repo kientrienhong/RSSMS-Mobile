@@ -73,7 +73,7 @@ const LIST_NOTE_STATUS_BOX = [
 
 const LIST_STATUS_ORDER = [
   {'color': CustomColor.red, 'name': 'Đã Hủy'},
-  {'color': CustomColor.purple, 'name': 'Đang vận chuyển'},
+  {'color': CustomColor.blue, 'name': 'Đang vận chuyển'},
   {'color': CustomColor.green, 'name': 'Đã về kho'},
   {'color': CustomColor.red, 'name': 'Đã hết hạn'},
   {'color': CustomColor.green, 'name': 'Đã hoàn tất'},
