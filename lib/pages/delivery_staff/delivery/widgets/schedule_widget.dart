@@ -168,8 +168,8 @@ class ScheduleWidget extends StatelessWidget {
                             Flexible(
                               child: CustomText(
                                   text:
-                                      '${LIST_STATUS_ORDER[schedule['status']]['name']}',
-                                  color: LIST_STATUS_ORDER[schedule['status']]
+                                      '${LIST_STATUS_REQUEST[schedule['status']]['name']}',
+                                  color: LIST_STATUS_REQUEST[schedule['status']]
                                       ['color'] as Color,
                                   fontWeight: FontWeight.bold,
                                   maxLines: 2,

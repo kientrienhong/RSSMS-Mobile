@@ -182,11 +182,9 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
   @override
   void onClickUpdateOrder() async {
     if (widget.isView == false) {
-      sendNoti();
+      updateOrder();
     } else if (widget.isScanQR == true && widget.isView == true) {
       doneOrder();
-    } else if (widget.isScanQR == null && widget.isView == true) {
-      updateOrder();
     }
   }
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
@@ -23,6 +24,7 @@ class AddProduct extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
+    final oCcy = NumberFormat("#,##0", "en_US");
 
     void addMainProduct() {
       Invoice invoice = Provider.of<Invoice>(context, listen: false);
@@ -61,7 +63,6 @@ class AddProduct extends StatelessWidget {
         int indexFound = invoiceTemp.orderDetails[index].listAdditionService!
             .indexWhere((element) => element.id == product.id);
         if (indexFound == -1) {
-          final tset = product;
           invoiceTemp.orderDetails[index].listAdditionService!
               .add(product.copyWith(quantity: 1));
         } else {
@@ -127,8 +128,12 @@ class AddProduct extends StatelessWidget {
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
+                  CustomSizedBox(
+                    context: context,
+                    height: 4,
+                  ),
                   CustomText(
-                      text: '${product.price.toString()} / ${product.unit}',
+                      text: '${oCcy.format(product.price)} đ / ${product.unit}',
                       color: CustomColor.blue,
                       context: context,
                       fontSize: 16)

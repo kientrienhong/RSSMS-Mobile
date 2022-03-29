@@ -124,7 +124,8 @@ class _RequestScreenState extends State<RequestScreen> with RequestScreenView {
 
     return RefreshIndicator(
       onRefresh: refresh,
-      child: SizedBox(
+      child: Container(
+        color: CustomColor.white,
         width: deviceSize.width,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),

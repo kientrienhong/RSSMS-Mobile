@@ -29,6 +29,7 @@ class Invoice with ChangeNotifier {
   late int status;
   late bool isPaid;
   late List<OrderDetail> orderDetails;
+  late bool? isOrder;
   Invoice({
     required this.id,
     required this.customerName,
@@ -54,6 +55,7 @@ class Invoice with ChangeNotifier {
     required this.status,
     required this.isPaid,
     required this.orderDetails,
+    required this.isOrder,
   });
 
   Invoice.empty() {
@@ -76,11 +78,12 @@ class Invoice with ChangeNotifier {
     paymentMethod = -1;
     durationDays = -1;
     durationMonths = -1;
-    status = -1;
+    status = 0;
     isPaid = false;
     orderDetails = [];
     additionFeeDescription = '';
     additionFee = 0;
+    isOrder = false;
   }
 
   Invoice copyWith({
@@ -109,8 +112,10 @@ class Invoice with ChangeNotifier {
     List<Map<String, dynamic>>? listRequests,
     String? additionFeeDescription,
     int? additionFee,
+    bool? isOrder,
   }) {
     return Invoice(
+      isOrder: isOrder ?? this.isOrder,
       id: id ?? this.id,
       additionFee: additionFee ?? this.additionFee,
       additionFeeDescription:
@@ -150,6 +155,7 @@ class Invoice with ChangeNotifier {
       'rejectedReason': rejectedReason,
       'typeOrder': typeOrder,
       'isUserDelivery': isUserDelivery,
+      'isOrder': isOrder,
       'deliveryDate': deliveryDate,
       'deliveryTime': deliveryTime,
       'returnDate': returnDate,
@@ -189,6 +195,7 @@ class Invoice with ChangeNotifier {
       additionFeeDescription: map['additionalFeeDescription'] ?? '',
       deliveryAddress: map['deliveryAddress'] ?? '',
       orderId: map['id'] ?? '',
+      isOrder: true,
       addressReturn: map['addressReturn'] ?? '',
       totalPrice: map['totalPrice']?.toInt() ?? 0,
       requestId: requestIdFound,
@@ -219,6 +226,7 @@ class Invoice with ChangeNotifier {
       customerPhone: map['customerPhone'] ?? '',
       deliveryAddress: map['deliveryAddress'] ?? '',
       additionFee: 0,
+      isOrder: false,
       additionFeeDescription: '',
       addressReturn: map['returnAddress'] ?? '',
       totalPrice: map['totalPrice']?.toInt() ?? 0,
@@ -267,6 +275,7 @@ class Invoice with ChangeNotifier {
     isPaid = invoice.isPaid;
     orderDetails = invoice.orderDetails;
     additionFee = invoice.additionFee;
+    isOrder = invoice.isOrder;
     additionFeeDescription = invoice.additionFeeDescription;
     notifyListeners();
   }

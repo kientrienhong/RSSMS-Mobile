@@ -62,7 +62,20 @@ class _CreateOrderRequestScreenState extends State<CreateOrderRequestScreen>
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
-
+    Widget statusText = CustomText(
+        text: LIST_STATUS_ORDER[_model.invoice.status]['name']! as String,
+        color: LIST_STATUS_ORDER[_model.invoice.status]['color'] as Color,
+        context: context,
+        fontWeight: FontWeight.bold,
+        fontSize: 16);
+    if (!_model.invoice.isOrder!) {
+      statusText = CustomText(
+          text: LIST_STATUS_REQUEST[_model.invoice.status]['name']! as String,
+          color: LIST_STATUS_REQUEST[_model.invoice.status]['color'] as Color,
+          context: context,
+          fontWeight: FontWeight.bold,
+          fontSize: 16);
+    }
     return Scaffold(
       backgroundColor: CustomColor.white,
       body: SingleChildScrollView(
@@ -103,14 +116,7 @@ class _CreateOrderRequestScreenState extends State<CreateOrderRequestScreen>
                                 context: context,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 17),
-                            CustomText(
-                                text: LIST_STATUS_ORDER[_model.invoice.status]
-                                    ['name']! as String,
-                                color: LIST_STATUS_ORDER[_model.invoice.status]
-                                    ['color'] as Color,
-                                context: context,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16),
+                            statusText
                           ],
                         ),
                         CustomSizedBox(
