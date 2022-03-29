@@ -369,9 +369,9 @@ class ApiServices {
       };
       final test = {
         "orderId": request["orderId"],
-        "returnAddress": request["returnAddress"],
-        "returnTime": request["returnTime"],
-        "returnDate": request["returnDate"].toIso8601String(),
+        "deliveryAddress": request["deliveryAddress"],
+        "deliveryTime": request["deliveryTime"],
+        "deliveryDate": request["deliveryDate"].toIso8601String(),
         "type": request["type"],
       };
       final url = Uri.parse('$_domain/api/v1/requests');
@@ -379,9 +379,9 @@ class ApiServices {
         url,
         body: jsonEncode({
           "orderId": request["orderId"],
-          "returnAddress": request["returnAddress"],
-          "returnTime": request["returnTime"],
-          "returnDate": request["returnDate"].toIso8601String(),
+          "deliveryAddress": request["deliveryAddress"],
+          "deliveryTime": request["deliveryTime"],
+          "deliveryDate": request["deliveryDate"].toIso8601String(),
           "type": request["type"],
         }),
         headers: headers,

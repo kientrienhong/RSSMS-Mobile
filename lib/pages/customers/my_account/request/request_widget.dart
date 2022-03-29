@@ -171,7 +171,7 @@ class RequestWidget extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                       fontSize: 16),
                   CustomText(
-                      text: FormatDate.formatToVNDay(request.returnDate),
+                      text: FormatDate.formatToVNDay(request.deliveryDate),
                       color: CustomColor.black,
                       context: context,
                       fontSize: 16),
@@ -190,7 +190,7 @@ class RequestWidget extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                       fontSize: 16),
                   CustomText(
-                      text: request.returnTime,
+                      text: request.deliveryTime,
                       color: CustomColor.black,
                       context: context,
                       fontSize: 16),

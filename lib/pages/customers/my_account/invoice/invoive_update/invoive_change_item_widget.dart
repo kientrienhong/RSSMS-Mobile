@@ -93,9 +93,9 @@ class _ChangeItemWidgetState extends State<ChangeItemWidget>
 
     Map<String, dynamic> request = {
       "orderId": widget.invoice!.id,
-      "returnAddress": _model.controllerStreet.text,
-      "returnTime": constants.LIST_TIME_PICK_UP[_currentIndex],
-      "returnDate": DateTime.parse(date![2] + "-" + date[1] + '-' + date[0]),
+      "deliveryAddress": _model.controllerStreet.text,
+      "deliveryTime": constants.LIST_TIME_PICK_UP[_currentIndex],
+      "deliveryDate": DateTime.parse(date![2] + "-" + date[1] + '-' + date[0]),
       "type": 4
     };
     bool result = await _presenter.createRequest(request, users);
