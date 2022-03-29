@@ -89,10 +89,10 @@ const LIST_ICON_REQUEST = [
 ];
 
 const LIST_STATUS_REQUEST = [
-  {'name': 'Đã hủy'},
-  {'name': 'Đang xử lý'},
-  {'name': 'Đã xử lý'},
-  {'name': 'Hoàn thành'},
+  {'name': 'Đã hủy', 'color': CustomColor.red},
+  {'name': 'Đang xử lý', 'color': CustomColor.purple},
+  {'name': 'Đã xử lý', 'color': CustomColor.blue},
+  {'name': 'Hoàn thành', 'color': CustomColor.green},
 ];
 
 const LIST_TYPE_REQUEST = [

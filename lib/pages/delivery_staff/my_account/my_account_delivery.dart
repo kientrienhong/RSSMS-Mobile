@@ -33,7 +33,7 @@ class _MyAccountDeliveryScreenState extends State<MyAccountDeliveryScreen>
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
               SliverAppBar(
-                title: const Text("My Account"),
+                title: const Text("Thông tin tài khoản"),
                 actions: <Widget>[
                   GestureDetector(
                       onTap: () => {

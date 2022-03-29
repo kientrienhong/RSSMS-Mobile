@@ -133,15 +133,27 @@ class RequestWidget extends StatelessWidget {
                               ),
                             ],
                           ),
-                        CustomText(
-                            text: 'Trạng thái: ' +
-                                constants.LIST_STATUS_REQUEST[request!.status]
+                        Row(
+                          children: [
+                            CustomText(
+                                text: 'Trạng thái: ',
+                                color: CustomColor.black,
+                                context: context,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15),
+                            CustomText(
+                                text: constants
+                                    .LIST_STATUS_REQUEST[request!.status]
                                         ['name']
                                     .toString(),
-                            color: CustomColor.black,
-                            context: context,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15),
+                                color: constants
+                                        .LIST_STATUS_REQUEST[request!.status]
+                                    ['color'] as Color,
+                                context: context,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15),
+                          ],
+                        ),
                       ],
                     ),
                   ),

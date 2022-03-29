@@ -26,7 +26,6 @@ class _GetItemRequestScreenState extends State<GetItemRequestScreen>
   ExtendRequestPresenter? _presenter;
   ExtendRequestModel? _model;
   List<OrderDetail>? listProduct;
-  TextEditingController? noteController;
 
   void loadRequestDetails() {
     // TODO: implement loadRequestDetails
@@ -75,11 +74,26 @@ class _GetItemRequestScreenState extends State<GetItemRequestScreen>
     setState(() {});
   }
 
+  Widget _buildInformation(String name, String content) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        CustomText(
+            text: name,
+            color: Colors.black,
+            context: context,
+            fontWeight: FontWeight.bold,
+            fontSize: 17),
+        CustomText(
+            text: content, color: Colors.black, context: context, fontSize: 16),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
-    noteController =
-        TextEditingController(text: _model?.request?.returnAddress ?? "");
+
     return Scaffold(
       body: SingleChildScrollView(
           child: Container(
@@ -95,12 +109,14 @@ class _GetItemRequestScreenState extends State<GetItemRequestScreen>
                       child: Image.asset('assets/images/arrowLeft.png'),
                     ),
                   ),
-                  CustomText(
-                      text: "Chi tiết đơn lấy về",
-                      color: Colors.black,
-                      context: context,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 25),
+                  Center(
+                    child: CustomText(
+                        text: "Chi tiết đơn lấy về",
+                        color: Colors.black,
+                        context: context,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 25),
+                  ),
                   CustomSizedBox(
                     context: context,
                     height: 32,
@@ -113,19 +129,45 @@ class _GetItemRequestScreenState extends State<GetItemRequestScreen>
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             CustomText(
-                                text: "Tên khách hàng:",
+                                text: 'Trạng thái: ',
                                 color: Colors.black,
                                 context: context,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 17),
                             CustomText(
-                                text: _model!.request!.cancelBy,
-                                color: Colors.black,
+                                text: constants.LIST_STATUS_REQUEST[
+                                    widget.request.status]['name'] as String,
+                                color: constants.LIST_STATUS_REQUEST[
+                                    widget.request.status]['color'] as Color,
                                 context: context,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16),
                           ],
                         ),
+                        CustomSizedBox(
+                          context: context,
+                          height: 24,
+                        ),
+                        _buildInformation(
+                            "Tên khách hàng:", _model!.invoice!.customerName),
+                        CustomSizedBox(
+                          context: context,
+                          height: 24,
+                        ),
+                        _buildInformation(
+                            "Số điện thoại:", _model!.invoice!.customerPhone),
+                        CustomSizedBox(
+                          context: context,
+                          height: 24,
+                        ),
+                        _buildInformation(
+                            "Ngày trả hàng:", _model!.request!.returnDate),
+                        CustomSizedBox(
+                          context: context,
+                          height: 24,
+                        ),
+                        _buildInformation(
+                            "Khung giờ trả hàng:", _model!.request!.returnTime),
                         CustomSizedBox(
                           context: context,
                           height: 24,
@@ -134,87 +176,19 @@ class _GetItemRequestScreenState extends State<GetItemRequestScreen>
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             CustomText(
-                                text: "Số điện thoại:",
+                                text: "Địa chỉ nhận hàng:",
                                 color: Colors.black,
                                 context: context,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 17),
-                            CustomText(
-                                text: _model!.request!.cancelByPhone,
-                                color: Colors.black,
-                                context: context,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16),
+                            Flexible(
+                                child: CustomText(
+                                    text: _model?.request?.returnAddress ?? "",
+                                    color: CustomColor.black,
+                                    maxLines: 2,
+                                    context: context,
+                                    fontSize: 18))
                           ],
-                        ),
-                        CustomSizedBox(
-                          context: context,
-                          height: 24,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            CustomText(
-                                text: "Ngày trả hàng:",
-                                color: Colors.black,
-                                context: context,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 17),
-                            CustomText(
-                                text: _model!.request!.returnDate,
-                                color: Colors.black,
-                                context: context,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16),
-                          ],
-                        ),
-                        CustomSizedBox(
-                          context: context,
-                          height: 24,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            CustomText(
-                                text: "Giờ trả hàng:",
-                                color: Colors.black,
-                                context: context,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 17),
-                            CustomText(
-                                text: _model!.request!.returnTime,
-                                color: Colors.black,
-                                context: context,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16),
-                          ],
-                        ),
-                        CustomSizedBox(
-                          context: context,
-                          height: 24,
-                        ),
-                        CustomText(
-                            text: "Địa chỉ nhận hàng:",
-                            color: Colors.black,
-                            context: context,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 17),
-                        CustomSizedBox(
-                          context: context,
-                          height: 16,
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(4),
-                              border: Border.all(
-                                  color: CustomColor.black[3]!, width: 1)),
-                          child: TextFormField(
-                            minLines: 6,
-                            enabled: false,
-                            controller: noteController,
-                            keyboardType: TextInputType.multiline,
-                            maxLines: null,
-                          ),
                         ),
                         CustomSizedBox(
                           context: context,

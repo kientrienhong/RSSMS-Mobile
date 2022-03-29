@@ -157,17 +157,13 @@ class ScheduleWidget extends StatelessWidget {
                     child: Column(
                       children: [
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Row(
-                              children: [
-                                CustomText(
-                                    text: 'Mã đơn: #${schedule['name']}',
-                                    color: CustomColor.black,
-                                    fontWeight: FontWeight.bold,
-                                    context: context,
-                                    fontSize: 18),
-                              ],
+                            CustomText(
+                              text: 'Trạng thái: ',
+                              color: CustomColor.black,
+                              context: context,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
                             ),
                             Flexible(
                               child: CustomText(
