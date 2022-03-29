@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:rssms/common/custom_sizebox.dart';
-import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/common/image_widget.dart';
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/order_detail.dart';
 import 'package:rssms/constants/constants.dart' as constants;
+import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_screen/widget/addition_service_widget.dart';
 
 class ItemTab extends StatefulWidget {
   Invoice? invoice;
@@ -22,6 +22,17 @@ class _ItemTabState extends State<ItemTab> {
           .map((e) => ImageWidget(
                 orderDetail: e,
                 isView: true,
+              ))
+          .toList();
+
+  List<Widget> mapSeperateAdditionWidget(List<OrderDetail> listOrderDetail) =>
+      listOrderDetail
+          .where((element) => element.productType == constants.ACCESSORY)
+          .map((e) => AdditionServiceWidget(
+                isView: true,
+                onAddAddition: () {},
+                onMinusAddition: () {},
+                orderDetail: e,
               ))
           .toList();
 

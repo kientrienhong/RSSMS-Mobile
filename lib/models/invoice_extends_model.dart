@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:rssms/api/api_services.dart';
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/user.dart';
@@ -6,10 +7,16 @@ import 'package:rssms/pages/customers/my_account/invoice/invoive_update/invoive_
 class InvoiceExtendsModel {
   late PaymentMethod currentIndexPaymentMethod;
   late bool isLoading;
-
+  late FocusNode focusNode;
+  late String dateExtensionString;
+  late String error;
+  DateTime? dateExtension;
   InvoiceExtendsModel() {
     currentIndexPaymentMethod = PaymentMethod.trong;
     isLoading = false;
+    focusNode = FocusNode();
+    dateExtensionString = '';
+    error = '';
   }
 
   Future<dynamic> createExtendRequest(

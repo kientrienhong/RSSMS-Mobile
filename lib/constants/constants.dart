@@ -58,8 +58,8 @@ const DELIVERIED_RETURN = 7;
 const SELF_STORAGE = 0;
 const ACCESSORY = 1;
 const HANDY = 2;
-const UNWEILDY = 4;
-const SERVICES = 3;
+const UNWEILDY = 3;
+const SERVICES = 4;
 
 const AVAILABLE = 0;
 const LIST_NOTE_STATUS_BOX = [
@@ -73,8 +73,6 @@ const LIST_NOTE_STATUS_BOX = [
 
 const LIST_STATUS_ORDER = [
   {'color': CustomColor.red, 'name': 'Đã Hủy'},
-  {'color': CustomColor.purple, 'name': 'Đang xử lý'},
-  {'color': CustomColor.blue, 'name': 'Đã được xử lý'},
   {'color': CustomColor.blue, 'name': 'Đang vận chuyển'},
   {'color': CustomColor.green, 'name': 'Đã về kho'},
   {'color': CustomColor.red, 'name': 'Đã hết hạn'},
@@ -83,15 +81,26 @@ const LIST_STATUS_ORDER = [
 ];
 
 const LIST_ICON_REQUEST = [
-  {'name': 'assets/images/invoice.png'},
-  {'name': 'assets/images/invoice.png'},
   {'name': 'assets/images/truck1.png'},
+  {'name': 'assets/images/invoice.png'},
+  {'name': 'assets/images/invoice.png'},
   {'name': 'assets/images/error1.png'},
+  {'name': 'assets/images/truck1.png'},
 ];
 
 const LIST_STATUS_REQUEST = [
-  {'name': 'Hoàn Thành'},
+  {'name': 'Đã hủy'},
   {'name': 'Đang xử lý'},
+  {'name': 'Đã xử lý'},
+  {'name': 'Hoàn thành'},
+];
+
+const LIST_TYPE_REQUEST = [
+  {'name': 'Hủy lịch giao hàng'},
+  {'name': 'Tạo đơn'},
+  {'name': 'Gia hạn đơn'},
+  {'name': "Hủy đơn"},
+  {'name': "Yêu cầu trả đơn"},
 ];
 
 const List<Map<String, String>> TAB_DOOR_TO_DOOR = [

@@ -16,7 +16,7 @@ class InvoiceCancelModel {
   set controllerReason(value) => _controllerReason = value;
 
   Future<dynamic> createCancelRequest(
-      Map<String, dynamic> cancelRequest, Users user, Invoice invoice) async {
-    await await ApiServices.createCancelRequest(cancelRequest, user, invoice);
+      Map<String, dynamic> cancelRequest, Users user) async {
+    return await ApiServices.cancelOrder(user.idToken!, cancelRequest);
   }
 }

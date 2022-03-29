@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rssms/api/api_services.dart';
@@ -103,10 +105,11 @@ class ScheduleWidget extends StatelessWidget {
                   Provider.of<Invoice>(context, listen: false);
               Users users = Provider.of<Users>(context, listen: false);
 
-              final response = await ApiServices.getInvoicebyId(
+              final response = await ApiServices.getRequestbyId(
                   users.idToken!, invoice.id.toString());
               if (response.statusCode == 200) {
-                Invoice invoiceReponse = Invoice.fromJson(response.body);
+                Invoice invoiceReponse =
+                    Invoice.fromRequest(json.decode(response.body));
 
                 invoiceProvider.setInvoice(invoice: invoiceReponse);
                 Navigator.push(
@@ -115,6 +118,7 @@ class ScheduleWidget extends StatelessWidget {
                     builder: (context) => InvoiceDetailsScreen(
                       deviceSize: deviceSize,
                       isScanQR: false,
+                      isDone: false,
                     ),
                   ),
                 );

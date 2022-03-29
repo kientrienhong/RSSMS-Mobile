@@ -10,6 +10,7 @@ import 'package:rssms/constants/constants.dart';
 import 'package:rssms/models/create_order_request_model.dart';
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/user.dart';
+import 'package:rssms/pages/customers/cancel_request.dart/cancel_request_screen.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/invoice_cancelled_screen/invoice_cancelled_screen.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/invoice_product_widget.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoive_update/send_request_screen.dart';
@@ -90,6 +91,11 @@ class _CreateOrderRequestScreenState extends State<CreateOrderRequestScreen>
                     ),
                     Column(
                       children: [
+                        CustomText(
+                            text: _model.invoice.id,
+                            color: CustomColor.black,
+                            context: context,
+                            fontSize: 24),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -273,14 +279,14 @@ class _CreateOrderRequestScreenState extends State<CreateOrderRequestScreen>
                                   child: CustomButton(
                                       height: 24,
                                       isLoading: false,
-                                      text: 'Gửi yêu cầu',
+                                      text: 'Hủy yêu cầu',
                                       textColor: CustomColor.white,
                                       onPressFunction: () {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  SendRequestScreen(
+                                                  InvoiceCancelScreen(
                                                     invoice: _model.invoice,
                                                   )),
                                         );

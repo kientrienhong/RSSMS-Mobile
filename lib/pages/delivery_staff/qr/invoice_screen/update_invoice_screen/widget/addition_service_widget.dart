@@ -9,6 +9,7 @@ import 'package:rssms/models/entity/order_detail.dart';
 import 'package:rssms/models/entity/product.dart';
 
 class AdditionServiceWidget extends StatefulWidget {
+  final bool isView;
   final Product? product;
   final OrderDetail? orderDetail;
   Function onAddAddition;
@@ -17,6 +18,7 @@ class AdditionServiceWidget extends StatefulWidget {
       {Key? key,
       this.product,
       this.orderDetail,
+      required this.isView,
       required this.onAddAddition,
       required this.onMinusAddition})
       : super(key: key);
@@ -70,7 +72,7 @@ class _AdditionServiceWidgetState extends State<AdditionServiceWidget> {
                   CustomText(
                       text: widget.product == null
                           ? '${widget.orderDetail!.price.toString()} / số lượng'
-                          : '${widget.product!.price.toString()} / ${widget.product!.unit}',
+                          : '${widget.product!.price.toString()} / số lượng',
                       color: CustomColor.blue,
                       context: context,
                       fontSize: 16)
@@ -80,29 +82,30 @@ class _AdditionServiceWidgetState extends State<AdditionServiceWidget> {
           ),
           Row(
             children: [
-              GestureDetector(
-                onTap: () {
-                  if (widget.product != null) {
-                    widget.onMinusAddition(widget.product);
-                  } else {
-                    widget.onMinusAddition(widget.orderDetail);
-                  }
-                },
-                child: Container(
-                  height: 40,
-                  width: 40,
-                  decoration: BoxDecoration(
-                      border: Border.all(color: CustomColor.black[3]!),
-                      borderRadius: BorderRadius.circular(4)),
-                  child: Center(
-                    child: CustomText(
-                        text: '-',
-                        color: CustomColor.black[3]!,
-                        context: context,
-                        fontSize: 32),
+              if (!widget.isView)
+                GestureDetector(
+                  onTap: () {
+                    if (widget.product != null) {
+                      widget.onMinusAddition(widget.product);
+                    } else {
+                      widget.onMinusAddition(widget.orderDetail);
+                    }
+                  },
+                  child: Container(
+                    height: 40,
+                    width: 40,
+                    decoration: BoxDecoration(
+                        border: Border.all(color: CustomColor.black[3]!),
+                        borderRadius: BorderRadius.circular(4)),
+                    child: Center(
+                      child: CustomText(
+                          text: '-',
+                          color: CustomColor.black[3]!,
+                          context: context,
+                          fontSize: 32),
+                    ),
                   ),
                 ),
-              ),
               CustomSizedBox(
                 context: context,
                 width: 8,
@@ -120,29 +123,30 @@ class _AdditionServiceWidgetState extends State<AdditionServiceWidget> {
                 context: context,
                 width: 8,
               ),
-              GestureDetector(
-                onTap: () {
-                  if (widget.product != null) {
-                    widget.onAddAddition(widget.product);
-                  } else {
-                    widget.onAddAddition(widget.orderDetail);
-                  }
-                },
-                child: Container(
-                  height: 40,
-                  width: 40,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(4),
-                      color: CustomColor.blue),
-                  child: Center(
-                    child: CustomText(
-                        text: '+',
-                        color: CustomColor.white,
-                        context: context,
-                        fontSize: 32),
+              if (!widget.isView)
+                GestureDetector(
+                  onTap: () {
+                    if (widget.product != null) {
+                      widget.onAddAddition(widget.product);
+                    } else {
+                      widget.onAddAddition(widget.orderDetail);
+                    }
+                  },
+                  child: Container(
+                    height: 40,
+                    width: 40,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(4),
+                        color: CustomColor.blue),
+                    child: Center(
+                      child: CustomText(
+                          text: '+',
+                          color: CustomColor.white,
+                          context: context,
+                          fontSize: 32),
+                    ),
                   ),
                 ),
-              ),
             ],
           )
         ],

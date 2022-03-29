@@ -22,6 +22,7 @@ import 'package:rssms/pages/customers/notification/notification_screen.dart';
 import 'package:rssms/pages/delivery_staff/delivery/delivery_screen.dart';
 import 'package:rssms/pages/delivery_staff/my_account/my_account_delivery.dart';
 import 'package:rssms/pages/delivery_staff/notifcation/notification_delivery.dart';
+import 'package:rssms/pages/delivery_staff/qr/invoice_screen/new_invoice_screen/new_invoice_screen.dart';
 import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_screen/widget/addition_cost.dart';
 import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_screen/widget/addition_service_widget.dart';
 import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_screen/widget/dialog_add_cost.dart';
@@ -47,7 +48,8 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
 
   final _focusNodeFullname = FocusNode();
   final _focusNodePhone = FocusNode();
-
+  final _focusNodeAdditionFeeDescription = FocusNode();
+  final _focusNodeAdditionFeePrice = FocusNode();
   File? image;
 
   @override
@@ -153,7 +155,6 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
   void updateOrder() async {
     try {
       Invoice invoice = Provider.of<Invoice>(context, listen: false);
-
       Users user = Provider.of<Users>(context, listen: false);
       var response = await _presenter.updateOrder(user, invoice);
       if (response == true) {
@@ -180,13 +181,13 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
 
   @override
   void onClickUpdateOrder() async {
-    // if (widget.isView == null) {
-    //   sendNoti();
-    // } else if (widget.isScanQR == true && widget.isView == true) {
-    //   doneOrder();
-    // } else if (widget.isScanQR == null && widget.isView == true) {
-    updateOrder();
-    // }
+    if (widget.isView == false) {
+      sendNoti();
+    } else if (widget.isScanQR == true && widget.isView == true) {
+      doneOrder();
+    } else if (widget.isScanQR == null && widget.isView == true) {
+      updateOrder();
+    }
   }
 
   List<AddtionCost> buildListAdditionCost() {
@@ -238,6 +239,7 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
         .map((e) => AdditionServiceWidget(
             orderDetail: e,
             onAddAddition: onAddAdditionSeperate,
+            isView: widget.isView!,
             onMinusAddition: onMinusAdditionSeperate))
         .toList();
   }
@@ -421,51 +423,43 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        showDialog(
-                            context: context,
-                            builder: (context) {
-                              return DialogAddCost(
-                                listAdditionCost: _model.listAdditionCost,
-                                addAdditionCost: _presenter.addAdditionCost,
-                                updateAdditionCost:
-                                    _presenter.updateAdditionCost,
-                              );
-                            });
-                      },
-                      child: Row(
-                        children: [
-                          CustomText(
-                            text: "Thêm",
-                            color: CustomColor.blue,
-                            context: context,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          CustomSizedBox(
-                            context: context,
-                            width: 8,
-                          ),
-                          Container(
-                            height: 24,
-                            width: 24,
-                            decoration: BoxDecoration(
-                                color: CustomColor.blue,
-                                borderRadius: BorderRadius.circular(4)),
-                            child: Center(
-                              child: CustomText(
-                                  text: '+',
-                                  color: CustomColor.white,
-                                  context: context,
-                                  fontSize: 16),
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
+                    Checkbox(
+                        fillColor: MaterialStateProperty.all(CustomColor.blue),
+                        value: _model.isAdditionFee,
+                        onChanged: widget.isView == false
+                            ? (value) {
+                                setState(() {
+                                  _model.isAdditionFee = value;
+                                });
+                              }
+                            : (val) => {})
                   ],
                 ),
+                if (_model.isAdditionFee)
+                  Column(
+                    children: [
+                      CustomSizedBox(
+                        context: context,
+                        height: 8,
+                      ),
+                      CustomOutLineInputWithHint(
+                          controller: _model.controllerAdditionFeeDescription,
+                          isDisable: false,
+                          hintText: "Mô tả",
+                          validator: Validator.notEmpty,
+                          textInputType: TextInputType.multiline,
+                          maxLine: 3,
+                          focusNode: _focusNodeAdditionFeeDescription,
+                          deviceSize: deviceSize),
+                      CustomOutLineInputWithHint(
+                          controller: _model.controllerAdditionFeePrice,
+                          isDisable: false,
+                          hintText: "Giá tiền",
+                          textInputType: TextInputType.number,
+                          focusNode: _focusNodeAdditionFeePrice,
+                          deviceSize: deviceSize),
+                    ],
+                  ),
                 Column(
                   children: buildListAdditionCost(),
                 ),
@@ -486,7 +480,7 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                     Checkbox(
                         fillColor: MaterialStateProperty.all(CustomColor.blue),
                         value: _model.getIsPaid,
-                        onChanged: widget.isView == null
+                        onChanged: widget.isView == false
                             ? (value) {
                                 setState(() {
                                   _model.setIsPaid = value;
@@ -495,50 +489,82 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                             : (val) => {})
                   ],
                 ),
-                Center(
-                  child: CustomButton(
-                      height: 24,
-                      isLoading: _model.isLoadingUpdateInvoice,
-                      text: 'Cập nhật đơn',
-                      textColor: CustomColor.white,
-                      onPressFunction: () {
-                        Invoice invoice =
-                            Provider.of<Invoice>(context, listen: false);
-                        List<OrderDetail>? listImage = invoice.orderDetails;
-                        bool emptyImage = false;
-                        for (var image in listImage) {
-                          if (image.images.isEmpty) {
-                            emptyImage = true;
-                            break;
-                          }
-                        }
-                        if (_formKey.currentState!.validate() && !emptyImage) {
-                          onClickUpdateOrder();
-                        }
-                        if (emptyImage) {
-                          showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AlertDialog(
-                                  title: const Text("Thông báo"),
-                                  content: const Text(
-                                      "Vui lòng cập nhật ít nhất 1 ảnh cho 1 box !"),
-                                  actions: [
-                                    TextButton(
-                                      child: const Text("Đồng ý"),
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                    )
-                                  ],
-                                );
-                              });
-                        }
-                      },
-                      width: deviceSize.width / 2.5,
-                      buttonColor: CustomColor.blue,
-                      borderRadius: 6),
-                ),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CustomButton(
+                          height: 24,
+                          isLoading: _model.isLoadingUpdateInvoice,
+                          text: 'Cập nhật đơn',
+                          textColor: CustomColor.white,
+                          onPressFunction: () {
+                            Invoice invoice =
+                                Provider.of<Invoice>(context, listen: false);
+                            List<OrderDetail>? listImage = invoice.orderDetails;
+                            bool emptyImage = false;
+                            for (var image in listImage) {
+                              if (image.images.isEmpty &&
+                                  (image.productType == HANDY ||
+                                      image.productType == UNWEILDY)) {
+                                emptyImage = true;
+                                break;
+                              }
+                            }
+                            if (_formKey.currentState!.validate() &&
+                                !emptyImage) {
+                              onClickUpdateOrder();
+                            }
+                            if (emptyImage) {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      title: const Text("Thông báo"),
+                                      content: const Text(
+                                          "Vui lòng cập nhật ít nhất 1 ảnh cho 1 box !"),
+                                      actions: [
+                                        TextButton(
+                                          child: const Text("Đồng ý"),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        )
+                                      ],
+                                    );
+                                  });
+                            }
+                          },
+                          width: deviceSize.width / 2.5,
+                          buttonColor: CustomColor.blue,
+                          borderRadius: 6),
+                      CustomButton(
+                          height: 24,
+                          isLoading: false,
+                          text: 'Xem trước hóa đơn',
+                          textColor: CustomColor.white,
+                          onPressFunction: () {
+                            Invoice invoice =
+                                Provider.of<Invoice>(context, listen: false);
+                            if (_model.isAdditionFee) {
+                              invoice.setInvoice(
+                                  invoice: invoice.copyWith(
+                                      additionFee: int.parse(_model
+                                          .controllerAdditionFeePrice.text),
+                                      additionFeeDescription: _model
+                                          .controllerAdditionFeeDescription
+                                          .text));
+                            }
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => NewInvoiceScreen(
+                                          invoice: invoice,
+                                        )));
+                          },
+                          width: deviceSize.width / 2.5,
+                          buttonColor: CustomColor.green,
+                          borderRadius: 6),
+                    ]),
               ],
             ),
           ),

@@ -281,10 +281,11 @@ class ApiServices {
         url,
         body: jsonEncode({
           "orderId": extendInvoice["orderId"],
-          "totalPrice": extendInvoice["totalProduct"],
+          "totalPrice": extendInvoice["totalPrice"],
           "oldReturnDate": extendInvoice["oldReturnDate"].toIso8601String(),
           "returnDate": extendInvoice["newReturnDate"].toIso8601String(),
-          "cancelDay": extendInvoice["oldReturnDate"].toIso8601String(),
+          "isPaid": extendInvoice['isPaid'],
+          // "cancelDay": extendInvoice["oldReturnDate"].toIso8601String(),
           "type": extendInvoice["type"],
           "status": extendInvoice["status"],
           "note": extendInvoice["note"],
@@ -314,6 +315,7 @@ class ApiServices {
           "isCustomerDelivery": orderBooking.isCustomerDelivery,
           "orderId": null,
           "totalPrice": 0,
+          "customerId": user.userId,
           "deliveryAddress": orderBooking.addressDelivery,
           "returnDate": orderBooking.dateTimeReturn.toIso8601String(),
           "returnAddress": orderBooking.addressReturn,
@@ -322,6 +324,9 @@ class ApiServices {
               : '',
           "deliveryDate": orderBooking.dateTimeDelivery.toIso8601String(),
           "type": 1,
+          "typeOrder": orderBooking.typeOrder == TypeOrder.selfStorage
+              ? constants.SELF_STORAGE_TYPE_ORDER
+              : constants.DOOR_TO_DOOR_TYPE_ORDER,
           "note": orderBooking.note,
           "requestDetails": listProduct
         }),
@@ -362,7 +367,13 @@ class ApiServices {
         "Content-type": "application/json",
         'Authorization': 'Bearer ${user.idToken}'
       };
-
+      final test = {
+        "orderId": request["orderId"],
+        "returnAddress": request["returnAddress"],
+        "returnTime": request["returnTime"],
+        "returnDate": request["returnDate"].toIso8601String(),
+        "type": request["type"],
+      };
       final url = Uri.parse('$_domain/api/v1/requests');
       return http.post(
         url,
@@ -430,16 +441,14 @@ class ApiServices {
     }
   }
 
-  static Future<dynamic> sendNotification(Invoice invoice, String idToken) {
+  static Future<dynamic> sendNotification(dataRequest, String idToken) {
     try {
       Map<String, String> headers = {
         "Content-type": "application/json",
         'Authorization': 'Bearer $idToken'
       };
-      var test = jsonEncode(invoice.toMap());
-      final url = Uri.parse('$_domain/api/v1/orders/${invoice.id}');
-      return http.post(url,
-          headers: headers, body: jsonEncode(invoice.toMap()));
+      final url = Uri.parse('$_domain/api/v1/orders/send_noti_to_customer');
+      return http.post(url, headers: headers, body: jsonEncode(dataRequest));
     } catch (e) {
       print(e.toString());
       throw Exception('Log In failed');
@@ -543,6 +552,23 @@ class ApiServices {
 
       final url = Uri.parse('$_domain/api/v1/orders');
       return http.put(url, headers: headers, body: jsonEncode(listOrderStatus));
+    } catch (e) {
+      print(e.toString());
+      throw Exception('Update Failed');
+    }
+  }
+
+  static Future<dynamic> cancelOrder(
+      String idToken, Map<dynamic, dynamic> cancelOrder) {
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        'Authorization': 'Bearer $idToken'
+      };
+
+      final url = Uri.parse(
+          '$_domain/api/v1/requests/cancel request to order/${cancelOrder['id']}');
+      return http.put(url, headers: headers, body: jsonEncode(cancelOrder));
     } catch (e) {
       print(e.toString());
       throw Exception('Update Failed');

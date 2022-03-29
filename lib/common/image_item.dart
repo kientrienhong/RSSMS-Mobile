@@ -60,23 +60,13 @@ class _ImageItemState extends State<ImageItem> {
                 width: 12,
               ),
               Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  CustomText(
-                      text: '${widget.image.name!} ',
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      context: context,
-                      fontSize: 14),
-                  CustomSizedBox(
-                    context: context,
-                    height: 12,
-                  ),
                   Row(
                     children: [
                       CustomButton(
                           textSize: 15,
-                          height: 20,
+                          height: 24,
                           isLoading: false,
                           text: 'Xem thêm',
                           textColor: CustomColor.white,
@@ -91,7 +81,7 @@ class _ImageItemState extends State<ImageItem> {
                       widget.isView == false
                           ? CustomButton(
                               textSize: 15,
-                              height: 20,
+                              height: 24,
                               isLoading: false,
                               text: 'Xóa',
                               textColor: CustomColor.white,

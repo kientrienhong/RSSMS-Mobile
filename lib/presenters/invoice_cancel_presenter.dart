@@ -12,11 +12,10 @@ class InvoiceCancelPresenter {
   }
 
   Future<bool> createRequest(
-      Map<String, dynamic> cancelRequest, Users user, Invoice invoice) async {
+      Map<String, dynamic> cancelRequest, Users user) async {
     view.updateLoadingCancel();
     try {
-      final response =
-          await model.createCancelRequest(cancelRequest, user, invoice);
+      final response = await model.createCancelRequest(cancelRequest, user);
 
       if (response.statusCode == 200) {
         return true;

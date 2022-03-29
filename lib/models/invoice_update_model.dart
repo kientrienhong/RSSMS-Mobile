@@ -7,8 +7,23 @@ import '/models/entity/user.dart';
 class InvoiceUpdateModel {
   bool? _isDisableUpdateInvoice;
   bool? _isLoadingUpdateInvoice;
+  bool? _isAdditionFee;
+
+  get isAdditionFee => _isAdditionFee;
+
+  set isAdditionFee(value) => _isAdditionFee = value;
   TextEditingController? _controllerFullname;
   TextEditingController? _controllerPhone;
+  TextEditingController? _controllerAdditionFeeDescription;
+  TextEditingController? _controllerAdditionFeePrice;
+  get controllerAdditionFeeDescription => _controllerAdditionFeeDescription;
+
+  set controllerAdditionFeeDescription(value) =>
+      _controllerAdditionFeeDescription = value;
+
+  get controllerAdditionFeePrice => _controllerAdditionFeePrice;
+
+  set controllerAdditionFeePrice(value) => _controllerAdditionFeePrice = value;
   String? _txtStatus;
   bool? _isPaid;
   late List<Map<String, dynamic>> listAdditionCost;
@@ -17,6 +32,12 @@ class InvoiceUpdateModel {
     _isDisableUpdateInvoice = true;
     _isLoadingUpdateInvoice = false;
     _isPaid = invoice.isPaid;
+
+    _isAdditionFee = invoice.additionFee == 0 ? false : true;
+    _controllerAdditionFeeDescription =
+        TextEditingController(text: invoice.additionFeeDescription);
+    _controllerAdditionFeePrice =
+        TextEditingController(text: invoice.additionFee.toString());
     _controllerFullname = TextEditingController(text: invoice.customerName);
     _controllerPhone = TextEditingController(text: invoice.customerPhone);
     switch (invoice.status) {
@@ -63,8 +84,8 @@ class InvoiceUpdateModel {
     return await ApiServices.updateOrder(invoice, idToken);
   }
 
-  Future<dynamic> sendNotification(Invoice invoice, String idToken) async {
-    return await ApiServices.sendNotification(invoice, idToken);
+  Future<dynamic> sendNotification(dataRequest, String idToken) async {
+    return await ApiServices.sendNotification(dataRequest, idToken);
   }
 
   Future<dynamic> doneOrder(Invoice invoice, String idToken) async {

@@ -3,4 +3,6 @@ abstract class ExtendInvoiceView {
   void onMinusQuantity();
   void onClickPayment();
   void updateLoading();
+  void onClickChangeDate();
+  void updateError(String error);
 }

@@ -2,23 +2,24 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:rssms/models/entity/imageEntity.dart';
+import 'package:rssms/models/entity/order_detail_service.dart';
 import 'package:rssms/models/entity/product.dart';
 
 import 'image.dart';
 
 class OrderDetail {
   final String id;
-  final String productId;
-  final String productName;
-  final int price;
+  String productId;
+  String productName;
+  int price;
   int amount;
-  final int productType;
+  int productType;
   final String note;
   final List<ImageEntity> images;
   final double? width;
   final double? height;
   final double? length;
-  final String serviceImageUrl;
+  String serviceImageUrl;
   List<Product>? listAdditionService;
   OrderDetail(
       {required this.id,
@@ -81,19 +82,74 @@ class OrderDetail {
     };
   }
 
-  factory OrderDetail.fromMap(Map<String, dynamic> map) {
+  factory OrderDetail.formRequest(Map<String, dynamic> map) {
     return OrderDetail(
       id: map['id'] ?? '',
       note: map['note'] ?? '',
-      width: 0,
-      height: 0,
-      length: 0,
-      productId: map['serviceId'] ?? 0,
+      width: map['width']?.toDouble() ?? 0,
+      height: map['height']?.toDouble() ?? 0,
+      length: map['length']?.toDouble() ?? 0,
+      productId: map['serviceId'] ?? '',
       productName: map['serviceName'] ?? '',
       price: map['price']?.toInt() ?? 0,
       amount: map['amount']?.toInt() ?? 0,
       serviceImageUrl: map['serviceImageUrl'] ?? '',
-      listAdditionService: [],
+      listAdditionService: map['orderDetailServices'] != null
+          ? map['orderDetailServices']?.map<Product>((x) {
+              return Product(
+                id: x['serviceId'] ?? '',
+                name: x['serviceName'] ?? '',
+                price: x['totalPrice']?.toInt() ?? 0,
+                size: x['size'] ?? '',
+                description: x['description'] ?? '',
+                type: x['serviceType']?.toInt() ?? 0,
+                unit: x['unit'] ?? '',
+                quantity: x['amount']?.toInt() ?? 1,
+                tooltip: x['tooltip'] ?? '',
+                status: x['status'] ?? 1,
+                imageUrl: x['serviceUrl'] ?? '',
+              );
+            }).toList()
+          : [],
+      productType: map['serviceType']?.toInt() ?? 0,
+      images: map['images'] != null
+          ? List<ImageEntity>.from(
+              map['images']?.map((x) => ImageEntity.fromMap(x)))
+          : [],
+    );
+  }
+
+  factory OrderDetail.fromMap(Map<String, dynamic> map) {
+    return OrderDetail(
+      id: map['id'] ?? '',
+      note: map['note'] ?? '',
+      width: map['width']?.toDouble() ?? 0,
+      height: map['height']?.toDouble() ?? 0,
+      length: map['length']?.toDouble() ?? 0,
+      productId: map['serviceId'] ?? '',
+      productName: map['serviceName'] ?? '',
+      // price: map['price']?.toInt() ?? 0,
+      price: map['servicePrice']?.toInt() ?? 0,
+
+      amount: map['amount']?.toInt() ?? 0,
+      serviceImageUrl: map['serviceImageUrl'] ?? '',
+      listAdditionService: map['orderDetailServices'] != null
+          ? map['orderDetailServices']?.map<Product>((x) {
+              return Product(
+                id: x['serviceId'] ?? '',
+                name: x['serviceName'] ?? '',
+                price: x['totalPrice']?.toInt() ?? 0,
+                size: x['size'] ?? '',
+                description: x['description'] ?? '',
+                type: x['serviceType']?.toInt() ?? 0,
+                unit: x['unit'] ?? '',
+                quantity: x['amount']?.toInt() ?? 1,
+                tooltip: x['tooltip'] ?? '',
+                status: x['status'] ?? 1,
+                imageUrl: x['serviceUrl'] ?? '',
+              );
+            }).toList()
+          : [],
       productType: map['serviceType']?.toInt() ?? 0,
       images: map['images'] != null
           ? List<ImageEntity>.from(

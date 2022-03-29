@@ -16,6 +16,7 @@ class InvoiceWidget extends StatelessWidget {
     final deviceSize = MediaQuery.of(context).size;
     return GestureDetector(
       onTap: () {
+        final test = invoice;
         Navigator.push(
           context,
           MaterialPageRoute(

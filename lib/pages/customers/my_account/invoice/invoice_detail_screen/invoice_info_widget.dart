@@ -135,26 +135,6 @@ class InvoiceInfoWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           CustomText(
-              text: "Mã giảm giá:",
-              color: Colors.black,
-              context: context,
-              fontWeight: FontWeight.bold,
-              fontSize: 17),
-          CustomText(
-              text: "Không có",
-              color: Colors.black38,
-              context: context,
-              fontSize: 16)
-        ],
-      ),
-      CustomSizedBox(
-        context: context,
-        height: 24,
-      ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          CustomText(
               text: "Thông tin vận chuyển:",
               color: Colors.black,
               context: context,

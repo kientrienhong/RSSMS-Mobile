@@ -10,8 +10,12 @@ class Invoice with ChangeNotifier {
   late String customerPhone;
   late String deliveryAddress;
   late String addressReturn;
+  late String? additionFeeDescription;
+  late int? additionFee;
+  late String? orderId;
   late int totalPrice;
   late String rejectedReason;
+  String? requestId;
   late int typeOrder;
   late String name;
   late bool isUserDelivery;
@@ -35,14 +39,18 @@ class Invoice with ChangeNotifier {
     required this.rejectedReason,
     required this.typeOrder,
     required this.isUserDelivery,
+    this.orderId,
     required this.deliveryDate,
     required this.deliveryTime,
+    this.additionFee,
+    this.additionFeeDescription,
     required this.returnDate,
     required this.returnTime,
     required this.paymentMethod,
     required this.durationDays,
     required this.durationMonths,
     required this.name,
+    this.requestId,
     required this.status,
     required this.isPaid,
     required this.orderDetails,
@@ -58,17 +66,21 @@ class Invoice with ChangeNotifier {
     totalPrice = -1;
     rejectedReason = '';
     typeOrder = -1;
+    orderId = '';
     isUserDelivery = false;
     deliveryDate = '';
     deliveryTime = '';
     returnDate = '';
     returnTime = '';
+    requestId = '';
     paymentMethod = -1;
     durationDays = -1;
     durationMonths = -1;
     status = -1;
     isPaid = false;
     orderDetails = [];
+    additionFeeDescription = '';
+    additionFee = 0;
   }
 
   Invoice copyWith({
@@ -87,14 +99,22 @@ class Invoice with ChangeNotifier {
     String? returnTime,
     int? paymentMethod,
     int? durationDays,
+    String? orderId,
     int? durationMonths,
     String? name,
+    String? requestId,
     int? status,
     bool? isPaid,
     List<OrderDetail>? orderDetails,
+    List<Map<String, dynamic>>? listRequests,
+    String? additionFeeDescription,
+    int? additionFee,
   }) {
     return Invoice(
       id: id ?? this.id,
+      additionFee: additionFee ?? this.additionFee,
+      additionFeeDescription:
+          additionFeeDescription ?? this.additionFeeDescription,
       name: name ?? this.name,
       customerName: customerName ?? this.customerName,
       customerPhone: customerPhone ?? this.customerPhone,
@@ -103,6 +123,8 @@ class Invoice with ChangeNotifier {
       totalPrice: totalPrice ?? this.totalPrice,
       rejectedReason: rejectedReason ?? this.rejectedReason,
       typeOrder: typeOrder ?? this.typeOrder,
+      requestId: requestId ?? this.requestId,
+      orderId: orderId ?? this.orderId,
       isUserDelivery: isUserDelivery ?? this.isUserDelivery,
       deliveryDate: deliveryDate ?? this.deliveryDate,
       deliveryTime: deliveryTime ?? this.deliveryTime,
@@ -132,6 +154,10 @@ class Invoice with ChangeNotifier {
       'deliveryTime': deliveryTime,
       'returnDate': returnDate,
       'returnTime': returnTime,
+      'requestId': requestId,
+      "additionalFee": additionFee,
+      'orderId': orderId,
+      "additionalFeeDescription": additionFeeDescription,
       'Name': name,
       'paymentMethod': paymentMethod,
       'durationDays': durationDays,
@@ -143,16 +169,31 @@ class Invoice with ChangeNotifier {
   }
 
   factory Invoice.fromMap(Map<String, dynamic> map) {
+    String requestIdFound = '';
+    if (map['requests'] != null) {
+      if (map['requests'].length > 0) {
+        map['requests'].forEach((e) {
+          if (e['type'] == 1) {
+            requestIdFound = e['id'];
+          }
+        });
+      }
+    }
+
     return Invoice(
       id: map['id'] ?? '',
       name: map['name'] ?? '',
       customerName: map['customerName'] ?? '',
       customerPhone: map['customerPhone'] ?? '',
+      additionFee: map['additionalFee']?.toInt() ?? 0,
+      additionFeeDescription: map['additionalFeeDescription'] ?? '',
       deliveryAddress: map['deliveryAddress'] ?? '',
+      orderId: map['id'] ?? '',
       addressReturn: map['addressReturn'] ?? '',
       totalPrice: map['totalPrice']?.toInt() ?? 0,
+      requestId: requestIdFound,
       rejectedReason: map['rejectedReason'] ?? '',
-      typeOrder: map['typeOrder']?.toInt() ?? 0,
+      typeOrder: map['type']?.toInt() ?? 0,
       isUserDelivery: map['isUserDelivery'] ?? false,
       deliveryDate: map['deliveryDate'] ?? '',
       deliveryTime: map['deliveryTime'] ?? '',
@@ -177,12 +218,16 @@ class Invoice with ChangeNotifier {
       customerName: map['customerName'] ?? '',
       customerPhone: map['customerPhone'] ?? '',
       deliveryAddress: map['deliveryAddress'] ?? '',
+      additionFee: 0,
+      additionFeeDescription: '',
       addressReturn: map['returnAddress'] ?? '',
       totalPrice: map['totalPrice']?.toInt() ?? 0,
       rejectedReason: map['rejectedReason'] ?? '',
+      orderId: map['orderId'] ?? '',
       typeOrder: map['typeOrder']?.toInt() ?? 0,
       isUserDelivery: map['isUserDelivery'] ?? false,
       deliveryDate: map['deliveryDate'] ?? '',
+      requestId: map['id'] ?? '',
       deliveryTime: map['deliveryTime'] ?? '',
       returnDate: map['returnDate'] ?? '',
       returnTime: map['returnTime'] ?? '',
@@ -193,7 +238,7 @@ class Invoice with ChangeNotifier {
       isPaid: map['isPaid'] ?? false,
       orderDetails: map['requestDetails'] != null
           ? List<OrderDetail>.from(
-              map['requestDetails']?.map((x) => OrderDetail.fromMap(x)))
+              map['requestDetails']?.map((x) => OrderDetail.formRequest(x)))
           : [],
     );
   }
@@ -210,6 +255,8 @@ class Invoice with ChangeNotifier {
     typeOrder = invoice.typeOrder;
     isUserDelivery = invoice.isUserDelivery;
     deliveryDate = invoice.deliveryDate;
+    requestId = invoice.requestId;
+    orderId = invoice.orderId;
     deliveryTime = invoice.deliveryTime;
     returnDate = invoice.returnDate;
     returnTime = invoice.returnTime;
@@ -219,6 +266,8 @@ class Invoice with ChangeNotifier {
     status = invoice.status;
     isPaid = invoice.isPaid;
     orderDetails = invoice.orderDetails;
+    additionFee = invoice.additionFee;
+    additionFeeDescription = invoice.additionFeeDescription;
     notifyListeners();
   }
 

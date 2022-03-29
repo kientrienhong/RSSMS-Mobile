@@ -110,8 +110,7 @@ class _ImageDetailPopUpState extends State<ImageDetailPopUp>
               builder: (context) {
                 return AlertDialog(
                   title: const Text("Thông báo"),
-                  content:
-                      const Text("Vui lòng cập nhật ảnh"),
+                  content: const Text("Vui lòng cập nhật ảnh"),
                   actions: [
                     TextButton(
                       child: const Text("Đồng ý"),
@@ -122,7 +121,7 @@ class _ImageDetailPopUpState extends State<ImageDetailPopUp>
                   ],
                 );
               });
-              return;
+          return;
         }
       } else {
         editImage();
@@ -215,14 +214,6 @@ class _ImageDetailPopUpState extends State<ImageDetailPopUp>
                   context: context,
                   height: 24,
                 ),
-                CustomOutLineInput(
-                    validator: Validator.notEmpty,
-                    controller: _model.name,
-                    isDisable: widget.isView,
-                    focusNode: _nameFocusNode,
-                    deviceSize: deviceSize,
-                    nextNode: _noteFocusNode,
-                    labelText: 'Tên'),
                 CustomOutLineInput(
                     validator: Validator.notEmpty,
                     controller: _model.note,
