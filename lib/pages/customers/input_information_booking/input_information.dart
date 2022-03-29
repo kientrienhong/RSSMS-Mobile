@@ -296,41 +296,6 @@ class _HandleInputState extends State<HandleInput>
                     : Container(),
                 CustomSizedBox(
                   context: context,
-                  height: 8,
-                ),
-                CustomText(
-                  text: 'Lưu ý với nhân viên',
-                  color: CustomColor.blue,
-                  context: context,
-                  fontSize: 24,
-                  textAlign: TextAlign.start,
-                  fontWeight: FontWeight.bold,
-                ),
-                CustomSizedBox(
-                  context: context,
-                  height: 8,
-                ),
-                GridView.count(
-                  shrinkWrap: true,
-                  crossAxisCount: 2,
-                  childAspectRatio: 1,
-                  mainAxisSpacing: 8,
-                  crossAxisSpacing: 8,
-                  padding: const EdgeInsets.all(4),
-                  physics: const NeverScrollableScrollPhysics(),
-                  children: List.generate(
-                      constants.LIST_CHOICE_NOTED_BOOKING.length,
-                      (index) => NoteSelect(
-                          onTapChoice: onTapChoice,
-                          url: constants.LIST_CHOICE_NOTED_BOOKING[index]
-                              ['url'],
-                          name: constants.LIST_CHOICE_NOTED_BOOKING[index]
-                              ['name'],
-                          currentIndex: currentIndexNoteChoice,
-                          index: index)),
-                ),
-                CustomSizedBox(
-                  context: context,
                   height: 16,
                 ),
                 CustomText(
@@ -352,6 +317,8 @@ class _HandleInputState extends State<HandleInput>
                           Border.all(color: CustomColor.black[3]!, width: 1)),
                   child: TextFormField(
                     minLines: 6,
+                    decoration: const InputDecoration(
+                        contentPadding: EdgeInsets.all(8)),
                     validator: (val) {
                       return Validator.notEmpty(val);
                     },

@@ -83,7 +83,7 @@ const LIST_STATUS_ORDER = [
 const LIST_ICON_REQUEST = [
   {'name': 'assets/images/truck1.png'},
   {'name': 'assets/images/invoice.png'},
-  {'name': 'assets/images/invoice.png'},
+  {'name': 'assets/images/extendOrder.png'},
   {'name': 'assets/images/error1.png'},
   {'name': 'assets/images/truck1.png'},
 ];

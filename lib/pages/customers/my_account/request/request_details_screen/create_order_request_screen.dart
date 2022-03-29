@@ -7,6 +7,7 @@ import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/constants/constants.dart';
+import 'package:rssms/helpers/format_date.dart';
 import 'package:rssms/models/create_order_request_model.dart';
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/user.dart';
@@ -63,6 +64,7 @@ class _CreateOrderRequestScreenState extends State<CreateOrderRequestScreen>
     final deviceSize = MediaQuery.of(context).size;
 
     return Scaffold(
+      backgroundColor: CustomColor.white,
       body: SingleChildScrollView(
         child: _model.isLoading
             ? SizedBox(
@@ -82,20 +84,16 @@ class _CreateOrderRequestScreenState extends State<CreateOrderRequestScreen>
                     ]),
               )
             : Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
                 child: Column(
                   children: [
                     const CustomAppBar(
                       isHome: false,
-                      name: "Chi tiết đơn hàng",
+                      name: "Chi tiết yêu cầu",
                     ),
                     Column(
                       children: [
-                        CustomText(
-                            text: _model.invoice.id,
-                            color: CustomColor.black,
-                            context: context,
-                            fontSize: 24),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -123,14 +121,35 @@ class _CreateOrderRequestScreenState extends State<CreateOrderRequestScreen>
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             CustomText(
-                                text: "Ngày nhận hàng:",
+                                text: "Ngày lấy hàng:",
                                 color: Colors.black,
                                 context: context,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 17),
                             CustomText(
-                                text: _model.invoice.deliveryDate.substring(0,
-                                    _model.invoice.deliveryDate.indexOf("T")),
+                                text: FormatDate.formatToVNDay(
+                                    _model.invoice.deliveryDate),
+                                color: Colors.black,
+                                context: context,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16),
+                          ],
+                        ),
+                        CustomSizedBox(
+                          context: context,
+                          height: 24,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            CustomText(
+                                text: "Khu giờ lấy hàng:",
+                                color: Colors.black,
+                                context: context,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 17),
+                            CustomText(
+                                text: _model.invoice.deliveryTime,
                                 color: Colors.black,
                                 context: context,
                                 fontWeight: FontWeight.bold,
@@ -151,8 +170,8 @@ class _CreateOrderRequestScreenState extends State<CreateOrderRequestScreen>
                                 fontWeight: FontWeight.bold,
                                 fontSize: 17),
                             CustomText(
-                                text: _model.invoice.returnDate.substring(
-                                    0, _model.invoice.returnDate.indexOf("T")),
+                                text: FormatDate.formatToVNDay(
+                                    _model.invoice.returnDate),
                                 color: Colors.black,
                                 context: context,
                                 fontWeight: FontWeight.bold,
@@ -185,26 +204,6 @@ class _CreateOrderRequestScreenState extends State<CreateOrderRequestScreen>
                                 textOverflow: TextOverflow.ellipsis,
                               ),
                             ),
-                          ],
-                        ),
-                        CustomSizedBox(
-                          context: context,
-                          height: 24,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            CustomText(
-                                text: "Mã giảm giá:",
-                                color: Colors.black,
-                                context: context,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 17),
-                            CustomText(
-                                text: "Không có",
-                                color: Colors.black38,
-                                context: context,
-                                fontSize: 16)
                           ],
                         ),
                         CustomSizedBox(
