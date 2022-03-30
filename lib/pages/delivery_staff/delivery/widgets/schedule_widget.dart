@@ -13,6 +13,8 @@ import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/constants/constants.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/models/schedule_model.dart';
+import 'package:rssms/pages/delivery_staff/delivery/widgets/dialog_check_in.dart';
+import 'package:rssms/pages/delivery_staff/delivery/widgets/dialog_report.dart';
 import 'package:rssms/pages/delivery_staff/qr/invoice_screen/invoice_screen.dart';
 import 'package:rssms/presenters/schedule_presenter.dart';
 import 'package:rssms/views/schedule_view.dart';
@@ -22,15 +24,21 @@ class ScheduleWidget extends StatefulWidget {
   final Map<String, dynamic> schedule;
   final int listLength;
   final int currentIndex;
-  final DateTime? firstDayOfWeek;
-  final DateTime? endDayOfWeek;
+  final DateTime firstDayOfWeek;
+  final DateTime endDayOfWeek;
+  final Function initDeliveryScreen;
+  final Function refreshSchedule;
+  final DateTime currentDateTime;
   const ScheduleWidget(
       {Key? key,
       required this.firstDayOfWeek,
       required this.invoice,
       required this.endDayOfWeek,
       required this.schedule,
+      required this.initDeliveryScreen,
       required this.currentIndex,
+      required this.currentDateTime,
+      required this.refreshSchedule,
       required this.listLength})
       : super(key: key);
 
@@ -87,10 +95,40 @@ class _ScheduleWidgetState extends State<ScheduleWidget>
   }
 
   @override
-  void onPressDelivery() {}
+  void onPressDelivery() {
+    showDialog(
+        context: context,
+        builder: (ctx) {
+          return DialogCheckIn(idRequest: widget.invoice.id);
+        }).then((value) async {
+      if (value) {
+        Users user = Provider.of<Users>(context, listen: false);
+        widget.initDeliveryScreen(
+            user: user, currentDate: widget.currentDateTime);
+
+        await widget.refreshSchedule(
+            user.idToken!, widget.firstDayOfWeek, widget.endDayOfWeek);
+      }
+    });
+  }
 
   @override
-  void onPressReport() {}
+  void onPressReport() {
+    showDialog(
+        context: context,
+        builder: (ctx) {
+          return DialogReport(idRequest: widget.invoice.id);
+        }).then((value) async {
+      if (value) {
+        Users user = Provider.of<Users>(context, listen: false);
+        widget.initDeliveryScreen(
+            user: user, currentDate: widget.currentDateTime);
+
+        await widget.refreshSchedule(
+            user.idToken!, widget.firstDayOfWeek, widget.endDayOfWeek);
+      }
+    });
+  }
 
   @override
   void onPressViewDetail() async {
@@ -134,8 +172,8 @@ class _ScheduleWidgetState extends State<ScheduleWidget>
     final deviceSize = MediaQuery.of(context).size;
 
     DateTime deliveryDateTime = DateTime.parse(widget.schedule['deliveryDate']);
-    bool isDelivery = deliveryDateTime.isAfter(widget.firstDayOfWeek!) &&
-        deliveryDateTime.isBefore(widget.endDayOfWeek!);
+    bool isDelivery = deliveryDateTime.isAfter(widget.firstDayOfWeek) &&
+        deliveryDateTime.isBefore(widget.endDayOfWeek);
 
     return Container(
       width: deviceSize.width,
@@ -255,7 +293,7 @@ class _ScheduleWidgetState extends State<ScheduleWidget>
                                 height: 24,
                                 text: 'Báo cáo',
                                 width: deviceSize.width * 1 / 3,
-                                onPressFunction: () {},
+                                onPressFunction: onPressReport,
                                 isLoading: false,
                                 textColor: CustomColor.white,
                                 buttonColor: CustomColor.red,
@@ -268,7 +306,7 @@ class _ScheduleWidgetState extends State<ScheduleWidget>
                                 height: 24,
                                 text: 'Đi lấy hàng',
                                 width: deviceSize.width * 1 / 3,
-                                onPressFunction: () {},
+                                onPressFunction: onPressDelivery,
                                 isLoading: false,
                                 textColor: CustomColor.white,
                                 buttonColor: CustomColor.blue,

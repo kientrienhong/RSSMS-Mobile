@@ -94,6 +94,7 @@ const LIST_STATUS_REQUEST = [
   {'name': 'Đã xử lý', 'color': CustomColor.blue},
   {'name': 'Hoàn thành', 'color': CustomColor.green},
   {'name': 'Đang vận chuyển', 'color': CustomColor.brown},
+  {'name': 'Khách không có mặt', 'color': CustomColor.red},
 ];
 
 const LIST_TYPE_REQUEST = [

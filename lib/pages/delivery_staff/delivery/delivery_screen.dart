@@ -32,9 +32,15 @@ class _DeliveryScreenState extends State<DeliveryScreen>
   void init() async {
     Users user = Provider.of<Users>(context, listen: false);
 
-    _presenter.init(user);
+    _presenter.init(user: user);
     await _presenter.loadListShedule(
         user.idToken!, _model.firstDayOfWeek, _model.endDayOfWeek);
+    setState(() {});
+  }
+
+  @override
+  updateView() {
+    // TODO: implement updateView
     setState(() {});
   }
 
@@ -60,6 +66,9 @@ class _DeliveryScreenState extends State<DeliveryScreen>
           ?.mapIndexed((index, element) => ScheduleWidget(
               invoice: element,
               schedule: element.toMap(),
+              currentDateTime: _model.listDateTime[_model.currentIndex],
+              refreshSchedule: _presenter.loadListShedule,
+              initDeliveryScreen: _presenter.init,
               currentIndex: index,
               endDayOfWeek: _model.endDayOfWeek,
               firstDayOfWeek: _model.firstDayOfWeek,
@@ -179,11 +188,12 @@ class _DeliveryScreenState extends State<DeliveryScreen>
                       if (value == true) {
                         Users user = Provider.of<Users>(context, listen: false);
 
-                        _presenter.init(user);
-                        _model.listInvoice = <String, List<Invoice>>{};
+                        _presenter.init(
+                            user: user,
+                            currentDate:
+                                _model.listDateTime[_model.currentIndex]);
                         await _presenter.loadListShedule(user.idToken!,
                             _model.firstDayOfWeek, _model.endDayOfWeek);
-                        setState(() {});
                       }
                     });
                   },

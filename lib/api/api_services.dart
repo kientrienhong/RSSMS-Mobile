@@ -373,6 +373,24 @@ class ApiServices {
     }
   }
 
+  static Future<dynamic> updateRequest(
+      String idRequest, String idToken, int status) {
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        'Authorization': 'Bearer $idToken'
+      };
+
+      final url = Uri.parse('$_domain/api/v1/requests/$idRequest');
+      return http.put(url,
+          headers: headers,
+          body: jsonEncode({'id': idRequest, 'status': status}));
+    } catch (e) {
+      print(e.toString());
+      throw Exception('Update Failed');
+    }
+  }
+
   static Future<dynamic> updateProfile(
       String fullname,
       String phone,
