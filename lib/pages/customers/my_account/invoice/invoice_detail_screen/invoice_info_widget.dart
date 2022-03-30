@@ -27,8 +27,8 @@ class InvoiceInfoWidget extends StatelessWidget {
               fontWeight: FontWeight.bold,
               fontSize: 17),
           CustomText(
-              text: LIST_STATUS_REQUEST[invoice!.status]['name']! as String,
-              color: LIST_STATUS_REQUEST[invoice!.status]['color'] as Color,
+              text: LIST_STATUS_ORDER[invoice!.status]['name']! as String,
+              color: LIST_STATUS_ORDER[invoice!.status]['color'] as Color,
               context: context,
               fontWeight: FontWeight.bold,
               fontSize: 16),

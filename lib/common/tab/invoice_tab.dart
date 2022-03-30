@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/models/entity/invoice.dart';
+import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/invoice_cancelled_screen/invoice_cancelled_screen.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/invoice_info_widget.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/invoice_product_widget.dart';
@@ -19,6 +21,8 @@ class InvoiceTab extends StatelessWidget {
       : super(key: key);
   @override
   Widget build(BuildContext context) {
+    Users user = Provider.of<Users>(context, listen: false);
+
     return Column(
       children: [
         CustomText(
@@ -68,7 +72,7 @@ class InvoiceTab extends StatelessWidget {
                 context: context,
                 height: 16,
               ),
-              if (invoice!.status != 0)
+              if (invoice!.status != 0 && user.roleName == 'Customer')
                 Center(
                   child: CustomButton(
                       height: 24,

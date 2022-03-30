@@ -16,6 +16,8 @@ import 'package:rssms/models/schedule_model.dart';
 import 'package:rssms/pages/delivery_staff/delivery/widgets/dialog_check_in.dart';
 import 'package:rssms/pages/delivery_staff/delivery/widgets/dialog_report.dart';
 import 'package:rssms/pages/delivery_staff/qr/invoice_screen/invoice_screen.dart';
+import 'package:rssms/common/invoice_detail_screen.dart';
+
 import 'package:rssms/presenters/schedule_presenter.dart';
 import 'package:rssms/views/schedule_view.dart';
 
@@ -149,14 +151,29 @@ class _ScheduleWidgetState extends State<ScheduleWidget>
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => InvoiceDetailsScreen(
+            builder: (context) => QRInvoiceDetailsScreen(
               isScanQR: false,
               isDone: false,
             ),
           ),
         );
       } else if (typeRequest == REQUEST_TYPE.returnOrder.index) {
-        invoiceProvider.setInvoice(invoice: _model.invoiceDetail!);
+        bool result = await _presenter.getInvoiceId(users.idToken!);
+        if (result) {
+          invoiceProvider.setInvoice(invoice: _model.invoiceDetail!);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  InvoiceDetailScreen(invoice: invoiceProvider),
+            ),
+          );
+        } else {
+          CustomSnackBar.buildErrorSnackbar(
+              context: context,
+              message: 'Lấy thông tin đơn thất bại!',
+              color: CustomColor.red);
+        }
       }
     } catch (e) {
       log(e.toString());
@@ -209,7 +226,9 @@ class _ScheduleWidgetState extends State<ScheduleWidget>
             width: 8,
           ),
           GestureDetector(
-            onTap: () async {},
+            onTap: () async {
+              onPressViewDetail();
+            },
             child: SizedBox(
               height: deviceSize.height / 3,
               width: deviceSize.width * 3 / 4,

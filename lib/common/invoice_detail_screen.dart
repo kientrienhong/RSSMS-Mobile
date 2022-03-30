@@ -3,22 +3,23 @@ import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/invoice_image_widget.dart';
+import 'package:rssms/common/tab/invoice_tab.dart';
+import 'package:rssms/common/tab/item_tab.dart';
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/models/invoice_detail_screen.dart';
 import 'package:rssms/pages/customers/cart/widgets/title_tab.dart';
-import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/tab/invoice_tab.dart';
-import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/tab/item_tab.dart';
 import 'package:rssms/constants/constants.dart' as constants;
 import 'package:rssms/presenters/invoice_detail_screen_presenter.dart';
 import 'package:rssms/views/invoice_detail_screen_view.dart';
 
 class InvoiceDetailScreen extends StatefulWidget {
   Invoice? invoice;
-  final Size deviceSize;
 
-  InvoiceDetailScreen({Key? key, this.invoice, required this.deviceSize})
-      : super(key: key);
+  InvoiceDetailScreen({
+    Key? key,
+    this.invoice,
+  }) : super(key: key);
 
   @override
   State<InvoiceDetailScreen> createState() => _InvoiceDetailScreenState();
@@ -56,20 +57,6 @@ class _InvoiceDetailScreenState extends State<InvoiceDetailScreen>
     _index = 0;
   }
 
-  List<TitleTab> mapListTab() {
-    int index = 0;
-
-    return constants.TAB_INVOICE_DETAIL
-        .map<TitleTab>((e) => TitleTab(
-              title: e,
-              index: index++,
-              deviceSize: widget.deviceSize,
-              currentIndex: _index,
-              onChangeTab: onChangeTab,
-            ))
-        .toList();
-  }
-
   void onChangeTab(int index) {
     setState(() {
       _index = index;
@@ -85,6 +72,20 @@ class _InvoiceDetailScreenState extends State<InvoiceDetailScreen>
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
+    List<TitleTab> mapListTab() {
+      int index = 0;
+
+      return constants.TAB_INVOICE_DETAIL
+          .map<TitleTab>((e) => TitleTab(
+                title: e,
+                index: index++,
+                deviceSize: deviceSize,
+                currentIndex: _index,
+                onChangeTab: onChangeTab,
+              ))
+          .toList();
+    }
+
     return Scaffold(
         backgroundColor: CustomColor.white,
         body: _model.isLoading
@@ -107,8 +108,8 @@ class _InvoiceDetailScreenState extends State<InvoiceDetailScreen>
             : Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: SizedBox(
-                  width: widget.deviceSize.width,
-                  height: widget.deviceSize.height,
+                  width: deviceSize.width,
+                  height: deviceSize.height,
                   child: ListView(
                     children: [
                       Align(
@@ -132,7 +133,7 @@ class _InvoiceDetailScreenState extends State<InvoiceDetailScreen>
                       ),
                       _index == 0
                           ? InvoiceTab(
-                              deviceSize: widget.deviceSize,
+                              deviceSize: deviceSize,
                               invoice: _model.showUIInvoice,
                             )
                           : ItemTab(invoice: _model.invoice)

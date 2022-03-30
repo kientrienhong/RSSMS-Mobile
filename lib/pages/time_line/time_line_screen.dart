@@ -63,11 +63,13 @@ class _TimeLineScreenState extends State<TimeLineScreen>
             : Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: 24, horizontal: 24),
-                child: Column(children: [
-                  const CustomAppBar(
-                      isHome: false, name: 'Thông tin vận chuyển'),
-                  TimeLine(listTimeLine: _model.listTimeline)
-                ]),
+                child: SingleChildScrollView(
+                  child: Column(children: [
+                    const CustomAppBar(
+                        isHome: false, name: 'Thông tin vận chuyển'),
+                    TimeLine(listTimeLine: _model.listTimeline)
+                  ]),
+                ),
               ));
   }
 }

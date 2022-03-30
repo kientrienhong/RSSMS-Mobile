@@ -3,7 +3,7 @@ import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/models/entity/invoice.dart';
-import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/invoice_detail_screen.dart';
+import 'package:rssms/common/invoice_detail_screen.dart';
 import '../../../../constants/constants.dart' as constants;
 
 class InvoiceWidget extends StatelessWidget {
@@ -16,13 +16,11 @@ class InvoiceWidget extends StatelessWidget {
     final deviceSize = MediaQuery.of(context).size;
     return GestureDetector(
       onTap: () {
-        final test = invoice;
         Navigator.push(
           context,
           MaterialPageRoute(
               builder: (context) => InvoiceDetailScreen(
                     invoice: invoice,
-                    deviceSize: deviceSize,
                   )),
         );
       },

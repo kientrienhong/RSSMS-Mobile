@@ -35,4 +35,8 @@ class ScheduleModel {
   Future<dynamic> getRequestId(String idToken, String idInvoice) async {
     return await ApiServices.getRequestbyId(idToken, idInvoice);
   }
+
+  Future<dynamic> getInvoiceId(String idToken, String idInvoice) async {
+    return await ApiServices.getInvoicebyId(idToken, idInvoice);
+  }
 }

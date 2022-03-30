@@ -20,4 +20,16 @@ class SchedulePresenter {
       return invoiceReponse.typeRequest;
     }
   }
+
+  Future<bool> getInvoiceId(String idToken) async {
+    final response =
+        await model.getInvoiceId(idToken, model.invoiceDetail!.orderId!);
+    if (response.statusCode == 200) {
+      Invoice invoiceReponse = Invoice.fromMap(json.decode(response.body));
+      model.setModel(model.copyWith(invoiceDetail: invoiceReponse));
+      return true;
+    }
+
+    return false;
+  }
 }

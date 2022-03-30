@@ -11,10 +11,11 @@ import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_scre
 import 'package:rssms/pages/delivery_staff/qr/invoice_screen/widget/invoice_info_widget.dart';
 import 'package:rssms/constants/constants.dart' as constants;
 
-class InvoiceDetailsScreen extends StatelessWidget {
+class QRInvoiceDetailsScreen extends StatelessWidget {
   final bool isScanQR;
   final bool isDone;
-  InvoiceDetailsScreen({Key? key, required this.isScanQR, required this.isDone})
+  QRInvoiceDetailsScreen(
+      {Key? key, required this.isScanQR, required this.isDone})
       : super(key: key);
 
   Invoice formatUIInvoice(Invoice invoice) {
