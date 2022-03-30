@@ -128,7 +128,9 @@ class InvoiceInfoWidget extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const TimeLineScreen()));
+                        builder: (context) => TimeLineScreen(
+                              invoiceId: invoice!.id,
+                            )));
               },
               width: deviceSize.width / 3,
               buttonColor: CustomColor.blue,

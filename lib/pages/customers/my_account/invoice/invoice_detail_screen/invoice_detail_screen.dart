@@ -84,7 +84,6 @@ class _InvoiceDetailScreenState extends State<InvoiceDetailScreen>
 
   @override
   Widget build(BuildContext context) {
-    // List<Map<String, dynamic>> listImage = invoice!["image"];
     final deviceSize = MediaQuery.of(context).size;
     return Scaffold(
         backgroundColor: CustomColor.white,

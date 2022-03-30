@@ -216,32 +216,32 @@ class _CreateOrderRequestScreenState extends State<CreateOrderRequestScreen>
                           context: context,
                           height: 24,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            CustomText(
-                                text: "Thông tin vận chuyển:",
-                                color: Colors.black,
-                                context: context,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 17),
-                            CustomButton(
-                                height: 24,
-                                isLoading: false,
-                                text: 'Xem thêm',
-                                textColor: CustomColor.white,
-                                onPressFunction: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const TimeLineScreen()));
-                                },
-                                width: deviceSize.width / 3,
-                                buttonColor: CustomColor.blue,
-                                borderRadius: 6),
-                          ],
-                        ),
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //   children: [
+                        //     CustomText(
+                        //         text: "Thông tin vận chuyển:",
+                        //         color: Colors.black,
+                        //         context: context,
+                        //         fontWeight: FontWeight.bold,
+                        //         fontSize: 17),
+                        //     CustomButton(
+                        //         height: 24,
+                        //         isLoading: false,
+                        //         text: 'Xem thêm',
+                        //         textColor: CustomColor.white,
+                        //         onPressFunction: () {
+                        //           Navigator.push(
+                        //               context,
+                        //               MaterialPageRoute(
+                        //                   builder: (context) =>
+                        //                       const TimeLineScreen()));
+                        //         },
+                        //         width: deviceSize.width / 3,
+                        //         buttonColor: CustomColor.blue,
+                        //         borderRadius: 6),
+                        //   ],
+                        // ),
                         SizedBox(
                           width: deviceSize.width,
                           child: Column(

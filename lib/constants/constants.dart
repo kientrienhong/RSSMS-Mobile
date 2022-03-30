@@ -70,14 +70,6 @@ const UNWEILDY = 3;
 const SERVICES = 4;
 
 const AVAILABLE = 0;
-const LIST_NOTE_STATUS_BOX = [
-  {'color': CustomColor.brightBlue, 'name': 'Available'},
-  {'color': CustomColor.blue, 'name': 'Rented'},
-  {'color': CustomColor.red, 'name': 'Expired'},
-  {'color': CustomColor.orange, 'name': 'Expired soon'},
-  {'color': CustomColor.greenBright, 'name': 'Selected'},
-  {'color': CustomColor.green, 'name': 'Placing'},
-];
 
 const LIST_STATUS_ORDER = [
   {'color': CustomColor.red, 'name': 'Đã Hủy'},
@@ -99,7 +91,7 @@ const LIST_ICON_REQUEST = [
 const LIST_STATUS_REQUEST = [
   {'name': 'Đã hủy', 'color': CustomColor.red},
   {'name': 'Đang xử lý', 'color': CustomColor.purple},
-  {'name': 'Đã xử lý', 'color': CustomColor.brightBlue},
+  {'name': 'Đã xử lý', 'color': CustomColor.blue},
   {'name': 'Hoàn thành', 'color': CustomColor.green},
   {'name': 'Đang vận chuyển', 'color': CustomColor.brown},
 ];

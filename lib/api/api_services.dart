@@ -160,6 +160,24 @@ class ApiServices {
     }
   }
 
+  static Future<dynamic> getTimeline(String idToken, String idInvoice) {
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        'Authorization': 'Bearer $idToken'
+      };
+
+      final url = Uri.parse(
+          '$_domain/api/v1/ordertimelines?OrderId=$idInvoice&page=1&size=-1');
+      return http.get(
+        url,
+        headers: headers,
+      );
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
   static Future<dynamic> getInvoiceInRangeTime(
       String idToken, DateTime startOfWeek, DateTime endOfWeek) {
     try {
@@ -197,42 +215,6 @@ class ApiServices {
     }
   }
 
-  // static Future<dynamic> createOrder(List<Map<String, dynamic>> listProduct,
-  //     OrderBooking orderBooking, Users user) {
-  //   try {
-  //     Map<String, String> headers = {
-  //       "Content-type": "application/json",
-  //       'Authorization': 'Bearer ${user.idToken}'
-  //     };
-
-  //     final typeOrder = orderBooking.typeOrder == TypeOrder.selfStorage ? 0 : 1;
-  //     final url = Uri.parse('$_domain/api/v1/orders');
-  //     return http.post(
-  //       url,
-  //       body: jsonEncode({
-  //         "customerId": user.userId,
-  //         "deliveryAddress": orderBooking.addressDelivery,
-  //         "addressReturn": orderBooking.addressReturn,
-  //         "totalPrice": orderBooking.totalPrice,
-  //         "typeOrder": typeOrder,
-  //         "isPaid": orderBooking.isPaid,
-  //         "isUserDelivery": orderBooking.isCustomerDelivery,
-  //         "deliveryDate": orderBooking.dateTimeDelivery.toIso8601String(),
-  //         "deliveryTime": orderBooking.currentSelectTime != -1
-  //             ? constants.LIST_TIME_PICK_UP[orderBooking.currentSelectTime]
-  //             : '',
-  //         "duration": orderBooking.typeOrder == TypeOrder.selfStorage
-  //             ? orderBooking.months
-  //             : orderBooking.diffDay,
-  //         "listService": listProduct,
-  //         'status': 1
-  //       }),
-  //       headers: headers,
-  //     );
-  //   } catch (e) {
-  //     throw Exception(e.toString());
-  //   }
-  // }
   static Future<dynamic> createOrder(dataRequest, String idToken) {
     try {
       Map<String, String> headers = {

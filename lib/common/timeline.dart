@@ -3,9 +3,12 @@ import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:collection/collection.dart';
+import 'package:rssms/models/entity/timeline.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 class TimeLine extends StatelessWidget {
-  final List<Map<String, dynamic>> listTimeLine;
+  final List<Timeline> listTimeLine;
   const TimeLine({Key? key, required this.listTimeLine}) : super(key: key);
 
   @override
@@ -20,17 +23,20 @@ class TimeLine extends StatelessWidget {
           .toList();
     }
 
-    return ListView(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      children: mapListTimeLine(),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: ListView(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        children: mapListTimeLine(),
+      ),
     );
   }
 }
 
 class TimeLineElement extends StatelessWidget {
-  Map<String, dynamic> timeLine;
-  List<Map<String, dynamic>> listTimeLine;
+  Timeline timeLine;
+  List<Timeline> listTimeLine;
   int currentIndex;
   TimeLineElement(
       {Key? key,
@@ -42,11 +48,15 @@ class TimeLineElement extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
+    Intl.defaultLocale = "vi";
+    initializeDateFormatting('vi', null);
 
-    Color color = currentIndex == listTimeLine.length - 1
-        ? CustomColor.blue
-        : CustomColor.black[3]!;
+    var dateCreate =
+        DateFormat('yyyy-MM-ddTHH:mm:ss', 'vi').parse(timeLine.datetime);
 
+    Color color = currentIndex == 0 ? CustomColor.blue : CustomColor.black[3]!;
+    FontWeight fontWeight =
+        currentIndex == 0 ? FontWeight.bold : FontWeight.normal;
     return Container(
       width: deviceSize.width,
       margin: EdgeInsets.only(bottom: deviceSize.height / 12),
@@ -55,22 +65,22 @@ class TimeLineElement extends StatelessWidget {
           Column(
             children: [
               CustomText(
-                  text: '10/08',
+                  text: DateFormat('dd / MM').format(dateCreate),
                   color: color,
                   context: context,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: fontWeight,
                   fontSize: 16),
               CustomText(
-                  text: '12:42',
+                  text: DateFormat('HH : mm').format(dateCreate),
                   color: color,
                   context: context,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: fontWeight,
                   fontSize: 16)
             ],
           ),
           CustomSizedBox(
             context: context,
-            width: 8,
+            width: 16,
           ),
           Stack(
             clipBehavior: Clip.none,
@@ -98,11 +108,11 @@ class TimeLineElement extends StatelessWidget {
             width: 8,
           ),
           CustomText(
-              text: timeLine['name'],
+              text: timeLine.name,
               color: color,
               context: context,
-              fontWeight: FontWeight.bold,
-              fontSize: 20),
+              fontWeight: fontWeight,
+              fontSize: 16),
         ],
       ),
     );
