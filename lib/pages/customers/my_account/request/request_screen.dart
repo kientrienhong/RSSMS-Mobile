@@ -9,8 +9,6 @@ import 'package:rssms/pages/customers/my_account/request/request_widget.dart';
 import 'package:rssms/presenters/request_screen_presenter.dart';
 import 'package:rssms/views/request_screen_view.dart';
 
-enum REQUEST_TYPE { modifyRequest, cancelOrderRequest, cancelDeliveryRequest }
-
 class RequestScreen extends StatefulWidget {
   const RequestScreen({Key? key}) : super(key: key);
 

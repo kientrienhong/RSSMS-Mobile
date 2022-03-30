@@ -162,44 +162,12 @@ class _DeliveryScreenState extends State<DeliveryScreen>
             ),
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               CustomButton(
                   height: 24,
-                  text: 'Bắt đầu vận chuyển',
-                  width: deviceSize.width * 2 / 3,
-                  onPressFunction: () async {
-                    Users user = Provider.of<Users>(context, listen: false);
-                    bool? result =
-                        await _presenter.startDelivery(user.idToken!);
-                    if (result == null) {
-                      updateLoadingStartDelivery();
-                    } else {
-                      if (result == true) {
-                        CustomSnackBar.buildErrorSnackbar(
-                            context: context,
-                            message: "Bắt đầu thành công",
-                            color: CustomColor.green);
-                        _presenter.init(user);
-                        _model.listInvoice = <String, List<Invoice>>{};
-                        await _presenter.loadListShedule(user.idToken!,
-                            _model.firstDayOfWeek, _model.endDayOfWeek);
-                      }
-                      updateLoadingStartDelivery();
-                    }
-                  },
-                  isLoading: _model.isLoadingStartDelivery,
-                  textColor: CustomColor.white,
-                  buttonColor: CustomColor.blue,
-                  borderRadius: 6),
-              CustomSizedBox(
-                context: context,
-                width: 8,
-              ),
-              CustomButton(
-                  height: 24,
                   text: 'Hủy lịch',
-                  width: deviceSize.width * 0.8 / 3,
+                  width: deviceSize.width * 2 / 3,
                   onPressFunction: () {
                     showDialog(
                         context: context,

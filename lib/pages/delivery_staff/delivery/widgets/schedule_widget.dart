@@ -1,17 +1,23 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rssms/api/api_services.dart';
+import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
+import 'package:rssms/common/custom_snack_bar.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/constants/constants.dart';
 import 'package:rssms/models/entity/user.dart';
+import 'package:rssms/models/schedule_model.dart';
 import 'package:rssms/pages/delivery_staff/qr/invoice_screen/invoice_screen.dart';
+import 'package:rssms/presenters/schedule_presenter.dart';
+import 'package:rssms/views/schedule_view.dart';
 
-class ScheduleWidget extends StatelessWidget {
+class ScheduleWidget extends StatefulWidget {
   final Invoice invoice;
   final Map<String, dynamic> schedule;
   final int listLength;
@@ -27,6 +33,15 @@ class ScheduleWidget extends StatelessWidget {
       required this.currentIndex,
       required this.listLength})
       : super(key: key);
+
+  @override
+  State<ScheduleWidget> createState() => _ScheduleWidgetState();
+}
+
+class _ScheduleWidgetState extends State<ScheduleWidget>
+    implements ScheduleView {
+  late SchedulePresenter _presenter;
+  late ScheduleModel _model;
 
   Widget buildInfo(String title, String content, BuildContext context) {
     return Row(
@@ -57,14 +72,70 @@ class ScheduleWidget extends StatelessWidget {
   }
 
   @override
+  void initState() {
+    _presenter = SchedulePresenter();
+    _presenter.view = this;
+    _model = _presenter.model;
+    super.initState();
+  }
+
+  @override
+  void updateView(ScheduleModel model) {
+    setState(() {
+      _model.setModel(model);
+    });
+  }
+
+  @override
+  void onPressDelivery() {}
+
+  @override
+  void onPressReport() {}
+
+  @override
+  void onPressViewDetail() async {
+    try {
+      Invoice invoiceProvider = Provider.of<Invoice>(context, listen: false);
+      Users users = Provider.of<Users>(context, listen: false);
+
+      int? typeRequest =
+          await _presenter.getRequestId(users.idToken!, widget.invoice.id);
+      if (typeRequest == null) {
+        CustomSnackBar.buildErrorSnackbar(
+            context: context,
+            message: 'Lấy thông tin đơn thất bại!',
+            color: CustomColor.red);
+      } else if (typeRequest == REQUEST_TYPE.createOrder.index) {
+        invoiceProvider.setInvoice(invoice: _model.invoiceDetail!);
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => InvoiceDetailsScreen(
+              isScanQR: false,
+              isDone: false,
+            ),
+          ),
+        );
+      } else if (typeRequest == REQUEST_TYPE.returnOrder.index) {
+        invoiceProvider.setInvoice(invoice: _model.invoiceDetail!);
+      }
+    } catch (e) {
+      log(e.toString());
+      CustomSnackBar.buildErrorSnackbar(
+          context: context,
+          message: 'Lấy thông tin đơn thất bại!',
+          color: CustomColor.red);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
-    Color status = CustomColor.black[3]!;
-    final test = schedule;
-    DateTime deliveryDateTime = DateTime.parse(schedule['deliveryDate']);
-    bool isDelivery = deliveryDateTime.isAfter(firstDayOfWeek!) &&
-        deliveryDateTime.isBefore(endDayOfWeek!);
-    String statusString = '';
+
+    DateTime deliveryDateTime = DateTime.parse(widget.schedule['deliveryDate']);
+    bool isDelivery = deliveryDateTime.isAfter(widget.firstDayOfWeek!) &&
+        deliveryDateTime.isBefore(widget.endDayOfWeek!);
 
     return Container(
       width: deviceSize.width,
@@ -76,7 +147,7 @@ class ScheduleWidget extends StatelessWidget {
           SizedBox(
             width: 40,
             child: Stack(clipBehavior: Clip.none, children: [
-              currentIndex == listLength - 1
+              widget.currentIndex == widget.listLength - 1
                   ? Container()
                   : Positioned(
                       left: 8,
@@ -100,30 +171,7 @@ class ScheduleWidget extends StatelessWidget {
             width: 8,
           ),
           GestureDetector(
-            onTap: () async {
-              Invoice invoiceProvider =
-                  Provider.of<Invoice>(context, listen: false);
-              Users users = Provider.of<Users>(context, listen: false);
-
-              final response = await ApiServices.getRequestbyId(
-                  users.idToken!, invoice.id.toString());
-              if (response.statusCode == 200) {
-                Invoice invoiceReponse =
-                    Invoice.fromRequest(json.decode(response.body));
-
-                invoiceProvider.setInvoice(invoice: invoiceReponse);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => InvoiceDetailsScreen(
-                      deviceSize: deviceSize,
-                      isScanQR: false,
-                      isDone: false,
-                    ),
-                  ),
-                );
-              }
-            },
+            onTap: () async {},
             child: SizedBox(
               height: deviceSize.height / 3,
               width: deviceSize.width * 3 / 4,
@@ -131,8 +179,7 @@ class ScheduleWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomText(
-                      // text: schedule['time'],
-                      text: schedule['deliveryTime'],
+                      text: widget.schedule['deliveryTime'],
                       color: CustomColor.black,
                       context: context,
                       fontWeight: FontWeight.bold,
@@ -168,9 +215,9 @@ class ScheduleWidget extends StatelessWidget {
                             Flexible(
                               child: CustomText(
                                   text:
-                                      '${LIST_STATUS_REQUEST[schedule['status']]['name']}',
-                                  color: LIST_STATUS_REQUEST[schedule['status']]
-                                      ['color'] as Color,
+                                      '${LIST_STATUS_REQUEST[widget.schedule['status']]['name']}',
+                                  color: LIST_STATUS_REQUEST[widget
+                                      .schedule['status']]['color'] as Color,
                                   fontWeight: FontWeight.bold,
                                   maxLines: 2,
                                   textAlign: TextAlign.right,
@@ -186,21 +233,48 @@ class ScheduleWidget extends StatelessWidget {
                         buildInfo(
                             'Địa chỉ: ',
                             isDelivery
-                                ? schedule['deliveryAddress']
-                                : schedule['addressReturn'],
+                                ? widget.schedule['deliveryAddress']
+                                : widget.schedule['addressReturn'],
                             context),
                         CustomSizedBox(
                           context: context,
                           height: 8,
                         ),
-                        buildInfo('Tên khách hàng: ', schedule['customerName'],
-                            context),
+                        buildInfo('Tên khách hàng: ',
+                            widget.schedule['customerName'], context),
                         CustomSizedBox(
                           context: context,
                           height: 8,
                         ),
-                        buildInfo('SĐT khách hàng: ', schedule['customerPhone'],
-                            context),
+                        buildInfo('SĐT khách hàng: ',
+                            widget.schedule['customerPhone'], context),
+                        Divider(),
+                        Row(
+                          children: [
+                            CustomButton(
+                                height: 24,
+                                text: 'Báo cáo',
+                                width: deviceSize.width * 1 / 3,
+                                onPressFunction: () {},
+                                isLoading: false,
+                                textColor: CustomColor.white,
+                                buttonColor: CustomColor.red,
+                                borderRadius: 6),
+                            CustomSizedBox(
+                              context: context,
+                              width: 8,
+                            ),
+                            CustomButton(
+                                height: 24,
+                                text: 'Đi lấy hàng',
+                                width: deviceSize.width * 1 / 3,
+                                onPressFunction: () {},
+                                isLoading: false,
+                                textColor: CustomColor.white,
+                                buttonColor: CustomColor.blue,
+                                borderRadius: 6),
+                          ],
+                        )
                       ],
                     ),
                   )

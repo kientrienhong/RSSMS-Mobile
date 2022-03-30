@@ -17,6 +17,7 @@ class Invoice with ChangeNotifier {
   late String rejectedReason;
   String? requestId;
   late int typeOrder;
+  late int? typeRequest;
   late String name;
   late bool isUserDelivery;
   late String deliveryDate;
@@ -42,6 +43,7 @@ class Invoice with ChangeNotifier {
     required this.isUserDelivery,
     this.orderId,
     required this.deliveryDate,
+    this.typeRequest,
     required this.deliveryTime,
     this.additionFee,
     this.additionFeeDescription,
@@ -84,6 +86,7 @@ class Invoice with ChangeNotifier {
     additionFeeDescription = '';
     additionFee = 0;
     isOrder = false;
+    typeRequest = -1;
   }
 
   Invoice copyWith({
@@ -100,6 +103,7 @@ class Invoice with ChangeNotifier {
     String? deliveryTime,
     String? returnDate,
     String? returnTime,
+    int? typeRequest,
     int? paymentMethod,
     int? durationDays,
     String? orderId,
@@ -130,6 +134,7 @@ class Invoice with ChangeNotifier {
       typeOrder: typeOrder ?? this.typeOrder,
       requestId: requestId ?? this.requestId,
       orderId: orderId ?? this.orderId,
+      typeRequest: typeRequest ?? this.typeRequest,
       isUserDelivery: isUserDelivery ?? this.isUserDelivery,
       deliveryDate: deliveryDate ?? this.deliveryDate,
       deliveryTime: deliveryTime ?? this.deliveryTime,
@@ -205,6 +210,7 @@ class Invoice with ChangeNotifier {
       deliveryDate: map['deliveryDate'] ?? '',
       deliveryTime: map['deliveryTime'] ?? '',
       returnDate: map['returnDate'] ?? '',
+      typeRequest: -1,
       returnTime: map['returnTime'] ?? '',
       paymentMethod: map['paymentMethod']?.toInt() ?? 0,
       durationDays: map['durationDays']?.toInt() ?? 0,
@@ -236,6 +242,7 @@ class Invoice with ChangeNotifier {
       isUserDelivery: map['isUserDelivery'] ?? false,
       deliveryDate: map['deliveryDate'] ?? '',
       requestId: map['id'] ?? '',
+      typeRequest: map['type']?.toInt() ?? -1,
       deliveryTime: map['deliveryTime'] ?? '',
       returnDate: map['returnDate'] ?? '',
       returnTime: map['returnTime'] ?? '',

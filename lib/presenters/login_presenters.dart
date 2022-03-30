@@ -29,65 +29,6 @@ class LoginPresenter {
     _view.updateViewStatusButton(email, password);
   }
 
-  Future<Users?> handleSignInGoogle() async {
-    try {
-      _view.updateLoadingGoogle();
-
-      final googleSignin = GoogleSignIn();
-
-      final GoogleSignInAccount? googleUser = await googleSignin.signIn();
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser!.authentication;
-      final AuthCredential credential = GoogleAuthProvider.credential(
-          idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
-      //Firebase Sign in
-      final result = await _model.auth.signInWithCredential(credential);
-      final response = await ApiServices.logInThirParty(
-          result.user!.uid, _model.deviceToken);
-
-      return Users.fromMap(jsonDecode(response.body));
-    } catch (error) {
-      print(error);
-    } finally {
-      _view.updateLoadingGoogle();
-    }
-    return null;
-  }
-
-  Future<Users?> handleSignInFacebook() async {
-    try {
-      _view.updateLoadingFacebook();
-
-      final res = await _model.fb!.logIn(permissions: [
-        FacebookPermission.publicProfile,
-        FacebookPermission.email
-      ]);
-
-      // check the status of our login
-      if (res.status == FacebookLoginStatus.success) {
-        final FacebookAccessToken? fbToken = res.accessToken;
-
-        //Convert to Auth Credential
-        final AuthCredential credential =
-            FacebookAuthProvider.credential(fbToken!.token);
-
-        //User Credential to Sign in with Firebase
-        final result = await _model.auth.signInWithCredential(credential);
-
-        final response = await ApiServices.logInThirParty(
-            result.user!.uid, _model.deviceToken);
-
-        return Users.fromMap(jsonDecode(response.body));
-      }
-
-      return null;
-    } catch (error) {
-      print(error);
-    } finally {
-      _view.updateLoadingFacebook();
-    }
-  }
-
   Future<Users?> handleSignIn() async {
     _view.updateLoading();
     try {

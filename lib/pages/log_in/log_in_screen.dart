@@ -37,15 +37,16 @@ class LogInScreen extends StatelessWidget {
         body: SingleChildScrollView(
           child: SizedBox(
             width: deviceSize.width,
-            height: deviceSize.height * 1.1,
+            height: deviceSize.height,
             child: Stack(
               clipBehavior: Clip.none,
               children: [
                 const Background(),
                 SizedBox(
                   width: deviceSize.width,
+                  height: deviceSize.height,
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.max,
                     children: [
                       CustomSizedBox(
                         context: context,
@@ -56,45 +57,47 @@ class LogInScreen extends StatelessWidget {
                         context: context,
                         height: 56,
                       ),
-                      Expanded(child: FormLogIn(deviceSize: deviceSize)),
-                      SizedBox(
-                        width: deviceSize.width,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            CustomText(
-                                text: 'Chưa có tài khoản?',
-                                color: CustomColor.black,
+                      FormLogIn(deviceSize: deviceSize),
+                    ],
+                  ),
+                ),
+                Positioned.fill(
+                  bottom: 24,
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: SizedBox(
+                      width: deviceSize.width,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          CustomText(
+                              text: 'Chưa có tài khoản?',
+                              color: CustomColor.black,
+                              context: context,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14),
+                          CustomSizedBox(
+                            context: context,
+                            width: 8,
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SignUpScreen()),
+                              );
+                            },
+                            child: CustomText(
+                                text: 'Đăng ký',
+                                color: CustomColor.purple,
                                 context: context,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 14),
-                            CustomSizedBox(
-                              context: context,
-                              width: 8,
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => SignUpScreen()),
-                                );
-                              },
-                              child: CustomText(
-                                  text: 'Đăng ký',
-                                  color: CustomColor.purple,
-                                  context: context,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 14),
-                            )
-                          ],
-                        ),
+                          )
+                        ],
                       ),
-                      CustomSizedBox(
-                        context: context,
-                        height: 24,
-                      ),
-                    ],
+                    ),
                   ),
                 ),
               ],
@@ -144,95 +147,14 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
   }
 
   @override
-  void updateLoadingGoogle() {
-    if (mounted) {
-      setState(() {
-        _model.isLoadingGoogle = !_model.isLoadingGoogle;
-      });
-    }
-  }
-
-  @override
-  void updateLoadingFacebook() {
-    if (mounted) {
-      setState(() {
-        _model.isLoadingFacebook = !_model.isLoadingFacebook;
-      });
-    }
-  }
-
-  @override
   void onChangeInput() {
     loginPresenter.handleOnChangeInput(
         _model.controllerEmail.text, _model.controllerPassword.text);
   }
 
   @override
-  void onClickSignInFaceBook() async {
-    final result = await loginPresenter.handleSignInFacebook();
-    Users user = Provider.of<Users>(context, listen: false);
-    if (result != null) {
-      user.setUser(user: result);
-      if (user.roleName == 'Customer') {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => const CustomBottomNavigation(
-                    listIndexStack: [
-                      MyAccountScreen(),
-                      CartScreen(),
-                      NotificationScreen(),
-                    ],
-                    listNavigator: constant.LIST_CUSTOMER_BOTTOM_NAVIGATION,
-                  )),
-        );
-      } else {}
-    }
-  }
-
-  @override
-  void onClickSignInGoogle() async {
-    final result = await loginPresenter.handleSignInGoogle();
-    Users user = Provider.of<Users>(context, listen: false);
-    if (result != null) {
-      user.setUser(user: result);
-      if (user.roleName == 'Customer') {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => const CustomBottomNavigation(
-                    listIndexStack: [
-                      MyAccountScreen(),
-                      CartScreen(),
-                      NotificationScreen(),
-                    ],
-                    listNavigator: constant.LIST_CUSTOMER_BOTTOM_NAVIGATION,
-                  )),
-        );
-      } else {}
-    }
-  }
-
-  @override
   void onClickSignIn() async {
     try {
-      // if (email.contains('delivery')) {
-      //   Navigator.push(
-      //     context,
-      //     MaterialPageRoute(
-      //         builder: (context) => const CustomBottomNavigation(
-      //               listIndexStack: [
-      //                 MyAccountDeliveryScreen(),
-      //                 DeliveryScreen(),
-      //                 QrScreen(),
-      //                 NotificationDeliveryScreen(),
-      //               ],
-      //               listNavigator: constant.LIST_DELIVERY_BOTTOM_NAVIGATION,
-      //             )),
-      //   );
-      // } else {
-
-      // }
       _focusNodeEmail.unfocus();
       _focusNodePassword.unfocus();
       _model.errorMsg = "";
@@ -333,6 +255,7 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
 
   @override
   Widget build(BuildContext context) {
+    final deviceSize = MediaQuery.of(context).size;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Column(
@@ -370,43 +293,11 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
             context: context,
             height: 24,
           ),
-          ButtonIcon(
-              height: 24,
-              url: 'assets/images/google.png',
-              text: 'Đăng nhập bằng Google',
-              width: double.infinity,
-              onPressFunction: () {
-                onClickSignInGoogle();
-              },
-              isLoading: _model.isLoadingGoogle,
-              textColor: CustomColor.white,
-              buttonColor: const Color(0xFFE16259),
-              borderRadius: 6),
-          CustomSizedBox(
-            context: context,
-            height: 8,
-          ),
-          ButtonIcon(
-              height: 24,
-              url: 'assets/images/facebook.png',
-              text: 'Đăng nhập bằng Facebook',
-              width: double.infinity,
-              onPressFunction: () {
-                onClickSignInFaceBook();
-              },
-              isLoading: _model.isLoadingFacebook,
-              textColor: CustomColor.white,
-              buttonColor: const Color(0xFF1877F2),
-              borderRadius: 6),
-          CustomSizedBox(
-            context: context,
-            height: 8,
-          ),
           CustomButton(
               height: 24,
               isLoading: _model.isLoading,
               text: 'Đăng nhập',
-              width: double.infinity,
+              width: deviceSize.width,
               textColor: CustomColor.white,
               onPressFunction:
                   _model.isDisableLogin == false ? () => onClickSignIn() : null,

@@ -18,7 +18,7 @@ class QRScanPresenter {
       final response = await ApiServices.getInvoicebyId(idToken, id);
       if (response.statusCode == 200) {
         Invoice invoice = Invoice.fromJson(response.body);
-        model!.invoice = invoice;
+        model.invoice = invoice;
       } else {
         throw Exception();
       }
