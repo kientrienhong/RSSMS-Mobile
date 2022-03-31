@@ -66,8 +66,7 @@ class _QrScreenState extends State<QrScreen> implements QRInvoiceView {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => InvoiceDetailsScreen(
-            deviceSize: deviceSize,
+          builder: (context) => QRInvoiceDetailsScreen(
             isScanQR: true,
             isDone: isDone,
           ),

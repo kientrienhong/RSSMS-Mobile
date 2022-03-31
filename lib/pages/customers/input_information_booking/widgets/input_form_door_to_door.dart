@@ -37,18 +37,6 @@ class _InputFormDoorToDoorState extends State<InputFormDoorToDoor> {
             hintText: 'Địa chỉ',
             nextNode: widget.focusNodeFloor,
             validator: Validator.checkAddress),
-        SizedBox(
-          width: (deviceSize.width - 40) / 2.1,
-          child: CustomOutLineInputWithHint(
-            controller: widget.controllerFloor,
-            isDisable: false,
-            textInputType: TextInputType.number,
-            validator: Validator.checkApartment,
-            focusNode: widget.focusNodeFloor,
-            deviceSize: deviceSize,
-            hintText: 'Tầng căn hộ bạn',
-          ),
-        ),
       ],
     );
   }

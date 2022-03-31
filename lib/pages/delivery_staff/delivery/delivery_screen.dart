@@ -32,9 +32,15 @@ class _DeliveryScreenState extends State<DeliveryScreen>
   void init() async {
     Users user = Provider.of<Users>(context, listen: false);
 
-    _presenter.init(user);
+    _presenter.init(user: user);
     await _presenter.loadListShedule(
         user.idToken!, _model.firstDayOfWeek, _model.endDayOfWeek);
+    setState(() {});
+  }
+
+  @override
+  updateView() {
+    // TODO: implement updateView
     setState(() {});
   }
 
@@ -60,6 +66,9 @@ class _DeliveryScreenState extends State<DeliveryScreen>
           ?.mapIndexed((index, element) => ScheduleWidget(
               invoice: element,
               schedule: element.toMap(),
+              currentDateTime: _model.listDateTime[_model.currentIndex],
+              refreshSchedule: _presenter.loadListShedule,
+              initDeliveryScreen: _presenter.init,
               currentIndex: index,
               endDayOfWeek: _model.endDayOfWeek,
               firstDayOfWeek: _model.firstDayOfWeek,
@@ -162,44 +171,12 @@ class _DeliveryScreenState extends State<DeliveryScreen>
             ),
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               CustomButton(
                   height: 24,
-                  text: 'Bắt đầu vận chuyển',
-                  width: deviceSize.width * 2 / 3,
-                  onPressFunction: () async {
-                    Users user = Provider.of<Users>(context, listen: false);
-                    bool? result =
-                        await _presenter.startDelivery(user.idToken!);
-                    if (result == null) {
-                      updateLoadingStartDelivery();
-                    } else {
-                      if (result == true) {
-                        CustomSnackBar.buildErrorSnackbar(
-                            context: context,
-                            message: "Bắt đầu thành công",
-                            color: CustomColor.green);
-                        _presenter.init(user);
-                        _model.listInvoice = <String, List<Invoice>>{};
-                        await _presenter.loadListShedule(user.idToken!,
-                            _model.firstDayOfWeek, _model.endDayOfWeek);
-                      }
-                      updateLoadingStartDelivery();
-                    }
-                  },
-                  isLoading: _model.isLoadingStartDelivery,
-                  textColor: CustomColor.white,
-                  buttonColor: CustomColor.blue,
-                  borderRadius: 6),
-              CustomSizedBox(
-                context: context,
-                width: 8,
-              ),
-              CustomButton(
-                  height: 24,
                   text: 'Hủy lịch',
-                  width: deviceSize.width * 0.8 / 3,
+                  width: deviceSize.width * 2 / 3,
                   onPressFunction: () {
                     showDialog(
                         context: context,
@@ -211,11 +188,12 @@ class _DeliveryScreenState extends State<DeliveryScreen>
                       if (value == true) {
                         Users user = Provider.of<Users>(context, listen: false);
 
-                        _presenter.init(user);
-                        _model.listInvoice = <String, List<Invoice>>{};
+                        _presenter.init(
+                            user: user,
+                            currentDate:
+                                _model.listDateTime[_model.currentIndex]);
                         await _presenter.loadListShedule(user.idToken!,
                             _model.firstDayOfWeek, _model.endDayOfWeek);
-                        setState(() {});
                       }
                     });
                   },

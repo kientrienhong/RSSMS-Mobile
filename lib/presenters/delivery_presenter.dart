@@ -15,9 +15,10 @@ class DeliveryPresenter {
     model = DeliveryScreenModel();
   }
 
-  void init(Users user) {
+  void init({required Users user, DateTime? currentDate}) {
     model.listDateTime = [];
     DateTime now = DateTime.now();
+    if (currentDate != null) now = currentDate;
     // String nowString = now.toIso8601String().split('T')[0];
     // now = DateTime.parse(nowString);
     var firstDay = now.subtract(Duration(days: now.weekday));
@@ -33,6 +34,7 @@ class DeliveryPresenter {
     }
     model.firstDayOfWeek = firstDayOfWeek;
     model.endDayOfWeek = endDayOfWeek;
+    model.listInvoice = <String, List<Invoice>>{};
   }
 
   Future<bool?> startDelivery(String idToken) async {
@@ -91,6 +93,7 @@ class DeliveryPresenter {
             model.listInvoice[scheduleDay]!.add(invoice);
           }
         });
+        view.updateView();
       }
     } catch (e) {
       print(e);

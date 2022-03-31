@@ -104,7 +104,7 @@ class _CancelledRequestScreenState extends State<CancelledRequestScreen>
                                 fontWeight: FontWeight.bold,
                                 fontSize: 17),
                             CustomText(
-                                text: _model!.request!.cancelBy,
+                                text: _model!.request!.customerName,
                                 color: Colors.black,
                                 context: context,
                                 fontWeight: FontWeight.bold,

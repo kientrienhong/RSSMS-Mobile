@@ -33,7 +33,7 @@ class AddtionCost extends StatelessWidget {
         SizedBox(
           width: (deviceSize.width - 48) / 3.5,
           child: CustomText(
-              text: '${oCcy.format(additionCost['price'])} VND',
+              text: '${oCcy.format(additionCost['price'])} đ',
               color: CustomColor.blue,
               fontWeight: FontWeight.bold,
               textAlign: TextAlign.right,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
@@ -30,6 +31,8 @@ class AdditionServiceWidget extends StatefulWidget {
 class _AdditionServiceWidgetState extends State<AdditionServiceWidget> {
   @override
   Widget build(BuildContext context) {
+    final oCcy = NumberFormat("#,##0", "en_US");
+
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -71,8 +74,8 @@ class _AdditionServiceWidgetState extends State<AdditionServiceWidget> {
                   ),
                   CustomText(
                       text: widget.product == null
-                          ? '${widget.orderDetail!.price.toString()} / số lượng'
-                          : '${widget.product!.price.toString()} / số lượng',
+                          ? '${oCcy.format(widget.orderDetail!.price)} đ / số lượng'
+                          : ' ${oCcy.format(widget.product!.price)} đ / số lượng',
                       color: CustomColor.blue,
                       context: context,
                       fontSize: 16)

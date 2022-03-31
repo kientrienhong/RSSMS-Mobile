@@ -11,15 +11,11 @@ import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_scre
 import 'package:rssms/pages/delivery_staff/qr/invoice_screen/widget/invoice_info_widget.dart';
 import 'package:rssms/constants/constants.dart' as constants;
 
-class InvoiceDetailsScreen extends StatelessWidget {
-  final Size deviceSize;
+class QRInvoiceDetailsScreen extends StatelessWidget {
   final bool isScanQR;
   final bool isDone;
-  InvoiceDetailsScreen(
-      {Key? key,
-      required this.deviceSize,
-      required this.isScanQR,
-      required this.isDone})
+  QRInvoiceDetailsScreen(
+      {Key? key, required this.isScanQR, required this.isDone})
       : super(key: key);
 
   Invoice formatUIInvoice(Invoice invoice) {
@@ -75,6 +71,7 @@ class InvoiceDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Invoice invoice = Provider.of<Invoice>(context, listen: false);
     Invoice invoiceUI = invoice;
+    final deviceSize = MediaQuery.of(context).size;
     if (isDone) Invoice invoiceUI = formatUIInvoice(invoice);
     return Scaffold(
       body: SingleChildScrollView(

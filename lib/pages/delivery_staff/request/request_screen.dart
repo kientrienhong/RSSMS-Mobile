@@ -5,7 +5,7 @@ import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/models/request_screen_model.dart';
-import 'package:rssms/pages/customers/my_account/request/request_widget.dart';
+import 'package:rssms/pages/delivery_staff/request/widgets/request_widget.dart';
 import 'package:rssms/presenters/request_screen_presenter.dart';
 import 'package:rssms/views/request_screen_view.dart';
 

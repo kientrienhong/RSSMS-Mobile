@@ -3,70 +3,114 @@ import 'dart:convert';
 class Request {
   final String id;
   final String orderId;
+  final String orderName;
   final String userId;
-  final double totalPrice;
-  final String returnAddress;
-  final String returnTime;
-  final String oldReturnDate;
-  final String returnDate;
   final int type;
+  final int typeOrder;
   final int status;
+  final bool isCustomerDelivery;
   final String deliveryStaffName;
   final String deliveryStaffPhone;
+  final String customerName;
+  final String customerPhone;
+  final String storageId;
+  final String storageName;
+  final String deliveryDate;
+  final String deliveryTime;
+  final String deliveryAddress;
+  final String returnAddress;
+  final String returnDate;
+  final String returnTime;
+  final String cancelReason;
+  final String fromDate;
+  final String toDate;
   final String note;
-  final String cancelBy;
-  final String cancelByPhone;
+  final String createdDate;
+  final double totalPrice;
   Request({
     required this.id,
-    required this.orderId,
-    required this.userId,
     required this.totalPrice,
-    required this.returnAddress,
-    required this.returnTime,
-    required this.oldReturnDate,
-    required this.returnDate,
+    required this.orderId,
+    required this.orderName,
+    required this.userId,
     required this.type,
+    required this.typeOrder,
     required this.status,
+    required this.isCustomerDelivery,
     required this.deliveryStaffName,
     required this.deliveryStaffPhone,
+    required this.customerName,
+    required this.customerPhone,
+    required this.storageId,
+    required this.storageName,
+    required this.deliveryDate,
+    required this.deliveryTime,
+    required this.deliveryAddress,
+    required this.returnAddress,
+    required this.returnDate,
+    required this.returnTime,
+    required this.cancelReason,
+    required this.fromDate,
+    required this.toDate,
     required this.note,
-    required this.cancelBy,
-    required this.cancelByPhone,
+    required this.createdDate,
   });
 
   Request copyWith({
     String? id,
     String? orderId,
+    String? orderName,
     String? userId,
-    double? totalPrice,
-    String? returnAddress,
-    String? returnTime,
-    String? oldReturnDate,
-    String? returnDate,
     int? type,
+    int? typeOrder,
     int? status,
+    bool? isCustomerDelivery,
     String? deliveryStaffName,
     String? deliveryStaffPhone,
+    String? customerName,
+    String? customerPhone,
+    String? storageId,
+    String? storageName,
+    String? deliveryDate,
+    String? deliveryTime,
+    String? deliveryAddress,
+    String? returnAddress,
+    String? returnDate,
+    String? returnTime,
+    String? cancelReason,
+    String? fromDate,
+    String? toDate,
     String? note,
-    String? cancelBy,
-    String? cancelByPhone,
+    String? createdDate,
+    double? totalPrice,
   }) {
     return Request(
       id: id ?? this.id,
-      orderId: orderId ?? this.orderId,
-      userId: userId ?? this.userId,
       totalPrice: totalPrice ?? this.totalPrice,
-      returnAddress: returnAddress ?? this.returnAddress,
-      returnTime: returnTime ?? this.returnTime,
-      oldReturnDate: oldReturnDate ?? this.oldReturnDate,
-      returnDate: returnDate ?? this.returnDate,
+      orderId: orderId ?? this.orderId,
+      orderName: orderName ?? this.orderName,
+      userId: userId ?? this.userId,
       type: type ?? this.type,
+      typeOrder: typeOrder ?? this.typeOrder,
       status: status ?? this.status,
+      isCustomerDelivery: isCustomerDelivery ?? this.isCustomerDelivery,
       deliveryStaffName: deliveryStaffName ?? this.deliveryStaffName,
       deliveryStaffPhone: deliveryStaffPhone ?? this.deliveryStaffPhone,
+      customerName: customerName ?? this.customerName,
+      customerPhone: customerPhone ?? this.customerPhone,
+      storageId: storageId ?? this.storageId,
+      storageName: storageName ?? this.storageName,
+      deliveryDate: deliveryDate ?? this.deliveryDate,
+      deliveryTime: deliveryTime ?? this.deliveryTime,
+      deliveryAddress: deliveryAddress ?? this.deliveryAddress,
+      returnAddress: returnAddress ?? this.returnAddress,
+      returnDate: returnDate ?? this.returnDate,
+      returnTime: returnTime ?? this.returnTime,
+      cancelReason: cancelReason ?? this.cancelReason,
+      fromDate: fromDate ?? this.fromDate,
+      toDate: toDate ?? this.toDate,
       note: note ?? this.note,
-      cancelBy: cancelBy ?? this.cancelBy,
-      cancelByPhone: cancelByPhone ?? this.cancelByPhone,
+      createdDate: createdDate ?? this.createdDate,
     );
   }
 
@@ -74,19 +118,30 @@ class Request {
     return {
       'id': id,
       'orderId': orderId,
+      'orderName': orderName,
       'userId': userId,
-      'totalPrice': totalPrice,
-      'returnAddress': returnAddress,
-      'returnTime': returnTime,
-      'oldReturnDate': oldReturnDate,
-      'returnDate': returnDate,
       'type': type,
+      'typeOrder': typeOrder,
       'status': status,
+      'isCustomerDelivery': isCustomerDelivery,
       'deliveryStaffName': deliveryStaffName,
       'deliveryStaffPhone': deliveryStaffPhone,
+      'customerName': customerName,
+      'customerPhone': customerPhone,
+      'storageId': storageId,
+      'storageName': storageName,
+      'deliveryDate': deliveryDate,
+      'totalPrice': totalPrice,
+      'deliveryTime': deliveryTime,
+      'deliveryAddress': deliveryAddress,
+      'returnAddress': returnAddress,
+      'returnDate': returnDate,
+      'returnTime': returnTime,
+      'cancelReason': cancelReason,
+      'fromDate': fromDate,
+      'toDate': toDate,
       'note': note,
-      'cancelBy': cancelBy,
-      'cancelByPhone': cancelByPhone,
+      'createdDate': createdDate,
     };
   }
 
@@ -94,19 +149,30 @@ class Request {
     return Request(
       id: map['id'] ?? '',
       orderId: map['orderId'] ?? '',
+      orderName: map['orderName'] ?? '',
+      totalPrice: map['totalPrice']?.toDouble() ?? 0,
       userId: map['userId'] ?? '',
-      totalPrice: map['totalPrice'] ?? 0.0,
-      returnAddress: map['returnAddress'] ?? '',
-      returnTime: map['returnTime'] ?? '',
-      oldReturnDate: map['oldReturnDate'] ?? '',
-      returnDate: map['returnDate'] ?? '',
       type: map['type']?.toInt() ?? 0,
+      typeOrder: map['typeOrder']?.toInt() ?? 0,
       status: map['status']?.toInt() ?? 0,
+      isCustomerDelivery: map['isCustomerDelivery'] ?? false,
       deliveryStaffName: map['deliveryStaffName'] ?? '',
       deliveryStaffPhone: map['deliveryStaffPhone'] ?? '',
+      customerName: map['customerName'] ?? '',
+      customerPhone: map['customerPhone'] ?? '',
+      storageId: map['storageId'] ?? '',
+      storageName: map['storageName'] ?? '',
+      deliveryDate: map['deliveryDate'] ?? '',
+      deliveryTime: map['deliveryTime'] ?? '',
+      deliveryAddress: map['deliveryAddress'] ?? '',
+      returnAddress: map['returnAddress'] ?? '',
+      returnDate: map['returnDate'] ?? '',
+      returnTime: map['returnTime'] ?? '',
+      cancelReason: map['cancelReason'] ?? '',
+      fromDate: map['fromDate'] ?? '',
+      toDate: map['toDate'] ?? '',
       note: map['note'] ?? '',
-      cancelBy: map['cancelBy'] ?? '',
-      cancelByPhone: map['cancelByPhone'] ?? '',
+      createdDate: map['createdDate'] ?? '',
     );
   }
 
@@ -117,7 +183,7 @@ class Request {
 
   @override
   String toString() {
-    return 'Request(id: $id, orderId: $orderId, userId: $userId, totalPrice: $totalPrice, returnAddress: $returnAddress, returnTime: $returnTime, oldReturnDate: $oldReturnDate, returnDate: $returnDate, type: $type, status: $status, deliveryStaffName: $deliveryStaffName, deliveryStaffPhone: $deliveryStaffPhone, note: $note, cancelBy: $cancelBy, cancelByPhone: $cancelByPhone)';
+    return 'Request(id: $id, orderId: $orderId, orderName: $orderName, userId: $userId, type: $type, typeOrder: $typeOrder, status: $status, isCustomerDelivery: $isCustomerDelivery, deliveryStaffName: $deliveryStaffName, deliveryStaffPhone: $deliveryStaffPhone, customerName: $customerName, customerPhone: $customerPhone, storageId: $storageId, storageName: $storageName, deliveryDate: $deliveryDate, deliveryTime: $deliveryTime, deliveryAddress: $deliveryAddress, returnAddress: $returnAddress, returnDate: $returnDate, returnTime: $returnTime, cancelReason: $cancelReason, fromDate: $fromDate, toDate: $toDate, note: $note, createdDate: $createdDate)';
   }
 
   @override
@@ -127,37 +193,57 @@ class Request {
     return other is Request &&
         other.id == id &&
         other.orderId == orderId &&
+        other.orderName == orderName &&
         other.userId == userId &&
-        other.totalPrice == totalPrice &&
-        other.returnAddress == returnAddress &&
-        other.returnTime == returnTime &&
-        other.oldReturnDate == oldReturnDate &&
-        other.returnDate == returnDate &&
         other.type == type &&
+        other.typeOrder == typeOrder &&
         other.status == status &&
+        other.isCustomerDelivery == isCustomerDelivery &&
         other.deliveryStaffName == deliveryStaffName &&
         other.deliveryStaffPhone == deliveryStaffPhone &&
+        other.customerName == customerName &&
+        other.customerPhone == customerPhone &&
+        other.storageId == storageId &&
+        other.storageName == storageName &&
+        other.deliveryDate == deliveryDate &&
+        other.deliveryTime == deliveryTime &&
+        other.deliveryAddress == deliveryAddress &&
+        other.returnAddress == returnAddress &&
+        other.returnDate == returnDate &&
+        other.returnTime == returnTime &&
+        other.cancelReason == cancelReason &&
+        other.fromDate == fromDate &&
+        other.toDate == toDate &&
         other.note == note &&
-        other.cancelBy == cancelBy &&
-        other.cancelByPhone == cancelByPhone;
+        other.createdDate == createdDate;
   }
 
   @override
   int get hashCode {
     return id.hashCode ^
         orderId.hashCode ^
+        orderName.hashCode ^
         userId.hashCode ^
-        totalPrice.hashCode ^
-        returnAddress.hashCode ^
-        returnTime.hashCode ^
-        oldReturnDate.hashCode ^
-        returnDate.hashCode ^
         type.hashCode ^
+        typeOrder.hashCode ^
         status.hashCode ^
+        isCustomerDelivery.hashCode ^
         deliveryStaffName.hashCode ^
         deliveryStaffPhone.hashCode ^
+        customerName.hashCode ^
+        customerPhone.hashCode ^
+        storageId.hashCode ^
+        storageName.hashCode ^
+        deliveryDate.hashCode ^
+        deliveryTime.hashCode ^
+        deliveryAddress.hashCode ^
+        returnAddress.hashCode ^
+        returnDate.hashCode ^
+        returnTime.hashCode ^
+        cancelReason.hashCode ^
+        fromDate.hashCode ^
+        toDate.hashCode ^
         note.hashCode ^
-        cancelBy.hashCode ^
-        cancelByPhone.hashCode;
+        createdDate.hashCode;
   }
 }

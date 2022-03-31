@@ -21,27 +21,6 @@ class InvoiceInfoWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           CustomText(
-              text: "Mã đơn hàng:",
-              color: Colors.black,
-              context: context,
-              fontWeight: FontWeight.bold,
-              fontSize: 17),
-          CustomText(
-              text: "#" + invoice!.name,
-              color: Colors.black,
-              context: context,
-              fontWeight: FontWeight.bold,
-              fontSize: 16),
-        ],
-      ),
-      CustomSizedBox(
-        context: context,
-        height: 24,
-      ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          CustomText(
               text: "Trạng thái:",
               color: Colors.black,
               context: context,
@@ -149,7 +128,9 @@ class InvoiceInfoWidget extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const TimeLineScreen()));
+                        builder: (context) => TimeLineScreen(
+                              invoiceId: invoice!.id,
+                            )));
               },
               width: deviceSize.width / 3,
               buttonColor: CustomColor.blue,

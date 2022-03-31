@@ -15,6 +15,23 @@ class InvoiceInfoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Widget textStatus = CustomText(
+        text: constants.LIST_STATUS_ORDER[invoice!.status]['name']! as String,
+        color: constants.LIST_STATUS_ORDER[invoice!.status]['color'] as Color,
+        context: context,
+        fontWeight: FontWeight.bold,
+        fontSize: 17);
+    if (!invoice!.isOrder!) {
+      textStatus = CustomText(
+          text:
+              constants.LIST_STATUS_REQUEST[invoice!.status]['name']! as String,
+          color:
+              constants.LIST_STATUS_REQUEST[invoice!.status]['color'] as Color,
+          context: context,
+          fontWeight: FontWeight.bold,
+          fontSize: 17);
+    }
+
     return Column(children: [
       // Row(
       //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -46,14 +63,7 @@ class InvoiceInfoWidget extends StatelessWidget {
               context: context,
               fontWeight: FontWeight.bold,
               fontSize: 17),
-          CustomText(
-              text: constants.LIST_STATUS_ORDER[invoice!.status]['name']!
-                  as String,
-              color: constants.LIST_STATUS_ORDER[invoice!.status]['color']
-                  as Color,
-              context: context,
-              fontWeight: FontWeight.bold,
-              fontSize: 17),
+          textStatus
         ],
       ),
       CustomSizedBox(
@@ -132,26 +142,7 @@ class InvoiceInfoWidget extends StatelessWidget {
         context: context,
         height: 24,
       ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          CustomText(
-              text: "Mã giảm giá:",
-              color: Colors.black,
-              context: context,
-              fontWeight: FontWeight.bold,
-              fontSize: 17),
-          CustomText(
-              text: "Không có",
-              color: Colors.black38,
-              context: context,
-              fontSize: 16)
-        ],
-      ),
-      CustomSizedBox(
-        context: context,
-        height: 24,
-      ),
+
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

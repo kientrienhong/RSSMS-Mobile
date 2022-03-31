@@ -3,6 +3,14 @@ import 'package:rssms/pages/customers/input_information_booking/input_informatio
 import 'package:rssms/pages/customers/my_account/request/request_screen.dart';
 import 'package:rssms/pages/customers/payment_method_booking/payment_method_booking_screen.dart';
 
+enum REQUEST_TYPE {
+  cancelSchedule,
+  createOrder,
+  extendOrder,
+  cancelRequestCreateOrder,
+  returnOrder
+}
+
 const List<Map<String, String>> TAB_INVOICE_DETAIL = [
   {"name": "Hóa đơn"},
   {"name": "Đồ đạc"}
@@ -62,14 +70,6 @@ const UNWEILDY = 3;
 const SERVICES = 4;
 
 const AVAILABLE = 0;
-const LIST_NOTE_STATUS_BOX = [
-  {'color': CustomColor.brightBlue, 'name': 'Available'},
-  {'color': CustomColor.blue, 'name': 'Rented'},
-  {'color': CustomColor.red, 'name': 'Expired'},
-  {'color': CustomColor.orange, 'name': 'Expired soon'},
-  {'color': CustomColor.greenBright, 'name': 'Selected'},
-  {'color': CustomColor.green, 'name': 'Placing'},
-];
 
 const LIST_STATUS_ORDER = [
   {'color': CustomColor.red, 'name': 'Đã Hủy'},
@@ -83,16 +83,18 @@ const LIST_STATUS_ORDER = [
 const LIST_ICON_REQUEST = [
   {'name': 'assets/images/truck1.png'},
   {'name': 'assets/images/invoice.png'},
-  {'name': 'assets/images/invoice.png'},
+  {'name': 'assets/images/extendOrder.png'},
   {'name': 'assets/images/error1.png'},
   {'name': 'assets/images/truck1.png'},
 ];
 
 const LIST_STATUS_REQUEST = [
-  {'name': 'Đã hủy'},
-  {'name': 'Đang xử lý'},
-  {'name': 'Đã xử lý'},
-  {'name': 'Hoàn thành'},
+  {'name': 'Đã hủy', 'color': CustomColor.red},
+  {'name': 'Đang xử lý', 'color': CustomColor.purple},
+  {'name': 'Đã xử lý', 'color': CustomColor.blue},
+  {'name': 'Hoàn thành', 'color': CustomColor.green},
+  {'name': 'Đang vận chuyển', 'color': CustomColor.brown},
+  {'name': 'Khách không có mặt', 'color': CustomColor.red},
 ];
 
 const LIST_TYPE_REQUEST = [
@@ -153,24 +155,6 @@ const Map<String, String> ICON_INVOICE = {
   "box": "assets/images/delivery-box1.png",
   "warehose": "assets/images/warehouse1.png"
 };
-
-const List<Map<String, dynamic>> LIST_REQUEST = [
-  {
-    "url": "assets/images/truck1.png",
-    "requestId": "1312",
-    "orderId": "1312",
-    "dateChange": "12/12/2021",
-    "status": "Đang giao hàng",
-    'type': REQUEST_TYPE.modifyRequest,
-  },
-  {
-    "url": "assets/images/error1.png",
-    "requestId": "1312",
-    "orderId": "1312",
-    "status": "Chưa hoàn tiền",
-    'type': REQUEST_TYPE.cancelOrderRequest,
-  },
-];
 
 const List<Map<String, dynamic>> LIST_ADDRESS_CHOICES = [
   {'name': 'Giống địa chỉ lấy đồ đạc', 'value': SelectDistrict.same},

@@ -152,6 +152,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> implements InvoiceView {
     return RefreshIndicator(
       onRefresh: refresh,
       child: Container(
+        color: CustomColor.white,
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
         width: deviceSize.width,
         child: Column(

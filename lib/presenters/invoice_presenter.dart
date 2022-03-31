@@ -16,7 +16,6 @@ class InvoicePresenter {
   void handleOnChangeInput(String searchValue) {
     try {
       if (searchValue.isNotEmpty) {
-        print(searchValue);
         model!.listInvoice = model!.listInvoiceFull!
             .where((element) => element.id.toString().contains(searchValue))
             .toList();

@@ -12,16 +12,15 @@ import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/presenters/dialog_confirm_presenter.dart';
 import 'package:rssms/views/dialog_confirm_view.dart';
 
-class DialogConfirmCancel extends StatefulWidget {
-  final DateTime dateTime;
-  const DialogConfirmCancel({Key? key, required this.dateTime})
-      : super(key: key);
+class DialogReport extends StatefulWidget {
+  String idRequest;
+  DialogReport({Key? key, required this.idRequest}) : super(key: key);
 
   @override
-  _DialogConfirmCancelState createState() => _DialogConfirmCancelState();
+  State<DialogReport> createState() => _DialogReportState();
 }
 
-class _DialogConfirmCancelState extends State<DialogConfirmCancel>
+class _DialogReportState extends State<DialogReport>
     implements DialogConfirmView {
   late FocusNode _focusNode;
   late DialogConfirmModel _model;
@@ -30,31 +29,19 @@ class _DialogConfirmCancelState extends State<DialogConfirmCancel>
 
   @override
   void initState() {
-    super.initState();
     _presenter = DialogConfirmPresenter();
     _model = _presenter.model;
     _presenter.view = this;
     _focusNode = FocusNode();
+
+    super.initState();
   }
 
   @override
-  void onClickSubmit() async {
-    if (_formKey.currentState!.validate()) {
-      try {
-        Users user = Provider.of<Users>(context, listen: false);
-        bool result = await _presenter.submit(
-            _model.note.text, widget.dateTime.toIso8601String(), user.idToken!);
-        if (result) {
-          CustomSnackBar.buildErrorSnackbar(
-              context: context,
-              message: 'Yêu cầu thành công',
-              color: CustomColor.green);
-        }
-        Navigator.pop(context, result);
-      } catch (e) {
-        print(e);
-      }
-    }
+  void updateLoading() {
+    setState(() {
+      _model.isLoading != _model.isLoading;
+    });
   }
 
   @override
@@ -63,10 +50,23 @@ class _DialogConfirmCancelState extends State<DialogConfirmCancel>
   }
 
   @override
-  void updateLoading() {
-    setState(() {
-      _model.isLoading = !_model.isLoading;
-    });
+  void onClickSubmit() async {
+    if (_formKey.currentState!.validate()) {
+      try {
+        Users user = Provider.of<Users>(context, listen: false);
+        bool result = await _presenter.onClickReport(
+            _model.note.text, widget.idRequest, user.idToken!);
+        if (result) {
+          CustomSnackBar.buildErrorSnackbar(
+              context: context,
+              message: 'Báo cáo thành công',
+              color: CustomColor.green);
+        }
+        Navigator.pop(context, result);
+      } catch (e) {
+        print(e);
+      }
+    }
   }
 
   @override
@@ -81,11 +81,11 @@ class _DialogConfirmCancelState extends State<DialogConfirmCancel>
           mainAxisSize: MainAxisSize.min,
           children: [
             CustomText(
-                text: 'Bạn có chắc chắn?',
+                text: 'Bạn có muốn báo cáo?',
                 color: CustomColor.black,
                 context: context,
                 fontWeight: FontWeight.bold,
-                fontSize: 24),
+                fontSize: 20),
             CustomSizedBox(
               context: context,
               height: 16,

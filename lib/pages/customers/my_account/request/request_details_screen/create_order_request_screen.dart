@@ -7,6 +7,7 @@ import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/constants/constants.dart';
+import 'package:rssms/helpers/format_date.dart';
 import 'package:rssms/models/create_order_request_model.dart';
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/user.dart';
@@ -61,8 +62,22 @@ class _CreateOrderRequestScreenState extends State<CreateOrderRequestScreen>
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
-
+    Widget statusText = CustomText(
+        text: LIST_STATUS_ORDER[_model.invoice.status]['name']! as String,
+        color: LIST_STATUS_ORDER[_model.invoice.status]['color'] as Color,
+        context: context,
+        fontWeight: FontWeight.bold,
+        fontSize: 16);
+    if (!_model.invoice.isOrder!) {
+      statusText = CustomText(
+          text: LIST_STATUS_REQUEST[_model.invoice.status]['name']! as String,
+          color: LIST_STATUS_REQUEST[_model.invoice.status]['color'] as Color,
+          context: context,
+          fontWeight: FontWeight.bold,
+          fontSize: 16);
+    }
     return Scaffold(
+      backgroundColor: CustomColor.white,
       body: SingleChildScrollView(
         child: _model.isLoading
             ? SizedBox(
@@ -82,20 +97,16 @@ class _CreateOrderRequestScreenState extends State<CreateOrderRequestScreen>
                     ]),
               )
             : Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
                 child: Column(
                   children: [
                     const CustomAppBar(
                       isHome: false,
-                      name: "Chi tiết đơn hàng",
+                      name: "Chi tiết yêu cầu",
                     ),
                     Column(
                       children: [
-                        CustomText(
-                            text: _model.invoice.id.substring(0,8),
-                            color: CustomColor.black,
-                            context: context,
-                            fontSize: 24),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -105,11 +116,26 @@ class _CreateOrderRequestScreenState extends State<CreateOrderRequestScreen>
                                 context: context,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 17),
+                            statusText
+                          ],
+                        ),
+                        CustomSizedBox(
+                          context: context,
+                          height: 24,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
                             CustomText(
-                                text: LIST_STATUS_ORDER[_model.invoice.status]
-                                    ['name']! as String,
-                                color: LIST_STATUS_ORDER[_model.invoice.status]
-                                    ['color'] as Color,
+                                text: "Ngày lấy hàng:",
+                                color: Colors.black,
+                                context: context,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 17),
+                            CustomText(
+                                text: FormatDate.formatToVNDay(
+                                    _model.invoice.deliveryDate),
+                                color: Colors.black,
                                 context: context,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16),
@@ -123,42 +149,41 @@ class _CreateOrderRequestScreenState extends State<CreateOrderRequestScreen>
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             CustomText(
-                                text: "Ngày nhận hàng:",
+                                text: "Khu giờ lấy hàng:",
                                 color: Colors.black,
                                 context: context,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 17),
                             CustomText(
-                                text: _model.invoice.deliveryDate.substring(0,
-                                    _model.invoice.deliveryDate.indexOf("T")),
+                                text: _model.invoice.deliveryTime,
                                 color: Colors.black,
                                 context: context,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16),
                           ],
                         ),
-                        // CustomSizedBox(
-                        //   context: context,
-                        //   height: 24,
-                        // ),
-                        // Row(
-                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        //   children: [
-                        //     CustomText(
-                        //         text: "Ngày trả hàng:",
-                        //         color: Colors.black,
-                        //         context: context,
-                        //         fontWeight: FontWeight.bold,
-                        //         fontSize: 17),
-                        //     CustomText(
-                        //         text: _model.invoice.returnDate.substring(
-                        //             0, _model.invoice.returnDate.indexOf("T")),
-                        //         color: Colors.black,
-                        //         context: context,
-                        //         fontWeight: FontWeight.bold,
-                        //         fontSize: 16),
-                        //   ],
-                        // ),
+                        CustomSizedBox(
+                          context: context,
+                          height: 24,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            CustomText(
+                                text: "Ngày trả hàng:",
+                                color: Colors.black,
+                                context: context,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 17),
+                            CustomText(
+                                text: FormatDate.formatToVNDay(
+                                    _model.invoice.returnDate),
+                                color: Colors.black,
+                                context: context,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16),
+                          ],
+                        ),
                         CustomSizedBox(
                           context: context,
                           height: 24,
@@ -191,52 +216,32 @@ class _CreateOrderRequestScreenState extends State<CreateOrderRequestScreen>
                           context: context,
                           height: 24,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            CustomText(
-                                text: "Mã giảm giá:",
-                                color: Colors.black,
-                                context: context,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 17),
-                            CustomText(
-                                text: "Không có",
-                                color: Colors.black38,
-                                context: context,
-                                fontSize: 16)
-                          ],
-                        ),
-                        CustomSizedBox(
-                          context: context,
-                          height: 24,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            CustomText(
-                                text: "Thông tin vận chuyển:",
-                                color: Colors.black,
-                                context: context,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 17),
-                            CustomButton(
-                                height: 24,
-                                isLoading: false,
-                                text: 'Xem thêm',
-                                textColor: CustomColor.white,
-                                onPressFunction: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const TimeLineScreen()));
-                                },
-                                width: deviceSize.width / 3,
-                                buttonColor: CustomColor.blue,
-                                borderRadius: 6),
-                          ],
-                        ),
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //   children: [
+                        //     CustomText(
+                        //         text: "Thông tin vận chuyển:",
+                        //         color: Colors.black,
+                        //         context: context,
+                        //         fontWeight: FontWeight.bold,
+                        //         fontSize: 17),
+                        //     CustomButton(
+                        //         height: 24,
+                        //         isLoading: false,
+                        //         text: 'Xem thêm',
+                        //         textColor: CustomColor.white,
+                        //         onPressFunction: () {
+                        //           Navigator.push(
+                        //               context,
+                        //               MaterialPageRoute(
+                        //                   builder: (context) =>
+                        //                       const TimeLineScreen()));
+                        //         },
+                        //         width: deviceSize.width / 3,
+                        //         buttonColor: CustomColor.blue,
+                        //         borderRadius: 6),
+                        //   ],
+                        // ),
                         SizedBox(
                           width: deviceSize.width,
                           child: Column(
