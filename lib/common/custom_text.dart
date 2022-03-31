@@ -9,7 +9,7 @@ class CustomText extends Text {
       required Color color,
       required BuildContext context,
       required int fontSize,
-      int maxLines = 1,
+      int? maxLines,
       TextOverflow textOverflow = TextOverflow.ellipsis,
       TextAlign textAlign = TextAlign.start,
       FontWeight fontWeight = FontWeight.normal})

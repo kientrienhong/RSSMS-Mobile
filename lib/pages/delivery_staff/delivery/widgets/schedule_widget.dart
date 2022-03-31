@@ -23,7 +23,6 @@ import 'package:rssms/views/schedule_view.dart';
 
 class ScheduleWidget extends StatefulWidget {
   final Invoice invoice;
-  final Map<String, dynamic> schedule;
   final int listLength;
   final int currentIndex;
   final DateTime firstDayOfWeek;
@@ -36,7 +35,6 @@ class ScheduleWidget extends StatefulWidget {
       required this.firstDayOfWeek,
       required this.invoice,
       required this.endDayOfWeek,
-      required this.schedule,
       required this.initDeliveryScreen,
       required this.currentIndex,
       required this.currentDateTime,
@@ -188,8 +186,7 @@ class _ScheduleWidgetState extends State<ScheduleWidget>
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
     final test = widget.invoice;
-    final test1 = widget.schedule;
-    DateTime deliveryDateTime = DateTime.parse(widget.schedule['deliveryDate']);
+    DateTime deliveryDateTime = DateTime.parse(widget.invoice.deliveryDate);
     bool isDelivery = deliveryDateTime.isAfter(widget.firstDayOfWeek) &&
         deliveryDateTime.isBefore(widget.endDayOfWeek);
 
@@ -237,7 +234,7 @@ class _ScheduleWidgetState extends State<ScheduleWidget>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomText(
-                      text: widget.schedule['deliveryTime'],
+                      text: widget.invoice.deliveryTime,
                       color: CustomColor.black,
                       context: context,
                       fontWeight: FontWeight.bold,
@@ -300,9 +297,10 @@ class _ScheduleWidgetState extends State<ScheduleWidget>
                             Flexible(
                               child: CustomText(
                                   text:
-                                      '${LIST_STATUS_REQUEST[widget.schedule['status']]['name']}',
-                                  color: LIST_STATUS_REQUEST[widget
-                                      .schedule['status']]['color'] as Color,
+                                      '${LIST_STATUS_REQUEST[widget.invoice.status]['name']}',
+                                  color:
+                                      LIST_STATUS_REQUEST[widget.invoice.status]
+                                          ['color'] as Color,
                                   fontWeight: FontWeight.bold,
                                   maxLines: 2,
                                   textAlign: TextAlign.right,
@@ -318,21 +316,21 @@ class _ScheduleWidgetState extends State<ScheduleWidget>
                         buildInfo(
                             'Địa chỉ: ',
                             isDelivery
-                                ? widget.schedule['deliveryAddress']
-                                : widget.schedule['addressReturn'],
+                                ? widget.invoice.deliveryAddress
+                                : widget.invoice.addressReturn,
                             context),
                         CustomSizedBox(
                           context: context,
                           height: 8,
                         ),
                         buildInfo('Tên khách hàng: ',
-                            widget.schedule['customerName'], context),
+                            widget.invoice.customerName, context),
                         CustomSizedBox(
                           context: context,
                           height: 8,
                         ),
                         buildInfo('SĐT khách hàng: ',
-                            widget.schedule['customerPhone'], context),
+                            widget.invoice.customerPhone, context),
                         Divider(),
                         Row(
                           children: [

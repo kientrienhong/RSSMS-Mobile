@@ -78,6 +78,7 @@ const LIST_STATUS_ORDER = [
   {'color': CustomColor.red, 'name': 'Đã hết hạn'},
   {'color': CustomColor.green, 'name': 'Đã hoàn tất'},
   {'color': CustomColor.purple, 'name': 'Đang vận chuyển (trả)'},
+  {'color': CustomColor.green, 'name': 'Đã hoàn tất'},
 ];
 
 const LIST_ICON_REQUEST = [

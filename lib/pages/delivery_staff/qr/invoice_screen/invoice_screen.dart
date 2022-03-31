@@ -134,7 +134,7 @@ class QRInvoiceDetailsScreen extends StatelessWidget {
                         child: CustomButton(
                             height: 24,
                             isLoading: false,
-                            text: 'Cập nhật đơn',
+                            text: isDone ? 'Trả đơn' : 'Cập nhật đơn',
                             textColor: CustomColor.white,
                             onPressFunction: () {
                               if (isDone) {
