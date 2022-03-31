@@ -60,8 +60,7 @@ class InvoiceProductWidget extends StatelessWidget {
     DateTime deliveryDate = DateTime.parse(invoice!.deliveryDate);
     DateTime returnDate = DateTime.parse(invoice!.returnDate);
     String additionalDescription = '';
-    int additionalFee = 0;
-
+    double additionalFee = 0;
     if (invoice!.additionFeeDescription != null) {
       additionalDescription = invoice!.additionFeeDescription!;
     }
@@ -363,7 +362,7 @@ class InvoiceProductWidget extends StatelessWidget {
                   height: 10,
                 ),
                 CustomText(
-                    text: "Chi phí thêm: ",
+                    text: "Chi phí thêm khi lấy hàng: ",
                     color: Colors.black,
                     context: context,
                     fontWeight: FontWeight.bold,
@@ -383,6 +382,43 @@ class InvoiceProductWidget extends StatelessWidget {
                         fontSize: 16),
                     CustomText(
                         text: oCcy.format(additionalFee) + " đ",
+                        color: CustomColor.blue,
+                        context: context,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16),
+                  ],
+                ),
+              ]),
+            if (invoice!.returnAdditionFee! > 0)
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                CustomSizedBox(
+                  context: context,
+                  height: 10,
+                ),
+                CustomText(
+                    text: "Chi phí thêm khi trả hàng: ",
+                    color: Colors.black,
+                    context: context,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15),
+                CustomSizedBox(
+                  context: context,
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Flexible(
+                      child: CustomText(
+                          text: invoice!.returnAdditionFeeDescription!,
+                          color: CustomColor.black,
+                          context: context,
+                          maxLines: null,
+                          fontSize: 16),
+                    ),
+                    CustomText(
+                        text: oCcy.format(invoice!.returnAdditionFee) + " đ",
                         color: CustomColor.blue,
                         context: context,
                         fontWeight: FontWeight.bold,
@@ -421,7 +457,8 @@ class InvoiceProductWidget extends StatelessWidget {
                                     .ceil() +
                             totalAccessory +
                             totalPackaging +
-                            invoice!.additionFee! as num) +
+                            invoice!.returnAdditionFee! +
+                            invoice!.additionFee!) +
                         " đ",
                     color: CustomColor.blue,
                     context: context,
@@ -429,6 +466,40 @@ class InvoiceProductWidget extends StatelessWidget {
                     fontSize: 19),
               ],
             ),
+            if (invoice!.compensationFee! > 0)
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                CustomSizedBox(
+                  context: context,
+                  height: 24,
+                ),
+                CustomText(
+                    text: "Bồi thường",
+                    color: Colors.black,
+                    context: context,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20),
+                CustomSizedBox(
+                  context: context,
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomText(
+                        text: invoice!.compensationFeeDescription!,
+                        color: CustomColor.black,
+                        context: context,
+                        fontSize: 16),
+                    CustomText(
+                        text: oCcy.format(invoice!.compensationFee) + " đ",
+                        color: CustomColor.blue,
+                        context: context,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16),
+                  ],
+                ),
+              ]),
           ],
         ),
       ),

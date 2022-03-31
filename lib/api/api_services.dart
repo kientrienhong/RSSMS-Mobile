@@ -470,18 +470,18 @@ class ApiServices {
     }
   }
 
-  static Future<dynamic> doneOrder(Invoice invoice, String idToken) {
+  static Future<dynamic> doneOrder(dataRequest, String idToken) {
     try {
       Map<String, String> headers = {
         "Content-type": "application/json",
         'Authorization': 'Bearer $idToken'
       };
-
-      final url = Uri.parse('$_domain/api/v1/orders/done/${invoice.id}');
-      return http.put(url, headers: headers);
+      final url = Uri.parse(
+          '$_domain/api/v1/orders/done/order/${dataRequest['orderId']}/request/${dataRequest['requestId']}');
+      return http.put(url, body: jsonEncode(dataRequest), headers: headers);
     } catch (e) {
       print(e.toString());
-      throw Exception('Update Failed');
+      throw Exception(e.toString());
     }
   }
 
@@ -555,6 +555,40 @@ class ApiServices {
     } catch (e) {
       print(e.toString());
       throw Exception('Update Failed');
+    }
+  }
+
+  static Future<dynamic> sendNotiCheckInToCustomer(
+      String idToken, String idRequest) {
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        'Authorization': 'Bearer $idToken'
+      };
+
+      final url =
+          Uri.parse('$_domain/api/v1/requests/deliver request/$idRequest');
+      return http.put(url, headers: headers);
+    } catch (e) {
+      print(e.toString());
+      throw Exception(e.toString());
+    }
+  }
+
+  static Future<dynamic> sendNotiRequestToStaff(
+      String idToken, String message, String idRequest) {
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        'Authorization': 'Bearer $idToken'
+      };
+
+      final url = Uri.parse(
+          '$_domain/api/v1/requests/send request notification/$idRequest');
+      return http.post(url, body: message, headers: headers);
+    } catch (e) {
+      print(e.toString());
+      throw Exception(e.toString());
     }
   }
 

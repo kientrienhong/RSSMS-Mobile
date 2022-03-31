@@ -82,8 +82,7 @@ class _QrScreenState extends State<QrScreen> implements QRInvoiceView {
     } catch (e) {
       print(e);
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("Đã có lỗi xảy ra, vui lòng thử lại sau"),
-       backgroundColor: CustomColor.red 
+        content: Text("Không tìm thấy đơn"),
       ));
     }
   }

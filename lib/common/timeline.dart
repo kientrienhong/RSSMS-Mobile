@@ -107,12 +107,15 @@ class TimeLineElement extends StatelessWidget {
             context: context,
             width: 8,
           ),
-          CustomText(
-              text: timeLine.name,
-              color: color,
-              context: context,
-              fontWeight: fontWeight,
-              fontSize: 16),
+          Flexible(
+            child: CustomText(
+                text: timeLine.name,
+                color: color,
+                context: context,
+                fontWeight: fontWeight,
+                maxLines: 2,
+                fontSize: 16),
+          ),
         ],
       ),
     );

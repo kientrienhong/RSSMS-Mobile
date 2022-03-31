@@ -78,6 +78,7 @@ const LIST_STATUS_ORDER = [
   {'color': CustomColor.red, 'name': 'Đã hết hạn'},
   {'color': CustomColor.green, 'name': 'Đã hoàn tất'},
   {'color': CustomColor.purple, 'name': 'Đang vận chuyển (trả)'},
+  {'color': CustomColor.green, 'name': 'Đã hoàn tất'},
 ];
 
 const LIST_ICON_REQUEST = [
@@ -104,6 +105,11 @@ const LIST_TYPE_REQUEST = [
   {'name': "Hủy đơn"},
   {'name': "Yêu cầu trả đơn"},
 ];
+
+const LIST_TYPE_REQUES_DELIVERY = {
+  1: {'name': 'Đi lấy hàng', "color": CustomColor.blue},
+  4: {'name': 'Đi trả hàng', 'color': CustomColor.purple}
+};
 
 const List<Map<String, String>> TAB_DOOR_TO_DOOR = [
   {"name": "Ít đồ"},

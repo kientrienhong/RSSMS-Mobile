@@ -35,7 +35,10 @@ import 'package:rssms/constants/constants.dart' as constant;
 class UpdateInvoiceScreen extends StatefulWidget {
   final bool? isView;
   final bool? isScanQR;
-  UpdateInvoiceScreen({Key? key, this.isView, this.isScanQR}) : super(key: key);
+  final bool isDone;
+  UpdateInvoiceScreen(
+      {Key? key, this.isView, this.isScanQR, required this.isDone})
+      : super(key: key);
 
   @override
   _UpdateInvoiceScreenState createState() => _UpdateInvoiceScreenState();
@@ -50,6 +53,8 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
   final _focusNodePhone = FocusNode();
   final _focusNodeAdditionFeeDescription = FocusNode();
   final _focusNodeAdditionFeePrice = FocusNode();
+  final _focusNodeComposentationDescription = FocusNode();
+  final _focusNodeComposentationPrice = FocusNode();
   File? image;
 
   @override
@@ -166,11 +171,12 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
             MaterialPageRoute(
                 builder: (context) => const CustomBottomNavigation(
                       listIndexStack: [
-                        MyAccountScreen(),
-                        CartScreen(),
-                        NotificationScreen(),
+                        MyAccountDeliveryScreen(),
+                        DeliveryScreen(),
+                        QrScreen(),
+                        NotificationDeliveryScreen(),
                       ],
-                      listNavigator: constant.LIST_CUSTOMER_BOTTOM_NAVIGATION,
+                      listNavigator: constant.LIST_DELIVERY_BOTTOM_NAVIGATION,
                     )),
             (Route<dynamic> route) => false);
       }
@@ -181,9 +187,9 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
 
   @override
   void onClickUpdateOrder() async {
-    if (widget.isView == false) {
+    if (widget.isView == false && !widget.isDone) {
       updateOrder();
-    } else if (widget.isScanQR == true && widget.isView == true) {
+    } else if (widget.isDone) {
       doneOrder();
     }
   }
@@ -228,7 +234,7 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
           .map<Widget>((e) => ImageWidget(
                 orderDetail: e,
                 deleteItem: deleteImageEntity,
-                isView: widget.isView ?? false,
+                isView: widget.isView! || widget.isDone,
               ))
           .toList();
 
@@ -237,7 +243,7 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
         .map((e) => AdditionServiceWidget(
             orderDetail: e,
             onAddAddition: onAddAdditionSeperate,
-            isView: widget.isView!,
+            isView: widget.isView! || widget.isDone,
             onMinusAddition: onMinusAdditionSeperate))
         .toList();
   }
@@ -274,7 +280,9 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                       ),
                     ),
                     CustomText(
-                        text: "Cập nhật đơn hàng",
+                        text: widget.isDone
+                            ? "Trả đơn hàng"
+                            : "Cập nhật đơn hàng",
                         color: Colors.black,
                         context: context,
                         fontWeight: FontWeight.bold,
@@ -325,23 +333,24 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
-                    CustomButton(
-                        height: 16,
-                        text: 'Thêm dịch vụ',
-                        width: deviceSize.width * 1 / 3.5,
-                        onPressFunction: () {
-                          showDialog(
-                              context: context,
-                              builder: (context) {
-                                return DialogAddService(
-                                  isSeperate: false,
-                                );
-                              });
-                        },
-                        isLoading: false,
-                        textColor: CustomColor.white,
-                        buttonColor: CustomColor.blue,
-                        borderRadius: 6)
+                    if (!widget.isDone)
+                      CustomButton(
+                          height: 16,
+                          text: 'Thêm dịch vụ',
+                          width: deviceSize.width * 1 / 3.5,
+                          onPressFunction: () {
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return DialogAddService(
+                                    isSeperate: false,
+                                  );
+                                });
+                          },
+                          isLoading: false,
+                          textColor: CustomColor.white,
+                          buttonColor: CustomColor.blue,
+                          borderRadius: 6)
                   ],
                 ),
                 CustomSizedBox(
@@ -373,23 +382,24 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
-                    CustomButton(
-                        height: 16,
-                        text: 'Thêm phụ kiện',
-                        width: deviceSize.width * 1 / 3.5,
-                        onPressFunction: () {
-                          showDialog(
-                              context: context,
-                              builder: (context) {
-                                return DialogAddService(
-                                  isSeperate: true,
-                                );
-                              });
-                        },
-                        isLoading: false,
-                        textColor: CustomColor.white,
-                        buttonColor: CustomColor.blue,
-                        borderRadius: 6)
+                    if (!widget.isDone)
+                      CustomButton(
+                          height: 16,
+                          text: 'Thêm phụ kiện',
+                          width: deviceSize.width * 1 / 3.5,
+                          onPressFunction: () {
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return DialogAddService(
+                                    isSeperate: true,
+                                  );
+                                });
+                          },
+                          isLoading: false,
+                          textColor: CustomColor.white,
+                          buttonColor: CustomColor.blue,
+                          borderRadius: 6)
                   ],
                 ),
                 CustomSizedBox(
@@ -469,6 +479,58 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     CustomText(
+                      text: "Bồi thường",
+                      color: CustomColor.black,
+                      context: context,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    Checkbox(
+                        fillColor: MaterialStateProperty.all(CustomColor.blue),
+                        value: _model.isCompensation,
+                        onChanged: widget.isView == false
+                            ? (value) {
+                                setState(() {
+                                  _model.isCompensation = value;
+                                });
+                              }
+                            : (val) => {})
+                  ],
+                ),
+                if (_model.isCompensation)
+                  Column(
+                    children: [
+                      CustomSizedBox(
+                        context: context,
+                        height: 8,
+                      ),
+                      CustomOutLineInputWithHint(
+                          controller:
+                              _model.controllerCompensationFeeDescription,
+                          isDisable: false,
+                          hintText: "Mô tả",
+                          validator: Validator.notEmpty,
+                          textInputType: TextInputType.multiline,
+                          maxLine: 3,
+                          focusNode: _focusNodeComposentationDescription,
+                          deviceSize: deviceSize),
+                      CustomOutLineInputWithHint(
+                          controller: _model.controllerCompensationFeePrice,
+                          isDisable: false,
+                          hintText: "Giá tiền",
+                          textInputType: TextInputType.number,
+                          focusNode: _focusNodeComposentationPrice,
+                          deviceSize: deviceSize),
+                    ],
+                  ),
+                CustomSizedBox(
+                  context: context,
+                  height: 16,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CustomText(
                       text: "Đã thanh toán",
                       color: CustomColor.black,
                       context: context,
@@ -493,7 +555,7 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                       CustomButton(
                           height: 24,
                           isLoading: _model.isLoadingUpdateInvoice,
-                          text: 'Cập nhật đơn',
+                          text: widget.isDone ? "Trả đơn" : 'Cập nhật đơn',
                           textColor: CustomColor.white,
                           onPressFunction: () {
                             Invoice invoice =
@@ -543,13 +605,31 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                           onPressFunction: () {
                             Invoice invoice =
                                 Provider.of<Invoice>(context, listen: false);
-                            if (_model.isAdditionFee) {
+                            if (_model.isAdditionFee && !widget.isDone) {
                               invoice.setInvoice(
                                   invoice: invoice.copyWith(
-                                      additionFee: int.parse(_model
+                                      additionFee: double.parse(_model
                                           .controllerAdditionFeePrice.text),
                                       additionFeeDescription: _model
                                           .controllerAdditionFeeDescription
+                                          .text));
+                            } else if (_model.isAdditionFee && widget.isDone) {
+                              invoice.setInvoice(
+                                  invoice: invoice.copyWith(
+                                      returnAdditionFee: double.parse(_model
+                                          .controllerAdditionFeePrice.text),
+                                      returnAdditionFeeDescription: _model
+                                          .controllerAdditionFeeDescription
+                                          .text));
+                            }
+
+                            if (_model.isCompensation) {
+                              invoice.setInvoice(
+                                  invoice: invoice.copyWith(
+                                      compensationFee: double.parse(_model
+                                          .controllerCompensationFeePrice.text),
+                                      compensationFeeDescription: _model
+                                          .controllerCompensationFeeDescription
                                           .text));
                             }
                             Navigator.push(

@@ -44,10 +44,10 @@ class QRInvoiceDetailsScreen extends StatelessWidget {
     return invoiceResult;
   }
 
-  void formatInvoiceForUpdate(Invoice invoice) {
+  Invoice formatInvoiceForUpdate(Invoice invoice) {
     Invoice invoiceResult = invoice.copyWith();
-
-    invoice.orderDetails.forEach((element) {
+    int index = 0;
+    invoiceResult.orderDetails.forEach((element) {
       int quantity = 0;
       element.listAdditionService!.forEach((ele) {
         if (ele.id == element.productId) {
@@ -60,11 +60,11 @@ class QRInvoiceDetailsScreen extends StatelessWidget {
               element.type == constants.ACCESSORY ||
               element.type == constants.SERVICES)
           .toList();
-
       element = element.copyWith(amount: quantity);
+      invoiceResult.orderDetails[index++] = element.copyWith(amount: quantity);
     });
 
-    invoice.setInvoice(invoice: invoiceResult);
+    return invoiceResult;
   }
 
   @override
@@ -72,7 +72,7 @@ class QRInvoiceDetailsScreen extends StatelessWidget {
     Invoice invoice = Provider.of<Invoice>(context, listen: false);
     Invoice invoiceUI = invoice;
     final deviceSize = MediaQuery.of(context).size;
-    if (isDone) Invoice invoiceUI = formatUIInvoice(invoice);
+    if (isDone) invoiceUI = formatUIInvoice(invoice);
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -134,16 +134,21 @@ class QRInvoiceDetailsScreen extends StatelessWidget {
                         child: CustomButton(
                             height: 24,
                             isLoading: false,
-                            text: 'Cập nhật đơn',
+                            text: isDone ? 'Trả đơn' : 'Cập nhật đơn',
                             textColor: CustomColor.white,
                             onPressFunction: () {
-                              if (isDone) formatInvoiceForUpdate(invoice);
+                              if (isDone) {
+                                Invoice invoiceTemp =
+                                    formatInvoiceForUpdate(invoice);
+                                invoice.setInvoice(invoice: invoiceTemp);
+                              }
 
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => UpdateInvoiceScreen(
                                           isView: false,
+                                          isDone: isDone,
                                         )),
                               );
                             },

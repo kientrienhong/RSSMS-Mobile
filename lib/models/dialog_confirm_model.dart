@@ -16,7 +16,7 @@ class DialogConfirmModel {
   }
 
   Future<dynamic> updateRequest(
-      String note, int status, String idToken, String idRequest) async {
-    return await ApiServices.updateRequest(idRequest, idToken, status);
+      String note, String idToken, String idRequest) async {
+    return await ApiServices.sendNotiRequestToStaff(idToken, note, idRequest);
   }
 }

@@ -40,7 +40,7 @@ class _DialogReportState extends State<DialogReport>
   @override
   void updateLoading() {
     setState(() {
-      _model.isLoading != _model.isLoading;
+      _model.isLoading = !_model.isLoading;
     });
   }
 

@@ -65,7 +65,6 @@ class _DeliveryScreenState extends State<DeliveryScreen>
       return _model.listInvoice[getCurrentDateTime]
           ?.mapIndexed((index, element) => ScheduleWidget(
               invoice: element,
-              schedule: element.toMap(),
               currentDateTime: _model.listDateTime[_model.currentIndex],
               refreshSchedule: _presenter.loadListShedule,
               initDeliveryScreen: _presenter.init,

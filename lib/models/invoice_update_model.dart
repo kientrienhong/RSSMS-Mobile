@@ -8,7 +8,11 @@ class InvoiceUpdateModel {
   bool? _isDisableUpdateInvoice;
   bool? _isLoadingUpdateInvoice;
   bool? _isAdditionFee;
+  bool? _isCompensation;
 
+  get isCompensation => this._isCompensation;
+
+  set isCompensation(value) => this._isCompensation = value;
   get isAdditionFee => _isAdditionFee;
 
   set isAdditionFee(value) => _isAdditionFee = value;
@@ -16,6 +20,18 @@ class InvoiceUpdateModel {
   TextEditingController? _controllerPhone;
   TextEditingController? _controllerAdditionFeeDescription;
   TextEditingController? _controllerAdditionFeePrice;
+  TextEditingController? _controllerCompensationFeeDescription;
+  TextEditingController? _controllerCompensationFeePrice;
+  get controllerCompensationFeeDescription =>
+      _controllerCompensationFeeDescription;
+
+  set controllerCompensationFeeDescription(value) =>
+      _controllerCompensationFeeDescription = value;
+
+  get controllerCompensationFeePrice => _controllerCompensationFeePrice;
+
+  set controllerCompensationFeePrice(value) =>
+      _controllerCompensationFeePrice = value;
   get controllerAdditionFeeDescription => _controllerAdditionFeeDescription;
 
   set controllerAdditionFeeDescription(value) =>
@@ -32,12 +48,12 @@ class InvoiceUpdateModel {
     _isDisableUpdateInvoice = true;
     _isLoadingUpdateInvoice = false;
     _isPaid = invoice.isPaid;
-
-    _isAdditionFee = invoice.additionFee == 0 ? false : true;
-    _controllerAdditionFeeDescription =
-        TextEditingController(text: invoice.additionFeeDescription);
-    _controllerAdditionFeePrice =
-        TextEditingController(text: invoice.additionFee.toString());
+    _controllerCompensationFeeDescription = TextEditingController(text: '');
+    _controllerCompensationFeePrice = TextEditingController(text: '');
+    _isCompensation = false;
+    _isAdditionFee = false;
+    _controllerAdditionFeeDescription = TextEditingController(text: '');
+    _controllerAdditionFeePrice = TextEditingController(text: '');
     _controllerFullname = TextEditingController(text: invoice.customerName);
     _controllerPhone = TextEditingController(text: invoice.customerPhone);
     switch (invoice.status) {
@@ -88,8 +104,8 @@ class InvoiceUpdateModel {
     return await ApiServices.sendNotification(dataRequest, idToken);
   }
 
-  Future<dynamic> doneOrder(Invoice invoice, String idToken) async {
-    return await ApiServices.doneOrder(invoice, idToken);
+  Future<dynamic> doneOrder(dataRequest, String idToken) async {
+    return await ApiServices.doneOrder(dataRequest, idToken);
   }
 
   Future<dynamic> createOrder(dataRequest, String idToken) async {

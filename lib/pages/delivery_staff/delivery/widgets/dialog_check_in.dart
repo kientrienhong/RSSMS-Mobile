@@ -35,7 +35,7 @@ class _DialogCheckInState extends State<DialogCheckIn>
   @override
   void updateLoading() {
     setState(() {
-      _model.isLoading != _model.isLoading;
+      _model.isLoading = !_model.isLoading;
     });
   }
 

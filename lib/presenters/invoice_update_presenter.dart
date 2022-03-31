@@ -62,7 +62,7 @@ class InvoiceUpdatePresenter {
     return listOrderDetailNew;
   }
 
-  Future<Map<String, dynamic>> formatData(Invoice invoice) async {
+  Future<Map<String, dynamic>> formatDataCreateOrder(Invoice invoice) async {
     invoice = invoice.copyWith();
 
     double price = 0;
@@ -144,10 +144,28 @@ class InvoiceUpdatePresenter {
     };
   }
 
+  Map<String, dynamic> formatDateDoneOrder(Invoice invoice) {
+    Map<String, dynamic> result = {
+      "orderId": invoice.id,
+      "requestId": invoice.requestId,
+      "compensationFee": _model.controllerCompensationFeePrice.text.isEmpty
+          ? 0
+          : double.parse(_model.controllerCompensationFeePrice.text),
+      "compensationDescription":
+          _model.controllerCompensationFeeDescription.text,
+      "additionalFeeDescription": _model.controllerAdditionFeeDescription.text,
+      "additionalFee": _model.controllerAdditionFeePrice.text.isEmpty
+          ? 0
+          : double.parse(_model.controllerAdditionFeePrice.text)
+    };
+
+    return result;
+  }
+
   Future<bool> updateOrder(Users user, Invoice invoice) async {
     try {
       view.updateLoadingUpdate();
-      final dataRequest = await formatData(invoice);
+      final dataRequest = await formatDataCreateOrder(invoice);
       var response = await model.createOrder(dataRequest, user.idToken!);
       if (response.statusCode == 200) {
         return true;
@@ -164,7 +182,7 @@ class InvoiceUpdatePresenter {
   Future<bool?> sendNoti(Users user, Invoice invoice) async {
     try {
       view.updateLoadingUpdate();
-      final dataRequest = await formatData(invoice);
+      final dataRequest = await formatDataCreateOrder(invoice);
 
       var response = await model.sendNotification(dataRequest, user.idToken!);
       if (response.statusCode == 200) {
@@ -183,7 +201,8 @@ class InvoiceUpdatePresenter {
     try {
       view.updateLoadingUpdate();
 
-      var response = await model.doneOrder(invoice, user.idToken!);
+      var response =
+          await model.doneOrder(formatDateDoneOrder(invoice), user.idToken!);
       if (response.statusCode == 200) {
         return true;
       }
