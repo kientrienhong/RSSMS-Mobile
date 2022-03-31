@@ -29,7 +29,7 @@ class DialogConfirmPresenter {
       String note, String idRequest, String idToken) async {
     try {
       view.updateLoading();
-      final response = await model.updateRequest(note, 5, idToken, idRequest);
+      final response = await model.updateRequest(note, idToken, idRequest);
       if (response.statusCode == 200) {
         return true;
       }

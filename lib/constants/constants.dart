@@ -105,6 +105,11 @@ const LIST_TYPE_REQUEST = [
   {'name': "Yêu cầu trả đơn"},
 ];
 
+const LIST_TYPE_REQUES_DELIVERY = {
+  1: {'name': 'Đi lấy hàng', "color": CustomColor.blue},
+  4: {'name': 'Đi trả hàng', 'color': CustomColor.purple}
+};
+
 const List<Map<String, String>> TAB_DOOR_TO_DOOR = [
   {"name": "Ít đồ"},
   {"name": "Nhiều đồ"}

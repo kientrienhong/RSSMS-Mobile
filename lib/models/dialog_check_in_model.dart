@@ -7,6 +7,6 @@ class DialogCheckInModel {
   }
 
   Future<dynamic> checkInDelivery(String idRequest, String idToken) async {
-    return await ApiServices.updateRequest(idRequest, idToken, 4);
+    return await ApiServices.sendNotiCheckInToCustomer(idToken, idRequest);
   }
 }

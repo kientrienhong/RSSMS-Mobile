@@ -89,7 +89,7 @@ class DeliveryPresenter {
         decodedReponse['data'].forEach((e) {
           String scheduleDay = e['scheduleDay'].split('T')[0];
           for (int i = 0; i < e['requests'].length; i++) {
-            Invoice invoice = Invoice.fromMap(e['requests'][i]);
+            Invoice invoice = Invoice.fromRequest(e['requests'][i]);
             model.listInvoice[scheduleDay]!.add(invoice);
           }
         });

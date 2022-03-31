@@ -35,7 +35,10 @@ import 'package:rssms/constants/constants.dart' as constant;
 class UpdateInvoiceScreen extends StatefulWidget {
   final bool? isView;
   final bool? isScanQR;
-  UpdateInvoiceScreen({Key? key, this.isView, this.isScanQR}) : super(key: key);
+  final bool isDone;
+  UpdateInvoiceScreen(
+      {Key? key, this.isView, this.isScanQR, required this.isDone})
+      : super(key: key);
 
   @override
   _UpdateInvoiceScreenState createState() => _UpdateInvoiceScreenState();
@@ -228,7 +231,7 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
           .map<Widget>((e) => ImageWidget(
                 orderDetail: e,
                 deleteItem: deleteImageEntity,
-                isView: widget.isView ?? false,
+                isView: widget.isView! || widget.isDone,
               ))
           .toList();
 
@@ -237,7 +240,7 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
         .map((e) => AdditionServiceWidget(
             orderDetail: e,
             onAddAddition: onAddAdditionSeperate,
-            isView: widget.isView!,
+            isView: widget.isView! || widget.isDone,
             onMinusAddition: onMinusAdditionSeperate))
         .toList();
   }
@@ -325,23 +328,24 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
-                    CustomButton(
-                        height: 16,
-                        text: 'Thêm dịch vụ',
-                        width: deviceSize.width * 1 / 3.5,
-                        onPressFunction: () {
-                          showDialog(
-                              context: context,
-                              builder: (context) {
-                                return DialogAddService(
-                                  isSeperate: false,
-                                );
-                              });
-                        },
-                        isLoading: false,
-                        textColor: CustomColor.white,
-                        buttonColor: CustomColor.blue,
-                        borderRadius: 6)
+                    if (!widget.isDone)
+                      CustomButton(
+                          height: 16,
+                          text: 'Thêm dịch vụ',
+                          width: deviceSize.width * 1 / 3.5,
+                          onPressFunction: () {
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return DialogAddService(
+                                    isSeperate: false,
+                                  );
+                                });
+                          },
+                          isLoading: false,
+                          textColor: CustomColor.white,
+                          buttonColor: CustomColor.blue,
+                          borderRadius: 6)
                   ],
                 ),
                 CustomSizedBox(
@@ -373,23 +377,24 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
-                    CustomButton(
-                        height: 16,
-                        text: 'Thêm phụ kiện',
-                        width: deviceSize.width * 1 / 3.5,
-                        onPressFunction: () {
-                          showDialog(
-                              context: context,
-                              builder: (context) {
-                                return DialogAddService(
-                                  isSeperate: true,
-                                );
-                              });
-                        },
-                        isLoading: false,
-                        textColor: CustomColor.white,
-                        buttonColor: CustomColor.blue,
-                        borderRadius: 6)
+                    if (!widget.isDone)
+                      CustomButton(
+                          height: 16,
+                          text: 'Thêm phụ kiện',
+                          width: deviceSize.width * 1 / 3.5,
+                          onPressFunction: () {
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return DialogAddService(
+                                    isSeperate: true,
+                                  );
+                                });
+                          },
+                          isLoading: false,
+                          textColor: CustomColor.white,
+                          buttonColor: CustomColor.blue,
+                          borderRadius: 6)
                   ],
                 ),
                 CustomSizedBox(

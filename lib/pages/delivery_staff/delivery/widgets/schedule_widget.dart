@@ -187,7 +187,8 @@ class _ScheduleWidgetState extends State<ScheduleWidget>
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
-
+    final test = widget.invoice;
+    final test1 = widget.schedule;
     DateTime deliveryDateTime = DateTime.parse(widget.schedule['deliveryDate']);
     bool isDelivery = deliveryDateTime.isAfter(widget.firstDayOfWeek) &&
         deliveryDateTime.isBefore(widget.endDayOfWeek);
@@ -243,7 +244,7 @@ class _ScheduleWidgetState extends State<ScheduleWidget>
                       fontSize: 24),
                   CustomSizedBox(
                     context: context,
-                    height: 40,
+                    height: 24,
                   ),
                   Container(
                     padding: const EdgeInsets.all(12),
@@ -260,6 +261,33 @@ class _ScheduleWidgetState extends State<ScheduleWidget>
                         ]),
                     child: Column(
                       children: [
+                        Row(
+                          children: [
+                            CustomText(
+                              text: 'Loại yêu cầu: ',
+                              color: CustomColor.black,
+                              context: context,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            Flexible(
+                              child: CustomText(
+                                  text:
+                                      '${LIST_TYPE_REQUES_DELIVERY[widget.invoice.typeRequest]!['name']}',
+                                  color: LIST_TYPE_REQUES_DELIVERY[widget
+                                      .invoice.typeRequest]!['color'] as Color,
+                                  fontWeight: FontWeight.bold,
+                                  maxLines: 2,
+                                  textAlign: TextAlign.right,
+                                  context: context,
+                                  fontSize: 18),
+                            ),
+                          ],
+                        ),
+                        CustomSizedBox(
+                          context: context,
+                          height: 8,
+                        ),
                         Row(
                           children: [
                             CustomText(

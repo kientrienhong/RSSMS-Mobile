@@ -558,6 +558,40 @@ class ApiServices {
     }
   }
 
+  static Future<dynamic> sendNotiCheckInToCustomer(
+      String idToken, String idRequest) {
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        'Authorization': 'Bearer $idToken'
+      };
+
+      final url =
+          Uri.parse('$_domain/api/v1/requests/deliver request/$idRequest');
+      return http.put(url, headers: headers);
+    } catch (e) {
+      print(e.toString());
+      throw Exception(e.toString());
+    }
+  }
+
+  static Future<dynamic> sendNotiRequestToStaff(
+      String idToken, String message, String idRequest) {
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        'Authorization': 'Bearer $idToken'
+      };
+
+      final url = Uri.parse(
+          '$_domain/api/v1/requests/send request notification/$idRequest');
+      return http.post(url, body: message, headers: headers);
+    } catch (e) {
+      print(e.toString());
+      throw Exception(e.toString());
+    }
+  }
+
   static Future<dynamic> cancelOrder(
       String idToken, Map<dynamic, dynamic> cancelOrder) {
     try {

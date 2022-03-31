@@ -56,6 +56,7 @@ void onClickNotification(String? payload, BuildContext context) {
         MaterialPageRoute(
             builder: (context) => UpdateInvoiceScreen(
                   isView: true,
+                  isDone: false,
                 )));
   } catch (e) {
     print(e);

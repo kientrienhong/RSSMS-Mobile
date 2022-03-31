@@ -74,7 +74,7 @@ class _QrScreenState extends State<QrScreen> implements QRInvoiceView {
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("Cannot find invoice"),
+        content: Text("Không tìm thấy đơn"),
       ));
     }
   }
