@@ -92,7 +92,7 @@ class _CreateOrderRequestScreenState extends State<CreateOrderRequestScreen>
                     Column(
                       children: [
                         CustomText(
-                            text: _model.invoice.id,
+                            text: _model.invoice.id.substring(0,8),
                             color: CustomColor.black,
                             context: context,
                             fontSize: 24),

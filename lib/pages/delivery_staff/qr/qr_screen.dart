@@ -34,7 +34,7 @@ class _QrScreenState extends State<QrScreen> implements QRInvoiceView {
   }
 
   @override
-  Future<void> scanQR(Size deviceSize) async {
+   Future<void> scanQR(Size deviceSize) async {
     String barcodeScanRes;
     // Platform messages may fail, so we use a try/catch PlatformException.
     try {
@@ -83,6 +83,7 @@ class _QrScreenState extends State<QrScreen> implements QRInvoiceView {
   @override
   Widget build(BuildContext context) {
     var deviceSize = MediaQuery.of(context).size;
+    
     return Scaffold(
       backgroundColor: CustomColor.white,
       body: SingleChildScrollView(

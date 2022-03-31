@@ -91,7 +91,7 @@ class RequestWidget extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         CustomText(
-                            text: "Mã yêu cầu: #" + request!.id.toString(),
+                            text: "Mã yêu cầu: #" + request!.id.substring(0, 8),
                             color: CustomColor.black,
                             context: context,
                             fontWeight: FontWeight.bold,

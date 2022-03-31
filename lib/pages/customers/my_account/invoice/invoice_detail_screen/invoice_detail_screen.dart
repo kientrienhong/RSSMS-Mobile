@@ -62,7 +62,7 @@ class _InvoiceDetailScreenState extends State<InvoiceDetailScreen>
     _presenter.loadingDetailInvoice(widget.invoice!.id, user.idToken!);
     _index = 0;
     _presenter.view = this;
-    _model = _presenter.model!;
+    _model = _presenter.model;
     // if (widget.invoiceID != null) {
     //   _presenter.loadInvoiceByID(user.idToken!, widget.invoiceID.toString());
     //   widget.invoice = _model.notiInvoice;
