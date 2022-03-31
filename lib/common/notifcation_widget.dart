@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
+import 'package:rssms/common/invoice_detail_screen.dart';
 import 'package:rssms/models/entity/notification.dart';
 import 'package:rssms/constants/constants.dart';
-import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/invoice_detail_screen.dart';
-
 class NotificationWidget extends StatelessWidget {
   final NotificationEntity notification;
 
@@ -21,8 +20,7 @@ class NotificationWidget extends StatelessWidget {
           context,
           MaterialPageRoute(
               builder: (context) => InvoiceDetailScreen(
-                    invoiceID: notification.orderId as int,
-                    deviceSize: deviceSize,
+      
                   )),
         );
       },

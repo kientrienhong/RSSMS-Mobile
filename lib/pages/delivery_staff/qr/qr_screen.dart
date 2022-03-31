@@ -34,7 +34,7 @@ class _QrScreenState extends State<QrScreen> implements QRInvoiceView {
   }
 
   @override
-   Future<void> scanQR(Size deviceSize) async {
+  Future<void> scanQR(Size deviceSize) async {
     String barcodeScanRes;
     // Platform messages may fail, so we use a try/catch PlatformException.
     try {
@@ -52,29 +52,38 @@ class _QrScreenState extends State<QrScreen> implements QRInvoiceView {
     setState(() {
       qrCode = barcodeScanRes;
     });
-    Users user = Provider.of<Users>(context, listen: false);
-    bool result = await _presenter?.loadRequest(user.idToken!, qrCode) as bool;
-    bool isDone = false;
-    Invoice invoice = Provider.of<Invoice>(context, listen: false);
-    if (_presenter!.model.invoice!.orderId!.isNotEmpty) {
-      result = await _presenter?.loadInvoice(
-          user.idToken!, _presenter!.model.invoice!.orderId!) as bool;
-      isDone = true;
-    }
-    if (result) {
-      invoice.setInvoice(invoice: _presenter!.model.invoice!);
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => QRInvoiceDetailsScreen(
-            isScanQR: true,
-            isDone: isDone,
+    try {
+      Users user = Provider.of<Users>(context, listen: false);
+      bool result =
+          await _presenter?.loadRequest(user.idToken!, qrCode) as bool;
+      bool isDone = false;
+      Invoice invoice = Provider.of<Invoice>(context, listen: false);
+      if (_presenter!.model.invoice!.orderId!.isNotEmpty) {
+        result = await _presenter?.loadInvoice(
+            user.idToken!, _presenter!.model.invoice!.orderId!) as bool;
+        isDone = true;
+      }
+      if (result) {
+        invoice.setInvoice(invoice: _presenter!.model.invoice!);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => QRInvoiceDetailsScreen(
+              isScanQR: true,
+              isDone: isDone,
+            ),
           ),
-        ),
-      );
-    } else {
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text("Không thể tìm thấy đơn hàng"),
+        ));
+      }
+    } catch (e) {
+      print(e);
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("Cannot find invoice"),
+        content: Text("Đã có lỗi xảy ra, vui lòng thử lại sau"),
+       backgroundColor: CustomColor.red 
       ));
     }
   }
@@ -82,7 +91,7 @@ class _QrScreenState extends State<QrScreen> implements QRInvoiceView {
   @override
   Widget build(BuildContext context) {
     var deviceSize = MediaQuery.of(context).size;
-    
+
     return Scaffold(
       backgroundColor: CustomColor.white,
       body: SingleChildScrollView(

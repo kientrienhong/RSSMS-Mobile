@@ -257,7 +257,7 @@ class _FormSignUpState extends State<FormSignUp> implements SignUpView {
               labelText: 'Họ và tên',
               isDisable: false,
               focusNode: _focusNodeName,
-              nextNode: _focusNodeEmail,
+              nextNode: _focusNodeBirthDate,
               validator: Validator.checkFullname,
               controller: _model.controllerName,
             ),

@@ -132,6 +132,7 @@ class _CustomOutLineInputState extends State<CustomOutLineInputDateTime> {
                   TextFormField(
                     readOnly: true,
                     onTap: () async {
+                   
                       DateTime? date = DateTime(1900);
                       // FocusScope.of(context).requestFocus(FocusNode());
                       date = await showDatePicker(
