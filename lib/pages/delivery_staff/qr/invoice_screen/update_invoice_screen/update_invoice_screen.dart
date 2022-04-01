@@ -28,6 +28,7 @@ import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_scre
 import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_screen/widget/dialog_add_cost.dart';
 import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_screen/widget/dialog_add_service.dart';
 import 'package:rssms/pages/delivery_staff/qr/qr_screen.dart';
+import 'package:rssms/pages/office_staff/my_account/my_account_office.dart';
 import 'package:rssms/presenters/invoice_update_presenter.dart';
 import 'package:rssms/views/invoice_update_view.dart';
 import 'package:rssms/constants/constants.dart' as constant;
@@ -139,18 +140,31 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
             context: context,
             message: 'Trả đơn thành công',
             color: CustomColor.green);
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(
-                builder: (context) => const CustomBottomNavigation(
-                      listIndexStack: [
-                        MyAccountDeliveryScreen(),
-                        DeliveryScreen(),
-                        QrScreen(),
-                        NotificationDeliveryScreen(),
-                      ],
-                      listNavigator: constant.LIST_DELIVERY_BOTTOM_NAVIGATION,
-                    )),
-            (Route<dynamic> route) => false);
+        if (user.roleName == 'Delivery Staff') {
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                  builder: (context) => const CustomBottomNavigation(
+                        listIndexStack: [
+                          MyAccountDeliveryScreen(),
+                          DeliveryScreen(),
+                          QrScreen(),
+                          NotificationDeliveryScreen(),
+                        ],
+                        listNavigator: constant.LIST_DELIVERY_BOTTOM_NAVIGATION,
+                      )),
+              (Route<dynamic> route) => false);
+        } else if (user.roleName == 'Office Staff') {
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                  builder: (context) => const CustomBottomNavigation(
+                        listIndexStack: [
+                          MyAccountOfficeScreen(),
+                          QrScreen(),
+                        ],
+                        listNavigator: constant.LIST_OFFICE_BOTTOM_NAVIGATION,
+                      )),
+              (Route<dynamic> route) => false);
+        }
       }
     } catch (e) {
       print(e);
@@ -167,18 +181,31 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
             context: context,
             message: 'Cập nhật đơn thành công',
             color: CustomColor.green);
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(
-                builder: (context) => const CustomBottomNavigation(
-                      listIndexStack: [
-                        MyAccountDeliveryScreen(),
-                        DeliveryScreen(),
-                        QrScreen(),
-                        NotificationDeliveryScreen(),
-                      ],
-                      listNavigator: constant.LIST_DELIVERY_BOTTOM_NAVIGATION,
-                    )),
-            (Route<dynamic> route) => false);
+        if (user.roleName == 'Delivery Staff') {
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                  builder: (context) => const CustomBottomNavigation(
+                        listIndexStack: [
+                          MyAccountDeliveryScreen(),
+                          DeliveryScreen(),
+                          QrScreen(),
+                          NotificationDeliveryScreen(),
+                        ],
+                        listNavigator: constant.LIST_DELIVERY_BOTTOM_NAVIGATION,
+                      )),
+              (Route<dynamic> route) => false);
+        } else if (user.roleName == 'Office Staff') {
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                  builder: (context) => const CustomBottomNavigation(
+                        listIndexStack: [
+                          MyAccountOfficeScreen(),
+                          QrScreen(),
+                        ],
+                        listNavigator: constant.LIST_OFFICE_BOTTOM_NAVIGATION,
+                      )),
+              (Route<dynamic> route) => false);
+        }
       }
     } catch (e) {
       print(e);
