@@ -49,6 +49,12 @@ class _QrScreenState extends State<QrScreen> implements QRInvoiceView {
     // setState to update our non-existent appearance.
     if (!mounted) return;
 
+    if (barcodeScanRes == '-1') {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Không tìm thấy đơn"),
+      ));
+      return;
+    }
     setState(() {
       qrCode = barcodeScanRes;
     });

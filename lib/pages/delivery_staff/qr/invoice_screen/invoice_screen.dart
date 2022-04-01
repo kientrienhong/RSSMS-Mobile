@@ -143,7 +143,7 @@ class QRInvoiceDetailsScreen extends StatelessWidget {
                                 invoice.setInvoice(invoice: invoiceTemp);
                               }
 
-                              Navigator.push(
+                              Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => UpdateInvoiceScreen(
