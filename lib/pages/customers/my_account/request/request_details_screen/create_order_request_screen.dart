@@ -137,7 +137,6 @@ class _CreateOrderRequestScreenState extends State<CreateOrderRequestScreen>
                                     _model.invoice.deliveryDate),
                                 color: Colors.black,
                                 context: context,
-                                fontWeight: FontWeight.bold,
                                 fontSize: 16),
                           ],
                         ),
@@ -149,16 +148,17 @@ class _CreateOrderRequestScreenState extends State<CreateOrderRequestScreen>
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             CustomText(
-                                text: "Khu giờ lấy hàng:",
+                                text: "Khung giờ lấy hàng:",
                                 color: Colors.black,
                                 context: context,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 17),
                             CustomText(
-                                text: _model.invoice.deliveryTime,
+                                text: _model.invoice.deliveryTime.isEmpty
+                                    ? 'Khách tự vận chuyển'
+                                    : _model.invoice.deliveryTime,
                                 color: Colors.black,
                                 context: context,
-                                fontWeight: FontWeight.bold,
                                 fontSize: 16),
                           ],
                         ),
@@ -180,7 +180,6 @@ class _CreateOrderRequestScreenState extends State<CreateOrderRequestScreen>
                                     _model.invoice.returnDate),
                                 color: Colors.black,
                                 context: context,
-                                fontWeight: FontWeight.bold,
                                 fontSize: 16),
                           ],
                         ),
@@ -204,7 +203,6 @@ class _CreateOrderRequestScreenState extends State<CreateOrderRequestScreen>
                                 color: CustomColor.black,
                                 textAlign: TextAlign.right,
                                 context: context,
-                                fontWeight: FontWeight.bold,
                                 maxLines: 2,
                                 fontSize: 16,
                                 textOverflow: TextOverflow.ellipsis,

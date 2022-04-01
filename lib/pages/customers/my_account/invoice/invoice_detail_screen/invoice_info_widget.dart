@@ -52,7 +52,28 @@ class InvoiceInfoWidget extends StatelessWidget {
                   .substring(0, invoice!.deliveryDate.indexOf("T")),
               color: Colors.black,
               context: context,
+              fontSize: 16),
+        ],
+      ),
+      CustomSizedBox(
+        context: context,
+        height: 24,
+      ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          CustomText(
+              text: "Khung giờ lấy hàng:",
+              color: Colors.black,
+              context: context,
               fontWeight: FontWeight.bold,
+              fontSize: 17),
+          CustomText(
+              text: invoice!.deliveryTime.isEmpty
+                  ? 'Khách tự vận chuyển'
+                  : invoice!.deliveryTime,
+              color: Colors.black,
+              context: context,
               fontSize: 16),
         ],
       ),
@@ -74,7 +95,6 @@ class InvoiceInfoWidget extends StatelessWidget {
                   .substring(0, invoice!.returnDate.indexOf("T")),
               color: Colors.black,
               context: context,
-              fontWeight: FontWeight.bold,
               fontSize: 16),
         ],
       ),
@@ -98,7 +118,6 @@ class InvoiceInfoWidget extends StatelessWidget {
               color: CustomColor.black,
               textAlign: TextAlign.right,
               context: context,
-              fontWeight: FontWeight.bold,
               maxLines: 2,
               fontSize: 16,
               textOverflow: TextOverflow.ellipsis,

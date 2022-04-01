@@ -42,6 +42,10 @@ class _ItemTabState extends State<ItemTab> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        CustomSizedBox(
+          context: context,
+          height: 24,
+        ),
         CustomText(
             text: "Danh sách phụ kiện riêng: ",
             color: Colors.black,

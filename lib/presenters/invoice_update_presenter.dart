@@ -11,6 +11,7 @@ import 'package:rssms/views/invoice_update_view.dart';
 import 'package:rssms/constants/constants.dart';
 import '/models/entity/user.dart';
 import 'dart:developer';
+import 'package:rssms/constants/constants.dart' as constants;
 
 class InvoiceUpdatePresenter {
   late InvoiceUpdateModel _model;
@@ -125,12 +126,17 @@ class InvoiceUpdatePresenter {
       "returnAddress": invoice.addressReturn,
       "totalPrice": price,
       "rejectedReason": "",
-      "additionalFee": _model.isAdditionFee
-          ? double.parse(_model.controllerAdditionFeePrice.text)
-          : 0,
-      "additionalFeeDescription": _model.isAdditionFee
-          ? _model.controllerAdditionFeeDescription.text
-          : '',
+      "orderAdditionalFees": [
+        {
+          "type": constants.ADDITION_FEE_TYPE.takingAdditionFee.index,
+          "description": _model.isAdditionFee
+              ? _model.controllerAdditionFeeDescription.text
+              : '',
+          "price": _model.isAdditionFee
+              ? double.parse(_model.controllerAdditionFeePrice.text)
+              : 0
+        }
+      ],
       "type": invoice.typeOrder,
       "isPaid": _model.getIsPaid,
       "paymentMethod": invoice.paymentMethod,

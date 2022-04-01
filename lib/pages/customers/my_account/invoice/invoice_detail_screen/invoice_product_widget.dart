@@ -59,15 +59,28 @@ class InvoiceProductWidget extends StatelessWidget {
     });
     DateTime deliveryDate = DateTime.parse(invoice!.deliveryDate);
     DateTime returnDate = DateTime.parse(invoice!.returnDate);
-    String additionalDescription = '';
-    double additionalFee = 0;
-    if (invoice!.additionFeeDescription != null) {
-      additionalDescription = invoice!.additionFeeDescription!;
-    }
+    String takingAdditionalDescription = '';
+    double takingAdditionalFee = 0;
+    String returningAdditionalDescription = '';
+    double returningAdditionalFee = 0;
+    String composationDescription = '';
+    double composationFee = 0;
 
-    if (invoice!.additionFee != null) {
-      additionalFee = invoice!.additionFee!;
-    }
+    invoice!.orderAdditionalFees.forEach((e) {
+      if (e.type == constants.ADDITION_FEE_TYPE.compensationFee.index) {
+        composationDescription = e.description;
+        composationFee = e.price;
+      } else if (e.type ==
+          constants.ADDITION_FEE_TYPE.returningAdditionFee.index) {
+        returningAdditionalDescription = e.description;
+        returningAdditionalFee = e.price;
+      } else if (e.type ==
+          constants.ADDITION_FEE_TYPE.takingAdditionFee.index) {
+        takingAdditionalDescription = e.description;
+        takingAdditionalFee = e.price;
+      }
+    });
+
     return Container(
       decoration:
           BoxDecoration(border: Border.all(color: CustomColor.blue, width: 2)),
@@ -297,65 +310,7 @@ class InvoiceProductWidget extends StatelessWidget {
                     fontSize: 16),
               ],
             ),
-            CustomSizedBox(
-              context: context,
-              height: 10,
-            ),
-            Container(
-              color: CustomColor.white,
-              child: const Divider(
-                thickness: 0.6,
-                color: Color(0xFF8D8D8D),
-              ),
-            ),
-            CustomSizedBox(
-              context: context,
-              height: 10,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CustomText(
-                    text: "Tổng cộng (tạm tính): ",
-                    color: Colors.black,
-                    context: context,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15),
-                CustomText(
-                    text: oCcy.format(totalProduct *
-                                (returnDate.difference(deliveryDate).inDays /
-                                        30)
-                                    .ceil() +
-                            totalAccessory) +
-                        " đ",
-                    color: CustomColor.blue,
-                    context: context,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16),
-              ],
-            ),
-            CustomSizedBox(
-              context: context,
-              height: 10,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CustomText(
-                    text: "Chi phí đóng gói: ",
-                    color: Colors.black,
-                    context: context,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15),
-                CustomText(
-                    text: oCcy.format(totalPackaging) + " đ",
-                    color: CustomColor.blue,
-                    context: context,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16),
-              ],
-            ),
-            if (additionalFee > 0)
+            if (takingAdditionalFee > 0)
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 CustomSizedBox(
                   context: context,
@@ -376,49 +331,12 @@ class InvoiceProductWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CustomText(
-                        text: additionalDescription,
+                        text: takingAdditionalDescription,
                         color: CustomColor.black,
                         context: context,
                         fontSize: 16),
                     CustomText(
-                        text: oCcy.format(additionalFee) + " đ",
-                        color: CustomColor.blue,
-                        context: context,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16),
-                  ],
-                ),
-              ]),
-            if (invoice!.returnAdditionFee! > 0)
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                CustomSizedBox(
-                  context: context,
-                  height: 10,
-                ),
-                CustomText(
-                    text: "Chi phí thêm khi trả hàng: ",
-                    color: Colors.black,
-                    context: context,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15),
-                CustomSizedBox(
-                  context: context,
-                  height: 10,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Flexible(
-                      child: CustomText(
-                          text: invoice!.returnAdditionFeeDescription!,
-                          color: CustomColor.black,
-                          context: context,
-                          maxLines: null,
-                          fontSize: 16),
-                    ),
-                    CustomText(
-                        text: oCcy.format(invoice!.returnAdditionFee) + " đ",
+                        text: oCcy.format(takingAdditionalFee) + " đ",
                         color: CustomColor.blue,
                         context: context,
                         fontWeight: FontWeight.bold,
@@ -457,8 +375,7 @@ class InvoiceProductWidget extends StatelessWidget {
                                     .ceil() +
                             totalAccessory +
                             totalPackaging +
-                            invoice!.returnAdditionFee! +
-                            invoice!.additionFee!) +
+                            takingAdditionalFee) +
                         " đ",
                     color: CustomColor.blue,
                     context: context,
@@ -466,7 +383,41 @@ class InvoiceProductWidget extends StatelessWidget {
                     fontSize: 19),
               ],
             ),
-            if (invoice!.compensationFee! > 0)
+            if (returningAdditionalFee > 0)
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                CustomSizedBox(
+                  context: context,
+                  height: 24,
+                ),
+                CustomText(
+                    text: "Chi phí thêm khi trả hàng: ",
+                    color: Colors.black,
+                    context: context,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20),
+                CustomSizedBox(
+                  context: context,
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomText(
+                        text: returningAdditionalDescription,
+                        color: CustomColor.black,
+                        context: context,
+                        fontSize: 16),
+                    CustomText(
+                        text: oCcy.format(returningAdditionalFee) + " đ",
+                        color: CustomColor.blue,
+                        context: context,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16),
+                  ],
+                ),
+              ]),
+            if (composationFee > 0)
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 CustomSizedBox(
                   context: context,
@@ -487,12 +438,12 @@ class InvoiceProductWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CustomText(
-                        text: invoice!.compensationFeeDescription!,
+                        text: composationDescription,
                         color: CustomColor.black,
                         context: context,
                         fontSize: 16),
                     CustomText(
-                        text: oCcy.format(invoice!.compensationFee) + " đ",
+                        text: oCcy.format(composationFee) + " đ",
                         color: CustomColor.blue,
                         context: context,
                         fontWeight: FontWeight.bold,

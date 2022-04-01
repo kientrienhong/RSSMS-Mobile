@@ -11,6 +11,12 @@ enum REQUEST_TYPE {
   returnOrder
 }
 
+enum ADDITION_FEE_TYPE {
+  takingAdditionFee,
+  returningAdditionFee,
+  compensationFee
+}
+
 const List<Map<String, String>> TAB_INVOICE_DETAIL = [
   {"name": "Hóa đơn"},
   {"name": "Đồ đạc"}

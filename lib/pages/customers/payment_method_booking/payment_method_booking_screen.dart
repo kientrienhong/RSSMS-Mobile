@@ -181,7 +181,7 @@ class _PaymentMethodBookingScreenState extends State<PaymentMethodBookingScreen>
                   child: CustomButton(
                       height: 24,
                       text: 'Tạo yêu cầu đặt đơn',
-                      width: deviceSize.width * 1.2 / 3,
+                      width: deviceSize.width * 2 / 3,
                       onPressFunction: () {
                         onClickPayment();
                       },

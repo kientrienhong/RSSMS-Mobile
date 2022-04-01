@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
+import 'package:rssms/models/entity/order_additional_fee.dart';
 
 import 'order_detail.dart';
 
@@ -10,12 +11,6 @@ class Invoice with ChangeNotifier {
   late String customerPhone;
   late String deliveryAddress;
   late String addressReturn;
-  late String? additionFeeDescription;
-  late double? additionFee;
-  late String? returnAdditionFeeDescription;
-  late double? returnAdditionFee;
-  late String? compensationFeeDescription;
-  late double? compensationFee;
   late String? orderId;
   late double totalPrice;
   late String rejectedReason;
@@ -35,10 +30,12 @@ class Invoice with ChangeNotifier {
   late bool isPaid;
   late List<OrderDetail> orderDetails;
   late bool? isOrder;
+  late List<OrderAdditionalFee> orderAdditionalFees;
   Invoice({
     required this.id,
     required this.customerName,
     required this.customerPhone,
+    required this.orderAdditionalFees,
     required this.deliveryAddress,
     required this.addressReturn,
     required this.totalPrice,
@@ -49,12 +46,6 @@ class Invoice with ChangeNotifier {
     required this.deliveryDate,
     this.typeRequest,
     required this.deliveryTime,
-    this.additionFee,
-    this.additionFeeDescription,
-    this.returnAdditionFee,
-    this.returnAdditionFeeDescription,
-    this.compensationFee,
-    this.compensationFeeDescription,
     required this.returnDate,
     required this.returnTime,
     required this.paymentMethod,
@@ -89,15 +80,9 @@ class Invoice with ChangeNotifier {
     durationDays = -1;
     durationMonths = -1;
     status = 0;
-    returnAdditionFee = 0;
-    returnAdditionFeeDescription = '';
-
-    compensationFee = 0;
-    compensationFeeDescription = '';
+    orderAdditionalFees = [];
     isPaid = false;
     orderDetails = [];
-    additionFeeDescription = '';
-    additionFee = 0;
     isOrder = false;
     typeRequest = -1;
   }
@@ -112,12 +97,9 @@ class Invoice with ChangeNotifier {
     String? rejectedReason,
     int? typeOrder,
     bool? isUserDelivery,
-    String? returnAdditionFeeDescription,
-    double? returnAdditionFee,
-    String? compensationFeeDescription,
-    double? compensationFee,
     String? deliveryDate,
     String? deliveryTime,
+    List<OrderAdditionalFee>? orderAdditionalFees,
     String? returnDate,
     String? returnTime,
     int? typeRequest,
@@ -131,16 +113,12 @@ class Invoice with ChangeNotifier {
     bool? isPaid,
     List<OrderDetail>? orderDetails,
     List<Map<String, dynamic>>? listRequests,
-    String? additionFeeDescription,
-    double? additionFee,
     bool? isOrder,
   }) {
     return Invoice(
       isOrder: isOrder ?? this.isOrder,
       id: id ?? this.id,
-      additionFee: additionFee ?? this.additionFee,
-      additionFeeDescription:
-          additionFeeDescription ?? this.additionFeeDescription,
+      orderAdditionalFees: orderAdditionalFees ?? this.orderAdditionalFees,
       name: name ?? this.name,
       customerName: customerName ?? this.customerName,
       customerPhone: customerPhone ?? this.customerPhone,
@@ -150,12 +128,6 @@ class Invoice with ChangeNotifier {
       rejectedReason: rejectedReason ?? this.rejectedReason,
       typeOrder: typeOrder ?? this.typeOrder,
       requestId: requestId ?? this.requestId,
-      returnAdditionFee: returnAdditionFee ?? this.returnAdditionFee,
-      returnAdditionFeeDescription:
-          returnAdditionFeeDescription ?? this.returnAdditionFeeDescription,
-      compensationFee: compensationFee ?? this.compensationFee,
-      compensationFeeDescription:
-          compensationFeeDescription ?? this.compensationFeeDescription,
       orderId: orderId ?? this.orderId,
       typeRequest: typeRequest ?? this.typeRequest,
       isUserDelivery: isUserDelivery ?? this.isUserDelivery,
@@ -189,9 +161,8 @@ class Invoice with ChangeNotifier {
       'returnDate': returnDate,
       'returnTime': returnTime,
       'requestId': requestId,
-      "additionalFee": additionFee?.toDouble() ?? 0,
+      'orderAdditionalFees': orderAdditionalFees.map((x) => x.toMap()).toList(),
       'orderId': orderId,
-      "additionalFeeDescription": additionFeeDescription,
       'Name': name,
       'paymentMethod': paymentMethod,
       'durationDays': durationDays,
@@ -219,18 +190,12 @@ class Invoice with ChangeNotifier {
       name: map['name'] ?? '',
       customerName: map['customerName'] ?? '',
       customerPhone: map['customerPhone'] ?? '',
-      additionFee: map['additionalFee']?.toDouble() ?? 0,
-      additionFeeDescription: map['additionalFeeDescription'] ?? '',
       deliveryAddress: map['deliveryAddress'] ?? '',
       orderId: map['id'] ?? '',
       isOrder: true,
       addressReturn: map['addressReturn'] ?? '',
       totalPrice: map['totalPrice']?.toDouble() ?? 0,
       requestId: requestIdFound,
-      returnAdditionFee: 0,
-      returnAdditionFeeDescription: '',
-      compensationFee: map['compensationFee']?.toDouble() ?? 0,
-      compensationFeeDescription: map['compensationDescription'] ?? '',
       rejectedReason: map['rejectedReason'] ?? '',
       typeOrder: map['type']?.toInt() ?? 0,
       isUserDelivery: map['isUserDelivery'] ?? false,
@@ -244,6 +209,9 @@ class Invoice with ChangeNotifier {
       durationMonths: map['durationMonths']?.toInt() ?? 0,
       status: map['status']?.toInt() ?? 0,
       isPaid: map['isPaid'] ?? false,
+      orderAdditionalFees: List<OrderAdditionalFee>.from(
+          map['orderAdditionalFees']
+              ?.map((x) => OrderAdditionalFee.fromMap(x))),
       orderDetails: map['orderDetails'] != null
           ? List<OrderDetail>.from(
               map['orderDetails']?.map((x) => OrderDetail.fromMap(x)))
@@ -258,16 +226,11 @@ class Invoice with ChangeNotifier {
       customerName: map['customerName'] ?? '',
       customerPhone: map['customerPhone'] ?? '',
       deliveryAddress: map['deliveryAddress'] ?? '',
-      additionFee: 0,
       isOrder: false,
-      additionFeeDescription: '',
       addressReturn: map['returnAddress'] ?? '',
       totalPrice: map['totalPrice']?.toInt() ?? 0,
       rejectedReason: map['rejectedReason'] ?? '',
-      returnAdditionFee: 0,
-      returnAdditionFeeDescription: '',
-      compensationFee: 0,
-      compensationFeeDescription: '',
+      orderAdditionalFees: [],
       orderId: map['orderId'] ?? '',
       typeOrder: map['typeOrder']?.toInt() ?? 0,
       isUserDelivery: map['isUserDelivery'] ?? false,
@@ -312,13 +275,8 @@ class Invoice with ChangeNotifier {
     status = invoice.status;
     isPaid = invoice.isPaid;
     orderDetails = invoice.orderDetails;
-    additionFee = invoice.additionFee;
     isOrder = invoice.isOrder;
-    additionFeeDescription = invoice.additionFeeDescription;
-    returnAdditionFee = invoice.returnAdditionFee;
-    returnAdditionFeeDescription = invoice.returnAdditionFeeDescription;
-    compensationFee = invoice.compensationFee;
-    compensationFeeDescription = invoice.compensationFeeDescription;
+    orderAdditionalFees = invoice.orderAdditionalFees;
     notifyListeners();
   }
 

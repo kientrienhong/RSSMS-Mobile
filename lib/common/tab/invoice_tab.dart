@@ -25,6 +25,10 @@ class InvoiceTab extends StatelessWidget {
 
     return Column(
       children: [
+        CustomSizedBox(
+          context: context,
+          height: 24,
+        ),
         CustomText(
             text: "Chi tiết đơn hàng",
             color: Colors.black,
@@ -33,7 +37,7 @@ class InvoiceTab extends StatelessWidget {
             fontSize: 25),
         CustomSizedBox(
           context: context,
-          height: 32,
+          height: 48,
         ),
         InvoiceInfoWidget(deviceSize: deviceSize, invoice: invoice),
         SizedBox(
