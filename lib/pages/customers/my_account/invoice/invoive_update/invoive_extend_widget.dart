@@ -470,7 +470,7 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
 
         CustomText(
             text:
-                'Lưu ý: Yêu cầu gia hạn hơn, chúng tôi chỉ nhận thanh toán chuyển khoản',
+                'Lưu ý: Yêu cầu gia hạn đơn, chúng tôi chỉ nhận thanh toán chuyển khoản',
             color: CustomColor.blue,
             context: context,
             maxLines: 2,

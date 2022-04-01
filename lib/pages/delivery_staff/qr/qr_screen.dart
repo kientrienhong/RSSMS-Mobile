@@ -106,7 +106,7 @@ class _QrScreenState extends State<QrScreen> implements QRInvoiceView {
               child: CustomButton(
                   height: 24,
                   isLoading: false,
-                  text: 'Quet QR',
+                  text: 'Quét QR',
                   textColor: CustomColor.white,
                   onPressFunction: () {
                     scanQR(deviceSize);

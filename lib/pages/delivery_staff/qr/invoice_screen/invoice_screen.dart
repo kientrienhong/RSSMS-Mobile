@@ -134,7 +134,7 @@ class QRInvoiceDetailsScreen extends StatelessWidget {
                         child: CustomButton(
                             height: 24,
                             isLoading: false,
-                            text: isDone ? 'Trả đơn' : 'Cập nhật đơn',
+                            text: isDone ? 'Trả đơn' : 'Tạo đơn',
                             textColor: CustomColor.white,
                             onPressFunction: () {
                               if (isDone) {
@@ -156,27 +156,6 @@ class QRInvoiceDetailsScreen extends StatelessWidget {
                             buttonColor: CustomColor.blue,
                             borderRadius: 6),
                       )
-                    // else if (invoice.status == constants.DELIVERIED_RETURN)
-                    //   Center(
-                    //     child: CustomButton(
-                    //         height: 24,
-                    //         isLoading: false,
-                    //         text: 'Trả đơn',
-                    //         textColor: CustomColor.white,
-                    //         onPressFunction: () {
-                    //           Navigator.push(
-                    //             context,
-                    //             MaterialPageRoute(
-                    //                 builder: (context) => UpdateInvoiceScreen(
-                    //                       isView: true,
-                    //                       isScanQR: true,
-                    //                     )),
-                    //           );
-                    //         },
-                    //         width: deviceSize.width / 2.5,
-                    //         buttonColor: CustomColor.blue,
-                    //         borderRadius: 6),
-                    //   )
                   ],
                 ),
               ),

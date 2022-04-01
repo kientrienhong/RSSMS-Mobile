@@ -373,7 +373,7 @@ class _ProfileScreenState extends State<FormProfileScreen>
                         child: CustomButton(
                             height: 24,
                             isLoading: _model.isLoadingUpdateProfile,
-                            text: 'Cập Nhật',
+                            text: 'Cập nhật',
                             width: widget.deviceSize.width / 3,
                             textColor: CustomColor.white,
                             onPressFunction: () {
@@ -477,7 +477,7 @@ class _ProfileScreenState extends State<FormProfileScreen>
                       child: CustomButton(
                           height: 24,
                           isLoading: _model.isLoadingChangePassword,
-                          text: 'Cập Nhật',
+                          text: 'Cập nhật',
                           width: widget.deviceSize.width / 3,
                           textColor: CustomColor.white,
                           onPressFunction: () {

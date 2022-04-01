@@ -66,7 +66,7 @@ class _PaymentMethodBookingScreenState extends State<PaymentMethodBookingScreen>
               orderBooking: OrderBooking.empty(TypeOrder.doorToDoor));
           CustomSnackBar.buildErrorSnackbar(
               context: context,
-              message: 'Đặt đơn hàng thành công',
+              message: 'Tạo yêu cầu đặt đơn hàng thành công',
               color: CustomColor.green);
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
@@ -100,7 +100,7 @@ class _PaymentMethodBookingScreenState extends State<PaymentMethodBookingScreen>
                 orderBooking: OrderBooking.empty(TypeOrder.doorToDoor));
             CustomSnackBar.buildErrorSnackbar(
                 context: context,
-                message: 'Đặt đơn hàng thành công',
+                message: 'Tạo yêu cầu đặt đơn hàng thành công',
                 color: CustomColor.green);
             Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(
@@ -180,7 +180,7 @@ class _PaymentMethodBookingScreenState extends State<PaymentMethodBookingScreen>
                 child: Center(
                   child: CustomButton(
                       height: 24,
-                      text: 'Tiếp theo',
+                      text: 'Tạo yêu cầu đặt đơn',
                       width: deviceSize.width * 1.2 / 3,
                       onPressFunction: () {
                         onClickPayment();

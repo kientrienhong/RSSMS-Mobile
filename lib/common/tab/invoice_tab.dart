@@ -51,7 +51,7 @@ class InvoiceTab extends StatelessWidget {
                 height: 16,
               ),
               CustomText(
-                  text: "QR code",
+                  text: "Mã QR",
                   color: CustomColor.blue,
                   context: context,
                   textAlign: TextAlign.right,

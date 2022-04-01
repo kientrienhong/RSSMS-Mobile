@@ -555,7 +555,7 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                       CustomButton(
                           height: 24,
                           isLoading: _model.isLoadingUpdateInvoice,
-                          text: widget.isDone ? "Trả đơn" : 'Cập nhật đơn',
+                          text: widget.isDone ? "Trả đơn" : 'Tạo đơn',
                           textColor: CustomColor.white,
                           onPressFunction: () {
                             Invoice invoice =
