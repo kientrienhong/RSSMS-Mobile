@@ -19,7 +19,7 @@ class Users with ChangeNotifier {
   double? expiresIn;
   String? tokenType;
   String? userId;
-  int? storageId;
+  String? storageId;
   String? name;
   String? email;
   String? address;
@@ -66,7 +66,7 @@ class Users with ChangeNotifier {
     expiresIn = -1;
     tokenType = '';
     userId = '';
-    storageId = -1;
+    storageId = '';
     name = '';
     email = '';
     address = '';
@@ -86,7 +86,7 @@ class Users with ChangeNotifier {
       double? expiresIn,
       String? tokenType,
       String? userId,
-      int? storageId,
+      String? storageId,
       String? name,
       String? email,
       String? address,
@@ -148,7 +148,7 @@ class Users with ChangeNotifier {
       expiresIn: map['expiresIn']?.toDouble() ?? 0.0,
       tokenType: map['tokenType'] ?? '',
       userId: map['userId'] ?? '',
-      storageId: map['storageId']?.toInt() ?? 0,
+      storageId: map['storageId'] ?? '',
       name: map['name'] ?? '',
       email: map['email'] ?? '',
       address: map['address'] ?? '',
