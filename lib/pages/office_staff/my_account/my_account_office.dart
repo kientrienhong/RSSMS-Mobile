@@ -13,7 +13,7 @@ class MyAccountOfficeScreen extends StatefulWidget {
 class _ProfileScreenState extends State<MyAccountOfficeScreen>
     with SingleTickerProviderStateMixin {
   ScrollController? _scrollController;
-   TabController? _tabController;
+  TabController? _tabController;
   @override
   void initState() {
     _scrollController = ScrollController();
@@ -66,7 +66,7 @@ class _ProfileScreenState extends State<MyAccountOfficeScreen>
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return <Widget>[
             SliverAppBar(
-              title: const Text("My Account"),
+              title: const Text("Thông tin cá nhân"),
               actions: <Widget>[
                 GestureDetector(
                     onTap: () => {onPressLogout(context)},

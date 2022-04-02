@@ -7,6 +7,7 @@ import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/order_detail.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/invoice_info_widget.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/invoice_product_widget.dart';
+import 'package:rssms/constants/constants.dart' as constants;
 
 class NewInvoiceScreen extends StatelessWidget {
   Invoice invoice;
@@ -26,24 +27,26 @@ class NewInvoiceScreen extends StatelessWidget {
         orderDetails[indexFound].amount += element.amount;
       }
 
-      element.listAdditionService!.forEach((ele) {
-        int indexFound1 =
-            orderDetails.indexWhere((ele1) => ele1.productId == ele.id);
-        if (indexFound1 == -1) {
-          orderDetails.add(OrderDetail(
-              id: '0',
-              productId: ele.id,
-              productName: ele.name,
-              price: ele.price,
-              amount: ele.quantity!,
-              serviceImageUrl: ele.imageUrl,
-              productType: ele.type,
-              note: '',
-              images: []));
-        } else {
-          orderDetails[indexFound1].amount += ele.quantity!;
-        }
-      });
+      if (element.productType != constants.ACCESSORY) {
+        element.listAdditionService!.forEach((ele) {
+          int indexFound1 =
+              orderDetails.indexWhere((ele1) => ele1.productId == ele.id);
+          if (indexFound1 == -1) {
+            orderDetails.add(OrderDetail(
+                id: '0',
+                productId: ele.id,
+                productName: ele.name,
+                price: ele.price,
+                amount: ele.quantity!,
+                serviceImageUrl: ele.imageUrl,
+                productType: ele.type,
+                note: '',
+                images: []));
+          } else {
+            orderDetails[indexFound1].amount += ele.quantity!;
+          }
+        });
+      }
     });
 
     return invoiceTemp.copyWith(orderDetails: orderDetails);

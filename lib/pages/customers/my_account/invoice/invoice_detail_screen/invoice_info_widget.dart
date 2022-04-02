@@ -3,6 +3,7 @@ import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
+import 'package:rssms/helpers/format_date.dart';
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/pages/time_line/time_line_screen.dart';
 import 'package:rssms/constants/constants.dart';
@@ -48,11 +49,31 @@ class InvoiceInfoWidget extends StatelessWidget {
               fontWeight: FontWeight.bold,
               fontSize: 17),
           CustomText(
-              text: invoice!.deliveryDate
-                  .substring(0, invoice!.deliveryDate.indexOf("T")),
+              text: FormatDate.formatToVNDay(invoice!.deliveryDate),
+              color: Colors.black,
+              context: context,
+              fontSize: 16),
+        ],
+      ),
+      CustomSizedBox(
+        context: context,
+        height: 24,
+      ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          CustomText(
+              text: "Khung giờ lấy hàng:",
               color: Colors.black,
               context: context,
               fontWeight: FontWeight.bold,
+              fontSize: 17),
+          CustomText(
+              text: invoice!.deliveryTime.isEmpty
+                  ? 'Khách tự vận chuyển'
+                  : invoice!.deliveryTime,
+              color: Colors.black,
+              context: context,
               fontSize: 16),
         ],
       ),
@@ -70,11 +91,9 @@ class InvoiceInfoWidget extends StatelessWidget {
               fontWeight: FontWeight.bold,
               fontSize: 17),
           CustomText(
-              text: invoice!.returnDate
-                  .substring(0, invoice!.returnDate.indexOf("T")),
+              text: FormatDate.formatToVNDay(invoice!.returnDate),
               color: Colors.black,
               context: context,
-              fontWeight: FontWeight.bold,
               fontSize: 16),
         ],
       ),
@@ -98,7 +117,6 @@ class InvoiceInfoWidget extends StatelessWidget {
               color: CustomColor.black,
               textAlign: TextAlign.right,
               context: context,
-              fontWeight: FontWeight.bold,
               maxLines: 2,
               fontSize: 16,
               textOverflow: TextOverflow.ellipsis,

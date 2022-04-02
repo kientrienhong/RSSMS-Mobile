@@ -26,7 +26,7 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
   late BookingPopUpDoorToDoorModel _model;
 
   final oCcy = NumberFormat("#,##0", "en_US");
-  
+
   @override
   void initState() {
     super.initState();
@@ -404,15 +404,6 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
                   context: context,
                   height: 8,
                 ),
-                buildInfo(
-                    'Dịch vụ hỗ trợ: ',
-                    totalEachPart(
-                        orderBooking.productOrder!['service']!, 'services'),
-                    CustomColor.black),
-                CustomSizedBox(
-                  context: context,
-                  height: 8,
-                ),
                 Container(
                   width: double.infinity,
                   height: 1,
@@ -436,8 +427,8 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
                         text: 'Tiếp theo',
                         width: deviceSize.width * 1.2 / 3,
                         onPressFunction: () {
-                          
-                          if (_formKey.currentState!.validate() || orderBooking.currentSelectTime != -1) {
+                          if (_formKey.currentState!.validate() ||
+                              orderBooking.currentSelectTime != -1) {
                             OrderBooking orderBooking =
                                 Provider.of<OrderBooking>(context,
                                     listen: false);
@@ -451,9 +442,7 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
                                         const InputInformation(
                                           isSelfStorageOrder: false,
                                         )));
-                          }else{
-
-                          }
+                          } else {}
                         },
                         isLoading: false,
                         textColor: CustomColor.white,

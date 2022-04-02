@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rssms/common/custom_sizebox.dart';
+import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/common/image_widget.dart';
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/order_detail.dart';
@@ -41,12 +42,33 @@ class _ItemTabState extends State<ItemTab> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // CustomText(
-        //     text: "Hình ảnh:",
-        //     color: Colors.black,
-        //     context: context,
-        //     fontWeight: FontWeight.bold,
-        //     fontSize: 17),
+        CustomSizedBox(
+          context: context,
+          height: 24,
+        ),
+        CustomText(
+            text: "Danh sách phụ kiện riêng: ",
+            color: Colors.black,
+            context: context,
+            fontWeight: FontWeight.bold,
+            fontSize: 17),
+        CustomSizedBox(
+          context: context,
+          height: 8,
+        ),
+        Column(
+          children: mapSeperateAdditionWidget(widget.invoice!.orderDetails),
+        ),
+        CustomSizedBox(
+          context: context,
+          height: 8,
+        ),
+        CustomText(
+            text: "Hình ảnh đồ đạc được lưu kho: ",
+            color: Colors.black,
+            context: context,
+            fontWeight: FontWeight.bold,
+            fontSize: 17),
         CustomSizedBox(
           context: context,
           height: 8,

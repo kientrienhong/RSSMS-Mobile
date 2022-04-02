@@ -262,7 +262,7 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
                       listNavigator: constant.LIST_DELIVERY_BOTTOM_NAVIGATION,
                     )),
           );
-        } else if (user.roleName == 'Office staff') {
+        } else if (user.roleName == 'Office Staff') {
           Navigator.push(
             context,
             MaterialPageRoute(

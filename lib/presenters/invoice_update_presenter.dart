@@ -5,12 +5,14 @@ import 'package:rssms/api/api_services.dart';
 import 'package:rssms/helpers/firebase_storage_helper.dart';
 import 'package:rssms/models/entity/imageEntity.dart';
 import 'package:rssms/models/entity/invoice.dart';
+import 'package:rssms/models/entity/order_additional_fee.dart';
 import 'package:rssms/models/entity/order_detail.dart';
 import 'package:rssms/models/invoice_update_model.dart';
 import 'package:rssms/views/invoice_update_view.dart';
 import 'package:rssms/constants/constants.dart';
 import '/models/entity/user.dart';
 import 'dart:developer';
+import 'package:rssms/constants/constants.dart' as constants;
 
 class InvoiceUpdatePresenter {
   late InvoiceUpdateModel _model;
@@ -125,12 +127,17 @@ class InvoiceUpdatePresenter {
       "returnAddress": invoice.addressReturn,
       "totalPrice": price,
       "rejectedReason": "",
-      "additionalFee": _model.isAdditionFee
-          ? double.parse(_model.controllerAdditionFeePrice.text)
-          : 0,
-      "additionalFeeDescription": _model.isAdditionFee
-          ? _model.controllerAdditionFeeDescription.text
-          : '',
+      "orderAdditionalFees": [
+        {
+          "type": constants.ADDITION_FEE_TYPE.takingAdditionFee.index,
+          "description": _model.isAdditionFee
+              ? _model.controllerAdditionFeeDescription.text
+              : '',
+          "price": _model.isAdditionFee
+              ? double.parse(_model.controllerAdditionFeePrice.text)
+              : 0
+        }
+      ],
       "type": invoice.typeOrder,
       "isPaid": _model.getIsPaid,
       "paymentMethod": invoice.paymentMethod,
@@ -145,18 +152,31 @@ class InvoiceUpdatePresenter {
   }
 
   Map<String, dynamic> formatDateDoneOrder(Invoice invoice) {
+    List<OrderAdditionalFee>? listOrderAdditionFee;
+
+    if (model.isAdditionFee || model.isCompensation) {
+      listOrderAdditionFee = [];
+    }
+
+    if (model.isAdditionFee) {
+      listOrderAdditionFee!.add(OrderAdditionalFee(
+          type: constants.ADDITION_FEE_TYPE.returningAdditionFee.index,
+          description: model.controllerAdditionFeeDescription.text,
+          price: double.parse(model.controllerAdditionFeePrice.text)));
+    }
+
+    if (model.isCompensation) {
+      listOrderAdditionFee!.add(OrderAdditionalFee(
+          type: constants.ADDITION_FEE_TYPE.compensationFee.index,
+          description: model.controllerCompensationFeeDescription.text,
+          price: double.parse(model.controllerCompensationFeePrice.text)));
+    }
+
     Map<String, dynamic> result = {
       "orderId": invoice.id,
       "requestId": invoice.requestId,
-      "compensationFee": _model.controllerCompensationFeePrice.text.isEmpty
-          ? 0
-          : double.parse(_model.controllerCompensationFeePrice.text),
-      "compensationDescription":
-          _model.controllerCompensationFeeDescription.text,
-      "additionalFeeDescription": _model.controllerAdditionFeeDescription.text,
-      "additionalFee": _model.controllerAdditionFeePrice.text.isEmpty
-          ? 0
-          : double.parse(_model.controllerAdditionFeePrice.text)
+      "orderAdditionalFees":
+          listOrderAdditionFee?.map((e) => e.toMap()).toList()
     };
 
     return result;
@@ -200,9 +220,9 @@ class InvoiceUpdatePresenter {
   Future<bool?> doneOrder(Users user, Invoice invoice) async {
     try {
       view.updateLoadingUpdate();
+      final dataRequest = formatDateDoneOrder(invoice);
 
-      var response =
-          await model.doneOrder(formatDateDoneOrder(invoice), user.idToken!);
+      var response = await model.doneOrder(dataRequest, user.idToken!);
       if (response.statusCode == 200) {
         return true;
       }

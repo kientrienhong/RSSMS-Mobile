@@ -12,6 +12,7 @@ import 'package:rssms/common/image_widget.dart';
 import 'package:rssms/constants/constants.dart';
 import 'package:rssms/helpers/validator.dart';
 import 'package:rssms/models/entity/invoice.dart';
+import 'package:rssms/models/entity/order_additional_fee.dart';
 import 'package:rssms/models/entity/order_detail.dart';
 import 'package:rssms/models/entity/product.dart';
 import 'package:rssms/models/entity/user.dart';
@@ -28,6 +29,7 @@ import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_scre
 import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_screen/widget/dialog_add_cost.dart';
 import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_screen/widget/dialog_add_service.dart';
 import 'package:rssms/pages/delivery_staff/qr/qr_screen.dart';
+import 'package:rssms/pages/office_staff/my_account/my_account_office.dart';
 import 'package:rssms/presenters/invoice_update_presenter.dart';
 import 'package:rssms/views/invoice_update_view.dart';
 import 'package:rssms/constants/constants.dart' as constant;
@@ -139,18 +141,31 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
             context: context,
             message: 'Trả đơn thành công',
             color: CustomColor.green);
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(
-                builder: (context) => const CustomBottomNavigation(
-                      listIndexStack: [
-                        MyAccountDeliveryScreen(),
-                        DeliveryScreen(),
-                        QrScreen(),
-                        NotificationDeliveryScreen(),
-                      ],
-                      listNavigator: constant.LIST_DELIVERY_BOTTOM_NAVIGATION,
-                    )),
-            (Route<dynamic> route) => false);
+        if (user.roleName == 'Delivery Staff') {
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                  builder: (context) => const CustomBottomNavigation(
+                        listIndexStack: [
+                          MyAccountDeliveryScreen(),
+                          DeliveryScreen(),
+                          QrScreen(),
+                          NotificationDeliveryScreen(),
+                        ],
+                        listNavigator: constant.LIST_DELIVERY_BOTTOM_NAVIGATION,
+                      )),
+              (Route<dynamic> route) => false);
+        } else if (user.roleName == 'Office Staff') {
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                  builder: (context) => const CustomBottomNavigation(
+                        listIndexStack: [
+                          MyAccountOfficeScreen(),
+                          QrScreen(),
+                        ],
+                        listNavigator: constant.LIST_OFFICE_BOTTOM_NAVIGATION,
+                      )),
+              (Route<dynamic> route) => false);
+        }
       }
     } catch (e) {
       print(e);
@@ -165,20 +180,33 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
       if (response == true) {
         CustomSnackBar.buildErrorSnackbar(
             context: context,
-            message: 'Cập nhật đơn thành công',
+            message: 'Tạo đơn thành công',
             color: CustomColor.green);
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(
-                builder: (context) => const CustomBottomNavigation(
-                      listIndexStack: [
-                        MyAccountDeliveryScreen(),
-                        DeliveryScreen(),
-                        QrScreen(),
-                        NotificationDeliveryScreen(),
-                      ],
-                      listNavigator: constant.LIST_DELIVERY_BOTTOM_NAVIGATION,
-                    )),
-            (Route<dynamic> route) => false);
+        if (user.roleName == 'Delivery Staff') {
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                  builder: (context) => const CustomBottomNavigation(
+                        listIndexStack: [
+                          MyAccountDeliveryScreen(),
+                          DeliveryScreen(),
+                          QrScreen(),
+                          NotificationDeliveryScreen(),
+                        ],
+                        listNavigator: constant.LIST_DELIVERY_BOTTOM_NAVIGATION,
+                      )),
+              (Route<dynamic> route) => false);
+        } else if (user.roleName == 'Office Staff') {
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                  builder: (context) => const CustomBottomNavigation(
+                        listIndexStack: [
+                          MyAccountOfficeScreen(),
+                          QrScreen(),
+                        ],
+                        listNavigator: constant.LIST_OFFICE_BOTTOM_NAVIGATION,
+                      )),
+              (Route<dynamic> route) => false);
+        }
       }
     } catch (e) {
       print(e);
@@ -475,28 +503,30 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                   context: context,
                   height: 16,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    CustomText(
-                      text: "Bồi thường",
-                      color: CustomColor.black,
-                      context: context,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    Checkbox(
-                        fillColor: MaterialStateProperty.all(CustomColor.blue),
-                        value: _model.isCompensation,
-                        onChanged: widget.isView == false
-                            ? (value) {
-                                setState(() {
-                                  _model.isCompensation = value;
-                                });
-                              }
-                            : (val) => {})
-                  ],
-                ),
+                if (widget.isDone)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CustomText(
+                        text: "Bồi thường",
+                        color: CustomColor.black,
+                        context: context,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      Checkbox(
+                          fillColor:
+                              MaterialStateProperty.all(CustomColor.blue),
+                          value: _model.isCompensation,
+                          onChanged: widget.isView == false
+                              ? (value) {
+                                  setState(() {
+                                    _model.isCompensation = value;
+                                  });
+                                }
+                              : (val) => {})
+                    ],
+                  ),
                 if (_model.isCompensation)
                   Column(
                     children: [
@@ -555,7 +585,7 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                       CustomButton(
                           height: 24,
                           isLoading: _model.isLoadingUpdateInvoice,
-                          text: widget.isDone ? "Trả đơn" : 'Cập nhật đơn',
+                          text: widget.isDone ? "Trả đơn" : 'Tạo đơn',
                           textColor: CustomColor.white,
                           onPressFunction: () {
                             Invoice invoice =
@@ -606,31 +636,44 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                             Invoice invoice =
                                 Provider.of<Invoice>(context, listen: false);
                             if (_model.isAdditionFee && !widget.isDone) {
+                              final listTemp = [...invoice.orderAdditionalFees];
+                              listTemp.add(OrderAdditionalFee(
+                                  type: constant.ADDITION_FEE_TYPE
+                                      .takingAdditionFee.index,
+                                  description: _model
+                                      .controllerAdditionFeeDescription.text,
+                                  price: double.parse(
+                                      _model.controllerAdditionFeePrice.text)));
                               invoice.setInvoice(
                                   invoice: invoice.copyWith(
-                                      additionFee: double.parse(_model
-                                          .controllerAdditionFeePrice.text),
-                                      additionFeeDescription: _model
-                                          .controllerAdditionFeeDescription
-                                          .text));
+                                      orderAdditionalFees: listTemp));
                             } else if (_model.isAdditionFee && widget.isDone) {
+                              final listTemp = [...invoice.orderAdditionalFees];
+                              listTemp.add(OrderAdditionalFee(
+                                  type: constant.ADDITION_FEE_TYPE
+                                      .returningAdditionFee.index,
+                                  description: _model
+                                      .controllerAdditionFeeDescription.text,
+                                  price: double.parse(
+                                      _model.controllerAdditionFeePrice.text)));
                               invoice.setInvoice(
                                   invoice: invoice.copyWith(
-                                      returnAdditionFee: double.parse(_model
-                                          .controllerAdditionFeePrice.text),
-                                      returnAdditionFeeDescription: _model
-                                          .controllerAdditionFeeDescription
-                                          .text));
+                                      orderAdditionalFees: listTemp));
                             }
 
                             if (_model.isCompensation) {
+                              final listTemp = [...invoice.orderAdditionalFees];
+                              listTemp.add(OrderAdditionalFee(
+                                  type: constant
+                                      .ADDITION_FEE_TYPE.compensationFee.index,
+                                  description: _model
+                                      .controllerCompensationFeeDescription
+                                      .text,
+                                  price: double.parse(_model
+                                      .controllerCompensationFeePrice.text)));
                               invoice.setInvoice(
                                   invoice: invoice.copyWith(
-                                      compensationFee: double.parse(_model
-                                          .controllerCompensationFeePrice.text),
-                                      compensationFeeDescription: _model
-                                          .controllerCompensationFeeDescription
-                                          .text));
+                                      orderAdditionalFees: listTemp));
                             }
                             Navigator.push(
                                 context,

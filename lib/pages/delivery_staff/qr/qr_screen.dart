@@ -49,6 +49,12 @@ class _QrScreenState extends State<QrScreen> implements QRInvoiceView {
     // setState to update our non-existent appearance.
     if (!mounted) return;
 
+    if (barcodeScanRes == '-1') {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Không tìm thấy đơn"),
+      ));
+      return;
+    }
     setState(() {
       qrCode = barcodeScanRes;
     });
@@ -115,7 +121,7 @@ class _QrScreenState extends State<QrScreen> implements QRInvoiceView {
               child: CustomButton(
                   height: 24,
                   isLoading: false,
-                  text: 'Quet QR',
+                  text: 'Quét QR',
                   textColor: CustomColor.white,
                   onPressFunction: () {
                     scanQR(deviceSize);

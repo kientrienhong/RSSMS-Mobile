@@ -24,22 +24,40 @@ class InvoiceTab extends StatelessWidget {
     Users user = Provider.of<Users>(context);
     return Column(
       children: [
-         CustomText(
-              text: "Chi tiết đơn hàng",
-              color: Colors.black,
-              context: context,
-              fontWeight: FontWeight.bold,
-              fontSize: 25),
-          InvoiceInfoWidget(
-              deviceSize: deviceSize, invoice: invoice),
-          SizedBox(
-            width: deviceSize.width,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CustomSizedBox(
+        CustomSizedBox(
+          context: context,
+          height: 24,
+        ),
+        CustomText(
+            text: "Chi tiết đơn hàng",
+            color: Colors.black,
+            context: context,
+            fontWeight: FontWeight.bold,
+            fontSize: 25),
+        CustomSizedBox(
+          context: context,
+          height: 48,
+        ),
+        InvoiceInfoWidget(deviceSize: deviceSize, invoice: invoice),
+        SizedBox(
+          width: deviceSize.width,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CustomSizedBox(
+                context: context,
+                height: 16,
+              ),
+              InvoiceProductWidget(deviceSize: deviceSize, invoice: invoice),
+              CustomSizedBox(
+                context: context,
+                height: 16,
+              ),
+              CustomText(
+                  text: "Mã QR",
+                  color: CustomColor.blue,
                   context: context,
-                  height: 16,
+                  fontSize: 16,
                 ),
                 InvoiceProductWidget(
                     deviceSize: deviceSize, invoice: invoice),

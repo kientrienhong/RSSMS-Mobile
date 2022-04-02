@@ -110,21 +110,22 @@ class RequestWidget extends StatelessWidget {
                 context: context,
                 height: 8,
               ),
-              Row(
-                children: [
-                  CustomText(
-                      text: 'Khung giờ lấy hàng: ',
-                      color: CustomColor.black,
-                      fontWeight: FontWeight.bold,
-                      context: context,
-                      fontSize: 16),
-                  CustomText(
-                      text: request.deliveryTime,
-                      color: CustomColor.black,
-                      context: context,
-                      fontSize: 16),
-                ],
-              ),
+              if (!request.isCustomerDelivery)
+                Row(
+                  children: [
+                    CustomText(
+                        text: 'Khung giờ lấy hàng: ',
+                        color: CustomColor.black,
+                        fontWeight: FontWeight.bold,
+                        context: context,
+                        fontSize: 16),
+                    CustomText(
+                        text: request.deliveryTime,
+                        color: CustomColor.black,
+                        context: context,
+                        fontSize: 16),
+                  ],
+                ),
             ]);
             break;
           }
