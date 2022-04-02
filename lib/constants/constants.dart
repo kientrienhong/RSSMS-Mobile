@@ -130,30 +130,6 @@ const List<String> LIST_TIME_PICK_UP = [
   "4pm - 6pm",
 ];
 
-const Map<String, dynamic> IMAGE_INVOICE = {
-  "name": "Test 1",
-  'imageEntity': <Map<String, dynamic>>[
-    {
-      "url": "assets/images/image28.png",
-      "name": 'Box 1',
-      'id': 0,
-      'note': 'dsadasdasd'
-    },
-    {
-      "url": "assets/images/image27.png",
-      "name": 'Box 2',
-      'id': 1,
-      'note': 'dsadasdasd'
-    },
-    {
-      "url": "assets/images/image27.png",
-      "name": 'Box 2',
-      'id': 3,
-      'note': 'dsadasdasd'
-    },
-  ]
-};
-
 const Map<int, String> LIST_URL_NOTFICATION = {
   0: 'assets/images/invoice.png',
   2: 'assets/images/invoice.png',
@@ -179,52 +155,7 @@ const List<Map<String, dynamic>> LIST_ADDRESS_PACKAGING_CHOICES = [
   {'name': 'Khác địa chỉ người thuê', 'value': SelectDistrict.different},
 ];
 
-const List<Map<String, dynamic>> LIST_CHOICE_NOTED_BOOKING = [
-  {'name': 'Hàng cồng kềnh', 'url': 'assets/images/unweildy.png'},
-  {'name': 'Hàng nặng', 'url': 'assets/images/weighty.png'},
-  {'name': 'Hàng dễ vỡ', 'url': 'assets/images/vulnerable.png'},
-  {
-    'name': 'Hẻm nhỏ (xe tải không vào được)',
-    'url': 'assets/images/narrow.png'
-  },
-  {
-    'name': 'Nhà nhiều tầng không thang máy',
-    'url': 'assets/images/building.png'
-  },
-  {'name': 'Không chỗ đậu xe', 'url': 'assets/images/noParking.png'},
-];
-
 const List<Map<String, dynamic>> LIST_PAYMENT_METHOD_CHOICES = [
   {'name': 'Thanh toán tiền mặt', 'value': PAYMENT_METHOD.cash},
   {'name': 'Thánh toán thông qua paypal', 'value': PAYMENT_METHOD.paypal},
-];
-
-const List<Map<String, dynamic>> LIST_REQUEST_MODIFY_IMAGE = [
-  {
-    'id': 1,
-    'url': 'assets/images/image28.png',
-    'name': 'Box 2',
-    'note': 'dasd',
-  }
-];
-
-const List<Map<String, dynamic>> LIST_TIME_LINE_MODIFY = [
-  {'id': 1, 'name': 'Đã gửi yêu cầu', 'date': '20/12', 'time': '10:32'},
-  {'id': 1, 'name': 'Đang vận chuyển', 'date': '22/12', 'time': '11:00'},
-  {'id': 1, 'name': 'Bàn giao đồ', 'date': '28/12', 'time': '10:43'},
-];
-
-const List<Map<String, dynamic>> LIST_NOTIFICATION_DELIVERY = [
-  {
-    'id': 1,
-    'content': 'Đơn hàng #1233 của bạn đã được lưu trữ trong kho',
-    'timeRemaining': '10m',
-    'url': 'assets/images/truck1.png'
-  },
-  {
-    'id': 2,
-    'content': 'Đơn hàng #1233 của bạn sắp hết hạn',
-    'timeRemaining': '10m',
-    'url': 'assets/images/dangerCircle.png'
-  },
 ];
