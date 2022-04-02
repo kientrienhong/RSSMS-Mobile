@@ -297,7 +297,7 @@ class _FormSignUpState extends State<FormSignUp> implements SignUpView {
               child: CustomOutLineInputDateTime(
                 deviceSize: widget.deviceSize,
                 labelText: 'Năm sinh',
-                isDisable: true,
+                isDisable: false,
                 focusNode: _focusNodeBirthDate,
                 nextNode: _focusNodeEmail,
                 controller: _model.controllerBirthDate,

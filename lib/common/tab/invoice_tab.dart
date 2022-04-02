@@ -76,7 +76,7 @@ class InvoiceTab extends StatelessWidget {
                   width: double.infinity,
                   child: Center(
                     child: QrImage(
-                      data: invoice!.id,
+                      data: invoice!.requestId!,
                       size: 100,
                       version: QrVersions.auto,
                     ),
@@ -107,26 +107,6 @@ class InvoiceTab extends StatelessWidget {
                       buttonColor: CustomColor.blue,
                       borderRadius: 6),
                 ),
-                if (invoice!.status != 0)
-                  Center(
-                    child: CustomButton(
-                        height: 24,
-                        isLoading: false,
-                        text: 'Gửi yêu cầu',
-                        textColor: CustomColor.white,
-                        onPressFunction: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => SendRequestScreen(
-                                      invoice: invoice,
-                                    )),
-                          );
-                        },
-                        width: deviceSize.width / 2.5,
-                        buttonColor: CustomColor.blue,
-                        borderRadius: 6),
-                  ),
                 if (invoice!.status == 0)
                   Center(
                     child: CustomButton(

@@ -150,6 +150,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> implements InvoiceView {
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
     return RefreshIndicator(
+      
       onRefresh: refresh,
       child: Container(
         color: CustomColor.white,
