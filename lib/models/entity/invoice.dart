@@ -17,6 +17,7 @@ class Invoice with ChangeNotifier {
   String? requestId;
   late int typeOrder;
   late int? typeRequest;
+  late String? customerId;
   late String name;
   late bool isUserDelivery;
   late String deliveryDate;
@@ -40,6 +41,7 @@ class Invoice with ChangeNotifier {
     required this.addressReturn,
     required this.totalPrice,
     required this.rejectedReason,
+    required this.customerId,
     required this.typeOrder,
     required this.isUserDelivery,
     this.orderId,
@@ -75,6 +77,7 @@ class Invoice with ChangeNotifier {
     deliveryTime = '';
     returnDate = '';
     returnTime = '';
+    customerId = '';
     requestId = '';
     paymentMethod = -1;
     durationDays = -1;
@@ -108,6 +111,7 @@ class Invoice with ChangeNotifier {
     String? orderId,
     int? durationMonths,
     String? name,
+    String? customerId,
     String? requestId,
     int? status,
     bool? isPaid,
@@ -120,6 +124,7 @@ class Invoice with ChangeNotifier {
       id: id ?? this.id,
       orderAdditionalFees: orderAdditionalFees ?? this.orderAdditionalFees,
       name: name ?? this.name,
+      customerId: customerId ?? this.customerId,
       customerName: customerName ?? this.customerName,
       customerPhone: customerPhone ?? this.customerPhone,
       deliveryAddress: deliveryAddress ?? this.deliveryAddress,
@@ -188,6 +193,7 @@ class Invoice with ChangeNotifier {
     return Invoice(
       id: map['id'] ?? '',
       name: map['name'] ?? '',
+      customerId: map['customerId'] ?? '',
       customerName: map['customerName'] ?? '',
       customerPhone: map['customerPhone'] ?? '',
       deliveryAddress: map['deliveryAddress'] ?? '',
@@ -222,6 +228,7 @@ class Invoice with ChangeNotifier {
   factory Invoice.fromRequest(Map<String, dynamic> map) {
     return Invoice(
       id: map['id'] ?? '',
+      customerId: map['customerId'] ?? '',
       name: map['name'] ?? '',
       customerName: map['customerName'] ?? '',
       customerPhone: map['customerPhone'] ?? '',
@@ -276,6 +283,7 @@ class Invoice with ChangeNotifier {
     isPaid = invoice.isPaid;
     orderDetails = invoice.orderDetails;
     isOrder = invoice.isOrder;
+    customerId = invoice.customerId;
     orderAdditionalFees = invoice.orderAdditionalFees;
     notifyListeners();
   }
