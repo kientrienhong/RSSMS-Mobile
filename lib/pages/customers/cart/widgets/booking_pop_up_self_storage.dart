@@ -207,7 +207,7 @@ class _BookingPopUpSelfStorageState extends State<BookingPopUpSelfStorage>
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     CustomText(
-                      text: 'Ngày lấy hàng',
+                      text: 'Ngày nhận kho',
                       color: CustomColor.black,
                       context: context,
                       fontSize: 16,

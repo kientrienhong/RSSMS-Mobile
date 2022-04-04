@@ -32,6 +32,7 @@ class _HandyTabState extends State<HandyTabUnwidely> {
             product: e,
           ))
       .toList();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -59,10 +60,13 @@ class _HandyTabState extends State<HandyTabUnwidely> {
         horizontal: 16,
       ),
       child: Column(children: [
-        ListView(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          children: mapProductWidget(listProduct),
+        Form(
+          key: _formKey,
+          child: ListView(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            children: mapProductWidget(listProduct),
+          ),
         ),
         CustomSizedBox(
           context: context,
@@ -112,33 +116,36 @@ class _HandyTabState extends State<HandyTabUnwidely> {
             text: 'Đặt',
             width: double.infinity,
             onPressFunction: () {
-              OrderBooking orderBooking =
-                  Provider.of<OrderBooking>(context, listen: false);
-              List<dynamic> listBooking = orderBooking.productOrder!['product'];
-              if (listBooking.isNotEmpty) {
-                showDialog(
-                    context: context,
-                    builder: (ctx) {
-                      return const BookingPopUpDoorToDoor();
-                    });
-              } else {
-                showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: const Text("Thông báo"),
-                        content:
-                            const Text("Vui lòng chọn ít nhất một dịch vụ!"),
-                        actions: [
-                          TextButton(
-                            child: const Text("Đồng ý"),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                          )
-                        ],
-                      );
-                    });
+              if (_formKey.currentState!.validate()) {
+                OrderBooking orderBooking =
+                    Provider.of<OrderBooking>(context, listen: false);
+                List<dynamic> listBooking =
+                    orderBooking.productOrder!['product'];
+                if (listBooking.isNotEmpty) {
+                  showDialog(
+                      context: context,
+                      builder: (ctx) {
+                        return const BookingPopUpDoorToDoor();
+                      });
+                } else {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: const Text("Thông báo"),
+                          content:
+                              const Text("Vui lòng chọn ít nhất một dịch vụ!"),
+                          actions: [
+                            TextButton(
+                              child: const Text("Đồng ý"),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            )
+                          ],
+                        );
+                      });
+                }
               }
             },
             isLoading: false,
