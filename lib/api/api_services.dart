@@ -310,11 +310,13 @@ class ApiServices {
         "requestDetails": listProduct
       }));
       final url = Uri.parse('$_domain/api/v1/requests');
+      bool isCustomerDelivery =
+          orderBooking.typeOrder == 0 ? true : orderBooking.isCustomerDelivery;
       return http.post(
         url,
         body: jsonEncode({
           "isPaid": orderBooking.isPaid,
-          "isCustomerDelivery": orderBooking.isCustomerDelivery,
+          "isCustomerDelivery": isCustomerDelivery,
           "orderId": null,
           "totalPrice": 0,
           "customerId": user.userId,

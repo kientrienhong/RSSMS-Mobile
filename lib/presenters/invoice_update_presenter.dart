@@ -72,8 +72,10 @@ class InvoiceUpdatePresenter {
     invoice.orderDetails.forEach((element) {
       if (element.productType == HANDY || element.productType == UNWEILDY) {
         price += element.price * (invoice.durationDays / 30).ceil();
-      } else {
+      } else if (element.productType == ACCESSORY) {
         price += element.price;
+      } else if (element.productType == SELF_STORAGE) {
+        price += element.price * invoice.durationMonths;
       }
 
       element.listAdditionService!.forEach((ele1) {
