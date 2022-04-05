@@ -86,9 +86,9 @@ class OrderDetail {
     return OrderDetail(
       id: map['id'] ?? '',
       note: map['note'] ?? '',
-      width: map['width']?.toDouble() ?? 0,
-      height: map['height']?.toDouble() ?? 0,
-      length: map['length']?.toDouble() ?? 0,
+      width: map['serviceWidth']?.toDouble() ?? 0,
+      height: map['serviceHeight']?.toDouble() ?? 0,
+      length: map['serviceLength']?.toDouble() ?? 0,
       productId: map['serviceId'] ?? '',
       productName: map['serviceName'] ?? '',
       price: map['price']?.toInt() ?? 0,

@@ -320,8 +320,8 @@ class _HandleInputState extends State<HandleInput>
             context: context,
             height: 24,
           ),
-          InvoiceProductWidget(
-              deviceSize: deviceSize, invoice: formatInvoice()),
+          // InvoiceProductWidget(
+          //     deviceSize: deviceSize, invoice: formatInvoice()),
           CustomSizedBox(
             context: context,
             height: 24,
