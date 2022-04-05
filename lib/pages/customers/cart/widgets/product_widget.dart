@@ -178,6 +178,7 @@ class _ProductWidgetState extends State<ProductWidget> implements ProductView {
                     child: QuantityWidget(
                       product: widget.product,
                       width: deviceSize.width / 8,
+                      productType: 'product',
                       addQuantity: () =>
                           onAddQuantity(SizeConfig.blockSizeVertical!),
                       minusQuantity: () =>

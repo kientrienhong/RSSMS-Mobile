@@ -107,6 +107,15 @@ class _DialogReportState extends State<DialogReport>
               children: [
                 CustomButton(
                     height: 24,
+                    text: 'Đóng',
+                    width: deviceSize.width * 1 / 3 - 4,
+                    onPressFunction: onClickClose,
+                    isLoading: false,
+                    textColor: CustomColor.white,
+                    buttonColor: CustomColor.red,
+                    borderRadius: 6),
+                CustomButton(
+                    height: 24,
                     text: 'Xác nhận',
                     width: deviceSize.width * 1 / 3 - 4,
                     onPressFunction: onClickSubmit,
@@ -114,15 +123,6 @@ class _DialogReportState extends State<DialogReport>
                     textColor: CustomColor.white,
                     buttonColor: Color.fromRGBO(4, 191, 254, 1),
                     borderRadius: 6),
-                CustomButton(
-                    height: 24,
-                    text: 'Đóng',
-                    width: deviceSize.width * 1 / 3 - 4,
-                    onPressFunction: onClickClose,
-                    isLoading: false,
-                    textColor: CustomColor.white,
-                    buttonColor: CustomColor.red,
-                    borderRadius: 6)
               ],
             ),
           ],

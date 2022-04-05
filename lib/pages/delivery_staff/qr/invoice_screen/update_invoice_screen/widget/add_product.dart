@@ -9,6 +9,7 @@ import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/order_detail.dart';
 import 'package:rssms/models/entity/product.dart';
+import 'package:rssms/constants/constants.dart' as constants;
 
 class AddProduct extends StatelessWidget {
   final String? orderDetail;
@@ -29,19 +30,36 @@ class AddProduct extends StatelessWidget {
     void addMainProduct() {
       Invoice invoice = Provider.of<Invoice>(context, listen: false);
       Invoice invoiceTemp = invoice.copyWith();
-      invoiceTemp.orderDetails.add(OrderDetail(
-          id: invoiceTemp.orderDetails.length.toString(),
-          productId: product.id,
-          productName: product.name,
-          price: product.price,
-          height: 0,
-          width: 0,
-          length: 0,
-          amount: 1,
-          serviceImageUrl: product.imageUrl,
-          productType: product.type,
-          note: '',
-          images: []));
+      if (product.type == constants.HANDY) {
+        invoiceTemp.orderDetails.add(OrderDetail(
+            id: invoiceTemp.orderDetails.length.toString(),
+            productId: product.id,
+            productName: product.name,
+            price: product.price,
+            height: 0,
+            width: 0,
+            length: 0,
+            amount: 1,
+            serviceImageUrl: product.imageUrl,
+            productType: product.type,
+            note: '',
+            images: []));
+      } else {
+        invoiceTemp.orderDetails.add(OrderDetail(
+            id: invoiceTemp.orderDetails.length.toString(),
+            productId: product.id,
+            productName: product.name,
+            price: product.price,
+            width: product.width,
+            length: product.length,
+            height: product.height,
+            amount: 1,
+            serviceImageUrl: product.imageUrl,
+            productType: product.type,
+            note: '',
+            images: []));
+      }
+
       invoice.setInvoice(invoice: invoiceTemp);
       CustomSnackBar.buildErrorSnackbar(
           context: context,

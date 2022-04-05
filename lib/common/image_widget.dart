@@ -14,6 +14,7 @@ import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_scre
 import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_screen/widget/dialog_add_service.dart';
 import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_screen/widget/update_real_size.dart';
 import './image_item.dart';
+import 'package:rssms/constants/constants.dart' as constants;
 
 class ImageWidget extends StatefulWidget {
   OrderDetail orderDetail;
@@ -173,7 +174,6 @@ class _ImageWidgetState extends State<ImageWidget> {
                 ),
               if (widget.orderDetail.listAdditionService!.isNotEmpty)
                 const Divider(),
-
               for (var i = 0;
                   i < widget.orderDetail.listAdditionService!.length;
                   i++)
@@ -237,37 +237,38 @@ class _ImageWidgetState extends State<ImageWidget> {
                           context: context,
                           height: 16,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            CustomButton(
-                                height: 24,
-                                text: 'Chỉnh sửa kích thước',
-                                width: deviceSize.width / 2 - 40,
-                                onPressFunction: () {
-                                  showDialog(
-                                      context: context,
-                                      builder: (_) => DialogUpdateRealSize(
-                                            orderDetail: widget.orderDetail,
-                                          ));
-                                },
-                                isLoading: false,
-                                textColor: CustomColor.white,
-                                buttonColor: CustomColor.purple,
-                                borderRadius: 4),
-                            CustomButton(
-                                height: 24,
-                                text: 'Xóa',
-                                width: deviceSize.width / 2 - 40,
-                                onPressFunction: () {
-                                  widget.deleteItem!(widget.orderDetail.id);
-                                },
-                                isLoading: false,
-                                textColor: CustomColor.white,
-                                buttonColor: CustomColor.red,
-                                borderRadius: 4),
-                          ],
-                        ),
+                        if (widget.orderDetail.productType == constants.HANDY)
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              CustomButton(
+                                  height: 24,
+                                  text: 'Chỉnh sửa kích thước',
+                                  width: deviceSize.width / 2 - 40,
+                                  onPressFunction: () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (_) => DialogUpdateRealSize(
+                                              orderDetail: widget.orderDetail,
+                                            ));
+                                  },
+                                  isLoading: false,
+                                  textColor: CustomColor.white,
+                                  buttonColor: CustomColor.purple,
+                                  borderRadius: 4),
+                              CustomButton(
+                                  height: 24,
+                                  text: 'Xóa',
+                                  width: deviceSize.width / 2 - 40,
+                                  onPressFunction: () {
+                                    widget.deleteItem!(widget.orderDetail.id);
+                                  },
+                                  isLoading: false,
+                                  textColor: CustomColor.white,
+                                  buttonColor: CustomColor.red,
+                                  borderRadius: 4),
+                            ],
+                          ),
                         CustomSizedBox(
                           context: context,
                           height: 8,
@@ -275,47 +276,6 @@ class _ImageWidgetState extends State<ImageWidget> {
                       ],
                     )
                   : Container()
-
-              // Container(
-              //     padding:
-              //         const EdgeInsets.only(left: 8.0, right: 8, bottom: 18),
-              //     height: deviceSize.width * 1 / 3,
-              //     child: ClipRRect(
-              //       borderRadius: BorderRadius.circular(4),
-              //       child: DottedBorder(
-              //           color: CustomColor.black,
-              //           strokeWidth: 1,
-              //           dashPattern: const [8, 4],
-              //           child: Center(
-              //             child: TextButton(
-              //               onPressed: () {
-              // showDialog(
-              //     context: context,
-              //     builder: (ctx) {
-              //       return ImageDetailPopUp(
-              //         updateUI: updateUI,
-              //         isView: false,
-              //         orderDetail: widget.orderDetail,
-              //         imageUpdate: null,
-              //       );
-              //     });
-              //               },
-              //               clipBehavior: Clip.none,
-              //               autofocus: false,
-              //               style: ButtonStyle(
-              //                   minimumSize: MaterialStateProperty.all(Size(
-              //                       deviceSize.width,
-              //                       deviceSize.width * 1 / 3))),
-              //               child: CustomText(
-              //                 text: "Thêm hình ảnh",
-              //                 color: CustomColor.black,
-              //                 context: context,
-              //                 fontSize: 16,
-              //                 fontWeight: FontWeight.bold,
-              //               ),
-              //             ),
-              //           )),
-              //     )),
             ],
           )
         ],

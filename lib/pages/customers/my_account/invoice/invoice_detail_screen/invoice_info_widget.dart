@@ -27,12 +27,28 @@ class InvoiceInfoWidget extends StatelessWidget {
               context: context,
               fontWeight: FontWeight.bold,
               fontSize: 17),
-          CustomText(
-              text: LIST_STATUS_ORDER[invoice!.status]['name']! as String,
-              color: LIST_STATUS_ORDER[invoice!.status]['color'] as Color,
-              context: context,
-              fontWeight: FontWeight.bold,
-              fontSize: 16),
+          Row(
+            children: [
+              CustomText(
+                  text: LIST_STATUS_ORDER[invoice!.status]['name']! as String,
+                  color: LIST_STATUS_ORDER[invoice!.status]['color'] as Color,
+                  context: context,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16),
+              Container(
+                width: 1,
+                height: 4,
+                color: CustomColor.black,
+                margin: const EdgeInsets.symmetric(horizontal: 4),
+              ),
+              CustomText(
+                  text: mapIsPaid[invoice!.isPaid]!['name']! as String,
+                  color: mapIsPaid[invoice!.isPaid]!['color'] as Color,
+                  context: context,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16),
+            ],
+          ),
         ],
       ),
       CustomSizedBox(

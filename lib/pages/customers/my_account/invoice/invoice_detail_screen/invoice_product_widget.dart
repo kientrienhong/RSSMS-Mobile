@@ -82,8 +82,9 @@ class InvoiceProductWidget extends StatelessWidget {
     });
 
     return Container(
-      decoration:
-          BoxDecoration(border: Border.all(color: CustomColor.blue, width: 2)),
+      decoration: BoxDecoration(
+          border: Border.all(color: CustomColor.blue, width: 2),
+          color: CustomColor.white),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         child: Column(

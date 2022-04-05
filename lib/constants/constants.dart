@@ -159,3 +159,8 @@ const List<Map<String, dynamic>> LIST_PAYMENT_METHOD_CHOICES = [
   {'name': 'Thanh toán tiền mặt', 'value': PAYMENT_METHOD.cash},
   {'name': 'Thánh toán thông qua paypal', 'value': PAYMENT_METHOD.paypal},
 ];
+
+Map<bool, Map<String, dynamic>> mapIsPaid = {
+  false: {'name': 'Chưa thanh toán', 'color': CustomColor.black[2]},
+  true: {'name': 'Đã thanh toán', 'color': CustomColor.blue}
+};

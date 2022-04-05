@@ -116,7 +116,27 @@ class _CreateOrderRequestScreenState extends State<CreateOrderRequestScreen>
                                 context: context,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 17),
-                            statusText
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                statusText,
+                                Container(
+                                  width: 2,
+                                  height: deviceSize.height / 40,
+                                  color: CustomColor.black,
+                                  margin:
+                                      const EdgeInsets.symmetric(horizontal: 4),
+                                ),
+                                CustomText(
+                                    text: mapIsPaid[_model.invoice.isPaid]![
+                                        'name']! as String,
+                                    color: mapIsPaid[_model.invoice.isPaid]![
+                                        'color'] as Color,
+                                    context: context,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16),
+                              ],
+                            ),
                           ],
                         ),
                         CustomSizedBox(

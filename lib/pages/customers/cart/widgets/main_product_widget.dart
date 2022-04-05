@@ -171,6 +171,7 @@ class _MainProductWidgetState extends State<MainProductWidget>
                       child: QuantityWidget(
                         product: widget.product,
                         width: deviceSize.width / 8,
+                        productType: widget.nameType,
                         addQuantity: () => onAddQuantity(),
                         minusQuantity: () => onMinusQuantity(),
                         mainAxisAlignment: MainAxisAlignment.end,

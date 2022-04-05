@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
+import 'package:rssms/models/entity/order_booking.dart';
 import 'package:rssms/models/entity/product.dart';
+import 'package:rssms/constants/constants.dart' as constants;
 
 class QuantityWidget extends StatefulWidget {
   final Product? product;
   final double? width;
+  final String productType;
   final VoidCallback? addQuantity;
   final VoidCallback? minusQuantity;
   final MainAxisAlignment? mainAxisAlignment;
@@ -16,6 +20,7 @@ class QuantityWidget extends StatefulWidget {
       this.product,
       this.width,
       this.minusQuantity,
+      required this.productType,
       this.addQuantity,
       this.mainAxisAlignment})
       : super(key: key);
@@ -32,8 +37,24 @@ class _QuantityWidgetState extends State<QuantityWidget> {
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController _controller =
-        TextEditingController(text: widget.product!.quantity.toString());
+    OrderBooking orderBooking =
+        Provider.of<OrderBooking>(context, listen: false);
+
+    int indexFound = orderBooking.productOrder[widget.productType]
+        .indexWhere((e) => e['id'] == widget.product!.id);
+
+    TextEditingController _controller;
+
+    if (indexFound != -1) {
+      _controller = TextEditingController(
+          text: orderBooking.productOrder[widget.productType][indexFound]
+                  ['quantity']
+              .toString());
+    } else {
+      _controller =
+          TextEditingController(text: widget.product!.quantity.toString());
+    }
+
     return Row(
       mainAxisAlignment: widget.mainAxisAlignment!,
       children: [

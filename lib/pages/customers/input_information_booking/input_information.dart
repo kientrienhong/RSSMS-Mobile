@@ -225,9 +225,27 @@ class _HandleInputState extends State<HandleInput>
 
     orderBooking.productOrder.keys.forEach((key) {
       orderBooking.productOrder[key].forEach((e) {
-        invoice.orderDetails.add(OrderDetail.fromMap(e));
+        invoice.orderDetails.add(OrderDetail(
+            id: '0',
+            productId: e['id'],
+            productName: e['name'],
+            price: e['price'],
+            amount: e['quantity'],
+            serviceImageUrl: e['imageUrl'],
+            productType: e['type'],
+            note: e['note'] ?? '',
+            images: []));
       });
     });
+
+    invoice = invoice.copyWith(
+      addressReturn: orderBooking.addressReturn,
+      deliveryAddress: orderBooking.addressDelivery,
+      deliveryDate: orderBooking.dateTimeDeliveryString,
+      returnDate: orderBooking.dateTimeReturnString,
+      isOrder: false,
+      typeOrder: orderBooking.typeOrder.index,
+    );
 
     return invoice;
   }
@@ -296,13 +314,18 @@ class _HandleInputState extends State<HandleInput>
               text: 'Thông tin chi tiết đơn hàng',
               color: CustomColor.blue,
               context: context,
-              fontSize: 16),
+              fontWeight: FontWeight.bold,
+              fontSize: 20),
           CustomSizedBox(
             context: context,
             height: 24,
           ),
-          // InvoiceProductWidget(
-          //     deviceSize: deviceSize, invoice: formatInvoice()),
+          InvoiceProductWidget(
+              deviceSize: deviceSize, invoice: formatInvoice()),
+          CustomSizedBox(
+            context: context,
+            height: 24,
+          ),
           SizedBox(
             width: double.infinity,
             child: Center(
