@@ -127,6 +127,7 @@ class _ImageWidgetState extends State<ImageWidget> {
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
+    Invoice invoice = Provider.of<Invoice>(context, listen: false);
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 4),
       decoration: BoxDecoration(
@@ -184,97 +185,152 @@ class _ImageWidgetState extends State<ImageWidget> {
                   onMinusAddition: onMinusAddition,
                 ),
               widget.isView == false
-                  ? Column(
-                      children: [
-                        const Divider(),
-                        CustomSizedBox(
-                          context: context,
-                          height: 8,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  ? invoice.typeOrder == constants.SELF_STORAGE_TYPE_ORDER
+                      ? Column(
                           children: [
-                            CustomButton(
-                                height: 24,
-                                text: 'Thêm hình ảnh',
-                                width: deviceSize.width / 2 - 40,
-                                onPressFunction: () {
-                                  showDialog(
-                                      context: context,
-                                      builder: (ctx) {
-                                        return ImageDetailPopUp(
-                                          isView: false,
-                                          orderDetail: widget.orderDetail,
-                                          imageUpdate: null,
-                                        );
-                                      });
-                                },
-                                isLoading: false,
-                                textColor: CustomColor.white,
-                                buttonColor: CustomColor.blue,
-                                borderRadius: 4),
-                            CustomButton(
-                                height: 24,
-                                text: 'Thêm phụ kiện',
-                                width: deviceSize.width / 2 - 40,
-                                onPressFunction: () {
-                                  showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return DialogAddService(
-                                          idOrderDetail: widget.orderDetail.id,
-                                          isSeperate: false,
-                                        );
-                                      });
-                                },
-                                isLoading: false,
-                                textColor: CustomColor.white,
-                                buttonColor: CustomColor.green,
-                                borderRadius: 4),
+                            const Divider(),
+                            CustomSizedBox(
+                              context: context,
+                              height: 8,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                CustomButton(
+                                    height: 24,
+                                    text: 'Xóa',
+                                    width: deviceSize.width / 2 - 40,
+                                    onPressFunction: () {
+                                      widget.deleteItem!(widget.orderDetail.id);
+                                    },
+                                    isLoading: false,
+                                    textColor: CustomColor.white,
+                                    buttonColor: CustomColor.red,
+                                    borderRadius: 4),
+                                CustomButton(
+                                    height: 24,
+                                    text: 'Thêm phụ kiện',
+                                    width: deviceSize.width / 2 - 40,
+                                    onPressFunction: () {
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return DialogAddService(
+                                              idOrderDetail:
+                                                  widget.orderDetail.id,
+                                              isSeperate: false,
+                                            );
+                                          });
+                                    },
+                                    isLoading: false,
+                                    textColor: CustomColor.white,
+                                    buttonColor: CustomColor.green,
+                                    borderRadius: 4),
+                              ],
+                            ),
+                            CustomSizedBox(
+                              context: context,
+                              height: 16,
+                            ),
                           ],
-                        ),
-                        CustomSizedBox(
-                          context: context,
-                          height: 16,
-                        ),
-                        if (widget.orderDetail.productType == constants.HANDY)
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              CustomButton(
-                                  height: 24,
-                                  text: 'Chỉnh sửa kích thước',
-                                  width: deviceSize.width / 2 - 40,
-                                  onPressFunction: () {
-                                    showDialog(
-                                        context: context,
-                                        builder: (_) => DialogUpdateRealSize(
+                        )
+                      : Column(
+                          children: [
+                            const Divider(),
+                            CustomSizedBox(
+                              context: context,
+                              height: 8,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                CustomButton(
+                                    height: 24,
+                                    text: 'Thêm hình ảnh',
+                                    width: deviceSize.width / 2 - 40,
+                                    onPressFunction: () {
+                                      showDialog(
+                                          context: context,
+                                          builder: (ctx) {
+                                            return ImageDetailPopUp(
+                                              isView: false,
                                               orderDetail: widget.orderDetail,
-                                            ));
-                                  },
-                                  isLoading: false,
-                                  textColor: CustomColor.white,
-                                  buttonColor: CustomColor.purple,
-                                  borderRadius: 4),
-                              CustomButton(
-                                  height: 24,
-                                  text: 'Xóa',
-                                  width: deviceSize.width / 2 - 40,
-                                  onPressFunction: () {
-                                    widget.deleteItem!(widget.orderDetail.id);
-                                  },
-                                  isLoading: false,
-                                  textColor: CustomColor.white,
-                                  buttonColor: CustomColor.red,
-                                  borderRadius: 4),
-                            ],
-                          ),
-                        CustomSizedBox(
-                          context: context,
-                          height: 8,
-                        ),
-                      ],
-                    )
+                                              imageUpdate: null,
+                                            );
+                                          });
+                                    },
+                                    isLoading: false,
+                                    textColor: CustomColor.white,
+                                    buttonColor: CustomColor.blue,
+                                    borderRadius: 4),
+                                CustomButton(
+                                    height: 24,
+                                    text: 'Thêm phụ kiện',
+                                    width: deviceSize.width / 2 - 40,
+                                    onPressFunction: () {
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return DialogAddService(
+                                              idOrderDetail:
+                                                  widget.orderDetail.id,
+                                              isSeperate: false,
+                                            );
+                                          });
+                                    },
+                                    isLoading: false,
+                                    textColor: CustomColor.white,
+                                    buttonColor: CustomColor.green,
+                                    borderRadius: 4),
+                              ],
+                            ),
+                            CustomSizedBox(
+                              context: context,
+                              height: 16,
+                            ),
+                            if (widget.orderDetail.productType ==
+                                constants.HANDY)
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  CustomButton(
+                                      height: 24,
+                                      text: 'Chỉnh sửa kích thước',
+                                      width: deviceSize.width / 2 - 40,
+                                      onPressFunction: () {
+                                        showDialog(
+                                            context: context,
+                                            builder: (_) =>
+                                                DialogUpdateRealSize(
+                                                  orderDetail:
+                                                      widget.orderDetail,
+                                                ));
+                                      },
+                                      isLoading: false,
+                                      textColor: CustomColor.white,
+                                      buttonColor: CustomColor.purple,
+                                      borderRadius: 4),
+                                  CustomButton(
+                                      height: 24,
+                                      text: 'Xóa',
+                                      width: deviceSize.width / 2 - 40,
+                                      onPressFunction: () {
+                                        widget
+                                            .deleteItem!(widget.orderDetail.id);
+                                      },
+                                      isLoading: false,
+                                      textColor: CustomColor.white,
+                                      buttonColor: CustomColor.red,
+                                      borderRadius: 4),
+                                ],
+                              ),
+                            CustomSizedBox(
+                              context: context,
+                              height: 8,
+                            ),
+                          ],
+                        )
                   : Container()
             ],
           )
