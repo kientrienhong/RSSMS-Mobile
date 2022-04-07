@@ -8,11 +8,14 @@ import 'package:rssms/common/custom_radio_button.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/helpers/validator.dart';
+import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/order_booking.dart';
+import 'package:rssms/models/entity/order_detail.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/models/input_information_model.dart';
 import 'package:rssms/pages/customers/input_information_booking/widgets/input_form_door_to_door.dart';
 import 'package:rssms/pages/customers/input_information_booking/widgets/note_select.dart';
+import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/invoice_product_widget.dart';
 import 'package:rssms/pages/customers/payment_method_booking/payment_method_booking_screen.dart';
 import 'package:rssms/presenters/input_information_presenter.dart';
 import 'package:rssms/views/input_information_view.dart';
@@ -214,6 +217,40 @@ class _HandleInputState extends State<HandleInput>
     }
   }
 
+  Invoice formatInvoice() {
+    OrderBooking orderBooking =
+        Provider.of<OrderBooking>(context, listen: false);
+
+    Invoice invoice = Invoice.empty();
+
+    orderBooking.productOrder.keys.forEach((key) {
+      orderBooking.productOrder[key].forEach((e) {
+        invoice.orderDetails.add(OrderDetail(
+            id: '0',
+            productId: e['id'],
+            productName: e['name'],
+            price: e['price'],
+            amount: e['quantity'],
+            serviceImageUrl: e['imageUrl'],
+            productType: e['type'],
+            note: e['note'] ?? '',
+            images: []));
+      });
+    });
+
+    invoice = invoice.copyWith(
+      addressReturn: orderBooking.addressReturn,
+      deliveryAddress: orderBooking.addressDelivery,
+      deliveryDate: orderBooking.dateTimeDeliveryString,
+      returnDate: orderBooking.dateTimeReturnString,
+      durationMonths: orderBooking.months,
+      isOrder: false,
+      typeOrder: orderBooking.typeOrder.index,
+    );
+
+    return invoice;
+  }
+
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
@@ -274,82 +311,18 @@ class _HandleInputState extends State<HandleInput>
             context: context,
             height: 8,
           ),
-          if (widget.isSelfStorageOrder == false)
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                buildTitle('THÔNG TIN GIAO HÀNG VÀ TRẢ HÀNG', context),
-                CustomSizedBox(
-                  context: context,
-                  height: 16,
-                ),
-                Column(
-                  children: _buildListReceivedAddress(),
-                ),
-                currentIndex == SelectDistrict.different
-                    ? InputFormDoorToDoor(
-                        controllerAddress: _model.controllerAddressReturn,
-                        controllerFloor: _model.controllerFloorReturn,
-                        focusNodeAddress: _focusNodeAddressReturn,
-                        focusNodeFloor: _focusNodeFloorReturn,
-                      )
-                    : Container(),
-                CustomSizedBox(
-                  context: context,
-                  height: 16,
-                ),
-                CustomText(
-                  text: 'Ghi chú',
-                  color: CustomColor.blue,
-                  context: context,
-                  fontSize: 24,
-                  textAlign: TextAlign.start,
-                  fontWeight: FontWeight.bold,
-                ),
-                CustomSizedBox(
-                  context: context,
-                  height: 8,
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(4),
-                      border:
-                          Border.all(color: CustomColor.black[3]!, width: 1)),
-                  child: TextFormField(
-                    minLines: 6,
-                    decoration: const InputDecoration(
-                        contentPadding: EdgeInsets.all(8)),
-                    validator: (val) {
-                      return Validator.notEmpty(val);
-                    },
-                    controller: _model.controllerNote,
-                    keyboardType: TextInputType.multiline,
-                    maxLines: null,
-                  ),
-                ),
-              ],
-            ),
-          if (widget.isSelfStorageOrder)
-            Column(
-              children: [
-                buildTitle('ĐỊA CHỈ NHẬN PHỤ KIỆN ĐÓNG GÓI (NẾU CÓ)', context),
-                CustomSizedBox(
-                  context: context,
-                  height: 16,
-                ),
-                Column(
-                  children: _buildListPackagingAddress(),
-                ),
-                currentIndex == SelectDistrict.different
-                    ? InputFormDoorToDoor(
-                        controllerAddress: _model.controllerAddressReturn,
-                        controllerFloor: _model.controllerFloorReturn,
-                        focusNodeAddress: _focusNodeAddressReturn,
-                        focusNodeFloor: _focusNodeFloorReturn,
-                      )
-                    : Container(),
-              ],
-            ),
+          CustomText(
+              text: 'Thông tin chi tiết đơn hàng',
+              color: CustomColor.blue,
+              context: context,
+              fontWeight: FontWeight.bold,
+              fontSize: 20),
+          CustomSizedBox(
+            context: context,
+            height: 24,
+          ),
+          InvoiceProductWidget(
+              deviceSize: deviceSize, invoice: formatInvoice()),
           CustomSizedBox(
             context: context,
             height: 24,

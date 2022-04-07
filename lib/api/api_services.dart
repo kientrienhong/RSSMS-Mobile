@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:http/http.dart' as http;
 import 'package:rssms/models/entity/invoice.dart';
@@ -288,13 +289,34 @@ class ApiServices {
         "Content-type": "application/json",
         'Authorization': 'Bearer ${user.idToken}'
       };
-
+      log(jsonEncode({
+        "isPaid": orderBooking.isPaid,
+        "isCustomerDelivery": orderBooking.isCustomerDelivery,
+        "orderId": null,
+        "totalPrice": 0,
+        "customerId": user.userId,
+        "deliveryAddress": orderBooking.addressDelivery,
+        "returnDate": orderBooking.dateTimeReturn.toIso8601String(),
+        "returnAddress": orderBooking.addressReturn,
+        "deliveryTime": orderBooking.currentSelectTime != -1
+            ? constants.LIST_TIME_PICK_UP[orderBooking.currentSelectTime]
+            : '',
+        "deliveryDate": orderBooking.dateTimeDelivery.toIso8601String(),
+        "type": 1,
+        "typeOrder": orderBooking.typeOrder == TypeOrder.selfStorage
+            ? constants.SELF_STORAGE_TYPE_ORDER
+            : constants.DOOR_TO_DOOR_TYPE_ORDER,
+        "note": orderBooking.note,
+        "requestDetails": listProduct
+      }));
       final url = Uri.parse('$_domain/api/v1/requests');
+      bool isCustomerDelivery =
+          orderBooking.typeOrder == 0 ? true : orderBooking.isCustomerDelivery;
       return http.post(
         url,
         body: jsonEncode({
           "isPaid": orderBooking.isPaid,
-          "isCustomerDelivery": orderBooking.isCustomerDelivery,
+          "isCustomerDelivery": isCustomerDelivery,
           "orderId": null,
           "totalPrice": 0,
           "customerId": user.userId,
@@ -585,7 +607,7 @@ class ApiServices {
 
       final url = Uri.parse(
           '$_domain/api/v1/requests/send request notification/$idRequest');
-      return http.post(url, body: message, headers: headers);
+      return http.post(url, body: 'dasjkdhaskjdh', headers: headers);
     } catch (e) {
       print(e.toString());
       throw Exception(e.toString());

@@ -62,7 +62,9 @@ class _BookingPopUpSelfStorageState extends State<BookingPopUpSelfStorage>
             orderBooking: orderBooking.copyWith(
                 totalPrice: totalBill(),
                 months: month,
-                dateTimeReturn: _model.dateReturn));
+                dateTimeReturn: _model.dateReturn,
+                dateTimeReturnString:
+                    _model.dateReturn.toIso8601String().split("T")[0]));
         _model.monthController.text = month.toString();
       }
     });
@@ -80,15 +82,17 @@ class _BookingPopUpSelfStorageState extends State<BookingPopUpSelfStorage>
     setState(() {
       int month = ++orderBooking.months;
 
-      orderBooking.setOrderBooking(
-          orderBooking: orderBooking.copyWith(
-              totalPrice: totalBill(),
-              months: month,
-              dateTimeReturn: _model.dateReturn));
       _model.dateReturn = DateTime(
           orderBooking.dateTimeDelivery.year,
           orderBooking.dateTimeDelivery.month + month as int,
           orderBooking.dateTimeDelivery.day);
+      orderBooking.setOrderBooking(
+          orderBooking: orderBooking.copyWith(
+              totalPrice: totalBill(),
+              months: month,
+              dateTimeReturn: _model.dateReturn,
+              dateTimeReturnString:
+                  _model.dateReturn.toIso8601String().split("T")[0]));
       _model.monthController.text = month.toString();
     });
   }
@@ -157,7 +161,9 @@ class _BookingPopUpSelfStorageState extends State<BookingPopUpSelfStorage>
                 dateTimeDelivery: picked,
                 totalPrice: totalBill(),
                 dateTimeDeliveryString: picked.toIso8601String().split("T")[0],
-                dateTimeReturn: _model.dateReturn));
+                dateTimeReturn: _model.dateReturn,
+                dateTimeReturnString:
+                    _model.dateReturn.toIso8601String().split("T")[0]));
       });
     }
   }
@@ -207,7 +213,7 @@ class _BookingPopUpSelfStorageState extends State<BookingPopUpSelfStorage>
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     CustomText(
-                      text: 'Ngày lấy hàng',
+                      text: 'Ngày nhận kho',
                       color: CustomColor.black,
                       context: context,
                       fontSize: 16,
@@ -412,7 +418,7 @@ class _BookingPopUpSelfStorageState extends State<BookingPopUpSelfStorage>
                           setError('Vui lòng chọn tháng!');
                           return;
                         }
-
+                        final test = orderBooking;
                         Navigator.push(
                             context,
                             MaterialPageRoute(

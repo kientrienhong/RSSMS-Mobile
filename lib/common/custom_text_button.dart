@@ -25,15 +25,15 @@ class CustomTextButton extends Container {
                   ),
                 )
               : Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 4),
-                child: CustomText(
-                    text: text,
-                    maxLines: 2,
-                    textAlign: TextAlign.center,
-                    fontWeight: FontWeight.bold,
-                    color: textColor,
-                    context: context,
-                    fontSize: fontSize),
-              ),
+                  padding: const EdgeInsets.symmetric(horizontal: 4),
+                  child: CustomText(
+                      text: text,
+                      maxLines: 2,
+                      textAlign: TextAlign.center,
+                      fontWeight: FontWeight.bold,
+                      color: textColor,
+                      context: context,
+                      fontSize: fontSize),
+                ),
         );
 }

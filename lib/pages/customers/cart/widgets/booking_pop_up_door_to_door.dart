@@ -53,6 +53,13 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
   }
 
   @override
+  setError(String error) {
+    setState(() {
+      _model.error = error;
+    });
+  }
+
+  @override
   void onChangeTime(int index) {
     OrderBooking orderBooking =
         Provider.of<OrderBooking>(context, listen: false);
@@ -419,6 +426,27 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
                   context: context,
                   height: 16,
                 ),
+                if (_model.error.isNotEmpty)
+                  SizedBox(
+                    width: double.infinity,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        CustomText(
+                          text: _model.error,
+                          textAlign: TextAlign.center,
+                          color: CustomColor.red,
+                          context: context,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        CustomSizedBox(
+                          context: context,
+                          height: 8,
+                        )
+                      ],
+                    ),
+                  ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
@@ -427,6 +455,11 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
                         text: 'Tiếp theo',
                         width: deviceSize.width * 1.2 / 3,
                         onPressFunction: () {
+                          if (orderBooking.diffDay <= 0) {
+                            setError('Vui lòng ngày trả hàng xa hơn');
+                            return;
+                          }
+
                           if (_formKey.currentState!.validate() ||
                               orderBooking.currentSelectTime != -1) {
                             OrderBooking orderBooking =

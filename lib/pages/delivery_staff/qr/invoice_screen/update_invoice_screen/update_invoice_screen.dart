@@ -604,11 +604,9 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                                 break;
                               }
                             }
-                            if (_formKey.currentState!.validate() &&
-                                !emptyImage) {
-                              onClickUpdateOrder();
-                            }
-                            if (emptyImage) {
+                            if (emptyImage &&
+                                invoice.typeOrder ==
+                                    constant.DOOR_TO_DOOR_TYPE_ORDER) {
                               showDialog(
                                   context: context,
                                   builder: (context) {
@@ -626,6 +624,11 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                                       ],
                                     );
                                   });
+                              return;
+                            }
+
+                            if (_formKey.currentState!.validate()) {
+                              onClickUpdateOrder();
                             }
                           },
                           width: deviceSize.width / 2.5,

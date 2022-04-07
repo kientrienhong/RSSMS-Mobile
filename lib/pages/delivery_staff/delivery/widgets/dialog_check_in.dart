@@ -97,12 +97,12 @@ class _DialogCheckInState extends State<DialogCheckIn>
             children: [
               CustomButton(
                   height: 24,
-                  text: 'Xác nhận',
+                  text: 'Đóng',
                   width: deviceSize.width * 1 / 3 - 4,
-                  onPressFunction: onClickSubmit,
-                  isLoading: _model.isLoading,
+                  onPressFunction: onClickClose,
+                  isLoading: false,
                   textColor: CustomColor.white,
-                  buttonColor: CustomColor.blue,
+                  buttonColor: CustomColor.red,
                   borderRadius: 6),
               CustomSizedBox(
                 context: context,
@@ -110,13 +110,13 @@ class _DialogCheckInState extends State<DialogCheckIn>
               ),
               CustomButton(
                   height: 24,
-                  text: 'Đóng',
+                  text: 'Xác nhận',
                   width: deviceSize.width * 1 / 3 - 4,
-                  onPressFunction: onClickClose,
-                  isLoading: false,
+                  onPressFunction: onClickSubmit,
+                  isLoading: _model.isLoading,
                   textColor: CustomColor.white,
-                  buttonColor: CustomColor.red,
-                  borderRadius: 6)
+                  buttonColor: CustomColor.blue,
+                  borderRadius: 6),
             ],
           ),
         ],
