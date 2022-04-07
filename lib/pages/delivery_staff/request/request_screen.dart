@@ -86,6 +86,8 @@ class _RequestScreenState extends State<RequestScreen> with RequestScreenView {
           return Flexible(
             child: ListView.separated(
               controller: scrollController,
+              physics: const BouncingScrollPhysics(
+                  parent: AlwaysScrollableScrollPhysics()),
               separatorBuilder: (context, index) {
                 return CustomSizedBox(
                   context: context,

@@ -40,16 +40,21 @@ class _QuantityWidgetState extends State<QuantityWidget> {
     OrderBooking orderBooking =
         Provider.of<OrderBooking>(context, listen: false);
 
-    int indexFound = orderBooking.productOrder[widget.productType]
-        .indexWhere((e) => e['id'] == widget.product!.id);
+    List<dynamic> listCurrentProduct = orderBooking
+        .productOrder[widget.productType]
+        .where((e) => e['id'] == widget.product!.id)
+        .toList();
 
     TextEditingController _controller;
 
-    if (indexFound != -1) {
-      _controller = TextEditingController(
-          text: orderBooking.productOrder[widget.productType][indexFound]
-                  ['quantity']
-              .toString());
+    if (listCurrentProduct.isNotEmpty) {
+      int quantity = 0;
+
+      listCurrentProduct.forEach((element) {
+        quantity += element['quantity'] as int;
+      });
+
+      _controller = TextEditingController(text: quantity.toString());
     } else {
       _controller =
           TextEditingController(text: widget.product!.quantity.toString());

@@ -225,16 +225,22 @@ class _HandleInputState extends State<HandleInput>
 
     orderBooking.productOrder.keys.forEach((key) {
       orderBooking.productOrder[key].forEach((e) {
-        invoice.orderDetails.add(OrderDetail(
-            id: '0',
-            productId: e['id'],
-            productName: e['name'],
-            price: e['price'],
-            amount: e['quantity'],
-            serviceImageUrl: e['imageUrl'],
-            productType: e['type'],
-            note: e['note'] ?? '',
-            images: []));
+        int indexFound = invoice.orderDetails
+            .indexWhere((element) => element.productId == e['id']);
+        if (indexFound != -1) {
+          invoice.orderDetails[indexFound].amount++;
+        } else {
+          invoice.orderDetails.add(OrderDetail(
+              id: '0',
+              productId: e['id'],
+              productName: e['name'],
+              price: e['price'],
+              amount: e['quantity'],
+              serviceImageUrl: e['imageUrl'],
+              productType: e['type'],
+              note: e['note'] ?? '',
+              images: []));
+        }
       });
     });
 
