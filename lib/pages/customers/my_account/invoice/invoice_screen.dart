@@ -102,6 +102,8 @@ class _InvoiceScreenState extends State<InvoiceScreen> implements InvoiceView {
         } else {
           return Flexible(
             child: ListView.builder(
+              physics: const BouncingScrollPhysics(
+                  parent: AlwaysScrollableScrollPhysics()),
               controller: scrollController,
               itemCount: snapshot.data!.length + 1,
               itemBuilder: (context, index) {
@@ -150,7 +152,6 @@ class _InvoiceScreenState extends State<InvoiceScreen> implements InvoiceView {
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
     return RefreshIndicator(
-      
       onRefresh: refresh,
       child: Container(
         color: CustomColor.white,

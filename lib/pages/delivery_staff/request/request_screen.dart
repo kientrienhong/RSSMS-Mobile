@@ -60,7 +60,7 @@ class _RequestScreenState extends State<RequestScreen> with RequestScreenView {
     setState(() {});
   }
 
- Widget requestList() {
+  Widget requestList() {
     return StreamBuilder(
       stream: _model.stream,
       builder: (context, AsyncSnapshot snapshot) {
@@ -78,6 +78,8 @@ class _RequestScreenState extends State<RequestScreen> with RequestScreenView {
         } else {
           return Flexible(
             child: ListView.separated(
+              physics: const BouncingScrollPhysics(
+                  parent: AlwaysScrollableScrollPhysics()),
               controller: scrollController,
               separatorBuilder: (context, index) {
                 return CustomSizedBox(
@@ -92,10 +94,21 @@ class _RequestScreenState extends State<RequestScreen> with RequestScreenView {
                     request: snapshot.data[index],
                   );
                 } else if (_model.hasMore!) {
-                  return const Center(
-                    child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.black45),
-                    ),
+                  return Column(
+                    children: [
+                      CustomSizedBox(
+                        context: context,
+                        height: 50,
+                      ),
+                      const SizedBox(
+                        height: 16,
+                        width: 16,
+                        child: CircularProgressIndicator(
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Colors.blue),
+                        ),
+                      ),
+                    ],
                   );
                 } else {
                   return Padding(
@@ -116,7 +129,6 @@ class _RequestScreenState extends State<RequestScreen> with RequestScreenView {
       },
     );
   }
-
 
   @override
   Future<void> refresh() {
