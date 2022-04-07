@@ -228,7 +228,7 @@ class _ScheduleWidgetState extends State<ScheduleWidget>
               onPressViewDetail();
             },
             child: SizedBox(
-              height: deviceSize.height / 3,
+              height: deviceSize.height / 2.8,
               width: deviceSize.width * 3 / 4,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

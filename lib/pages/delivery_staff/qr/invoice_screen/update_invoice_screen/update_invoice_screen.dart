@@ -363,9 +363,10 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                     ),
                     if (!widget.isDone)
                       CustomButton(
-                          height: 16,
+                          height: 20,
                           text: 'Thêm dịch vụ',
-                          width: deviceSize.width * 1 / 3.5,
+                          textSize: 14,
+                          width: deviceSize.width * 1 / 3,
                           onPressFunction: () {
                             showDialog(
                                 context: context,
@@ -412,9 +413,10 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                     ),
                     if (!widget.isDone)
                       CustomButton(
-                          height: 16,
-                          text: 'Thêm phụ kiện',
-                          width: deviceSize.width * 1 / 3.5,
+                           height: 20,
+                          text: 'Thêm dịch vụ',
+                          textSize: 14,
+                          width: deviceSize.width * 1 / 3,
                           onPressFunction: () {
                             showDialog(
                                 context: context,

@@ -93,7 +93,7 @@ class _ProductWidgetState extends State<ProductWidget> implements ProductView {
       curve: Curves.easeOut,
       duration: const Duration(milliseconds: 400),
       height: deviceSize.height > 640
-          ? SizeConfig.blockSizeVertical! * 18 + additionHeight
+          ? SizeConfig.blockSizeVertical! * 19 + additionHeight
           : SizeConfig.blockSizeVertical! * 24 + additionHeight,
       width: deviceSize.width - 32,
       padding: EdgeInsets.only(top: deviceSize.height / 45, left: 16),

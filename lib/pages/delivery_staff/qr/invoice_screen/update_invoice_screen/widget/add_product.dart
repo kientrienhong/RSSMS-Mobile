@@ -163,6 +163,8 @@ class AddProduct extends StatelessWidget {
               height: 20,
               text: "Thêm",
               width: 50,
+              textSize: 12
+              ,
               onPressFunction: () {
                 if (orderDetail == null) {
                   addMainProduct();
