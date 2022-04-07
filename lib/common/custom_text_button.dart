@@ -24,18 +24,16 @@ class CustomTextButton extends Container {
                     valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                   ),
                 )
-              : Flexible(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 4),
-                    child: CustomText(
-                        text: text,
-                        maxLines: 2,
-                        textAlign: TextAlign.center,
-                        fontWeight: FontWeight.bold,
-                        color: textColor,
-                        context: context,
-                        fontSize: fontSize),
-                  ),
-                ),
+              : Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4),
+                child: CustomText(
+                    text: text,
+                    maxLines: 2,
+                    textAlign: TextAlign.center,
+                    fontWeight: FontWeight.bold,
+                    color: textColor,
+                    context: context,
+                    fontSize: fontSize),
+              ),
         );
 }

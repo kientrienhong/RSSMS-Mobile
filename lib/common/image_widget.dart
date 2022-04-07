@@ -196,6 +196,7 @@ class _ImageWidgetState extends State<ImageWidget> {
                           children: [
                             CustomButton(
                                 height: 24,
+                                textSize: 14,
                                 text: 'Thêm hình ảnh',
                                 width: deviceSize.width / 2 - 40,
                                 onPressFunction: () {
@@ -216,6 +217,7 @@ class _ImageWidgetState extends State<ImageWidget> {
                             CustomButton(
                                 height: 24,
                                 text: 'Thêm phụ kiện',
+                                 textSize: 14,
                                 width: deviceSize.width / 2 - 40,
                                 onPressFunction: () {
                                   showDialog(
@@ -243,6 +245,7 @@ class _ImageWidgetState extends State<ImageWidget> {
                             CustomButton(
                                 height: 24,
                                 text: 'Chỉnh sửa kích thước',
+                                 textSize: 14,
                                 width: deviceSize.width / 2 - 40,
                                 onPressFunction: () {
                                   showDialog(
@@ -258,6 +261,7 @@ class _ImageWidgetState extends State<ImageWidget> {
                             CustomButton(
                                 height: 24,
                                 text: 'Xóa',
+                                 textSize: 14,
                                 width: deviceSize.width / 2 - 40,
                                 onPressFunction: () {
                                   widget.deleteItem!(widget.orderDetail.id);
