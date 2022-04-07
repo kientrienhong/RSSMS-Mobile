@@ -143,13 +143,17 @@ class _ImageWidgetState extends State<ImageWidget> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            CustomText(
-                text:
-                    '${widget.orderDetail.productName} (${widget.orderDetail.width ?? 0}m x ${widget.orderDetail.height ?? 0}m x ${widget.orderDetail.length ?? 0}m)',
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                context: context,
-                fontSize: 14),
+            SizedBox(
+              width: deviceSize.width * 2 / 5,
+              child: CustomText(
+                  text:
+                      '${widget.orderDetail.productName} (${widget.orderDetail.width ?? 0}m x ${widget.orderDetail.height ?? 0}m x ${widget.orderDetail.length ?? 0}m)',
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  context: context,
+                  maxLines: 3,
+                  fontSize: 14),
+            ),
             CustomText(
                 text:
                     (widget.orderDetail.images.length).toString() + ' hình ảnh',
@@ -288,12 +292,11 @@ class _ImageWidgetState extends State<ImageWidget> {
                               context: context,
                               height: 16,
                             ),
-                            if (widget.orderDetail.productType ==
-                                constants.HANDY)
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                if (widget.orderDetail.productType ==
+                                    constants.HANDY)
                                   CustomButton(
                                       height: 24,
                                       text: 'Chỉnh sửa kích thước',
@@ -311,20 +314,22 @@ class _ImageWidgetState extends State<ImageWidget> {
                                       textColor: CustomColor.white,
                                       buttonColor: CustomColor.purple,
                                       borderRadius: 4),
-                                  CustomButton(
-                                      height: 24,
-                                      text: 'Xóa',
-                                      width: deviceSize.width / 2 - 40,
-                                      onPressFunction: () {
-                                        widget
-                                            .deleteItem!(widget.orderDetail.id);
-                                      },
-                                      isLoading: false,
-                                      textColor: CustomColor.white,
-                                      buttonColor: CustomColor.red,
-                                      borderRadius: 4),
-                                ],
-                              ),
+                                CustomButton(
+                                    height: 24,
+                                    text: 'Xóa',
+                                    width: widget.orderDetail.productType !=
+                                            constants.HANDY
+                                        ? deviceSize.width - 72
+                                        : deviceSize.width / 2 - 40,
+                                    onPressFunction: () {
+                                      widget.deleteItem!(widget.orderDetail.id);
+                                    },
+                                    isLoading: false,
+                                    textColor: CustomColor.white,
+                                    buttonColor: CustomColor.red,
+                                    borderRadius: 4),
+                              ],
+                            ),
                             CustomSizedBox(
                               context: context,
                               height: 8,

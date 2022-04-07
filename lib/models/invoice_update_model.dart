@@ -9,10 +9,11 @@ class InvoiceUpdateModel {
   bool? _isLoadingUpdateInvoice;
   bool? _isAdditionFee;
   bool? _isCompensation;
+  late String error;
 
-  get isCompensation => this._isCompensation;
+  get isCompensation => _isCompensation;
 
-  set isCompensation(value) => this._isCompensation = value;
+  set isCompensation(value) => _isCompensation = value;
   get isAdditionFee => _isAdditionFee;
 
   set isAdditionFee(value) => _isAdditionFee = value;
@@ -45,6 +46,7 @@ class InvoiceUpdateModel {
   late List<Map<String, dynamic>> listAdditionCost;
   InvoiceUpdateModel(Users user, Invoice invoice) {
     listAdditionCost = [];
+    error = '';
     _isDisableUpdateInvoice = true;
     _isLoadingUpdateInvoice = false;
     _isPaid = invoice.isPaid;

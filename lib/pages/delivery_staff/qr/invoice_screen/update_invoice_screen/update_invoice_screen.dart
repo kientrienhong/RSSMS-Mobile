@@ -71,6 +71,13 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
   }
 
   @override
+  void updateError(String error) {
+    setState(() {
+      _model.error = error;
+    });
+  }
+
+  @override
   void dispose() {
     super.dispose();
     _focusNodeFullname.dispose();
@@ -308,9 +315,7 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                       ),
                     ),
                     CustomText(
-                        text: widget.isDone
-                            ? "Trả đơn hàng"
-                            : "Cập nhật đơn hàng",
+                        text: widget.isDone ? "Trả đơn hàng" : "Tạo đơn hàng",
                         color: Colors.black,
                         context: context,
                         fontWeight: FontWeight.bold,
@@ -413,7 +418,7 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                     ),
                     if (!widget.isDone)
                       CustomButton(
-                           height: 20,
+                          height: 20,
                           text: 'Thêm dịch vụ',
                           textSize: 14,
                           width: deviceSize.width * 1 / 3,
@@ -583,6 +588,27 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                             : (val) => {})
                   ],
                 ),
+                if (_model.error.isNotEmpty)
+                  SizedBox(
+                    width: double.infinity,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        CustomText(
+                          text: _model.error,
+                          textAlign: TextAlign.center,
+                          color: CustomColor.red,
+                          context: context,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        CustomSizedBox(
+                          context: context,
+                          height: 16,
+                        )
+                      ],
+                    ),
+                  ),
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [

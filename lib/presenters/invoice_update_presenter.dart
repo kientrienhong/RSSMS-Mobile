@@ -191,6 +191,8 @@ class InvoiceUpdatePresenter {
       var response = await model.createOrder(dataRequest, user.idToken!);
       if (response.statusCode == 200) {
         return true;
+      } else if (response.statusCode == 400) {
+        view.updateError(jsonDecode(response.body)['error']['message']);
       }
     } catch (e) {
       throw Exception(e);

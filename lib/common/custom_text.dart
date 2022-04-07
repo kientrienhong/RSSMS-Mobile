@@ -21,6 +21,7 @@ class CustomText extends Text {
             style: TextStyle(
                 fontWeight: fontWeight,
                 color: color,
+                height: 1.2,
                 fontFamily: 'Helvetica',
                 fontSize: MediaQuery.of(context).size.width /
                     (widthMockUp / fontSize)));
