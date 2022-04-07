@@ -84,6 +84,7 @@ class _RequestScreenState extends State<RequestScreen> with RequestScreenView {
               physics: const BouncingScrollPhysics(
                   parent: AlwaysScrollableScrollPhysics()),
               controller: scrollController,
+              
               separatorBuilder: (context, index) {
                 return CustomSizedBox(
                   context: context,
