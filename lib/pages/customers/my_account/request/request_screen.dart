@@ -49,9 +49,11 @@ class _RequestScreenState extends State<RequestScreen> with RequestScreenView {
 
   @override
   void updateLoadingRequest() {
-    setState(() {
-      _model.isLoadingRequest = !_model.isLoadingRequest!;
-    });
+    if (mounted) {
+      setState(() {
+        _model.isLoadingRequest = !_model.isLoadingRequest!;
+      });
+    }
   }
 
   @override

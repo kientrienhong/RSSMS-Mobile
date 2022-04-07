@@ -32,6 +32,7 @@ class _HandyTabState extends State<HandyTabUnwidely> {
             product: e,
           ))
       .toList();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -54,68 +55,72 @@ class _HandyTabState extends State<HandyTabUnwidely> {
                 .map((e) => e.copyWith(quantity: 0))
                 .toList();
 
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 16,
-        ),
-        child: Column(children: [
-          ListView(
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 16,
+      ),
+      child: Column(children: [
+        Form(
+          key: _formKey,
+          child: ListView(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             children: mapProductWidget(listProduct),
           ),
-          CustomSizedBox(
-            context: context,
-            height: 8,
+        ),
+        CustomSizedBox(
+          context: context,
+          height: 8,
+        ),
+        Row(
+          children: [
+            CustomText(
+                text: 'Phụ kiện ',
+                color: CustomColor.blue,
+                fontWeight: FontWeight.bold,
+                context: context,
+                fontSize: 24),
+            CustomText(
+                text: 'đóng gói ',
+                color: CustomColor.black[3]!,
+                context: context,
+                fontWeight: FontWeight.bold,
+                fontSize: 24)
+          ],
+        ),
+        CustomSizedBox(
+          context: context,
+          height: 8,
+        ),
+        GridView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            childAspectRatio: 0.6,
+            crossAxisSpacing: 16.0,
           ),
-          Row(
-            children: [
-              CustomText(
-                  text: 'Phụ kiện ',
-                  color: CustomColor.blue,
-                  fontWeight: FontWeight.bold,
-                  context: context,
-                  fontSize: 24),
-              CustomText(
-                  text: 'đóng gói ',
-                  color: CustomColor.black[3]!,
-                  context: context,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 24)
-            ],
-          ),
-          CustomSizedBox(
-            context: context,
-            height: 8,
-          ),
-          GridView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              childAspectRatio: 0.6,
-              crossAxisSpacing: 16.0,
-            ),
-            itemBuilder: (ctx, i) {
-              return AccessoryWidget(
-                product: listAccessory[i],
-              );
-            },
-            itemCount: listAccessory.length,
-          ),
-          CustomSizedBox(
-            context: context,
-            height: 8,
-          ),
-          CustomButton(
-              height: 24,
-              text: 'Đặt',
-              width: double.infinity,
-              onPressFunction: () {
+          itemBuilder: (ctx, i) {
+            return AccessoryWidget(
+              product: listAccessory[i],
+            );
+          },
+          itemCount: listAccessory.length,
+        ),
+        CustomSizedBox(
+          context: context,
+          height: 8,
+        ),
+        CustomButton(
+            height: 24,
+            text: 'Đặt',
+            width: double.infinity,
+            onPressFunction: () {
+              if (_formKey.currentState!.validate()) {
                 OrderBooking orderBooking =
                     Provider.of<OrderBooking>(context, listen: false);
-                List<dynamic> listBooking = orderBooking.productOrder!['product'];
+                List<dynamic> listBooking =
+                    orderBooking.productOrder!['product'];
                 if (listBooking.isNotEmpty) {
                   showDialog(
                       context: context,
@@ -141,17 +146,17 @@ class _HandyTabState extends State<HandyTabUnwidely> {
                         );
                       });
                 }
-              },
-              isLoading: false,
-              textColor: CustomColor.white,
-              buttonColor: CustomColor.blue,
-              borderRadius: 6),
-          CustomSizedBox(
-            context: context,
-            height: 88,
-          ),
-        ]),
-      ),
+              }
+            },
+            isLoading: false,
+            textColor: CustomColor.white,
+            buttonColor: CustomColor.blue,
+            borderRadius: 6),
+        CustomSizedBox(
+          context: context,
+          height: 88,
+        ),
+      ]),
     );
   }
 }

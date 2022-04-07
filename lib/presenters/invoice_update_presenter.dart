@@ -72,8 +72,10 @@ class InvoiceUpdatePresenter {
     invoice.orderDetails.forEach((element) {
       if (element.productType == HANDY || element.productType == UNWEILDY) {
         price += element.price * (invoice.durationDays / 30).ceil();
-      } else {
+      } else if (element.productType == ACCESSORY) {
         price += element.price;
+      } else if (element.productType == SELF_STORAGE) {
+        price += element.price * invoice.durationMonths;
       }
 
       element.listAdditionService!.forEach((ele1) {
@@ -121,7 +123,7 @@ class InvoiceUpdatePresenter {
     });
 
     return {
-      "customerId": "c3bb1c0f-0021-4624-ac51-bef0da994eaf",
+      "customerId": invoice.customerId,
       "requestId": invoice.id,
       "deliveryAddress": invoice.deliveryAddress,
       "returnAddress": invoice.addressReturn,

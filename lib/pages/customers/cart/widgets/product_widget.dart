@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
+import 'package:rssms/helpers/validator.dart';
 import 'package:rssms/models/entity/order_booking.dart';
 import 'package:rssms/models/entity/product.dart';
 import 'package:rssms/pages/customers/cart/widgets/info_pop_up.dart';
@@ -74,15 +75,26 @@ class _ProductWidgetState extends State<ProductWidget> implements ProductView {
   @override
   Widget build(BuildContext context) {
     String unit = widget.product!.unit == 'quantity' ? 'cái' : 'tháng';
-
+    OrderBooking orderBooking =
+        Provider.of<OrderBooking>(context, listen: false);
+    List<dynamic> listProduct = orderBooking.productOrder!['product']
+        .where((e) => e['id'] == widget.product!.id)
+        .toList();
     final deviceSize = MediaQuery.of(context).size;
     SizeConfig().init(context);
+    String findInitialValue(int index) {
+      final foundItem = orderBooking.productOrder!['product']!.indexWhere(
+        (e) => e['idOfList'].toString() == '${widget.product!.id}-${index + 1}',
+      );
+      return orderBooking.productOrder!['product']![foundItem]['note'];
+    }
+
     return AnimatedContainer(
       curve: Curves.easeOut,
       duration: const Duration(milliseconds: 400),
       height: deviceSize.height > 640
-          ? SizeConfig.blockSizeVertical! * 20 + additionHeight
-          : SizeConfig.blockSizeVertical! * 25 + additionHeight,
+          ? SizeConfig.blockSizeVertical! * 19 + additionHeight
+          : SizeConfig.blockSizeVertical! * 24 + additionHeight,
       width: deviceSize.width - 32,
       padding: EdgeInsets.only(top: deviceSize.height / 45, left: 16),
       margin: const EdgeInsets.symmetric(vertical: 16),
@@ -165,8 +177,8 @@ class _ProductWidgetState extends State<ProductWidget> implements ProductView {
                     width: (deviceSize.width - 32) / 8,
                     child: QuantityWidget(
                       product: widget.product,
-                      width: deviceSize.width / 9,
-
+                      width: deviceSize.width / 8,
+                      productType: 'product',
                       addQuantity: () =>
                           onAddQuantity(SizeConfig.blockSizeVertical!),
                       minusQuantity: () =>
@@ -197,9 +209,8 @@ class _ProductWidgetState extends State<ProductWidget> implements ProductView {
                     bottom: SizeConfig.blockSizeVertical! * 1),
                 height: SizeConfig.blockSizeVertical! * 6,
                 child: TextFormField(
+                  validator: (value) => Validator.notEmpty(value),
                   onChanged: (text) {
-                    OrderBooking orderBooking =
-                        Provider.of<OrderBooking>(context, listen: false);
                     final foundItem =
                         orderBooking.productOrder!['product']!.indexWhere(
                       (e) =>
@@ -209,6 +220,7 @@ class _ProductWidgetState extends State<ProductWidget> implements ProductView {
                     orderBooking.productOrder!['product']![foundItem]['note'] =
                         text;
                   },
+                  initialValue: findInitialValue(index),
                   textAlignVertical: TextAlignVertical.center,
                   decoration: InputDecoration(
                     contentPadding:
@@ -221,7 +233,7 @@ class _ProductWidgetState extends State<ProductWidget> implements ProductView {
                   ),
                 ),
               ),
-              itemCount: widget.product!.quantity!,
+              itemCount: listProduct.length,
             ),
           )
       ]),

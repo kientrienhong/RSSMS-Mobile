@@ -8,10 +8,12 @@ class PaymentMethodBookingScreenModel {
   late PAYMENT_METHOD currentIndexPaymentMethod;
   late TextEditingController controllerNote;
   late bool isLoading;
+  late String error;
   PaymentMethodBookingScreenModel() {
     currentIndexPaymentMethod = PAYMENT_METHOD.cash;
     controllerNote = TextEditingController();
     isLoading = false;
+    error = '';
   }
 
   Future<dynamic> createOrder(List<Map<String, dynamic>> listProduct,

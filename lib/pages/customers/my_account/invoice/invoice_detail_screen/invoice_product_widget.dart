@@ -4,6 +4,7 @@ import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/models/entity/invoice.dart';
+import 'package:rssms/models/entity/order_booking.dart';
 import 'package:rssms/models/entity/order_detail.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/product_in_invoice/accessory_widget.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/product_in_invoice/product_widget.dart';
@@ -66,6 +67,12 @@ class InvoiceProductWidget extends StatelessWidget {
     String composationDescription = '';
     double composationFee = 0;
 
+    final test = totalProduct;
+    final test1 = returnDate;
+    final test2 = deliveryDate;
+    final test3 = oCcy.format(totalProduct *
+        (returnDate.difference(deliveryDate).inDays / 30).ceil());
+
     invoice!.orderAdditionalFees.forEach((e) {
       if (e.type == constants.ADDITION_FEE_TYPE.compensationFee.index) {
         composationDescription = e.description;
@@ -82,8 +89,9 @@ class InvoiceProductWidget extends StatelessWidget {
     });
 
     return Container(
-      decoration:
-          BoxDecoration(border: Border.all(color: CustomColor.blue, width: 2)),
+      decoration: BoxDecoration(
+          border: Border.all(color: CustomColor.blue, width: 2),
+          color: CustomColor.white),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         child: Column(
@@ -224,10 +232,14 @@ class InvoiceProductWidget extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     fontSize: 16),
                 CustomText(
-                    text: oCcy.format(totalProduct *
-                            (returnDate.difference(deliveryDate).inDays / 30)
-                                .ceil()) +
-                        " đ",
+                    text: invoice!.typeOrder == TypeOrder.doorToDoor.index
+                        ? oCcy.format(totalProduct *
+                                (returnDate.difference(deliveryDate).inDays /
+                                        30)
+                                    .ceil()) +
+                            " đ"
+                        : oCcy.format(totalProduct * invoice!.durationMonths) +
+                            " đ",
                     color: CustomColor.blue,
                     context: context,
                     fontWeight: FontWeight.bold,
@@ -369,14 +381,22 @@ class InvoiceProductWidget extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     fontSize: 19),
                 CustomText(
-                    text: oCcy.format(totalProduct *
-                                (returnDate.difference(deliveryDate).inDays /
-                                        30)
-                                    .ceil() +
-                            totalAccessory +
-                            totalPackaging +
-                            takingAdditionalFee) +
-                        " đ",
+                    text: invoice!.typeOrder == TypeOrder.doorToDoor.index
+                        ? oCcy.format(totalProduct *
+                                    (returnDate
+                                                .difference(deliveryDate)
+                                                .inDays /
+                                            30)
+                                        .ceil() +
+                                totalAccessory +
+                                totalPackaging +
+                                takingAdditionalFee) +
+                            " đ"
+                        : oCcy.format(totalProduct * invoice!.durationMonths +
+                                totalAccessory +
+                                totalPackaging +
+                                takingAdditionalFee) +
+                            " đ",
                     color: CustomColor.blue,
                     context: context,
                     fontWeight: FontWeight.bold,

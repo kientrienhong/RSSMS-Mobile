@@ -363,9 +363,10 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                     ),
                     if (!widget.isDone)
                       CustomButton(
-                          height: 16,
+                          height: 20,
                           text: 'Thêm dịch vụ',
-                          width: deviceSize.width * 1 / 3.5,
+                          textSize: 14,
+                          width: deviceSize.width * 1 / 3,
                           onPressFunction: () {
                             showDialog(
                                 context: context,
@@ -412,9 +413,10 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                     ),
                     if (!widget.isDone)
                       CustomButton(
-                          height: 16,
-                          text: 'Thêm phụ kiện',
-                          width: deviceSize.width * 1 / 3.5,
+                           height: 20,
+                          text: 'Thêm dịch vụ',
+                          textSize: 14,
+                          width: deviceSize.width * 1 / 3,
                           onPressFunction: () {
                             showDialog(
                                 context: context,
@@ -491,6 +493,7 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                           controller: _model.controllerAdditionFeePrice,
                           isDisable: false,
                           hintText: "Giá tiền",
+                          validator: Validator.notEmpty,
                           textInputType: TextInputType.number,
                           focusNode: _focusNodeAdditionFeePrice,
                           deviceSize: deviceSize),
@@ -548,6 +551,7 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                           controller: _model.controllerCompensationFeePrice,
                           isDisable: false,
                           hintText: "Giá tiền",
+                          validator: Validator.notEmpty,
                           textInputType: TextInputType.number,
                           focusNode: _focusNodeComposentationPrice,
                           deviceSize: deviceSize),
@@ -600,11 +604,9 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                                 break;
                               }
                             }
-                            if (_formKey.currentState!.validate() &&
-                                !emptyImage) {
-                              onClickUpdateOrder();
-                            }
-                            if (emptyImage) {
+                            if (emptyImage &&
+                                invoice.typeOrder ==
+                                    constant.DOOR_TO_DOOR_TYPE_ORDER) {
                               showDialog(
                                   context: context,
                                   builder: (context) {
@@ -622,6 +624,11 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                                       ],
                                     );
                                   });
+                              return;
+                            }
+
+                            if (_formKey.currentState!.validate()) {
+                              onClickUpdateOrder();
                             }
                           },
                           width: deviceSize.width / 2.5,

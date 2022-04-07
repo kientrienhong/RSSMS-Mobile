@@ -116,7 +116,27 @@ class _CreateOrderRequestScreenState extends State<CreateOrderRequestScreen>
                                 context: context,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 17),
-                            statusText
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                statusText,
+                                Container(
+                                  width: 2,
+                                  height: deviceSize.height / 40,
+                                  color: CustomColor.black,
+                                  margin:
+                                      const EdgeInsets.symmetric(horizontal: 4),
+                                ),
+                                CustomText(
+                                    text: mapIsPaid[_model.invoice.isPaid]![
+                                        'name']! as String,
+                                    color: mapIsPaid[_model.invoice.isPaid]![
+                                        'color'] as Color,
+                                    context: context,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16),
+                              ],
+                            ),
                           ],
                         ),
                         CustomSizedBox(
@@ -214,32 +234,6 @@ class _CreateOrderRequestScreenState extends State<CreateOrderRequestScreen>
                           context: context,
                           height: 24,
                         ),
-                        // Row(
-                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        //   children: [
-                        //     CustomText(
-                        //         text: "Thông tin vận chuyển:",
-                        //         color: Colors.black,
-                        //         context: context,
-                        //         fontWeight: FontWeight.bold,
-                        //         fontSize: 17),
-                        //     CustomButton(
-                        //         height: 24,
-                        //         isLoading: false,
-                        //         text: 'Xem thêm',
-                        //         textColor: CustomColor.white,
-                        //         onPressFunction: () {
-                        //           Navigator.push(
-                        //               context,
-                        //               MaterialPageRoute(
-                        //                   builder: (context) =>
-                        //                       const TimeLineScreen()));
-                        //         },
-                        //         width: deviceSize.width / 3,
-                        //         buttonColor: CustomColor.blue,
-                        //         borderRadius: 6),
-                        //   ],
-                        // ),
                         SizedBox(
                           width: deviceSize.width,
                           child: Column(

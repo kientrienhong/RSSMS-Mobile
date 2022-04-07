@@ -163,6 +163,7 @@ class _ItemWidgetState extends State<ItemWidget> implements ItemWidgetView {
           ),
           QuantityWidget(
             product: widget.product,
+            productType: widget.nameType,
             width: deviceSize.width / 10,
             minusQuantity: onMinusQuantity,
             addQuantity: onAddQuantity,

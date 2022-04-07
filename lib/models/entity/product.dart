@@ -13,6 +13,9 @@ class Product {
   final String unit;
   final String tooltip;
   final int status;
+  final double width;
+  final double length;
+  final double height;
   final String imageUrl;
   Product({
     int? this.quantity,
@@ -25,6 +28,9 @@ class Product {
     required this.unit,
     required this.tooltip,
     required this.status,
+    required this.length,
+    required this.height,
+    required this.width,
     required this.imageUrl,
   });
 
@@ -40,6 +46,9 @@ class Product {
     String? tooltip,
     int? status,
     String? imageUrl,
+    double? width,
+    double? length,
+    double? height,
   }) {
     return Product(
       id: id ?? this.id,
@@ -49,6 +58,9 @@ class Product {
       size: size ?? this.size,
       description: description ?? this.description,
       type: type ?? this.type,
+      width: width ?? this.width,
+      height: height ?? this.height,
+      length: length ?? this.length,
       unit: unit ?? this.unit,
       tooltip: tooltip ?? this.tooltip,
       status: status ?? this.status,
@@ -76,6 +88,9 @@ class Product {
       id: map['id'] ?? '',
       name: map['name'] ?? '',
       price: map['price']?.toInt() ?? 0,
+      height: map['height']?.toDouble() ?? 0,
+      length: map['length']?.toDouble() ?? 0,
+      width: map['width']?.toDouble() ?? 0,
       size: map['size'] ?? '',
       description: map['description'] ?? '',
       type: map['type']?.toInt() ?? 0,

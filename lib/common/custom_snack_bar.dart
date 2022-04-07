@@ -8,7 +8,7 @@ class CustomSnackBar {
       required String message,
       required Color color}) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      duration: const Duration(milliseconds: 1500),
+      duration: const Duration(milliseconds: 2500),
       content: Text(
         message,
         style: const TextStyle(color: CustomColor.white),

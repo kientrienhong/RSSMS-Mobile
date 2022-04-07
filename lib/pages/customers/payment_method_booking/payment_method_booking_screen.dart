@@ -50,6 +50,13 @@ class _PaymentMethodBookingScreenState extends State<PaymentMethodBookingScreen>
   }
 
   @override
+  void updateError(String error) {
+    setState(() {
+      _model.error = error;
+    });
+  }
+
+  @override
   void onClickPayment() async {
     try {
       OrderBooking orderBooking =
@@ -171,10 +178,27 @@ class _PaymentMethodBookingScreenState extends State<PaymentMethodBookingScreen>
                 context: context,
                 height: 16,
               ),
-              CustomSizedBox(
-                context: context,
-                height: 16,
-              ),
+              if (_model.error.isNotEmpty)
+                SizedBox(
+                  width: double.infinity,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      CustomText(
+                        text: _model.error,
+                        textAlign: TextAlign.center,
+                        color: CustomColor.red,
+                        context: context,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      CustomSizedBox(
+                        context: context,
+                        height: 16,
+                      )
+                    ],
+                  ),
+                ),
               SizedBox(
                 width: double.infinity,
                 child: Center(
