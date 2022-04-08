@@ -6,6 +6,8 @@ class DialogAddServiceModel {
   late List<Product> listProductBulky;
   late List<Product> listProductAccessory;
   late List<Product> listProductServices;
+  late List<Product> listProductStorages;
+
   late bool isSeperate;
   String? idOrderDetail;
   late bool isLoading;
@@ -15,6 +17,7 @@ class DialogAddServiceModel {
     listProductAccessory = [];
     listProductServices = [];
     isLoading = true;
+    listProductStorages = [];
     idOrderDetail = id;
     isSeperate = isSeperateAgru;
   }

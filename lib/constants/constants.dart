@@ -81,10 +81,11 @@ const LIST_STATUS_ORDER = [
   {'color': CustomColor.red, 'name': 'Đã Hủy'},
   {'color': CustomColor.blue, 'name': 'Đang vận chuyển'},
   {'color': CustomColor.green, 'name': 'Đã về kho'},
-  {'color': CustomColor.red, 'name': 'Đã hết hạn'},
+  {'color': CustomColor.orange, 'name': 'Sắp hết hạn'},
+  {'color': CustomColor.red, 'name': 'Đã quá hạn'},
+  {'color': CustomColor.red, 'name': 'Đang thanh lý'},
   {'color': CustomColor.green, 'name': 'Đã hoàn tất'},
-  {'color': CustomColor.purple, 'name': 'Đang vận chuyển (trả)'},
-  {'color': CustomColor.green, 'name': 'Đã hoàn tất'},
+  {'color': CustomColor.red, 'name': 'Đã thanh lý'},
 ];
 
 const LIST_ICON_REQUEST = [

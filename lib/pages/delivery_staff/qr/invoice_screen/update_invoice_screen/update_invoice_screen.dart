@@ -507,32 +507,36 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                 Column(
                   children: buildListAdditionCost(),
                 ),
-                CustomSizedBox(
-                  context: context,
-                  height: 16,
-                ),
                 if (widget.isDone)
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  Column(
                     children: [
-                      CustomText(
-                        text: "Bồi thường",
-                        color: CustomColor.black,
+                      CustomSizedBox(
                         context: context,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
+                        height: 16,
                       ),
-                      Checkbox(
-                          fillColor:
-                              MaterialStateProperty.all(CustomColor.blue),
-                          value: _model.isCompensation,
-                          onChanged: widget.isView == false
-                              ? (value) {
-                                  setState(() {
-                                    _model.isCompensation = value;
-                                  });
-                                }
-                              : (val) => {})
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          CustomText(
+                            text: "Bồi thường",
+                            color: CustomColor.black,
+                            context: context,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          Checkbox(
+                              fillColor:
+                                  MaterialStateProperty.all(CustomColor.blue),
+                              value: _model.isCompensation,
+                              onChanged: widget.isView == false
+                                  ? (value) {
+                                      setState(() {
+                                        _model.isCompensation = value;
+                                      });
+                                    }
+                                  : (val) => {})
+                        ],
+                      ),
                     ],
                   ),
                 if (_model.isCompensation)
@@ -587,6 +591,10 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                               }
                             : (val) => {})
                   ],
+                ),
+                CustomSizedBox(
+                  context: context,
+                  height: 8,
                 ),
                 if (_model.error.isNotEmpty)
                   SizedBox(

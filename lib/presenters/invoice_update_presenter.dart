@@ -189,6 +189,7 @@ class InvoiceUpdatePresenter {
     try {
       view.updateLoadingUpdate();
       final dataRequest = await formatDataCreateOrder(invoice);
+      log(jsonEncode(dataRequest));
       var response = await model.createOrder(dataRequest, user.idToken!);
       if (response.statusCode == 200) {
         return true;
