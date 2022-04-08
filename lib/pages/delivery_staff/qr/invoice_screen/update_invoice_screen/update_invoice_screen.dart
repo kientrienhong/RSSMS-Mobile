@@ -660,7 +660,25 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                                   });
                               return;
                             }
+                            bool isValid = true;
+                            invoice.orderDetails.forEach((element) {
+                              if (element.height == 0 &&
+                                  element.width == 0 &&
+                                  element.length == 0) {
+                                updateError(
+                                    'Vui lòng nhập kích thước của các dịch vụ');
+                                isValid = false;
+                              }
+                            });
 
+                            if (!isValid) {
+                              return;
+                            }
+
+                            if (!_model.getIsPaid) {
+                              updateError('Vui lòng đã thanh toán hóa đơn');
+                              return;
+                            }
                             if (_formKey.currentState!.validate()) {
                               onClickUpdateOrder();
                             }
@@ -676,7 +694,10 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                           onPressFunction: () {
                             Invoice invoice =
                                 Provider.of<Invoice>(context, listen: false);
-                            if (_model.isAdditionFee && !widget.isDone) {
+                            if (_model.isAdditionFee &&
+                                !widget.isDone &&
+                                _model.controllerAdditionFeePrice.text
+                                    .isNotEmpty) {
                               final listTemp = [...invoice.orderAdditionalFees];
                               listTemp.add(OrderAdditionalFee(
                                   type: constant.ADDITION_FEE_TYPE
@@ -716,12 +737,15 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                                   invoice: invoice.copyWith(
                                       orderAdditionalFees: listTemp));
                             }
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => NewInvoiceScreen(
-                                          invoice: invoice,
-                                        )));
+
+                            if (_formKey.currentState!.validate()) {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => NewInvoiceScreen(
+                                            invoice: invoice,
+                                          )));
+                            }
                           },
                           width: deviceSize.width / 2.5,
                           buttonColor: CustomColor.green,

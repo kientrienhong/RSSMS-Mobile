@@ -177,7 +177,7 @@ class InvoiceUpdatePresenter {
     Map<String, dynamic> result = {
       "orderId": invoice.id,
       "requestId": invoice.requestId,
-      'status': 4,
+      'status': 6,
       "orderAdditionalFees":
           listOrderAdditionFee?.map((e) => e.toMap()).toList()
     };

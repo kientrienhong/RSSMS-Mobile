@@ -119,8 +119,8 @@ const LIST_TYPE_REQUES_DELIVERY = {
 };
 
 const List<Map<String, String>> TAB_DOOR_TO_DOOR = [
-  {"name": "Ít đồ"},
-  {"name": "Nhiều đồ"}
+  {"name": "Gửi theo loại"},
+  {"name": "Gửi theo diện tích"}
 ];
 
 const List<String> LIST_TIME_PICK_UP = [
@@ -162,6 +162,9 @@ const List<Map<String, dynamic>> LIST_PAYMENT_METHOD_CHOICES = [
 ];
 
 Map<bool, Map<String, dynamic>> mapIsPaid = {
-  false: {'name': 'Chưa thanh toán', 'color': CustomColor.black[2]},
+  false: {
+    'name': 'Chưa thanh toán',
+    'color': CustomColor.black[3],
+  },
   true: {'name': 'Đã thanh toán', 'color': CustomColor.blue}
 };
