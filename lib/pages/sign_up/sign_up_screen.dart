@@ -6,11 +6,13 @@ import 'package:rssms/common/custom_input_date.dart';
 import 'package:rssms/common/custom_radio_button.dart';
 import 'package:rssms/helpers/validator.dart';
 import 'package:rssms/models/entity/user.dart';
+import 'package:rssms/models/role_model.dart';
 import 'package:rssms/models/signup_model.dart';
 import 'package:rssms/common/custom_bottom_navigation.dart';
 import 'package:rssms/pages/customers/cart/cart_screen.dart';
 import 'package:rssms/pages/customers/my_account/my_account.dart';
 import 'package:rssms/pages/customers/notification/notification_screen.dart';
+import 'package:rssms/presenters/role_presenter.dart';
 import 'package:rssms/presenters/signup_presenters.dart';
 import 'package:rssms/views/signup_view.dart';
 import 'package:rssms/constants/constants.dart' as constant;
@@ -88,10 +90,11 @@ class FormSignUp extends StatefulWidget {
 
 class _FormSignUpState extends State<FormSignUp> implements SignUpView {
   late SignUpPresenter signupPresenter;
+  late RolePresenter rolePresenter;
   late FirebaseMessaging _firebaseMessaging;
   String? _token;
   late SignUpModel _model;
-
+  RoleModel? _roleModel;
   final _focusNodeEmail = FocusNode();
   final _focusNodePassword = FocusNode();
   final _focusNodeConfirmPassword = FocusNode();
@@ -116,7 +119,10 @@ class _FormSignUpState extends State<FormSignUp> implements SignUpView {
     _firebaseMessaging = FirebaseMessaging.instance;
     firebaseCloudMessagingListeners();
     signupPresenter = SignUpPresenter();
+    rolePresenter = RolePresenter();
+    _roleModel = rolePresenter.model;
     signupPresenter.setView(this);
+    rolePresenter.loadListRole();
     _model = signupPresenter.model;
     _model.controllerEmail.addListener(onChangeInput);
     _model.controllerPassword.addListener(onChangeInput);
@@ -156,7 +162,7 @@ class _FormSignUpState extends State<FormSignUp> implements SignUpView {
           name: name,
           phone: phone);
       Users result =
-          await signupPresenter.handleSignUp(user, password, _token!);
+          await signupPresenter.handleSignUp(user, password, _token!, _roleModel!.role!.id);
 
       if (result != null) {
         Users user = Provider.of<Users>(context, listen: false);
@@ -251,7 +257,7 @@ class _FormSignUpState extends State<FormSignUp> implements SignUpView {
               labelText: 'Họ và tên',
               isDisable: false,
               focusNode: _focusNodeName,
-              nextNode: _focusNodeEmail,
+              nextNode: _focusNodeBirthDate,
               validator: Validator.checkFullname,
               controller: _model.controllerName,
             ),
@@ -291,7 +297,7 @@ class _FormSignUpState extends State<FormSignUp> implements SignUpView {
               child: CustomOutLineInputDateTime(
                 deviceSize: widget.deviceSize,
                 labelText: 'Năm sinh',
-                isDisable: true,
+                isDisable: false,
                 focusNode: _focusNodeBirthDate,
                 nextNode: _focusNodeEmail,
                 controller: _model.controllerBirthDate,

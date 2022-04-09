@@ -89,17 +89,35 @@ class _ProfileScreenState extends State<MyAccountScreen>
           bottom: TabBar(
             tabs: [
               TabButton(
-                text: "Thông Tin",
+                text: CustomText(
+                  text: "Thông tin",
+                  color: CustomColor.black,
+                  context: context,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
                 pageNumber: 0,
                 onPressed: () {},
               ),
               TabButton(
-                text: "Đơn Hàng",
+                text: CustomText(
+                  text: "Đơn hàng",
+                  color: CustomColor.black,
+                  context: context,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
                 pageNumber: 1,
                 onPressed: () {},
               ),
               TabButton(
-                text: "Yêu Cầu",
+                text: CustomText(
+                  text: "Yêu cầu",
+                  color: CustomColor.black,
+                  context: context,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
                 pageNumber: 2,
                 onPressed: () {},
               )

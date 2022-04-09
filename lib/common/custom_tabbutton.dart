@@ -3,11 +3,10 @@ import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_text.dart';
 
 class TabButton extends StatelessWidget {
-  final String text;
   final int? selectedPage;
   final int? pageNumber;
   final Function() onPressed;
-
+  final Widget? text;
   const TabButton(
       {Key? key,
       required this.text,
@@ -24,7 +23,7 @@ class TabButton extends StatelessWidget {
         curve: Curves.fastLinearToSlowEaseIn,
    
         padding: const EdgeInsets.symmetric(vertical: 10),
-        child: CustomText(text: text, color: CustomColor.black, context: context, fontSize: 16),
+        child: text,
       ),
     );
   }

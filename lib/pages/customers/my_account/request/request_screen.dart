@@ -58,7 +58,7 @@ class _RequestScreenState extends State<RequestScreen> with RequestScreenView {
 
   @override
   void setChangeList() {
-    setState(() {});
+    if (mounted) setState(() {});
   }
 
   Widget requestList() {

@@ -101,6 +101,8 @@ class _InvoiceScreenState extends State<InvoiceScreen> implements InvoiceView {
         } else {
           return Flexible(
             child: ListView.builder(
+              physics: const BouncingScrollPhysics(
+                  parent: AlwaysScrollableScrollPhysics()),
               controller: scrollController,
               itemCount: snapshot.data!.length + 1,
               itemBuilder: (context, index) {

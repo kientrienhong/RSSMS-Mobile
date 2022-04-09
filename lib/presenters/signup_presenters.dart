@@ -35,15 +35,15 @@ class SignUpPresenter {
   }
 
   Future<dynamic> handleSignUp(
-      Users user, String password, String deviceToken) async {
+      Users user, String password, String deviceToken, String roleId) async {
     _view!.updateLoading();
     try {
-      final response = await model.signUp(user, password, deviceToken);
+      final response = await model.signUp(user, password, deviceToken, roleId);
 
       if (response.statusCode == 200) {
         return Users.fromMap(jsonDecode(response.body));
       }
-      print(response.body);
+      print(response.body["error"]["message"]);
       throw Exception(response.body.toString());
     } catch (e) {
       throw Exception(e.toString());

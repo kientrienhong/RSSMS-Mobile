@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_tabbutton.dart';
+import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/pages/delivery_staff/request/request_screen.dart';
 import 'package:rssms/pages/log_in/log_in_screen.dart';
 import 'package:rssms/pages/profile/profile_screen.dart';
@@ -23,6 +24,41 @@ class _MyAccountDeliveryScreenState extends State<MyAccountDeliveryScreen>
     super.initState();
   }
 
+  onPressLogout(BuildContext context) {
+    Widget cancelButton = TextButton(
+      child: const Text("Đồng ý"),
+      onPressed: () {
+        setState(() {
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => LogInScreen()),
+              (Route<dynamic> route) => false);
+        });
+      },
+    );
+    Widget continueButton = TextButton(
+      child: const Text("Không"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+
+    AlertDialog alert = AlertDialog(
+      title: const Text("Thông báo"),
+      content: const Text("Bạn chắc chắn muốn đăng xuất?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,12 +72,7 @@ class _MyAccountDeliveryScreenState extends State<MyAccountDeliveryScreen>
                 title: const Text("Thông tin tài khoản"),
                 actions: <Widget>[
                   GestureDetector(
-                      onTap: () => {
-                            Navigator.of(context).pushAndRemoveUntil(
-                                MaterialPageRoute(
-                                    builder: (context) => LogInScreen()),
-                                (Route<dynamic> route) => false)
-                          },
+                      onTap: () => {onPressLogout(context)},
                       child: Image.asset('assets/images/logout.png'))
                 ],
                 titleTextStyle: const TextStyle(
@@ -65,12 +96,24 @@ class _MyAccountDeliveryScreenState extends State<MyAccountDeliveryScreen>
                       fontSize: 18),
                   tabs: <TabButton>[
                     TabButton(
-                      text: "Thông Tin",
+                      text: CustomText(
+                        text: "Thông tin",
+                        color: CustomColor.black,
+                        context: context,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
                       pageNumber: 0,
                       onPressed: () {},
                     ),
                     TabButton(
-                      text: "Yêu Cầu",
+                      text: CustomText(
+                        text: "Yêu cầu",
+                        color: CustomColor.black,
+                        context: context,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
                       pageNumber: 1,
                       onPressed: () {},
                     )
