@@ -185,7 +185,6 @@ class _ScheduleWidgetState extends State<ScheduleWidget>
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
-    final test = widget.invoice;
     DateTime deliveryDateTime = DateTime.parse(widget.invoice.deliveryDate);
     bool isDelivery = deliveryDateTime.isAfter(widget.firstDayOfWeek) &&
         deliveryDateTime.isBefore(widget.endDayOfWeek);

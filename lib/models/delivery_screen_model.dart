@@ -3,6 +3,7 @@ import 'package:rssms/models/entity/invoice.dart';
 
 class DeliveryScreenModel {
   late bool isLoadingStartDelivery;
+  late bool isLoadingRefresh;
   late Map<String, List<Invoice>> listInvoice;
   late int currentIndex;
   late List<DateTime> listDateTime;
@@ -12,6 +13,7 @@ class DeliveryScreenModel {
     listInvoice = {};
     currentIndex = -1;
     isLoadingStartDelivery = false;
+    isLoadingRefresh = false;
     listDateTime = [];
   }
 
