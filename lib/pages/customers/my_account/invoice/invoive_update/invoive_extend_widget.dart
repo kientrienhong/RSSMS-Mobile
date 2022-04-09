@@ -3,15 +3,12 @@ import 'package:flutter_braintree/flutter_braintree.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_bottom_navigation.dart';
-import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
-import 'package:rssms/common/custom_input_date.dart';
-import 'package:rssms/common/custom_radio_button.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_snack_bar.dart';
 import 'package:rssms/common/custom_text.dart';
+import 'package:rssms/helpers/format_date.dart';
 import 'package:rssms/models/entity/invoice.dart';
-import 'package:rssms/models/entity/order_booking.dart';
 import 'package:rssms/models/entity/order_detail.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/models/invoice_extends_model.dart';
@@ -78,7 +75,8 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
     listProduct = listTemp
         .where((element) =>
             element.productType == constants.HANDY ||
-            element.productType == constants.UNWEILDY)
+            element.productType == constants.UNWEILDY ||
+            element.productType == constants.SELF_STORAGE)
         .toList();
     listProduct!.forEach((element) {
       totalProduct += (element.price * element.amount);
@@ -437,8 +435,8 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
                           fontWeight: FontWeight.bold,
                           fontSize: 18)
                       : CustomText(
-                          text: returnDateNew.toString().substring(
-                              0, returnDateNew.toString().indexOf(" ")),
+                          text: FormatDate.formatToVNDay(
+                              returnDateNew.toString()),
                           color: CustomColor.black,
                           context: context,
                           fontWeight: FontWeight.bold,

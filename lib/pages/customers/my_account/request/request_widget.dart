@@ -110,7 +110,8 @@ class RequestWidget extends StatelessWidget {
                 context: context,
                 height: 8,
               ),
-              if (!request.isCustomerDelivery)
+              if (!request.isCustomerDelivery &&
+                  request.typeOrder == constants.DOOR_TO_DOOR_TYPE_ORDER)
                 Row(
                   children: [
                     CustomText(

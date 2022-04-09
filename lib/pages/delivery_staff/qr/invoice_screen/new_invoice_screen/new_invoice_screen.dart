@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
+import 'package:rssms/helpers/format_date.dart';
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/order_detail.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/invoice_info_widget.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/invoice_product_widget.dart';
 import 'package:rssms/constants/constants.dart' as constants;
+import 'package:rssms/pages/time_line/time_line_screen.dart';
 
 class NewInvoiceScreen extends StatelessWidget {
   Invoice invoice;
@@ -91,7 +94,129 @@ class NewInvoiceScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              InvoiceInfoWidget(deviceSize: deviceSize, invoice: newInvoice),
+              Column(children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CustomText(
+                        text: "Ngày nhận hàng:",
+                        color: Colors.black,
+                        context: context,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17),
+                    CustomText(
+                        text: FormatDate.formatToVNDay(invoice.deliveryDate),
+                        color: Colors.black,
+                        context: context,
+                        fontSize: 16),
+                  ],
+                ),
+                CustomSizedBox(
+                  context: context,
+                  height: 24,
+                ),
+                if (invoice.typeOrder == constants.DOOR_TO_DOOR_TYPE_ORDER)
+                  Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          CustomText(
+                              text: "Khung giờ lấy hàng:",
+                              color: Colors.black,
+                              context: context,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 17),
+                          CustomText(
+                              text: invoice.deliveryTime.isEmpty
+                                  ? 'Khách tự vận chuyển'
+                                  : invoice.deliveryTime,
+                              color: Colors.black,
+                              context: context,
+                              fontSize: 16),
+                        ],
+                      ),
+                      CustomSizedBox(
+                        context: context,
+                        height: 24,
+                      ),
+                    ],
+                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CustomText(
+                        text: "Ngày trả hàng:",
+                        color: Colors.black,
+                        context: context,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17),
+                    CustomText(
+                        text: FormatDate.formatToVNDay(invoice.returnDate),
+                        color: Colors.black,
+                        context: context,
+                        fontSize: 16),
+                  ],
+                ),
+                CustomSizedBox(
+                  context: context,
+                  height: 24,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CustomText(
+                        text: "Địa chỉ:",
+                        color: Colors.black,
+                        context: context,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17),
+                    SizedBox(
+                      width: deviceSize.width * 1.5 / 3,
+                      child: CustomText(
+                        text: invoice.deliveryAddress,
+                        color: CustomColor.black,
+                        textAlign: TextAlign.right,
+                        context: context,
+                        maxLines: 2,
+                        fontSize: 16,
+                        textOverflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+                CustomSizedBox(
+                  context: context,
+                  height: 24,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CustomText(
+                        text: "Thông tin vận chuyển:",
+                        color: Colors.black,
+                        context: context,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17),
+                    CustomButton(
+                        height: 24,
+                        isLoading: false,
+                        text: 'Xem thêm',
+                        textColor: CustomColor.white,
+                        onPressFunction: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => TimeLineScreen(
+                                        invoiceId: invoice.id,
+                                      )));
+                        },
+                        width: deviceSize.width / 3,
+                        buttonColor: CustomColor.blue,
+                        borderRadius: 6),
+                  ],
+                ),
+              ]),
               SizedBox(
                 width: deviceSize.width,
                 child: Column(

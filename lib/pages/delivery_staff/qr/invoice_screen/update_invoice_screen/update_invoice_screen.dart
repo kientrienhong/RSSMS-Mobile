@@ -71,6 +71,13 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
   }
 
   @override
+  void updateError(String error) {
+    setState(() {
+      _model.error = error;
+    });
+  }
+
+  @override
   void dispose() {
     super.dispose();
     _focusNodeFullname.dispose();
@@ -308,9 +315,7 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                       ),
                     ),
                     CustomText(
-                        text: widget.isDone
-                            ? "Trả đơn hàng"
-                            : "Cập nhật đơn hàng",
+                        text: widget.isDone ? "Trả đơn hàng" : "Tạo đơn hàng",
                         color: Colors.black,
                         context: context,
                         fontWeight: FontWeight.bold,
@@ -413,7 +418,7 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                     ),
                     if (!widget.isDone)
                       CustomButton(
-                           height: 20,
+                          height: 20,
                           text: 'Thêm dịch vụ',
                           textSize: 14,
                           width: deviceSize.width * 1 / 3,
@@ -502,32 +507,36 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                 Column(
                   children: buildListAdditionCost(),
                 ),
-                CustomSizedBox(
-                  context: context,
-                  height: 16,
-                ),
                 if (widget.isDone)
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  Column(
                     children: [
-                      CustomText(
-                        text: "Bồi thường",
-                        color: CustomColor.black,
+                      CustomSizedBox(
                         context: context,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
+                        height: 16,
                       ),
-                      Checkbox(
-                          fillColor:
-                              MaterialStateProperty.all(CustomColor.blue),
-                          value: _model.isCompensation,
-                          onChanged: widget.isView == false
-                              ? (value) {
-                                  setState(() {
-                                    _model.isCompensation = value;
-                                  });
-                                }
-                              : (val) => {})
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          CustomText(
+                            text: "Bồi thường",
+                            color: CustomColor.black,
+                            context: context,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          Checkbox(
+                              fillColor:
+                                  MaterialStateProperty.all(CustomColor.blue),
+                              value: _model.isCompensation,
+                              onChanged: widget.isView == false
+                                  ? (value) {
+                                      setState(() {
+                                        _model.isCompensation = value;
+                                      });
+                                    }
+                                  : (val) => {})
+                        ],
+                      ),
                     ],
                   ),
                 if (_model.isCompensation)
@@ -583,6 +592,31 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                             : (val) => {})
                   ],
                 ),
+                CustomSizedBox(
+                  context: context,
+                  height: 8,
+                ),
+                if (_model.error.isNotEmpty)
+                  SizedBox(
+                    width: double.infinity,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        CustomText(
+                          text: _model.error,
+                          textAlign: TextAlign.center,
+                          color: CustomColor.red,
+                          context: context,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        CustomSizedBox(
+                          context: context,
+                          height: 16,
+                        )
+                      ],
+                    ),
+                  ),
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -626,7 +660,25 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                                   });
                               return;
                             }
+                            bool isValid = true;
+                            invoice.orderDetails.forEach((element) {
+                              if (element.height == 0 &&
+                                  element.width == 0 &&
+                                  element.length == 0) {
+                                updateError(
+                                    'Vui lòng nhập kích thước của các dịch vụ');
+                                isValid = false;
+                              }
+                            });
 
+                            if (!isValid) {
+                              return;
+                            }
+
+                            if (!_model.getIsPaid) {
+                              updateError('Vui lòng đã thanh toán hóa đơn');
+                              return;
+                            }
                             if (_formKey.currentState!.validate()) {
                               onClickUpdateOrder();
                             }
@@ -642,7 +694,10 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                           onPressFunction: () {
                             Invoice invoice =
                                 Provider.of<Invoice>(context, listen: false);
-                            if (_model.isAdditionFee && !widget.isDone) {
+                            if (_model.isAdditionFee &&
+                                !widget.isDone &&
+                                _model.controllerAdditionFeePrice.text
+                                    .isNotEmpty) {
                               final listTemp = [...invoice.orderAdditionalFees];
                               listTemp.add(OrderAdditionalFee(
                                   type: constant.ADDITION_FEE_TYPE
@@ -682,12 +737,15 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                                   invoice: invoice.copyWith(
                                       orderAdditionalFees: listTemp));
                             }
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => NewInvoiceScreen(
-                                          invoice: invoice,
-                                        )));
+
+                            if (_formKey.currentState!.validate()) {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => NewInvoiceScreen(
+                                            invoice: invoice,
+                                          )));
+                            }
                           },
                           width: deviceSize.width / 2.5,
                           buttonColor: CustomColor.green,

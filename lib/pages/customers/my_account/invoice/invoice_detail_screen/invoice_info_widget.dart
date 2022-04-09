@@ -36,8 +36,8 @@ class InvoiceInfoWidget extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                   fontSize: 16),
               Container(
-                width: 1,
-                height: 4,
+                width: 2,
+                height: deviceSize.height / 40,
                 color: CustomColor.black,
                 margin: const EdgeInsets.symmetric(horizontal: 4),
               ),

@@ -36,7 +36,11 @@ class DialogAddServicePresenter {
             List<Product> listArea = decodedReponse['3']!
                 .map<Product>((e) => Product.fromMap(e))
                 .toList();
-            view.updateListService(listArea, listHandy);
+
+            List<Product> listStorages = decodedReponse['0']!
+                .map<Product>((e) => Product.fromMap(e))
+                .toList();
+            view.updateListService(listArea, listHandy, listStorages);
           }
         }
       }

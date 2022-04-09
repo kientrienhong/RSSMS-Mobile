@@ -5,11 +5,13 @@ import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/models/dialog_add_service_model.dart';
+import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/product.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_screen/widget/add_product.dart';
 import 'package:rssms/presenters/dialog_add_service_presenter.dart';
 import 'package:rssms/views/dialog_add_service_view.dart';
+import 'package:rssms/constants/constants.dart' as constants;
 
 class DialogAddService extends StatefulWidget {
   final String? idOrderDetail;
@@ -53,10 +55,12 @@ class _DialogAddServiceState extends State<DialogAddService>
   }
 
   @override
-  void updateListService(List<Product> listBucky, List<Product> listHandy) {
+  void updateListService(List<Product> listBucky, List<Product> listHandy,
+      List<Product> listStorages) {
     setState(() {
       _model.listProductBulky = listBucky;
       _model.listProductHandy = listHandy;
+      _model.listProductStorages = listStorages;
     });
   }
 
@@ -173,6 +177,29 @@ class _DialogAddServiceState extends State<DialogAddService>
       );
     }
 
+    Widget _buildSelfStorage() {
+      return Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            CustomText(
+                text: 'Kho tự quản',
+                color: CustomColor.black,
+                context: context,
+                fontWeight: FontWeight.bold,
+                fontSize: 24),
+            CustomSizedBox(
+              context: context,
+              height: 16,
+            ),
+            Column(
+              children: mapWidget(_model.listProductStorages),
+            ),
+          ]);
+    }
+
+    Invoice invoice = Provider.of<Invoice>(context, listen: false);
+
     return AlertDialog(
       content: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -199,7 +226,10 @@ class _DialogAddServiceState extends State<DialogAddService>
                     child: _model.idOrderDetail == null
                         ? widget.isSeperate
                             ? _buildAddition()
-                            : _buildMainProduct()
+                            : invoice.typeOrder ==
+                                    constants.DOOR_TO_DOOR_TYPE_ORDER
+                                ? _buildMainProduct()
+                                : _buildSelfStorage()
                         : _buildAddition()),
               ),
       ),

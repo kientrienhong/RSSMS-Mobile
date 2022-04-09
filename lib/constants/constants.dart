@@ -81,10 +81,11 @@ const LIST_STATUS_ORDER = [
   {'color': CustomColor.red, 'name': 'Đã Hủy'},
   {'color': CustomColor.blue, 'name': 'Đang vận chuyển'},
   {'color': CustomColor.green, 'name': 'Đã về kho'},
-  {'color': CustomColor.red, 'name': 'Đã hết hạn'},
+  {'color': CustomColor.orange, 'name': 'Sắp hết hạn'},
+  {'color': CustomColor.red, 'name': 'Đã quá hạn'},
+  {'color': CustomColor.red, 'name': 'Đang thanh lý'},
   {'color': CustomColor.green, 'name': 'Đã hoàn tất'},
-  {'color': CustomColor.purple, 'name': 'Đang vận chuyển (trả)'},
-  {'color': CustomColor.green, 'name': 'Đã hoàn tất'},
+  {'color': CustomColor.red, 'name': 'Đã thanh lý'},
 ];
 
 const LIST_ICON_REQUEST = [
@@ -118,8 +119,8 @@ const LIST_TYPE_REQUES_DELIVERY = {
 };
 
 const List<Map<String, String>> TAB_DOOR_TO_DOOR = [
-  {"name": "Ít đồ"},
-  {"name": "Nhiều đồ"}
+  {"name": "Gửi theo loại"},
+  {"name": "Gửi theo diện tích"}
 ];
 
 const List<String> LIST_TIME_PICK_UP = [
@@ -161,6 +162,9 @@ const List<Map<String, dynamic>> LIST_PAYMENT_METHOD_CHOICES = [
 ];
 
 Map<bool, Map<String, dynamic>> mapIsPaid = {
-  false: {'name': 'Chưa thanh toán', 'color': CustomColor.black[2]},
+  false: {
+    'name': 'Chưa thanh toán',
+    'color': CustomColor.black[3],
+  },
   true: {'name': 'Đã thanh toán', 'color': CustomColor.blue}
 };

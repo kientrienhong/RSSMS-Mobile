@@ -177,6 +177,7 @@ class InvoiceUpdatePresenter {
     Map<String, dynamic> result = {
       "orderId": invoice.id,
       "requestId": invoice.requestId,
+      'status': 6,
       "orderAdditionalFees":
           listOrderAdditionFee?.map((e) => e.toMap()).toList()
     };
@@ -188,9 +189,12 @@ class InvoiceUpdatePresenter {
     try {
       view.updateLoadingUpdate();
       final dataRequest = await formatDataCreateOrder(invoice);
+      log(jsonEncode(dataRequest));
       var response = await model.createOrder(dataRequest, user.idToken!);
       if (response.statusCode == 200) {
         return true;
+      } else if (response.statusCode == 400) {
+        view.updateError(jsonDecode(response.body)['error']['message']);
       }
     } catch (e) {
       throw Exception(e);

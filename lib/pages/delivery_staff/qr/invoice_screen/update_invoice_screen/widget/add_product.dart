@@ -36,9 +36,9 @@ class AddProduct extends StatelessWidget {
             productId: product.id,
             productName: product.name,
             price: product.price,
-            height: 0,
-            width: 0,
-            length: 0,
+            height: product.height,
+            width: product.width,
+            length: product.length,
             amount: 1,
             serviceImageUrl: product.imageUrl,
             productType: product.type,
@@ -163,8 +163,7 @@ class AddProduct extends StatelessWidget {
               height: 20,
               text: "Thêm",
               width: 50,
-              textSize: 12
-              ,
+              textSize: 12,
               onPressFunction: () {
                 if (orderDetail == null) {
                   addMainProduct();
