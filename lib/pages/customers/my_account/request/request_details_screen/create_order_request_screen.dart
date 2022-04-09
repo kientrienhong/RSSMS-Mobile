@@ -40,7 +40,6 @@ class _CreateOrderRequestScreenState extends State<CreateOrderRequestScreen>
     _presenter.view = this;
     Users user = Provider.of<Users>(context, listen: false);
     _presenter.getDetailRequest(user.idToken!);
-    print(_model.idRequest);
     super.initState();
   }
 
@@ -60,7 +59,6 @@ class _CreateOrderRequestScreenState extends State<CreateOrderRequestScreen>
 
   @override
   Widget build(BuildContext context) {
- 
     final deviceSize = MediaQuery.of(context).size;
     Widget statusText = CustomText(
         text: LIST_STATUS_ORDER[_model.invoice.status]['name']! as String,
@@ -116,27 +114,51 @@ class _CreateOrderRequestScreenState extends State<CreateOrderRequestScreen>
                                 context: context,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 17),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                statusText,
-                                Container(
-                                  width: 2,
-                                  height: deviceSize.height / 40,
-                                  color: CustomColor.black,
-                                  margin:
-                                      const EdgeInsets.symmetric(horizontal: 4),
-                                ),
-                                CustomText(
-                                    text: mapIsPaid[_model.invoice.isPaid]![
-                                        'name']! as String,
-                                    color: mapIsPaid[_model.invoice.isPaid]![
-                                        'color'] as Color,
-                                    context: context,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16),
-                              ],
-                            ),
+                            if (_model.invoice.status != 4)
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  statusText,
+                                  Container(
+                                    width: 2,
+                                    height: deviceSize.height / 40,
+                                    color: CustomColor.black,
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 4),
+                                  ),
+                                  CustomText(
+                                      text: mapIsPaid[_model.invoice.isPaid]![
+                                          'name']! as String,
+                                      color: mapIsPaid[_model.invoice.isPaid]![
+                                          'color'] as Color,
+                                      maxLines: 2,
+                                      context: context,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16),
+                                ],
+                              ),
+                            if (_model.invoice.status == 4)
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  statusText,
+                                  Container(
+                                    width: 2,
+                                    height: deviceSize.height / 80,
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 4),
+                                  ),
+                                  CustomText(
+                                      text: mapIsPaid[_model.invoice.isPaid]![
+                                          'name']! as String,
+                                      color: mapIsPaid[_model.invoice.isPaid]![
+                                          'color'] as Color,
+                                      maxLines: 2,
+                                      context: context,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16),
+                                ],
+                              ),
                           ],
                         ),
                         CustomSizedBox(
@@ -292,25 +314,25 @@ class _CreateOrderRequestScreenState extends State<CreateOrderRequestScreen>
                                       buttonColor: CustomColor.blue,
                                       borderRadius: 6),
                                 ),
-                              if (_model.invoice.status == 0)
-                                Center(
-                                  child: CustomButton(
-                                      height: 24,
-                                      isLoading: false,
-                                      text: 'Chi tiết đơn hủy',
-                                      textColor: CustomColor.white,
-                                      onPressFunction: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const InvoiceCancelledScreen()),
-                                        );
-                                      },
-                                      width: deviceSize.width / 2.5,
-                                      buttonColor: CustomColor.blue,
-                                      borderRadius: 6),
-                                )
+                              // if (_model.invoice.status == 0)
+                              //   Center(
+                              //     child: CustomButton(
+                              //         height: 24,
+                              //         isLoading: false,
+                              //         text: 'Chi tiết đơn hủy',
+                              //         textColor: CustomColor.white,
+                              //         onPressFunction: () {
+                              //           Navigator.push(
+                              //             context,
+                              //             MaterialPageRoute(
+                              //                 builder: (context) =>
+                              //                     const InvoiceCancelledScreen()),
+                              //           );
+                              //         },
+                              //         width: deviceSize.width / 2.5,
+                              //         buttonColor: CustomColor.blue,
+                              //         borderRadius: 6),
+                              //   )
                             ],
                           ),
                         ),

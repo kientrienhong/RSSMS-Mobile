@@ -7,7 +7,8 @@ import 'package:flutter/material.dart';
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool? isHome;
   final String? name;
-  const CustomAppBar({Key? key, required this.isHome, this.name})
+  final int? fontSize;
+  const CustomAppBar({Key? key, required this.isHome, this.name, this.fontSize})
       : super(key: key);
 
   @override
@@ -36,7 +37,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 text: name!,
                 color: CustomColor.black,
                 context: context,
-                fontSize: 24,
+                fontSize: fontSize ?? 24,
                 fontWeight: FontWeight.bold,
               ),
               CustomSizedBox(

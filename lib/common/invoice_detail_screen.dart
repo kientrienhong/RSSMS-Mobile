@@ -37,9 +37,11 @@ class _InvoiceDetailScreenState extends State<InvoiceDetailScreen>
   late InvoiceDetailScreenPresenter _presenter;
   @override
   void updateLoading() {
-    setState(() {
-      _model.isLoading = !_model.isLoading;
-    });
+    if (mounted) {
+      setState(() {
+        _model.isLoading = !_model.isLoading;
+      });
+    }
   }
 
   @override

@@ -310,7 +310,7 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                     CustomText(
                         text: widget.isDone
                             ? "Trả đơn hàng"
-                            : "Cập nhật đơn hàng",
+                            : "Tạo đơn hàng",
                         color: Colors.black,
                         context: context,
                         fontWeight: FontWeight.bold,

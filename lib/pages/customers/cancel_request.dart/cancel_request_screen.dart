@@ -94,7 +94,8 @@ class _InvoiceCancelScreenState extends State<InvoiceCancelScreen>
           children: [
             const CustomAppBar(
               isHome: false,
-              name: 'Trang hủy yêu cầu tạo đơn',
+              name: 'Hủy yêu cầu tạo đơn',
+              fontSize: 23,
             ),
             CustomText(
                 text: "Lý do",
