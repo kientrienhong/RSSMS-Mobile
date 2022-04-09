@@ -67,12 +67,6 @@ class InvoiceProductWidget extends StatelessWidget {
     String composationDescription = '';
     double composationFee = 0;
 
-    final test = totalProduct;
-    final test1 = returnDate;
-    final test2 = deliveryDate;
-    final test3 = oCcy.format(totalProduct *
-        (returnDate.difference(deliveryDate).inDays / 30).ceil());
-
     invoice!.orderAdditionalFees.forEach((e) {
       if (e.type == constants.ADDITION_FEE_TYPE.compensationFee.index) {
         composationDescription = e.description;

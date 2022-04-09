@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/common/image_widget.dart';
@@ -26,8 +27,11 @@ class _ItemTabState extends State<ItemTab> {
               ))
           .toList();
 
-  List<Widget> mapSeperateAdditionWidget(List<OrderDetail> listOrderDetail) =>
-      listOrderDetail
+  List<Widget> mapSeperateAdditionWidget(List<OrderDetail> listOrderDetail) {
+    final list = listOrderDetail
+        .where((element) => element.productType == constants.ACCESSORY);
+    if (list.isNotEmpty) {
+      return list
           .where((element) => element.productType == constants.ACCESSORY)
           .map((e) => AdditionServiceWidget(
                 isView: true,
@@ -36,6 +40,17 @@ class _ItemTabState extends State<ItemTab> {
                 orderDetail: e,
               ))
           .toList();
+    } else {
+      return [
+        Center(
+            child: CustomText(
+                text: '(Trống)',
+                color: CustomColor.black[3]!,
+                context: context,
+                fontSize: 16))
+      ];
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

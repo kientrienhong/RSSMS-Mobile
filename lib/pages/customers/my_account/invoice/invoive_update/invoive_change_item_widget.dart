@@ -16,6 +16,7 @@ import 'package:rssms/pages/customers/cart/cart_screen.dart';
 import 'package:rssms/pages/customers/my_account/my_account.dart';
 import 'package:rssms/pages/delivery_staff/notifcation/notification_delivery.dart';
 import 'package:rssms/presenters/invoice_get_presenter.dart';
+import 'package:rssms/utils/ui_utils.dart';
 import 'package:rssms/views/invoice_get_view.dart';
 import 'package:rssms/constants/constants.dart' as constants;
 
@@ -83,6 +84,13 @@ class _ChangeItemWidgetState extends State<ChangeItemWidget>
   void updateStatusButton() {
     setState(() {
       _model.isLoadingButton = !_model.isLoadingButton;
+    });
+  }
+
+  @override
+  void updateError(String error) {
+    setState(() {
+      _model.error = error;
     });
   }
 
@@ -160,6 +168,29 @@ class _ChangeItemWidgetState extends State<ChangeItemWidget>
           ),
           CustomSizedBox(
             context: context,
+            height: 14,
+          ),
+          CustomText(
+            text: "Địa chỉ",
+            color: CustomColor.black,
+            context: context,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+
+          CustomSizedBox(
+            context: context,
+            height: 14,
+          ),
+          CustomOutLineInputWithHint(
+            deviceSize: deviceSize,
+            hintText: "Địa chỉ nhận hàng",
+            isDisable: false,
+            focusNode: _focusNodeStreet,
+            controller: _model.controllerStreet,
+          ),
+          CustomSizedBox(
+            context: context,
             height: 24,
           ),
           Row(
@@ -206,24 +237,6 @@ class _ChangeItemWidgetState extends State<ChangeItemWidget>
             child: ListTimeSelect(
                 currentIndex: _currentIndex, onChangeTab: onChangeTime),
           ),
-          CustomText(
-            text: "Địa chỉ",
-            color: CustomColor.black,
-            context: context,
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
-          CustomSizedBox(
-            context: context,
-            height: 14,
-          ),
-          CustomOutLineInputWithHint(
-            deviceSize: deviceSize,
-            hintText: "Địa chỉ nhận hàng",
-            isDisable: false,
-            focusNode: _focusNodeStreet,
-            controller: _model.controllerStreet,
-          ),
 
           // if (widget.invoice!.typeOrder == 1)
           //   CustomText(
@@ -249,10 +262,9 @@ class _ChangeItemWidgetState extends State<ChangeItemWidget>
           //     ),
           //   ),
           // ),
-          CustomSizedBox(
-            context: context,
-            height: 14,
-          ),
+
+          UIUtils.buildErrorUI(error: _model.error, context: context),
+
           CustomButton(
               height: 24,
               isLoading: _model.isLoadingButton,

@@ -607,7 +607,8 @@ class ApiServices {
 
       final url = Uri.parse(
           '$_domain/api/v1/requests/send request notification/$idRequest');
-      return http.post(url, body: 'dasjkdhaskjdh', headers: headers);
+      return http.post(url,
+          body: jsonEncode({"message": message}), headers: headers);
     } catch (e) {
       print(e.toString());
       throw Exception(e.toString());

@@ -15,6 +15,7 @@ import 'package:rssms/pages/customers/cart/cart_screen.dart';
 import 'package:rssms/pages/customers/my_account/my_account.dart';
 import 'package:rssms/pages/delivery_staff/notifcation/notification_delivery.dart';
 import 'package:rssms/presenters/payment_method_booking_screen_presenter.dart';
+import 'package:rssms/utils/ui_utils.dart';
 import 'package:rssms/views/payment_method_booking_screen_view.dart';
 import '../../../constants/constants.dart' as constants;
 import 'package:flutter_braintree/flutter_braintree.dart';
@@ -178,27 +179,7 @@ class _PaymentMethodBookingScreenState extends State<PaymentMethodBookingScreen>
                 context: context,
                 height: 16,
               ),
-              if (_model.error.isNotEmpty)
-                SizedBox(
-                  width: double.infinity,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      CustomText(
-                        text: _model.error,
-                        textAlign: TextAlign.center,
-                        color: CustomColor.red,
-                        context: context,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      CustomSizedBox(
-                        context: context,
-                        height: 16,
-                      )
-                    ],
-                  ),
-                ),
+              UIUtils.buildErrorUI(error: _model.error, context: context),
               SizedBox(
                 width: double.infinity,
                 child: Center(
