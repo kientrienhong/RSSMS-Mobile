@@ -3,7 +3,8 @@ xmlns:tools='http://schemas.android.com/tools'
 package="com.example.rssms">
     <uses-permission android:name="android.permission.INTERNET"/>
     <!-- <application android:label="rssms" android:name="${applicationName}" android:icon="@mipmap/ic_launcher"> -->
-        
+        <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <application android:label="rssms" tools:replace='android:label' android:icon="@mipmap/ic_launcher">
         <meta-data
   android:name="com.google.firebase.messaging.default_notification_channel_id"

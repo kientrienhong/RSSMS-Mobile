@@ -41,8 +41,8 @@ class ApiServices {
     }
   }
 
-  static Future<dynamic> signUp(
-      Users user, String password, String deviceToken) {
+  static Future<dynamic> signUp(Users user, String password, String role,
+      String image, String deviceToken) {
     try {
       Map<String, String> headers = {"Content-type": "application/json"};
 
@@ -54,11 +54,12 @@ class ApiServices {
             'deviceToken': deviceToken,
             "password": password,
             "email": user.email,
+            "roleId": role,
             "gender": user.gender,
             "birthdate": user.birthDate!.toIso8601String(),
             "address": user.address,
             "phone": user.phone,
-            "roleId": 3,
+            "image": {"file": image}
           }));
     } catch (e) {
       throw Exception(e.toString());
@@ -477,13 +478,25 @@ class ApiServices {
     }
   }
 
+  static Future<dynamic> getRoles() {
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+      };
+      final url = Uri.parse('$_domain/api/v1/roles?page=1&size=250');
+      return http.get(url, headers: headers);
+    } catch (e) {
+      print(e.toString());
+      throw Exception('Update Failed');
+    }
+  }
+
   static Future<dynamic> updateOrder(Invoice invoice, String idToken) {
     try {
       Map<String, String> headers = {
         "Content-type": "application/json",
         'Authorization': 'Bearer $idToken'
       };
-      final test = invoice.toMap();
       final url = Uri.parse('$_domain/api/v1/orders/${invoice.id}');
       return http.put(url, headers: headers, body: jsonEncode(invoice.toMap()));
     } catch (e) {
