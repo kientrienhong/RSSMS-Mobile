@@ -210,10 +210,11 @@ class InvoiceUpdatePresenter {
       view.updateLoadingUpdate();
       final dataRequest = await formatDataCreateOrder(invoice);
 
-      var response = await model.sendNotification(dataRequest, user.idToken!);
-      if (response.statusCode == 200) {
-        return true;
-      }
+      // var response = await model.sendNotification(dataRequest, user.idToken!);
+      // if (response.statusCode == 200) {
+      //   return true;
+      // }
+      return false;
     } catch (e) {
       throw Exception(e);
     } finally {
@@ -227,7 +228,7 @@ class InvoiceUpdatePresenter {
     try {
       view.updateLoadingUpdate();
       final dataRequest = formatDateDoneOrder(invoice);
-
+      log(jsonEncode(dataRequest));
       var response = await model.doneOrder(dataRequest, user.idToken!);
       if (response.statusCode == 200) {
         return true;

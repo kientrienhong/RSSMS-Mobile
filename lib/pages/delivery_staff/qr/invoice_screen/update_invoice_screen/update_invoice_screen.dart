@@ -288,7 +288,7 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
   @override
   Widget build(BuildContext context) {
     var deviceSize = MediaQuery.of(context).size;
-
+    Invoice invoice = Provider.of<Invoice>(context, listen: false);
     return Scaffold(
       body: SingleChildScrollView(
         child: Form(
@@ -461,6 +461,20 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                     );
                   },
                 ),
+                if (widget.isDone &&
+                    invoice.orderDetails
+                        .where((element) =>
+                            element.productType == SERVICES ||
+                            element.productType == ACCESSORY)
+                        .toList()
+                        .isEmpty)
+                  Center(
+                    child: CustomText(
+                        text: '(Trống)',
+                        color: CustomColor.black[3]!,
+                        context: context,
+                        fontSize: 16),
+                  ),
                 CustomSizedBox(
                   context: context,
                   height: 16,
