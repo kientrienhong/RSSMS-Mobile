@@ -18,16 +18,20 @@ class DeliveryPresenter {
   void loadNewScheduleWeek({required Users user, required bool isPrevious}) {
     DateTime now = model.listDateTime[model.currentIndex];
     model.listDateTime = [];
-    // String nowString = now.toIso8601String().split('T')[0];
-    // now = DateTime.parse(nowString);
+
     if (isPrevious) {
       now = now.subtract(const Duration(days: 7));
     } else {
-      now = now.add(const Duration(days: 7));
+      if (model.currentIndex == 0) {
+        now = now.add(const Duration(days: 10));
+      } else {
+        now = now.add(const Duration(days: 7));
+      }
     }
     var firstDay = now.subtract(Duration(days: now.weekday));
     var firstDayOfWeek = firstDay;
     var endDayOfWeek;
+    model.currentIndex = 0;
     for (int i = 0; i < 7; i++) {
       endDayOfWeek = firstDay;
       model.listDateTime.add(firstDay);
@@ -48,14 +52,20 @@ class DeliveryPresenter {
     if (currentDate != null) now = currentDate;
     // String nowString = now.toIso8601String().split('T')[0];
     // now = DateTime.parse(nowString);
+    if (model.currentIndex == 0) {
+      now = now.add(Duration(days: 1));
+    }
     var firstDay = now.subtract(Duration(days: now.weekday));
     var firstDayOfWeek = firstDay;
     var endDayOfWeek;
     for (int i = 0; i < 7; i++) {
       endDayOfWeek = firstDay;
       model.listDateTime.add(firstDay);
+
       if (firstDay.isAtSameMomentAs(now)) {
-        model.currentIndex = i;
+        if (!(model.currentIndex == 0)) {
+          model.currentIndex = i;
+        }
       }
       firstDay = firstDay.add(const Duration(days: 1));
     }
@@ -97,8 +107,6 @@ class DeliveryPresenter {
     } catch (e) {
       print(e);
       return false;
-      // } finally {
-      //   view.updateLoadingStartDelivery();
     }
   }
 

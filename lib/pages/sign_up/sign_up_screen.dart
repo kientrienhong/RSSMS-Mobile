@@ -45,7 +45,13 @@ class SignUpScreen extends StatelessWidget {
                     onTap: () => {Navigator.of(context).pop()},
                     child: Padding(
                       padding: const EdgeInsets.only(top: 16.0),
-                      child: Image.asset('assets/images/arrowLeft.png'),
+                      child: SizedBox(
+                          height: 24,
+                          width: 24,
+                          child: Image.asset(
+                            'assets/images/arrowLeft.png',
+                            fit: BoxFit.contain,
+                          )),
                     ),
                   ),
                 ),
@@ -314,9 +320,7 @@ class _FormSignUpState extends State<FormSignUp> implements SignUpView {
               textInputType: TextInputType.number,
               focusNode: _focusNodePhone,
               controller: _model.controllerPhone,
-              validator: (value) {
-              
-              },
+              validator: (value) {},
               nextNode: _focusNodeAddress,
             ),
             CustomOutLineInput(

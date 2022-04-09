@@ -21,7 +21,17 @@ class InvoiceCancelledScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 24),
               child: GestureDetector(
                 onTap: () => {Navigator.of(context).pop()},
-                child: Image.asset('assets/images/arrowLeft.png'),
+                child: SizedBox(
+                  width: 24,
+                  height: 24,
+                  child: GestureDetector(
+                    onTap: () => {Navigator.of(context).pop()},
+                    child: Image.asset(
+                      'assets/images/arrowLeft.png',
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                ),
               ),
             ),
             CustomText(

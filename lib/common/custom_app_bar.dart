@@ -30,7 +30,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                       onTap: () {
                         Navigator.of(context).pop();
                       },
-                      child: Image.asset('assets/images/arrowLeft.png'))
+                      child: SizedBox(
+                          height: 24,
+                          width: 24,
+                          child: Image.asset(
+                            'assets/images/arrowLeft.png',
+                            fit: BoxFit.contain,
+                          )))
                   : Container(),
               CustomText(
                 text: name!,

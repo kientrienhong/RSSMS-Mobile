@@ -93,7 +93,13 @@ class QRInvoiceDetailsScreen extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(vertical: 24),
                     child: GestureDetector(
                       onTap: () => {Navigator.of(context).pop()},
-                      child: Image.asset('assets/images/arrowLeft.png'),
+                      child: SizedBox(
+                          height: 24,
+                          width: 24,
+                          child: Image.asset(
+                            'assets/images/arrowLeft.png',
+                            fit: BoxFit.contain,
+                          )),
                     ),
                   ),
                   CustomText(

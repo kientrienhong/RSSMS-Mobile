@@ -65,7 +65,6 @@ class _DeliveryScreenState extends State<DeliveryScreen>
   @override
   onClickPreviousWeek() {
     Users user = Provider.of<Users>(context, listen: false);
-
     _presenter.loadNewScheduleWeek(user: user, isPrevious: true);
   }
 
@@ -91,7 +90,7 @@ class _DeliveryScreenState extends State<DeliveryScreen>
           ?.mapIndexed((index, element) => ScheduleWidget(
               invoice: element,
               currentDateTime: _model.listDateTime[_model.currentIndex],
-              refreshSchedule: _presenter.loadListShedule,
+              refreshSchedule: _presenter.refreshListSchedule,
               initDeliveryScreen: _presenter.init,
               currentIndex: index,
               endDayOfWeek: _model.endDayOfWeek,

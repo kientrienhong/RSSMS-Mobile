@@ -119,7 +119,10 @@ class _InvoiceDetailScreenState extends State<InvoiceDetailScreen>
                           height: 24,
                           child: GestureDetector(
                             onTap: () => {Navigator.of(context).pop()},
-                            child: Image.asset('assets/images/arrowLeft.png'),
+                            child: Image.asset(
+                              'assets/images/arrowLeft.png',
+                              fit: BoxFit.contain,
+                            ),
                           ),
                         ),
                       ),
