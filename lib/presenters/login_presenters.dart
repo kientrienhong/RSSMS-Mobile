@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:rssms/helpers/handle_reponse.dart';
+
 import '/models/entity/user.dart';
 import '/models/login_model.dart';
 import '/views/login_view.dart';
@@ -29,13 +31,16 @@ class LoginPresenter {
     try {
       final response = await _model.logInAccount();
 
-      if (response.statusCode == 200) {
-        return Users.fromMap(jsonDecode(response.body));
-      }
+      final handledResponse = HandleResponse.handle(response);
 
-      throw Exception();
+      if (handledResponse['status'] == 'success') {
+        return Users.fromMap(handledResponse['data']);
+      } else {
+        _view.updateViewErrorMsg(handledResponse['data']);
+        return null;
+      }
     } catch (e) {
-      throw Exception('Invalid email or password');
+      _view.updateViewErrorMsg("Xảy ra lỗi hệ thống. Vui lòng thử lại sau");
     } finally {
       _view.updateLoading();
     }

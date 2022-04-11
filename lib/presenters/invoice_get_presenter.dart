@@ -15,12 +15,13 @@ class InvoiceGetPresenter {
     try {
       final response = await model.createGetInvoicedRequest(request, user);
 
-      String? result = HandleResponse.handle(response);
-      if (result != null) {
-        view.updateError(result);
+      final handledResponse = HandleResponse.handle(response);
+      if (handledResponse['status'] == 'success') {
+        return true;
+      } else {
+        view.updateError(handledResponse['data']);
+        return false;
       }
-
-      return result == null;
     } catch (e) {
       throw Exception(e.toString());
     } finally {

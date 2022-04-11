@@ -153,64 +153,59 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
 
   @override
   void onClickSignIn() async {
-    try {
-      _focusNodeEmail.unfocus();
-      _focusNodePassword.unfocus();
-      _model.errorMsg = "";
-      Users user = Provider.of<Users>(context, listen: false);
+    _focusNodeEmail.unfocus();
+    _focusNodePassword.unfocus();
+    // _model.errorMsg = "";
+    Users user = Provider.of<Users>(context, listen: false);
 
-      final result = await loginPresenter.handleSignIn();
-      if (result != null) {
-        user.setUser(user: result);
-        if (user.roleName == 'Customer') {
-          Navigator.push(
+    final result = await loginPresenter.handleSignIn();
+    if (result != null) {
+      user.setUser(user: result);
+      if (user.roleName == 'Customer') {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => const CustomBottomNavigation(
+                    listIndexStack: [
+                      MyAccountScreen(),
+                      CartScreen(),
+                      NotificationScreen(),
+                    ],
+                    listNavigator: constant.LIST_CUSTOMER_BOTTOM_NAVIGATION,
+                  )),
+        );
+      } else if (user.roleName == 'Delivery Staff') {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => const CustomBottomNavigation(
+                    listIndexStack: [
+                      MyAccountDeliveryScreen(),
+                      DeliveryScreen(),
+                      QrScreen(),
+                      NotificationDeliveryScreen(),
+                    ],
+                    listNavigator: constant.LIST_DELIVERY_BOTTOM_NAVIGATION,
+                  )),
+        );
+      } else if (user.roleName == 'Office Staff') {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => const CustomBottomNavigation(
+                    listIndexStack: [
+                      MyAccountOfficeScreen(),
+                      QrScreen(),
+                    ],
+                    listNavigator: constant.LIST_OFFICE_BOTTOM_NAVIGATION,
+                  )),
+        );
+      } else {
+        Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => const CustomBottomNavigation(
-                      listIndexStack: [
-                        MyAccountScreen(),
-                        CartScreen(),
-                        NotificationScreen(),
-                      ],
-                      listNavigator: constant.LIST_CUSTOMER_BOTTOM_NAVIGATION,
-                    )),
-          );
-        } else if (user.roleName == 'Delivery Staff') {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => const CustomBottomNavigation(
-                      listIndexStack: [
-                        MyAccountDeliveryScreen(),
-                        DeliveryScreen(),
-                        QrScreen(),
-                        NotificationDeliveryScreen(),
-                      ],
-                      listNavigator: constant.LIST_DELIVERY_BOTTOM_NAVIGATION,
-                    )),
-          );
-        } else if (user.roleName == 'Office Staff') {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => const CustomBottomNavigation(
-                      listIndexStack: [
-                        MyAccountOfficeScreen(),
-                        QrScreen(),
-                      ],
-                      listNavigator: constant.LIST_OFFICE_BOTTOM_NAVIGATION,
-                    )),
-          );
-        } else {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const NoPermissionScreen()));
-        }
+                builder: (context) => const NoPermissionScreen()));
       }
-    } catch (e) {
-      print(e);
-      loginPresenter.view.updateViewErrorMsg('Tài khoản / mật khẩu không đúng');
     }
   }
 

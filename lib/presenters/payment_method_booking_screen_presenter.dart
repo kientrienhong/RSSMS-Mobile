@@ -32,13 +32,13 @@ class PaymentMethodBookingScreenPresenter {
         }
       }
       final response = await model.createOrder(listProduct, orderBooking, user);
-      String? result = HandleResponse.handle(response);
-
-      if (result != null) {
-        view.updateError(result);
+      final handledResponse = HandleResponse.handle(response);
+      if (handledResponse['status'] == 'success') {
+        return true;
+      } else {
+        view.updateError(handledResponse['data']);
+        return false;
       }
-
-      return result == null;
     } catch (e) {
       throw Exception(e.toString());
     } finally {
