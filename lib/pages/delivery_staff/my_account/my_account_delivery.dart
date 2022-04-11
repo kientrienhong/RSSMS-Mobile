@@ -15,7 +15,9 @@ class MyAccountDeliveryScreen extends StatefulWidget {
 
 class _MyAccountDeliveryScreenState extends State<MyAccountDeliveryScreen>
     with SingleTickerProviderStateMixin {
-  var _scrollController, _tabController;
+  late ScrollController _scrollController;
+  late TabController _tabController;
+
   @override
   void initState() {
     _scrollController = ScrollController();
@@ -39,7 +41,7 @@ class _MyAccountDeliveryScreenState extends State<MyAccountDeliveryScreen>
                       onTap: () => {
                             Navigator.of(context).pushAndRemoveUntil(
                                 MaterialPageRoute(
-                                    builder: (context) => LogInScreen()),
+                                    builder: (context) => const LogInScreen()),
                                 (Route<dynamic> route) => false)
                           },
                       child: Image.asset('assets/images/logout.png'))

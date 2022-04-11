@@ -1,70 +1,107 @@
-import 'package:rssms/api/api_services.dart';
+import 'dart:developer';
+import 'package:intl/intl.dart';
+import 'package:rssms/helpers/handle_reponse.dart';
 import 'package:rssms/models/profile_model.dart';
 import 'package:rssms/views/profile_view.dart';
 
 import '/models/entity/user.dart';
 
 class ProfilePresenter {
-  ProfileModel? _model;
-  ProfileView? _view;
-
-  ProfileView get view => _view!;
+  late ProfileModel model;
+  late ProfileView view;
 
   setView(ProfileView value) {
-    _view = value;
+    view = value;
   }
-
-  ProfileModel get model => _model!;
 
   ProfilePresenter(Users user) {
-    _model = ProfileModel(user);
+    model = ProfileModel(user);
   }
 
-  // void handleOnChangeInput(String email, String password,
-  //     String confirmPassword, String firstname, String lastname, String phone) {
-  //   _view!.updateViewStatusButton(
-  //       email, password, confirmPassword, firstname, lastname, phone);
-  // }
-
-  Future<bool> updateProfile(String name, int gender, DateTime birthday,
-      String address, String phone, String idToken, String userId) async {
-    _view!.updateLoadingProfile();
-
+  Future<bool> updateProfile(String idToken, String userId) async {
     try {
-      final response = await model.updateProfile(
-          name, gender, birthday, address, phone, idToken, userId);
-      if (response.statusCode == 200) return true;
-      return false;
+      view.updateLoadingProfile();
+      model.focusNodeStreet.unfocus();
+      model.focusNodePhone.unfocus();
+      model.focusNodeFullname.unfocus();
+      int genderCode;
+      switch (model.textGender) {
+        case "Nam":
+          genderCode = 0;
+          break;
+        case "Nữ":
+          genderCode = 1;
+          break;
+        default:
+          genderCode = 2;
+          break;
+      }
+      DateTime tempDate =
+          DateFormat("dd/MM/yyyy").parse(model.controllerBirthDate.text);
+      final response =
+          await model.updateProfile(genderCode, tempDate, idToken, userId);
+      final handledResponse = HandleResponse.handle(response);
+      if (handledResponse['status'] == 'success') {
+        return true;
+      } else {
+        view.updateErrorProfile(handledResponse['data']);
+        return false;
+      }
     } catch (e) {
-      print(e.toString());
-      throw Exception(e.toString());
+      log(e.toString());
+      return false;
     } finally {
-      _view!.updateLoadingProfile();
+      view.updateLoadingProfile();
     }
+  }
+
+  void dispose() {
+    model.focusNodeFullname.dispose();
+    model.focusNodeOldPassword.dispose();
+    model.focusNodePassword.dispose();
+    model.focusNodeConfirmPassword.dispose();
+    model.focusNodeStreet.dispose();
+    model.focusNodeWard.dispose();
+    model.focusNodeDistrict.dispose();
+    model.focusNodeBirthDate.dispose();
+    model.focusNodePhone.dispose();
+    model.controllerFullname.dispose();
+    model.controllerOldPassword.dispose();
+    model.controllerPassword.dispose();
+    model.controllerConfirmPassword.dispose();
+    model.controllerStreet.dispose();
+    model.controllerWard.dispose();
+    model.controllerDistrict.dispose();
+    model.controllerPhone.dispose();
+    model.controllerBirthDate.dispose();
   }
 
   Future<bool> changePassword(String newPassword, String oldPassword,
       String confirmPassword, String idToken, String userId) async {
-    _view!.updateLoadingPassword();
+    view.updateLoadingPassword();
     try {
-      if (newPassword != confirmPassword) {
-        throw Exception(
-            "Vui lòng nhập mật khẩu mới trùng với xác nhận mật khẩu");
-      }
-
+      model.errorMsgChangePassword = "";
       final response = await model.changePassword(
-          oldPassword, confirmPassword, newPassword, userId, idToken);
+          oldPassword, confirmPassword, newPassword, idToken, userId);
 
-      if (response.statusCode == 200) return true;
-      if (response.statusCode == 400) {
-        model.errorMsgChangePassword = "Mật khẩu cũ không đúng";
+      final handledResponse = HandleResponse.handle(response);
+
+      if (handledResponse['status'] == 'success') {
+        model.controllerConfirmPassword.text = "";
+        model.controllerPassword.text = "";
+        model.controllerOldPassword.text = "";
+        return true;
+      } else {
+        view.updateViewPasswordErrorMsg(handledResponse['data']);
+        return false;
       }
-      return false;
     } catch (e) {
-      print(e.toString());
-      throw Exception(e.toString());
+      log(e.toString());
+      view.updateViewPasswordErrorMsg(
+          "Xảy ra lỗi hệ thống. Vui lòng thử lại sau");
+      return false;
     } finally {
-      _view!.updateLoadingPassword();
+      view.updateLoadingPassword();
     }
   }
 }

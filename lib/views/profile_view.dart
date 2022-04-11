@@ -3,6 +3,7 @@ abstract class ProfileView {
   // void updateViewStatusButton(String email, String password,
   //     String confirmPassword, String firstname, String lastname, String phone);
   void updateViewPasswordErrorMsg(String error);
+  void updateErrorProfile(String error);
   void updateLoadingPassword();
   void updateLoadingProfile();
 

@@ -1,3 +1,4 @@
+import 'dart:developer' as developer;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -14,6 +15,7 @@ import 'package:rssms/helpers/validator.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/models/profile_model.dart';
 import 'package:rssms/presenters/profile_presenter.dart';
+import 'package:rssms/utils/ui_utils.dart';
 import 'package:rssms/views/profile_view.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -61,16 +63,6 @@ class _ProfileScreenState extends State<FormProfileScreen>
   late ProfilePresenter profilePresenter;
   late ProfileModel _model;
 
-  final _focusNodeFullname = FocusNode();
-  final _focusNodeOldPassword = FocusNode();
-  final _focusNodePassword = FocusNode();
-  final _focusNodeConfirmPassword = FocusNode();
-  final _focusNodePhone = FocusNode();
-  final _focusNodeStreet = FocusNode();
-  final _focusNodeWard = FocusNode();
-  final _focusNodeBirthDate = FocusNode();
-  final _focusNodeDistrict = FocusNode();
-
   @override
   void updateLoadingPassword() {
     setState(() {
@@ -95,60 +87,40 @@ class _ProfileScreenState extends State<FormProfileScreen>
   }
 
   @override
+  void updateErrorProfile(String error) {
+    setState(() {
+      _model.errorProfileMsg = error;
+    });
+  }
+
+  @override
   void onClickChangePassword(
       String oldPassword, String newPassword, String confirmPassword) async {
-    try {
-      Users user = Provider.of<Users>(context, listen: false);
-      _model.errorMsgChangePassword = "";
+    Users user = Provider.of<Users>(context, listen: false);
 
-      bool response = await profilePresenter.changePassword(newPassword,
-          oldPassword, confirmPassword, user.idToken!, user.userId!);
-      if (response) {
-        CustomSnackBar.buildErrorSnackbar(
-            context: context,
-            message: 'Đổi mật khẩu thành công',
-            color: CustomColor.green);
-        _model.controllerConfirmPassword.text = "";
-        _model.controllerPassword.text = "";
-        _model.controllerOldPassword.text = "";
-      }
-    } catch (e) {
-      print(e.toString());
-      profilePresenter.view
-          .updateViewPasswordErrorMsg(e.toString().split(': ')[2]);
+    bool response = await profilePresenter.changePassword(
+        newPassword, oldPassword, confirmPassword, user.idToken!, user.userId!);
+    if (response) {
+      CustomSnackBar.buildErrorSnackbar(
+          context: context,
+          message: 'Đổi mật khẩu thành công',
+          color: CustomColor.green);
     }
   }
 
   void onChangeGender(String value) {
-    print(value);
     setState(() {
-      _model.txtGender = value;
+      _model.textGender = value;
     });
   }
 
   @override
   void onClickUpdateProfile(String fullname, String phone, String birthdate,
       String gender, String address) async {
-    _focusNodeStreet.unfocus();
-    _focusNodePhone.unfocus();
-    _focusNodeFullname.unfocus();
-    int genderCode;
-    switch (gender) {
-      case "Nam":
-        genderCode = 0;
-        break;
-      case "Nữ":
-        genderCode = 1;
-        break;
-      default:
-        genderCode = 2;
-        break;
-    }
-    DateTime tempDate = DateFormat("dd/MM/yyyy").parse(birthdate);
     try {
       Users user = Provider.of<Users>(context, listen: false);
-      bool response = await profilePresenter.updateProfile(fullname, genderCode,
-          tempDate, address, phone, user.idToken!, user.userId!);
+      bool response =
+          await profilePresenter.updateProfile(user.idToken!, user.userId!);
       if (response) {
         CustomSnackBar.buildErrorSnackbar(
             context: context,
@@ -156,16 +128,13 @@ class _ProfileScreenState extends State<FormProfileScreen>
             color: CustomColor.green);
       }
     } catch (e) {
-      print(e.toString());
+      developer.log(e.toString());
     }
   }
-
-  ScrollController? scrollController;
 
   @override
   void initState() {
     super.initState();
-    scrollController = ScrollController();
     Users users = Provider.of<Users>(context, listen: false);
     profilePresenter = ProfilePresenter(users);
     profilePresenter.setView(this);
@@ -175,25 +144,7 @@ class _ProfileScreenState extends State<FormProfileScreen>
   @override
   void dispose() {
     super.dispose();
-    _focusNodeFullname.dispose();
-    _focusNodeOldPassword.dispose();
-    _focusNodePassword.dispose();
-    _focusNodeConfirmPassword.dispose();
-    _focusNodeStreet.dispose();
-    _focusNodeWard.dispose();
-    _focusNodeDistrict.dispose();
-    _focusNodeBirthDate.dispose();
-    _focusNodePhone.dispose();
-
-    _model.controllerFullname.dispose();
-    _model.controllerOldPassword.dispose();
-    _model.controllerPassword.dispose();
-    _model.controllerConfirmPassword.dispose();
-    _model.controllerStreet.dispose();
-    _model.controllerWard.dispose();
-    _model.controllerDistrict.dispose();
-    _model.controllerPhone.dispose();
-    _model.controllerBirthDate.dispose();
+    profilePresenter.dispose();
   }
 
   final _formKey = GlobalKey<FormState>();
@@ -204,7 +155,7 @@ class _ProfileScreenState extends State<FormProfileScreen>
     return Scaffold(
       backgroundColor: CustomColor.white,
       body: SingleChildScrollView(
-        controller: scrollController,
+        controller: _model.scrollController,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Column(
@@ -237,12 +188,10 @@ class _ProfileScreenState extends State<FormProfileScreen>
                         deviceSize: widget.deviceSize,
                         hintText: "Họ Và Tên",
                         isDisable: false,
-                        focusNode: _focusNodeFullname,
-                        nextNode: _focusNodePhone,
+                        focusNode: _model.focusNodeFullname,
+                        nextNode: _model.focusNodePhone,
                         validator: (value) {
                           if (value!.isEmpty) {
-                            return "Vui lòng nhập đầy đủ họ và tên.";
-                          } else if (value.length < 5) {
                             return "Vui lòng nhập đầy đủ họ và tên.";
                           } else {
                             return null;
@@ -254,7 +203,7 @@ class _ProfileScreenState extends State<FormProfileScreen>
                         deviceSize: widget.deviceSize,
                         hintText: 'Số Điện Thoại',
                         isDisable: false,
-                        focusNode: _focusNodePhone,
+                        focusNode: _model.focusNodePhone,
                         validator: (value) {
                           if (value!.length < 10) {
                             return "Sai định dạng";
@@ -265,7 +214,7 @@ class _ProfileScreenState extends State<FormProfileScreen>
                             return null;
                           }
                         },
-                        nextNode: _focusNodeBirthDate,
+                        nextNode: _model.focusNodeBirthDate,
                         controller: _model.controllerPhone,
                         textInputType: TextInputType.number,
                       ),
@@ -285,8 +234,8 @@ class _ProfileScreenState extends State<FormProfileScreen>
                         child: CustomOutLineInputDateTime(
                           deviceSize: widget.deviceSize,
                           labelText: '',
-                          isDisable: true,
-                          focusNode: _focusNodeBirthDate,
+                          isDisable: false,
+                          focusNode: _model.focusNodeBirthDate,
                           controller: _model.controllerBirthDate,
                           icon: "assets/images/calendar.png",
                         ),
@@ -308,10 +257,10 @@ class _ProfileScreenState extends State<FormProfileScreen>
                                       onChangeGender("Nam");
                                     },
                                     text: "Nam",
-                                    color: _model.txtGender == "Nam"
+                                    color: _model.textGender == "Nam"
                                         ? CustomColor.blue
                                         : CustomColor.white,
-                                    state: _model.txtGender,
+                                    state: _model.textGender,
                                     value: "Nam"),
                               ),
                               Expanded(
@@ -320,10 +269,10 @@ class _ProfileScreenState extends State<FormProfileScreen>
                                       onChangeGender("Nữ");
                                     },
                                     text: "Nữ",
-                                    color: _model.txtGender == "Nữ"
+                                    color: _model.textGender == "Nữ"
                                         ? CustomColor.blue
                                         : CustomColor.white,
-                                    state: _model.txtGender,
+                                    state: _model.textGender,
                                     value: "Nữ"),
                               ),
                               Expanded(
@@ -332,10 +281,10 @@ class _ProfileScreenState extends State<FormProfileScreen>
                                       onChangeGender("Khác");
                                     },
                                     text: "Khác",
-                                    color: _model.txtGender == "Khác"
+                                    color: _model.textGender == "Khác"
                                         ? CustomColor.blue
                                         : CustomColor.white,
-                                    state: _model.txtGender,
+                                    state: _model.textGender,
                                     value: "Khác"),
                               ),
                             ],
@@ -361,7 +310,7 @@ class _ProfileScreenState extends State<FormProfileScreen>
                         deviceSize: widget.deviceSize,
                         hintText: "Địa chỉ",
                         isDisable: false,
-                        focusNode: _focusNodeStreet,
+                        focusNode: _model.focusNodeStreet,
                         controller: _model.controllerStreet,
                         validator: (value) {
                           if (value!.isEmpty) {
@@ -369,6 +318,8 @@ class _ProfileScreenState extends State<FormProfileScreen>
                           }
                         },
                       ),
+                      UIUtils.buildErrorUI(
+                          context: context, error: _model.errorProfileMsg),
                       Center(
                         child: CustomButton(
                             height: 24,
@@ -382,7 +333,7 @@ class _ProfileScreenState extends State<FormProfileScreen>
                                     _model.controllerFullname.text,
                                     _model.controllerPhone.text,
                                     _model.controllerBirthDate.text,
-                                    _model.txtGender,
+                                    _model.textGender,
                                     _model.controllerStreet.text);
                               }
                             },
@@ -416,17 +367,17 @@ class _ProfileScreenState extends State<FormProfileScreen>
                       hintText: 'Mật khẩu cũ',
                       isDisable: false,
                       isSecure: true,
-                      focusNode: _focusNodeOldPassword,
-                      nextNode: _focusNodePassword,
+                      focusNode: _model.focusNodeOldPassword,
+                      nextNode: _model.focusNodePassword,
                       controller: _model.controllerOldPassword,
                     ),
                     CustomOutLineInputWithHint(
                       deviceSize: widget.deviceSize,
                       hintText: 'Mật khẩu mới',
                       isDisable: false,
-                      nextNode: _focusNodeConfirmPassword,
+                      nextNode: _model.focusNodeConfirmPassword,
                       isSecure: true,
-                      focusNode: _focusNodePassword,
+                      focusNode: _model.focusNodePassword,
                       controller: _model.controllerPassword,
                       validator: (value) {
                         if (value!.length < 6) {
@@ -441,9 +392,9 @@ class _ProfileScreenState extends State<FormProfileScreen>
                       hintText: 'Xác nhận mật khẩu mới',
                       isDisable: false,
                       isSecure: true,
-                      focusNode: _focusNodeConfirmPassword,
+                      focusNode: _model.focusNodeConfirmPassword,
                       validator: (value) {
-                        if (_model.controllerPassword.text ==
+                        if (_model.controllerPassword.text !=
                             _model.controllerConfirmPassword.text) {
                           return "Xác nhận mật khẩu không trùng.";
                         } else {
@@ -452,27 +403,8 @@ class _ProfileScreenState extends State<FormProfileScreen>
                       },
                       controller: _model.controllerConfirmPassword,
                     ),
-                    if (_model.errorMsgChangePassword.isNotEmpty)
-                      Column(
-                        children: [
-                          SizedBox(
-                            width: double.infinity,
-                            child: CustomText(
-                              text: _model.errorMsgChangePassword,
-                              maxLines: 2,
-                              color: CustomColor.red,
-                              context: context,
-                              textAlign: TextAlign.center,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          CustomSizedBox(
-                            context: context,
-                            height: 16,
-                          )
-                        ],
-                      ),
+                    UIUtils.buildErrorUI(
+                        error: _model.errorMsgChangePassword, context: context),
                     Center(
                       child: CustomButton(
                           height: 24,

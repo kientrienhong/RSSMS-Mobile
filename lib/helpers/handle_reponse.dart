@@ -7,6 +7,11 @@ class HandleResponse {
         'status': 'success',
         'data': jsonDecode(response.body),
       };
+    } else if (response.statusCode == 401) {
+      return {
+        'status': 'failed',
+        'data': 'Bạn đã hết session. Vui lòng đăng nhập lại!'
+      };
     } else if (response.statusCode >= 400 && response.statusCode < 500) {
       return {
         'status': 'failed',

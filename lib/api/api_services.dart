@@ -111,7 +111,7 @@ class ApiServices {
         headers: headers,
       );
     } catch (e) {
-      print(e);
+      log(e.toString());
       throw Exception(e.toString());
     }
   }

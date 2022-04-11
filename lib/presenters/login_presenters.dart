@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:rssms/helpers/handle_reponse.dart';
 
 import '/models/entity/user.dart';
@@ -37,6 +39,7 @@ class LoginPresenter {
         return null;
       }
     } catch (e) {
+      log(e.toString());
       view.updateViewErrorMsg("Xảy ra lỗi hệ thống. Vui lòng thử lại sau");
     } finally {
       view.updateLoading();
