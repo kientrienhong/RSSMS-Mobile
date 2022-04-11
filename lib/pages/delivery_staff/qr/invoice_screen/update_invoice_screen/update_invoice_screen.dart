@@ -700,7 +700,7 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                             }
 
                             if (!_model.getIsPaid) {
-                              updateError('Vui lòng đã thanh toán hóa đơn');
+                              updateError('Vui lòng thanh toán hóa đơn');
                               return;
                             }
                             if (_formKey.currentState!.validate()) {
