@@ -1,6 +1,5 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_input_date.dart';
 import 'package:rssms/common/custom_radio_button.dart';
@@ -8,14 +7,9 @@ import 'package:rssms/common/custom_snack_bar.dart';
 import 'package:rssms/helpers/validator.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/models/signup_model.dart';
-import 'package:rssms/common/custom_bottom_navigation.dart';
-import 'package:rssms/pages/customers/cart/cart_screen.dart';
-import 'package:rssms/pages/customers/my_account/my_account.dart';
-import 'package:rssms/pages/customers/notification/notification_screen.dart';
 import 'package:rssms/pages/log_in/log_in_screen.dart';
 import 'package:rssms/presenters/signup_presenters.dart';
 import 'package:rssms/views/signup_view.dart';
-import 'package:rssms/constants/constants.dart' as constant;
 import '/common/background.dart';
 import '/common/custom_color.dart';
 import '/common/custom_input.dart';
@@ -137,11 +131,6 @@ class _FormSignUpState extends State<FormSignUp> implements SignUpView {
   void firebaseCloudMessagingListeners() {
     _firebaseMessaging.getToken().then((token) {
       _token = token!;
-    });
-    print(_token);
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      RemoteNotification notification = message.notification!;
-      AndroidNotification? android = message.notification?.android;
     });
   }
 

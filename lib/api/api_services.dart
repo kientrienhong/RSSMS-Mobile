@@ -11,17 +11,6 @@ class ApiServices {
   ApiServices._();
   static const _domain = 'https://localhost:44304';
 
-  static Future<dynamic> logInThirParty(String firebaseId, String deviceToken) {
-    try {
-      final url = Uri.parse(
-          '$_domain/api/v1/users/thirdparty?firebaseID=$firebaseId&deviceToken=$deviceToken');
-      return http.post(url);
-    } catch (e) {
-      print(e.toString());
-      throw Exception('Log In failed');
-    }
-  }
-
   static Future<dynamic> logInWithEmail(
       String email, String password, String deviceToken) {
     try {
@@ -36,8 +25,8 @@ class ApiServices {
             "deviceToken": deviceToken
           }));
     } catch (e) {
-      print(e.toString());
-      throw Exception('Log In failedd');
+      log(e.toString());
+      throw Exception(e);
     }
   }
 

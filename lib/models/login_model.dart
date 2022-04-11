@@ -65,6 +65,10 @@ class LoginModel {
   set fb(FacebookLogin? value) => _fb = value;
 
   Future<dynamic> logInAccount() async {
-    return await ApiServices.logInWithEmail(_email, _password, deviceToken);
+    try {
+      return await ApiServices.logInWithEmail(_email, _password, deviceToken);
+    } catch (e) {
+      throw Exception(e);
+    }
   }
 }
