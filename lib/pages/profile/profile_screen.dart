@@ -190,13 +190,7 @@ class _ProfileScreenState extends State<FormProfileScreen>
                         isDisable: false,
                         focusNode: _model.focusNodeFullname,
                         nextNode: _model.focusNodePhone,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return "Vui lòng nhập đầy đủ họ và tên.";
-                          } else {
-                            return null;
-                          }
-                        },
+                        validator: Validator.notEmpty,
                         controller: _model.controllerFullname,
                       ),
                       CustomOutLineInputWithHint(
@@ -204,16 +198,7 @@ class _ProfileScreenState extends State<FormProfileScreen>
                         hintText: 'Số Điện Thoại',
                         isDisable: false,
                         focusNode: _model.focusNodePhone,
-                        validator: (value) {
-                          if (value!.length < 10) {
-                            return "Sai định dạng";
-                          } else if (value.contains(RegExp(
-                              r'/^(0|\+84)(\s|\.)?((3[2-9])|(5[689])|(7[06-9])|(8[1-689])|(9[0-46-9]))(\d)(\s|\.)?(\d{3})(\s|\.)?(\d{3})$/;{10,10}'))) {
-                            return "Sai định dạng.";
-                          } else {
-                            return null;
-                          }
-                        },
+                        validator: Validator.checkPhoneNumber,
                         nextNode: _model.focusNodeBirthDate,
                         controller: _model.controllerPhone,
                         textInputType: TextInputType.number,
@@ -312,11 +297,7 @@ class _ProfileScreenState extends State<FormProfileScreen>
                         isDisable: false,
                         focusNode: _model.focusNodeStreet,
                         controller: _model.controllerStreet,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return "Vui lòng nhập địa chỉ.";
-                          }
-                        },
+                        validator: Validator.notEmpty,
                       ),
                       UIUtils.buildErrorUI(
                           context: context, error: _model.errorProfileMsg),

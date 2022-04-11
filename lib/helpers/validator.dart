@@ -15,7 +15,7 @@ class Validator {
 
   static dynamic checkAddress(String? value) {
     if (value!.isEmpty) {
-      return '* Vui lòng nhập địa chỉ gia hàng';
+      return '* Vui lòng nhập địa chỉ giao hàng';
     }
     return null;
   }
@@ -30,8 +30,7 @@ class Validator {
   }
 
   static dynamic checkPhoneNumber(String? value) {
-    String patttern =
-        r'^(0|\+84)(\s|\.)?[0-9]{9}$';
+    String patttern = r'^(0|\+84)(\s|\.)?[0-9]{9}$';
     RegExp regExp = RegExp(patttern);
     if (!value!.contains(regExp)) {
       return "* Sai định dạng.";
