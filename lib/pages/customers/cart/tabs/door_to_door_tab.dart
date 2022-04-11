@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
-import 'package:rssms/common/custom_tabbutton.dart';
-import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/models/entity/order_booking.dart';
 import 'package:rssms/models/entity/product.dart';
 import 'package:rssms/pages/customers/cart/tabs/handy_tab.dart';
@@ -63,60 +60,25 @@ class _DoorToDoorTabState extends State<DoorToDoorTab>
           .toList();
     }
 
-     return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        appBar: AppBar(
-          title: CustomText(
-              text: "Dịch vụ giữ đồ thuê",
-              color: Colors.black,
-              context: context,
-              fontWeight: FontWeight.bold,
-              fontSize: 24),
-          elevation: 0,
-          backgroundColor: CustomColor.white,
-          centerTitle: true,
-          automaticallyImplyLeading: false,
-          bottom: TabBar(
-            tabs: [
-              TabButton(
-                text: CustomText(
-                  text: "Gửi theo loại",
-                  color: CustomColor.black,
-                  context: context,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-                pageNumber: 1,
-                onPressed: () {},
-              ),
-              TabButton(
-                text: CustomText(
-                  text: "Gửi theo diện tích",
-                  color: CustomColor.black,
-                  context: context,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-                pageNumber: 2,
-                onPressed: () {},
-              )
-            ],
+    return SizedBox(
+      width: deviceSize.width,
+      height: deviceSize.height,
+      child: ListView(
+        children: [
+          CustomSizedBox(
+            context: context,
+            height: 16,
           ),
-        ),
-        body: Container(
-          color: CustomColor.white,
-          width: deviceSize.width,
-          height: deviceSize.height,
-          child: TabBarView(
-            children: [
-              HandyTab(
-                handyTab: widget.handyTab,
-              ),
-              HandyTabUnwidely(handyTab: widget.unweildyTab)
-            ],
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: mapListTab(),
           ),
-        ),
+          _index == 0
+              ? HandyTab(
+                  handyTab: widget.handyTab,
+                )
+              : HandyTabUnwidely(handyTab: widget.unweildyTab)
+        ],
       ),
     );
   }
