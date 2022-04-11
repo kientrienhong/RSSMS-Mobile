@@ -288,7 +288,7 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
   @override
   Widget build(BuildContext context) {
     var deviceSize = MediaQuery.of(context).size;
-
+    Invoice invoice = Provider.of<Invoice>(context, listen: false);
     return Scaffold(
       body: SingleChildScrollView(
         child: Form(
@@ -310,9 +310,18 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 24),
                       child: GestureDetector(
-                        onTap: () => {Navigator.of(context).pop()},
-                        child: Image.asset('assets/images/arrowLeft.png'),
-                      ),
+                          onTap: () => {Navigator.of(context).pop()},
+                          child: SizedBox(
+                            width: 24,
+                            height: 24,
+                            child: GestureDetector(
+                              onTap: () => {Navigator.of(context).pop()},
+                              child: Image.asset(
+                                'assets/images/arrowLeft.png',
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                          )),
                     ),
                     CustomText(
                         text: widget.isDone ? "Trả đơn hàng" : "Tạo đơn hàng",
@@ -452,6 +461,20 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                     );
                   },
                 ),
+                if (widget.isDone &&
+                    invoice.orderDetails
+                        .where((element) =>
+                            element.productType == SERVICES ||
+                            element.productType == ACCESSORY)
+                        .toList()
+                        .isEmpty)
+                  Center(
+                    child: CustomText(
+                        text: '(Trống)',
+                        color: CustomColor.black[3]!,
+                        context: context,
+                        fontSize: 16),
+                  ),
                 CustomSizedBox(
                   context: context,
                   height: 16,
@@ -664,7 +687,8 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                             invoice.orderDetails.forEach((element) {
                               if (element.height == 0 &&
                                   element.width == 0 &&
-                                  element.length == 0) {
+                                  element.length == 0 &&
+                                  element.productType != constant.ACCESSORY) {
                                 updateError(
                                     'Vui lòng nhập kích thước của các dịch vụ');
                                 isValid = false;
@@ -676,7 +700,7 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                             }
 
                             if (!_model.getIsPaid) {
-                              updateError('Vui lòng đã thanh toán hóa đơn');
+                              updateError('Vui lòng thanh toán hóa đơn');
                               return;
                             }
                             if (_formKey.currentState!.validate()) {

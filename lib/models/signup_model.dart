@@ -68,8 +68,12 @@ class SignUpModel {
 
   set controllerBirthDate(value) => _controllerBirthDate = value;
 
-  Future<dynamic> signUp(
-      Users user, String password, String deviceToken, String roleId) async {
-    return await ApiServices.signUp(user, password, deviceToken, roleId);
+  Future<dynamic> signUp(Users user, String password, String role, String image,
+      String deviceToken) async {
+    return await ApiServices.signUp(user, password, role, image, deviceToken);
+  }
+
+  Future<dynamic> getRoles() async {
+    return await ApiServices.getRoles();
   }
 }

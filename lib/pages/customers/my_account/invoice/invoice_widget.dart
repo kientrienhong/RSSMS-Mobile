@@ -12,7 +12,7 @@ class InvoiceWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Map<String, String> icon = constants.ICON_INVOICE;
+    const Map<String, String> icon = constants.ICON_INVOICE;
     final deviceSize = MediaQuery.of(context).size;
     return GestureDetector(
       onTap: () {

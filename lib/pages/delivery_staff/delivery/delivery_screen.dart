@@ -40,8 +40,32 @@ class _DeliveryScreenState extends State<DeliveryScreen>
 
   @override
   updateView() {
-    // TODO: implement updateView
     setState(() {});
+  }
+
+  @override
+  updateRefresLoading() {
+    setState(() {
+      _model.isLoadingRefresh = !_model.isLoadingRefresh;
+    });
+  }
+
+  @override
+  onClickRefresh() {
+    Users user = Provider.of<Users>(context, listen: false);
+    _presenter.refreshListSchedule(user: user);
+  }
+
+  @override
+  onClickNextWeek() {
+    Users user = Provider.of<Users>(context, listen: false);
+    _presenter.loadNewScheduleWeek(user: user, isPrevious: false);
+  }
+
+  @override
+  onClickPreviousWeek() {
+    Users user = Provider.of<Users>(context, listen: false);
+    _presenter.loadNewScheduleWeek(user: user, isPrevious: true);
   }
 
   @override
@@ -66,7 +90,7 @@ class _DeliveryScreenState extends State<DeliveryScreen>
           ?.mapIndexed((index, element) => ScheduleWidget(
               invoice: element,
               currentDateTime: _model.listDateTime[_model.currentIndex],
-              refreshSchedule: _presenter.loadListShedule,
+              refreshSchedule: _presenter.refreshListSchedule,
               initDeliveryScreen: _presenter.init,
               currentIndex: index,
               endDayOfWeek: _model.endDayOfWeek,
@@ -101,6 +125,7 @@ class _DeliveryScreenState extends State<DeliveryScreen>
       child: Container(
         margin: const EdgeInsets.only(right: 16),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CustomText(
                 text: day,
@@ -159,14 +184,46 @@ class _DeliveryScreenState extends State<DeliveryScreen>
             context: context,
             height: 16,
           ),
-          SizedBox(
+          Container(
+            alignment: Alignment.center,
             height: deviceSize.height / 8,
             child: ListView(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               scrollDirection: Axis.horizontal,
-              children: _model.listDateTime
-                  .mapIndexed((index, e) => formatDate(e, index))
-                  .toList(),
+              shrinkWrap: true,
+              children: [
+                GestureDetector(
+                  onTap: onClickPreviousWeek,
+                  child: SizedBox(
+                      height: 32,
+                      width: 32,
+                      child: Image.asset(
+                        'assets/images/arrowLeft.png',
+                        fit: BoxFit.contain,
+                      )),
+                ),
+                CustomSizedBox(
+                  context: context,
+                  width: 18,
+                ),
+                ..._model.listDateTime
+                    .mapIndexed((index, e) => formatDate(e, index))
+                    .toList(),
+                CustomSizedBox(
+                  context: context,
+                  width: 18,
+                ),
+                GestureDetector(
+                  onTap: onClickNextWeek,
+                  child: SizedBox(
+                      height: 32,
+                      width: 32,
+                      child: Image.asset(
+                        'assets/images/arrowRight.png',
+                        fit: BoxFit.contain,
+                      )),
+                ),
+              ],
             ),
           ),
           Row(
@@ -175,7 +232,7 @@ class _DeliveryScreenState extends State<DeliveryScreen>
               CustomButton(
                   height: 24,
                   text: 'Hủy lịch',
-                  width: deviceSize.width * 2 / 3,
+                  width: deviceSize.width * 0.8 / 3,
                   onPressFunction: () {
                     showDialog(
                         context: context,
@@ -199,6 +256,19 @@ class _DeliveryScreenState extends State<DeliveryScreen>
                   isLoading: false,
                   textColor: CustomColor.white,
                   buttonColor: CustomColor.red,
+                  borderRadius: 6),
+              CustomSizedBox(
+                context: context,
+                width: 8,
+              ),
+              CustomButton(
+                  height: 24,
+                  text: 'Làm mới',
+                  width: deviceSize.width * 2 / 3,
+                  onPressFunction: onClickRefresh,
+                  isLoading: _model.isLoadingRefresh,
+                  textColor: CustomColor.white,
+                  buttonColor: CustomColor.blue,
                   borderRadius: 6),
             ],
           ),

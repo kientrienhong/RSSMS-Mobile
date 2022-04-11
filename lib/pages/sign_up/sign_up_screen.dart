@@ -1,21 +1,17 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_input_date.dart';
 import 'package:rssms/common/custom_radio_button.dart';
+import 'package:rssms/common/custom_snack_bar.dart';
 import 'package:rssms/helpers/validator.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/models/role_model.dart';
 import 'package:rssms/models/signup_model.dart';
-import 'package:rssms/common/custom_bottom_navigation.dart';
-import 'package:rssms/pages/customers/cart/cart_screen.dart';
-import 'package:rssms/pages/customers/my_account/my_account.dart';
-import 'package:rssms/pages/customers/notification/notification_screen.dart';
+import 'package:rssms/pages/log_in/log_in_screen.dart';
 import 'package:rssms/presenters/role_presenter.dart';
 import 'package:rssms/presenters/signup_presenters.dart';
 import 'package:rssms/views/signup_view.dart';
-import 'package:rssms/constants/constants.dart' as constant;
 import '/common/background.dart';
 import '/common/custom_color.dart';
 import '/common/custom_input.dart';
@@ -47,7 +43,13 @@ class SignUpScreen extends StatelessWidget {
                     onTap: () => {Navigator.of(context).pop()},
                     child: Padding(
                       padding: const EdgeInsets.only(top: 16.0),
-                      child: Image.asset('assets/images/arrowLeft.png'),
+                      child: SizedBox(
+                          height: 24,
+                          width: 24,
+                          child: Image.asset(
+                            'assets/images/arrowLeft.png',
+                            fit: BoxFit.contain,
+                          )),
                     ),
                   ),
                 ),
@@ -136,11 +138,6 @@ class _FormSignUpState extends State<FormSignUp> implements SignUpView {
     _firebaseMessaging.getToken().then((token) {
       _token = token!;
     });
-    print(_token);
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      RemoteNotification notification = message.notification!;
-      AndroidNotification? android = message.notification?.android;
-    });
   }
 
   @override
@@ -165,21 +162,12 @@ class _FormSignUpState extends State<FormSignUp> implements SignUpView {
           await signupPresenter.handleSignUp(user, password, _token!, _roleModel!.role!.id);
 
       if (result != null) {
-        Users user = Provider.of<Users>(context, listen: false);
-        user.setUser(user: user);
-
+        CustomSnackBar.buildErrorSnackbar(
+            context: context,
+            message: 'Đăng ký thành công',
+            color: CustomColor.green);
         Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => const CustomBottomNavigation(
-                    listIndexStack: [
-                      MyAccountScreen(),
-                      CartScreen(),
-                      NotificationScreen(),
-                    ],
-                    listNavigator: constant.LIST_CUSTOMER_BOTTOM_NAVIGATION,
-                  )),
-        );
+            context, MaterialPageRoute(builder: (context) => LogInScreen()));
       }
     } catch (e) {
       print(e.toString());
@@ -320,9 +308,7 @@ class _FormSignUpState extends State<FormSignUp> implements SignUpView {
               textInputType: TextInputType.number,
               focusNode: _focusNodePhone,
               controller: _model.controllerPhone,
-              validator: (value) {
-              
-              },
+              validator: (value) {},
               nextNode: _focusNodeAddress,
             ),
             CustomOutLineInput(

@@ -106,7 +106,10 @@ class _GetItemRequestScreenState extends State<GetItemRequestScreen>
                     padding: const EdgeInsets.symmetric(vertical: 24),
                     child: GestureDetector(
                       onTap: () => {Navigator.of(context).pop()},
-                      child: Image.asset('assets/images/arrowLeft.png'),
+                      child: Image.asset(
+                        'assets/images/arrowLeft.png',
+                        fit: BoxFit.contain,
+                      ),
                     ),
                   ),
                   Center(

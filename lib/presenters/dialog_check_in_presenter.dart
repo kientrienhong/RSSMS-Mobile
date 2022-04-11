@@ -18,7 +18,7 @@ class DialogCheckInPresenter {
         return true;
       }
 
-      return false;
+      return true;
     } finally {
       view.updateLoading();
     }

@@ -106,7 +106,7 @@ class _InvoiceDetailScreenState extends State<InvoiceDetailScreen>
                     ]),
               )
             : Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
+                padding: const EdgeInsets.only(left: 24, right: 24, bottom: 24),
                 child: SizedBox(
                   width: deviceSize.width,
                   height: deviceSize.height,
@@ -119,7 +119,10 @@ class _InvoiceDetailScreenState extends State<InvoiceDetailScreen>
                           height: 24,
                           child: GestureDetector(
                             onTap: () => {Navigator.of(context).pop()},
-                            child: Image.asset('assets/images/arrowLeft.png'),
+                            child: Image.asset(
+                              'assets/images/arrowLeft.png',
+                              fit: BoxFit.contain,
+                            ),
                           ),
                         ),
                       ),

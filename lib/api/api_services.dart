@@ -11,17 +11,6 @@ class ApiServices {
   ApiServices._();
   static const _domain = 'https://localhost:44304';
 
-  static Future<dynamic> logInThirParty(String firebaseId, String deviceToken) {
-    try {
-      final url = Uri.parse(
-          '$_domain/api/v1/users/thirdparty?firebaseID=$firebaseId&deviceToken=$deviceToken');
-      return http.post(url);
-    } catch (e) {
-      print(e.toString());
-      throw Exception('Log In failed');
-    }
-  }
-
   static Future<dynamic> logInWithEmail(
       String email, String password, String deviceToken) {
     try {
@@ -36,13 +25,13 @@ class ApiServices {
             "deviceToken": deviceToken
           }));
     } catch (e) {
-      print(e.toString());
-      throw Exception('Log In failedd');
+      log(e.toString());
+      throw Exception(e);
     }
   }
 
-    static Future<dynamic> signUp(
-      Users user, String password, String deviceToken, String roleId) {
+  static Future<dynamic> signUp(Users user, String password, String role,
+      String image, String deviceToken) {
     try {
       Map<String, String> headers = {"Content-type": "application/json"};
 
@@ -54,11 +43,12 @@ class ApiServices {
             'deviceToken': deviceToken,
             "password": password,
             "email": user.email,
+            "roleId": role,
             "gender": user.gender,
             "birthdate": user.birthDate!.toIso8601String(),
             "address": user.address,
             "phone": user.phone,
-            "roleId": roleId,
+            "image": {"file": image}
           }));
     } catch (e) {
       throw Exception(e.toString());
@@ -477,13 +467,25 @@ class ApiServices {
     }
   }
 
+  static Future<dynamic> getRoles() {
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+      };
+      final url = Uri.parse('$_domain/api/v1/roles?page=1&size=250');
+      return http.get(url, headers: headers);
+    } catch (e) {
+      print(e.toString());
+      throw Exception('Update Failed');
+    }
+  }
+
   static Future<dynamic> updateOrder(Invoice invoice, String idToken) {
     try {
       Map<String, String> headers = {
         "Content-type": "application/json",
         'Authorization': 'Bearer $idToken'
       };
-      final test = invoice.toMap();
       final url = Uri.parse('$_domain/api/v1/orders/${invoice.id}');
       return http.put(url, headers: headers, body: jsonEncode(invoice.toMap()));
     } catch (e) {
@@ -607,7 +609,8 @@ class ApiServices {
 
       final url = Uri.parse(
           '$_domain/api/v1/requests/send request notification/$idRequest');
-      return http.post(url, body: 'dasjkdhaskjdh', headers: headers);
+      return http.post(url,
+          body: jsonEncode({"message": message}), headers: headers);
     } catch (e) {
       print(e.toString());
       throw Exception(e.toString());

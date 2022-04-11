@@ -10,13 +10,21 @@ import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/i
 import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_screen/update_invoice_screen.dart';
 import 'package:rssms/pages/delivery_staff/qr/invoice_screen/widget/invoice_info_widget.dart';
 import 'package:rssms/constants/constants.dart' as constants;
+import 'package:rssms/utils/ui_utils.dart';
 
-class QRInvoiceDetailsScreen extends StatelessWidget {
+class QRInvoiceDetailsScreen extends StatefulWidget {
   final bool isScanQR;
   final bool isDone;
   QRInvoiceDetailsScreen(
       {Key? key, required this.isScanQR, required this.isDone})
       : super(key: key);
+
+  @override
+  State<QRInvoiceDetailsScreen> createState() => _QRInvoiceDetailsScreenState();
+}
+
+class _QRInvoiceDetailsScreenState extends State<QRInvoiceDetailsScreen> {
+  String error = '';
 
   Invoice formatUIInvoice(Invoice invoice) {
     Invoice invoiceResult = invoice.copyWith(orderDetails: []);
@@ -72,7 +80,7 @@ class QRInvoiceDetailsScreen extends StatelessWidget {
     Invoice invoice = Provider.of<Invoice>(context, listen: false);
     Invoice invoiceUI = invoice;
     final deviceSize = MediaQuery.of(context).size;
-    if (isDone) invoiceUI = formatUIInvoice(invoice);
+    if (widget.isDone) invoiceUI = formatUIInvoice(invoice);
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -93,7 +101,13 @@ class QRInvoiceDetailsScreen extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(vertical: 24),
                     child: GestureDetector(
                       onTap: () => {Navigator.of(context).pop()},
-                      child: Image.asset('assets/images/arrowLeft.png'),
+                      child: SizedBox(
+                          height: 24,
+                          width: 24,
+                          child: Image.asset(
+                            'assets/images/arrowLeft.png',
+                            fit: BoxFit.contain,
+                          )),
                     ),
                   ),
                   CustomText(
@@ -128,16 +142,24 @@ class QRInvoiceDetailsScreen extends StatelessWidget {
                       context: context,
                       height: 16,
                     ),
-                    if (isScanQR == true)
+                    UIUtils.buildErrorUI(error: error, context: context),
+                    if (widget.isScanQR == true)
                       // if (invoice.status == constants.ASSIGNED)
                       Center(
                         child: CustomButton(
                             height: 24,
                             isLoading: false,
-                            text: isDone ? 'Trả đơn' : 'Tạo đơn',
+                            text: widget.isDone ? 'Trả đơn' : 'Tạo đơn',
                             textColor: CustomColor.white,
                             onPressFunction: () {
-                              if (isDone) {
+                              if (invoice.status == 7) {
+                                setState(() {
+                                  error = 'Đơn đã thanh lý không để trả đơn';
+                                  return;
+                                });
+                              }
+
+                              if (widget.isDone) {
                                 Invoice invoiceTemp =
                                     formatInvoiceForUpdate(invoice);
                                 invoice.setInvoice(invoice: invoiceTemp);
@@ -148,7 +170,7 @@ class QRInvoiceDetailsScreen extends StatelessWidget {
                                 MaterialPageRoute(
                                     builder: (context) => UpdateInvoiceScreen(
                                           isView: false,
-                                          isDone: isDone,
+                                          isDone: widget.isDone,
                                         )),
                               );
                             },

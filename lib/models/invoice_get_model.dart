@@ -6,12 +6,18 @@ class InvoiceGetModel {
   late bool isLoadingButton;
   late TextEditingController _controllerBirthDate;
   late TextEditingController _controllerStreet;
+  late String _error;
 
   InvoiceGetModel() {
     isLoadingButton = false;
     _controllerBirthDate = TextEditingController();
     _controllerStreet = TextEditingController();
+    _error = '';
   }
+
+  get error => _error;
+
+  set error(value) => _error = value;
 
   get getIsLoadingButton => isLoadingButton;
 

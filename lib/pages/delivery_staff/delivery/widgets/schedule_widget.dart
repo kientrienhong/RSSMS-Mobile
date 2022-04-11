@@ -96,38 +96,42 @@ class _ScheduleWidgetState extends State<ScheduleWidget>
 
   @override
   void onPressDelivery() {
-    showDialog(
-        context: context,
-        builder: (ctx) {
-          return DialogCheckIn(idRequest: widget.invoice.id);
-        }).then((value) async {
-      if (value) {
-        Users user = Provider.of<Users>(context, listen: false);
-        widget.initDeliveryScreen(
-            user: user, currentDate: widget.currentDateTime);
-
-        await widget.refreshSchedule(
-            user.idToken!, widget.firstDayOfWeek, widget.endDayOfWeek);
-      }
-    });
+    try {
+      showDialog(
+          context: context,
+          builder: (ctx) {
+            return DialogCheckIn(idRequest: widget.invoice.id);
+          }).then((value) async {
+        if (value) {
+          Users user = Provider.of<Users>(context, listen: false);
+          widget.initDeliveryScreen(
+              user: user, currentDate: widget.currentDateTime);
+          await widget.refreshSchedule(user: user);
+        }
+      });
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   @override
   void onPressReport() {
-    showDialog(
-        context: context,
-        builder: (ctx) {
-          return DialogReport(idRequest: widget.invoice.id);
-        }).then((value) async {
-      if (value) {
-        Users user = Provider.of<Users>(context, listen: false);
-        widget.initDeliveryScreen(
-            user: user, currentDate: widget.currentDateTime);
-
-        await widget.refreshSchedule(
-            user.idToken!, widget.firstDayOfWeek, widget.endDayOfWeek);
-      }
-    });
+    try {
+      showDialog(
+          context: context,
+          builder: (ctx) {
+            return DialogReport(idRequest: widget.invoice.id);
+          }).then((value) async {
+        if (value) {
+          Users user = Provider.of<Users>(context, listen: false);
+          widget.initDeliveryScreen(
+              user: user, currentDate: widget.currentDateTime);
+          await widget.refreshSchedule(user: user);
+        }
+      });
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   @override
@@ -185,7 +189,6 @@ class _ScheduleWidgetState extends State<ScheduleWidget>
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
-    final test = widget.invoice;
     DateTime deliveryDateTime = DateTime.parse(widget.invoice.deliveryDate);
     bool isDelivery = deliveryDateTime.isAfter(widget.firstDayOfWeek) &&
         deliveryDateTime.isBefore(widget.endDayOfWeek);
@@ -331,31 +334,33 @@ class _ScheduleWidgetState extends State<ScheduleWidget>
                         ),
                         buildInfo('SĐT khách hàng: ',
                             widget.invoice.customerPhone, context),
-                        Divider(),
-                        Row(
+                        Column(
                           children: [
-                            CustomButton(
-                                height: 24,
-                                text: 'Báo cáo',
-                                width: deviceSize.width * 1 / 3,
-                                onPressFunction: onPressReport,
-                                isLoading: false,
-                                textColor: CustomColor.white,
-                                buttonColor: CustomColor.red,
-                                borderRadius: 6),
-                            CustomSizedBox(
-                              context: context,
-                              width: 8,
-                            ),
-                            CustomButton(
-                                height: 24,
-                                text: 'Đi lấy hàng',
-                                width: deviceSize.width * 1 / 3,
-                                onPressFunction: onPressDelivery,
-                                isLoading: false,
-                                textColor: CustomColor.white,
-                                buttonColor: CustomColor.blue,
-                                borderRadius: 6),
+                            const Divider(),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                CustomButton(
+                                    height: 24,
+                                    text: 'Báo cáo',
+                                    width: deviceSize.width * 1 / 3,
+                                    onPressFunction: onPressReport,
+                                    isLoading: false,
+                                    textColor: CustomColor.white,
+                                    buttonColor: CustomColor.red,
+                                    borderRadius: 6),
+                                if (widget.invoice.status == 2)
+                                  CustomButton(
+                                      height: 24,
+                                      text: 'Đi lấy hàng',
+                                      width: deviceSize.width * 1 / 3,
+                                      onPressFunction: onPressDelivery,
+                                      isLoading: false,
+                                      textColor: CustomColor.white,
+                                      buttonColor: CustomColor.blue,
+                                      borderRadius: 6),
+                              ],
+                            )
                           ],
                         )
                       ],

@@ -10,7 +10,7 @@ import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_input.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/models/entity/add_image.dart';
-import 'package:rssms/pages/log_in/widget/button_icon.dart';
+import 'package:rssms/common/button_icon.dart';
 
 class UpdateImageInvoice extends StatefulWidget {
   final bool isDisable;
@@ -149,10 +149,11 @@ class _InvoiceImageDetailState extends State<UpdateImageInvoice> {
                                 description: _note,
                                 name: _name,
                                 image: imageAdd);
-                            if (imageAdd != null)
+                            if (imageAdd != null) {
                               context
                                   .read<AddedImage>()
                                   .setImage(aimage: image);
+                            }
                             Navigator.of(context).pop();
                           },
                           isLoading: false,

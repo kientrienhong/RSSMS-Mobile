@@ -1,3 +1,4 @@
+import 'package:rssms/helpers/handle_reponse.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/models/invoice_get_model.dart';
 import 'package:rssms/views/invoice_get_view.dart';
@@ -14,11 +15,13 @@ class InvoiceGetPresenter {
     try {
       final response = await model.createGetInvoicedRequest(request, user);
 
-      if (response.statusCode == 200) {
+      final handledResponse = HandleResponse.handle(response);
+      if (handledResponse['status'] == 'success') {
         return true;
+      } else {
+        view.updateError(handledResponse['data']);
+        return false;
       }
-
-      return false;
     } catch (e) {
       throw Exception(e.toString());
     } finally {
