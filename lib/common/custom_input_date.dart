@@ -133,7 +133,6 @@ class _CustomOutLineInputState extends State<CustomOutLineInputDateTime> {
                     readOnly: true,
                     onTap: () async {
                       DateTime? date = DateTime(1900);
-                      // FocusScope.of(context).requestFocus(FocusNode());
                       date = await showDatePicker(
                         context: context,
                         initialDate: DateTime.now(),
@@ -168,7 +167,7 @@ class _CustomOutLineInputState extends State<CustomOutLineInputDateTime> {
                       contentPadding: const EdgeInsets.symmetric(
                           vertical: 16, horizontal: 12),
                       isCollapsed: true,
-                      hintStyle: TextStyle(fontSize: 14),
+                      hintStyle: const TextStyle(fontSize: 14),
                       hintText: "dd/mm/yyyy",
                       suffixIcon: Image.asset(
                         widget.icon,

@@ -13,6 +13,5 @@ abstract class SignUpView {
 
   // handle events
   void onChangeInput();
-  void onClickSignUp(String email, String password, String confirmPassword,
-      String address, String name, String phone, String birthDay);
+  void onClickSignUp();
 }

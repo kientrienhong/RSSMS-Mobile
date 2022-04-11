@@ -1,5 +1,6 @@
+import 'dart:developer';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:intl/intl.dart';
 import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_input_date.dart';
 import 'package:rssms/common/custom_radio_button.dart';
@@ -91,26 +92,7 @@ class FormSignUp extends StatefulWidget {
 class _FormSignUpState extends State<FormSignUp> implements SignUpView {
   late SignUpPresenter signupPresenter;
   late FirebaseMessaging _firebaseMessaging;
-  String? _token;
   late SignUpModel _model;
-
-  final _focusNodeEmail = FocusNode();
-  final _focusNodePassword = FocusNode();
-  final _focusNodeConfirmPassword = FocusNode();
-  final _focusNodeAddress = FocusNode();
-  final _focusNodePhone = FocusNode();
-  final _focusNodeName = FocusNode();
-  final _focusNodeBirthDate = FocusNode();
-
-  int _gender = 0;
-
-  String get _email => _model.controllerEmail.text;
-  String get _password => _model.controllerPassword.text;
-  String get _confirmPassword => _model.controllerConfirmPassword.text;
-  String get _phone => _model.controllerPhone.text;
-  String get _name => _model.controllerName.text;
-  String get _address => _model.controllerAddress.text;
-  String get _birthdate => _model.controllerBirthDate.text;
 
   @override
   void initState() {
@@ -120,51 +102,34 @@ class _FormSignUpState extends State<FormSignUp> implements SignUpView {
     signupPresenter = SignUpPresenter();
     signupPresenter.setView(this);
     _model = signupPresenter.model;
-    _model.controllerEmail.addListener(onChangeInput);
-    _model.controllerPassword.addListener(onChangeInput);
-    _model.controllerConfirmPassword.addListener(onChangeInput);
-    _model.controllerPhone.addListener(onChangeInput);
-    _model.controllerName.addListener(onChangeInput);
-    _model.controllerBirthDate.addListener(onChangeInput);
   }
 
   void firebaseCloudMessagingListeners() {
     _firebaseMessaging.getToken().then((token) {
-      _token = token!;
+      _model.token = token!;
     });
   }
 
   @override
   void onChangeInput() {
-    signupPresenter.handleOnChangeInput(_email, _password, _confirmPassword,
-        _address, _name, _phone, _birthdate);
+    signupPresenter.handleOnChangeInput();
   }
 
   @override
-  void onClickSignUp(String email, String password, String confirmPassword,
-      String address, String name, String phone, String birthDay) async {
-    _model.errorMsg = "";
+  void onClickSignUp() async {
     try {
-      Users user = Users.register(
-          address: address,
-          birthDate: DateFormat('dd/MM/yyyy').parse(birthDay),
-          email: email,
-          gender: _gender,
-          name: name,
-          phone: phone);
-      Users result =
-          await signupPresenter.handleSignUp(user, password, _token!);
+      Users result = await signupPresenter.handleSignUp();
 
       if (result != null) {
         CustomSnackBar.buildErrorSnackbar(
             context: context,
             message: 'Đăng ký thành công',
             color: CustomColor.green);
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => LogInScreen()));
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const LogInScreen()));
       }
     } catch (e) {
-      print(e.toString());
+      log(e.toString());
       signupPresenter.view
           .updateViewErrorMsg("Đã có lỗi xảy ra, vui lòng thử lại sau!");
     }
@@ -182,12 +147,7 @@ class _FormSignUpState extends State<FormSignUp> implements SignUpView {
   @override
   void dispose() {
     super.dispose();
-    _focusNodeEmail.dispose();
-    _focusNodePassword.dispose();
-    _focusNodeConfirmPassword.dispose();
-    _focusNodeName.dispose();
-    _focusNodeBirthDate.dispose();
-    _focusNodePhone.dispose();
+    signupPresenter.dispose();
   }
 
   @override
@@ -238,8 +198,8 @@ class _FormSignUpState extends State<FormSignUp> implements SignUpView {
               deviceSize: widget.deviceSize,
               labelText: 'Họ và tên',
               isDisable: false,
-              focusNode: _focusNodeName,
-              nextNode: _focusNodeEmail,
+              focusNode: _model.focusNodeName,
+              nextNode: _model.focusNodeEmail,
               validator: Validator.checkFullname,
               controller: _model.controllerName,
             ),
@@ -252,36 +212,39 @@ class _FormSignUpState extends State<FormSignUp> implements SignUpView {
             CustomSizedBox(context: context, height: 8),
             CustomRadioButton(
                 function: () {
-                  setState(() => _gender = 0);
+                  setState(() => _model.gender = 0);
                 },
                 text: "Nam",
-                color: _gender == 0 ? CustomColor.blue : CustomColor.white,
-                state: _gender,
+                color:
+                    _model.gender == 0 ? CustomColor.blue : CustomColor.white,
+                state: _model.gender,
                 value: 0),
             CustomRadioButton(
                 function: () {
-                  setState(() => _gender = 1);
+                  setState(() => _model.gender = 1);
                 },
                 text: "Nữ",
-                color: _gender == 1 ? CustomColor.blue : CustomColor.white,
-                state: _gender,
+                color:
+                    _model.gender == 1 ? CustomColor.blue : CustomColor.white,
+                state: _model.gender,
                 value: 1),
             CustomRadioButton(
                 function: () {
-                  setState(() => _gender = 2);
+                  setState(() => _model.gender = 2);
                 },
                 text: "Khác",
-                color: _gender == 2 ? CustomColor.blue : CustomColor.white,
-                state: _gender,
+                color:
+                    _model.gender == 2 ? CustomColor.blue : CustomColor.white,
+                state: _model.gender,
                 value: 2),
             SizedBox(
               width: widget.deviceSize.width / 2.5,
               child: CustomOutLineInputDateTime(
                 deviceSize: widget.deviceSize,
                 labelText: 'Năm sinh',
-                isDisable: true,
-                focusNode: _focusNodeBirthDate,
-                nextNode: _focusNodeEmail,
+                isDisable: false,
+                focusNode: _model.focusNodeBirthDate,
+                nextNode: _model.focusNodeEmail,
                 controller: _model.controllerBirthDate,
                 icon: "assets/images/calendar.png",
               ),
@@ -290,28 +253,28 @@ class _FormSignUpState extends State<FormSignUp> implements SignUpView {
               deviceSize: widget.deviceSize,
               labelText: 'Email',
               isDisable: false,
-              focusNode: _focusNodeEmail,
+              focusNode: _model.focusNodeEmail,
               validator: Validator.checkEmail,
               controller: _model.controllerEmail,
-              nextNode: _focusNodePhone,
+              nextNode: _model.focusNodePhone,
             ),
             CustomOutLineInput(
               deviceSize: widget.deviceSize,
               labelText: 'Số điện thoại',
               isDisable: false,
               textInputType: TextInputType.number,
-              focusNode: _focusNodePhone,
+              focusNode: _model.focusNodePhone,
               controller: _model.controllerPhone,
               validator: (value) {},
-              nextNode: _focusNodeAddress,
+              nextNode: _model.focusNodeAddress,
             ),
             CustomOutLineInput(
                 deviceSize: widget.deviceSize,
                 labelText: 'Địa chỉ',
                 isDisable: false,
-                focusNode: _focusNodeAddress,
+                focusNode: _model.focusNodeAddress,
                 controller: _model.controllerAddress,
-                nextNode: _focusNodePassword,
+                nextNode: _model.focusNodePassword,
                 validator: (value) {
                   if (value!.isEmpty) {
                     return "Vui lòng nhập địa chỉ.";
@@ -322,9 +285,9 @@ class _FormSignUpState extends State<FormSignUp> implements SignUpView {
               labelText: 'Mật khẩu',
               isDisable: false,
               isSecure: true,
-              focusNode: _focusNodePassword,
+              focusNode: _model.focusNodePassword,
               controller: _model.controllerPassword,
-              nextNode: _focusNodeConfirmPassword,
+              nextNode: _model.focusNodeConfirmPassword,
               validator: (value) {
                 if (value!.length < 6) {
                   return "Mật khẩu quá ngắn (ít nhất 6 kí tự)";
@@ -338,7 +301,7 @@ class _FormSignUpState extends State<FormSignUp> implements SignUpView {
               labelText: 'Xác nhận mật khẩu',
               isDisable: false,
               isSecure: true,
-              focusNode: _focusNodeConfirmPassword,
+              focusNode: _model.focusNodeConfirmPassword,
               controller: _model.controllerConfirmPassword,
               validator: (value) {
                 if (!(_model.controllerPassword.text == value)) {
@@ -373,15 +336,7 @@ class _FormSignUpState extends State<FormSignUp> implements SignUpView {
                 onPressFunction: _model.isDisableSignup == false
                     ? () {
                         if (_formKey.currentState!.validate()) {
-                          onClickSignUp(_email, _password, _confirmPassword,
-                              _address, _name, _phone, _birthdate);
-                          _focusNodePassword.unfocus();
-                          _focusNodeAddress.unfocus();
-                          _focusNodeBirthDate.unfocus();
-                          _focusNodeConfirmPassword.unfocus();
-                          _focusNodeEmail.unfocus();
-                          _focusNodeName.unfocus();
-                          _focusNodePhone.unfocus();
+                          onClickSignUp();
                         }
                       }
                     : null,
