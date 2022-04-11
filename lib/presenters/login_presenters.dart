@@ -7,42 +7,48 @@ import '/models/login_model.dart';
 import '/views/login_view.dart';
 
 class LoginPresenter {
-  late LoginModel _model;
-  late LoginView _view;
-
-  LoginView get view => _view;
+  late LoginModel model;
+  late LoginView view;
 
   setView(LoginView value) {
-    _view = value;
+    view = value;
   }
 
-  LoginModel get model => _model;
-
   LoginPresenter() {
-    _model = LoginModel();
+    model = LoginModel();
   }
 
   void handleOnChangeInput(String email, String password) {
-    _view.updateViewStatusButton(email, password);
+    view.updateViewStatusButton(email, password);
   }
 
   Future<Users?> handleSignIn() async {
-    _view.updateLoading();
+    view.updateLoading();
+    model.focusNodeEmail.unfocus();
+    model.focusNodePassword.unfocus();
+    model.errorMsg = '';
     try {
-      final response = await _model.logInAccount();
+      final response = await model.logInAccount();
 
       final handledResponse = HandleResponse.handle(response);
 
       if (handledResponse['status'] == 'success') {
         return Users.fromMap(handledResponse['data']);
       } else {
-        _view.updateViewErrorMsg(handledResponse['data']);
+        view.updateViewErrorMsg(handledResponse['data']);
         return null;
       }
     } catch (e) {
-      _view.updateViewErrorMsg("Xảy ra lỗi hệ thống. Vui lòng thử lại sau");
+      view.updateViewErrorMsg("Xảy ra lỗi hệ thống. Vui lòng thử lại sau");
     } finally {
-      _view.updateLoading();
+      view.updateLoading();
     }
+  }
+
+  void dispose() {
+    model.controllerEmail.dispose();
+    model.controllerPassword.dispose();
+    model.focusNodeEmail.dispose();
+    model.focusNodePassword.dispose();
   }
 }

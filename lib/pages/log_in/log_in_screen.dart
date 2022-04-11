@@ -119,9 +119,6 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
   late FirebaseMessaging _firebaseMessaging;
   late LoginModel _model;
 
-  final _focusNodeEmail = FocusNode();
-  final _focusNodePassword = FocusNode();
-
   @override
   void initState() {
     super.initState();
@@ -153,9 +150,6 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
 
   @override
   void onClickSignIn() async {
-    _focusNodeEmail.unfocus();
-    _focusNodePassword.unfocus();
-    // _model.errorMsg = "";
     Users user = Provider.of<Users>(context, listen: false);
 
     final result = await loginPresenter.handleSignIn();
@@ -221,10 +215,7 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
   @override
   void dispose() {
     super.dispose();
-    _focusNodeEmail.dispose();
-    _focusNodePassword.dispose();
-    _model.controllerEmail.dispose();
-    _model.controllerPassword.dispose();
+    loginPresenter.dispose();
   }
 
   @override
@@ -259,8 +250,8 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
             deviceSize: widget.deviceSize,
             labelText: 'Email',
             isDisable: false,
-            focusNode: _focusNodeEmail,
-            nextNode: _focusNodePassword,
+            focusNode: _model.focusNodeEmail,
+            nextNode: _model.focusNodePassword,
             controller: _model.controllerEmail,
           ),
           CustomOutLineInput(
@@ -268,7 +259,7 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
             labelText: 'Mật khẩu',
             isDisable: false,
             isSecure: true,
-            focusNode: _focusNodePassword,
+            focusNode: _model.focusNodePassword,
             controller: _model.controllerPassword,
           ),
           if (_model.errorMsg.isNotEmpty)
