@@ -2,18 +2,16 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_input.dart';
 import 'package:rssms/common/custom_sizebox.dart';
-import 'package:rssms/models/entity/add_image.dart';
 
 class ImageDetailsInvoice extends StatefulWidget {
-  Map<String, dynamic> image;
+  final Map<String, dynamic> image;
 
   final bool isDisable;
-  ImageDetailsInvoice({
+  const ImageDetailsInvoice({
     Key? key,
     required this.isDisable,
     required this.image,

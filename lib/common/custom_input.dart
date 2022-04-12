@@ -1,28 +1,24 @@
-import 'package:rssms/helpers/validator.dart';
-
 import '/common/custom_color.dart';
 import '/common/custom_sizebox.dart';
 import '/common/custom_text.dart';
 import 'package:flutter/material.dart';
 
-enum StatusTypeInput { VALID, INVALID, DISABLE }
+enum StatusTypeInput { valid, invalid, disable }
 
 class CustomOutLineInput extends StatefulWidget {
-  final Size? deviceSize;
+  final Size deviceSize;
   final String? labelText;
-  final FocusNode? focusNode;
+  final FocusNode focusNode;
   final FocusNode? nextNode;
   final Color? backgroundColorLabel;
   final TextInputType? textInputType;
-  final TextEditingController? controller;
-  StatusTypeInput? statusTypeInput;
-  Function? validator;
-  final bool? isDisable;
+  final TextEditingController controller;
+  final Function? validator;
+  final bool isDisable;
   final bool? isSecure;
   final int? maxLine;
-  CustomOutLineInput(
+  const CustomOutLineInput(
       {Key? key,
-      this.statusTypeInput = StatusTypeInput.VALID,
       required this.controller,
       this.validator,
       this.backgroundColorLabel = CustomColor.white,
@@ -43,32 +39,16 @@ class CustomOutLineInput extends StatefulWidget {
 class _CustomOutLineInputState extends State<CustomOutLineInput> {
   late Color colorBorder;
   late Color colorLabel;
+  late StatusTypeInput statusTypeInput;
+
   @override
   void initState() {
     super.initState();
 
-    switch (widget.statusTypeInput) {
-      case StatusTypeInput.VALID:
-        {
-          colorLabel = Colors.black;
-          colorBorder = CustomColor.black[3]!;
-          break;
-        }
-
-      case StatusTypeInput.DISABLE:
-        {
-          colorLabel = CustomColor.black[3]!;
-          colorBorder = CustomColor.black[3]!;
-          break;
-        }
-
-      default:
-        {
-          colorLabel = Colors.red;
-          colorBorder = Colors.red;
-        }
-    }
-    widget.focusNode!.addListener(_onFocusChange);
+    statusTypeInput = StatusTypeInput.valid;
+    colorLabel = Colors.black;
+    colorBorder = CustomColor.black[3]!;
+    widget.focusNode.addListener(_onFocusChange);
   }
 
   void setStateIfMounted(f) {
@@ -76,20 +56,17 @@ class _CustomOutLineInputState extends State<CustomOutLineInput> {
   }
 
   void _onFocusChange() {
-    if (widget.focusNode!.hasFocus) {
+    if (widget.focusNode.hasFocus) {
       setStateIfMounted(() {
         colorBorder = CustomColor.blue;
         colorLabel = CustomColor.blue;
       });
     } else {
-      if (widget.controller == null) {
-        return;
-      }
-      if (widget.controller!.text.isEmpty) {
+      if (widget.controller.text.isEmpty) {
         setStateIfMounted(() {
           colorBorder = Colors.red;
           colorLabel = Colors.red;
-          widget.statusTypeInput = StatusTypeInput.INVALID;
+          statusTypeInput = StatusTypeInput.invalid;
         });
 
         return;
@@ -97,7 +74,7 @@ class _CustomOutLineInputState extends State<CustomOutLineInput> {
       setStateIfMounted(() {
         colorBorder = CustomColor.black[3]!;
         colorLabel = Colors.black;
-        widget.statusTypeInput = StatusTypeInput.VALID;
+        statusTypeInput = StatusTypeInput.valid;
       });
     }
   }
@@ -115,7 +92,7 @@ class _CustomOutLineInputState extends State<CustomOutLineInput> {
             fontSize: 16),
         CustomSizedBox(context: context, height: 8),
         SizedBox(
-          width: widget.deviceSize!.width,
+          width: widget.deviceSize.width,
           child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -123,28 +100,22 @@ class _CustomOutLineInputState extends State<CustomOutLineInput> {
                 Stack(
                   clipBehavior: Clip.none,
                   children: [
-                    // SizedBox(
-                    //     height: widget.maxLine == 1
-                    //         ? widget.deviceSize!.height / 15
-                    //         : null,
-                    //     child: Center(
-                    //       child: TextFormField(
                     TextFormField(
                       obscureText: widget.isSecure!,
                       validator: widget.validator == null
                           ? null
                           : (val) {
-                              return widget.validator!(widget.controller!.text);
+                              return widget.validator!(widget.controller.text);
                             },
                       maxLines: widget.maxLine,
                       keyboardType: widget.textInputType,
                       style: TextStyle(color: colorLabel, fontSize: 16),
-                      enabled: !widget.isDisable!,
+                      enabled: !widget.isDisable,
                       textInputAction: widget.nextNode != null
                           ? TextInputAction.next
                           : TextInputAction.done,
                       onFieldSubmitted: (term) {
-                        widget.focusNode!.unfocus();
+                        widget.focusNode.unfocus();
                         if (widget.nextNode != null) {
                           FocusScope.of(context).requestFocus(widget.nextNode);
                         }
@@ -174,23 +145,22 @@ class _CustomOutLineInputState extends State<CustomOutLineInput> {
                         ),
                       ),
                     ),
-                    // )),
                   ],
                 ),
-                if (widget.statusTypeInput == StatusTypeInput.INVALID)
+                if (statusTypeInput == StatusTypeInput.invalid)
                   CustomSizedBox(
                     context: context,
                     height: 8,
                   ),
-                if (widget.statusTypeInput == StatusTypeInput.INVALID)
+                if (statusTypeInput == StatusTypeInput.invalid)
                   CustomText(
-                    text: '* Required',
+                    text: '* Vui lòng nhập',
                     color: Colors.red,
                     context: context,
                     textAlign: TextAlign.start,
                     fontSize: 14,
                   ),
-                widget.statusTypeInput == StatusTypeInput.INVALID
+                statusTypeInput == StatusTypeInput.invalid
                     ? CustomSizedBox(
                         context: context,
                         height: 8,

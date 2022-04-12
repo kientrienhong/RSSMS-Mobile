@@ -58,7 +58,7 @@ class _InvoiceCancelScreenState extends State<InvoiceCancelScreen>
     };
     bool result = await _presenter.createRequest(cancelRequest, users);
     if (result) {
-      CustomSnackBar.buildErrorSnackbar(
+      CustomSnackBar.buildSnackbar(
           context: context,
           message: 'Yêu cầu hủy yêu cầu đã được gửi',
           color: CustomColor.green);

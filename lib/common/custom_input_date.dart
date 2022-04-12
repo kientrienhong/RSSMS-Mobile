@@ -1,5 +1,3 @@
-// ignore_for_file: must_be_immutable
-
 import 'package:intl/intl.dart';
 
 import '/common/custom_color.dart';
@@ -9,22 +7,21 @@ import 'package:flutter/material.dart';
 
 enum StatusTypeInput { valid, invalid, disable }
 
+@immutable
 class CustomOutLineInputDateTime extends StatefulWidget {
-  final Size? deviceSize;
+  final Size deviceSize;
   final String? labelText;
-  final FocusNode? focusNode;
+  final FocusNode focusNode;
   final FocusNode? nextNode;
   final Color? backgroundColorLabel;
   final TextInputType? textInputType;
-  final TextEditingController? controller;
-  StatusTypeInput? statusTypeInput;
-  Function? validator;
+  final TextEditingController controller;
+  final Function? validator;
   final bool? isDisable;
   final bool? isSecure;
-  String icon;
-  CustomOutLineInputDateTime(
+  final String icon;
+  const CustomOutLineInputDateTime(
       {Key? key,
-      this.statusTypeInput = StatusTypeInput.valid,
       required this.controller,
       this.validator,
       this.backgroundColorLabel = CustomColor.white,
@@ -45,32 +42,16 @@ class CustomOutLineInputDateTime extends StatefulWidget {
 class _CustomOutLineInputState extends State<CustomOutLineInputDateTime> {
   late Color colorBorder;
   late Color colorLabel;
+  late StatusTypeInput statusTypeInput;
+
   @override
   void initState() {
     super.initState();
 
-    switch (widget.statusTypeInput) {
-      case StatusTypeInput.valid:
-        {
-          colorLabel = Colors.black;
-          colorBorder = CustomColor.black[3]!;
-          break;
-        }
-
-      case StatusTypeInput.disable:
-        {
-          colorLabel = CustomColor.black[3]!;
-          colorBorder = CustomColor.black[3]!;
-          break;
-        }
-
-      default:
-        {
-          colorLabel = Colors.red;
-          colorBorder = Colors.red;
-        }
-    }
-    widget.focusNode!.addListener(_onFocusChange);
+    statusTypeInput = StatusTypeInput.valid;
+    colorLabel = Colors.black;
+    colorBorder = CustomColor.black[3]!;
+    widget.focusNode.addListener(_onFocusChange);
   }
 
   void setStateIfMounted(f) {
@@ -78,21 +59,18 @@ class _CustomOutLineInputState extends State<CustomOutLineInputDateTime> {
   }
 
   void _onFocusChange() {
-    if (widget.focusNode!.hasFocus) {
+    if (widget.focusNode.hasFocus) {
       setStateIfMounted(() {
         colorBorder = CustomColor.blue;
         colorLabel = CustomColor.blue;
-        widget.statusTypeInput = StatusTypeInput.valid;
+        statusTypeInput = StatusTypeInput.valid;
       });
     } else {
-      if (widget.controller == null) {
-        return;
-      }
-      if (widget.controller!.text.isEmpty) {
+      if (widget.controller.text.isEmpty) {
         setStateIfMounted(() {
           colorBorder = Colors.red;
           colorLabel = Colors.red;
-          widget.statusTypeInput = StatusTypeInput.invalid;
+          statusTypeInput = StatusTypeInput.invalid;
         });
 
         return;
@@ -100,7 +78,7 @@ class _CustomOutLineInputState extends State<CustomOutLineInputDateTime> {
       setStateIfMounted(() {
         colorBorder = CustomColor.black[3]!;
         colorLabel = Colors.black;
-        widget.statusTypeInput = StatusTypeInput.valid;
+        statusTypeInput = StatusTypeInput.valid;
       });
     }
   }
@@ -140,7 +118,7 @@ class _CustomOutLineInputState extends State<CustomOutLineInputDateTime> {
                         lastDate: DateTime(2100),
                       );
                       if (date != null) {
-                        widget.controller?.text =
+                        widget.controller.text =
                             DateFormat("dd/MM/yyyy").format(date);
                       }
                     },
@@ -155,7 +133,7 @@ class _CustomOutLineInputState extends State<CustomOutLineInputDateTime> {
                         ? TextInputAction.next
                         : TextInputAction.done,
                     onFieldSubmitted: (term) {
-                      widget.focusNode!.unfocus();
+                      widget.focusNode.unfocus();
                       if (widget.nextNode != null) {
                         FocusScope.of(context).requestFocus(widget.nextNode);
                       }
@@ -192,20 +170,20 @@ class _CustomOutLineInputState extends State<CustomOutLineInputDateTime> {
                   ),
                 ],
               ),
-              if (widget.statusTypeInput == StatusTypeInput.invalid)
+              if (statusTypeInput == StatusTypeInput.invalid)
                 CustomSizedBox(
                   context: context,
                   height: 8,
                 ),
-              if (widget.statusTypeInput == StatusTypeInput.invalid)
+              if (statusTypeInput == StatusTypeInput.invalid)
                 CustomText(
-                  text: '* Required',
+                  text: '* Vui lòng nhập',
                   color: Colors.red,
                   context: context,
                   textAlign: TextAlign.start,
                   fontSize: 14,
                 ),
-              widget.statusTypeInput == StatusTypeInput.invalid
+              statusTypeInput == StatusTypeInput.invalid
                   ? CustomSizedBox(
                       context: context,
                       height: 8,

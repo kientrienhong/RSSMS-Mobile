@@ -57,7 +57,7 @@ class _DialogReportState extends State<DialogReport>
         bool result = await _presenter.onClickReport(
             _model.note.text, widget.idRequest, user.idToken!);
         if (result) {
-          CustomSnackBar.buildErrorSnackbar(
+          CustomSnackBar.buildSnackbar(
               context: context,
               message: 'Báo cáo thành công',
               color: CustomColor.green);

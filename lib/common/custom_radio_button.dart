@@ -3,12 +3,12 @@ import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 
 class CustomRadioButton extends StatelessWidget {
-  VoidCallback function;
-  String text;
-  Color color;
+  final VoidCallback function;
+  final String text;
+  final Color color;
   final state;
   final value;
-  CustomRadioButton(
+  const CustomRadioButton(
       {Key? key,
       required this.function,
       required this.text,

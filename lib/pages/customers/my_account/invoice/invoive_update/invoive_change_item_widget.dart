@@ -108,7 +108,7 @@ class _ChangeItemWidgetState extends State<ChangeItemWidget>
     };
     bool result = await _presenter.createRequest(request, users);
     if (result) {
-      CustomSnackBar.buildErrorSnackbar(
+      CustomSnackBar.buildSnackbar(
           context: context,
           message: 'Yêu cầu rút đồ đã đươc gửi',
           color: CustomColor.green);

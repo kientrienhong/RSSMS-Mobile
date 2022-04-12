@@ -1,24 +1,22 @@
 import '/common/custom_color.dart';
 import 'package:flutter/material.dart';
 
-enum StatusTypeInput { VALID, INVALID, DISABLE }
+enum StatusTypeInput { valid, invalid, disable }
 
 class CustomOutLineInputWithHint extends StatefulWidget {
-  final Size? deviceSize;
-  final FocusNode? focusNode;
+  final Size deviceSize;
+  final FocusNode focusNode;
   final FocusNode? nextNode;
   final Color? backgroundColorLabel;
   final TextInputType? textInputType;
   final TextEditingController? controller;
-  StatusTypeInput? statusTypeInput;
-  Function(String?)? validator;
-  final bool? isDisable;
+  final Function(String?)? validator;
+  final bool isDisable;
   final bool? isSecure;
   final int? maxLine;
-  String? hintText;
-  CustomOutLineInputWithHint(
+  final String? hintText;
+  const CustomOutLineInputWithHint(
       {Key? key,
-      this.statusTypeInput = StatusTypeInput.VALID,
       required this.controller,
       this.validator,
       this.backgroundColorLabel = CustomColor.white,
@@ -39,32 +37,14 @@ class CustomOutLineInputWithHint extends StatefulWidget {
 class _CustomOutLineInputState extends State<CustomOutLineInputWithHint> {
   late Color colorBorder;
   late Color colorLabel;
+  late StatusTypeInput statusTypeInput;
   @override
   void initState() {
     super.initState();
-
-    switch (widget.statusTypeInput) {
-      case StatusTypeInput.VALID:
-        {
-          colorLabel = Colors.black;
-          colorBorder = CustomColor.black[3]!;
-          break;
-        }
-
-      case StatusTypeInput.DISABLE:
-        {
-          colorLabel = CustomColor.black[3]!;
-          colorBorder = CustomColor.black[3]!;
-          break;
-        }
-
-      default:
-        {
-          colorLabel = Colors.red;
-          colorBorder = Colors.red;
-        }
-    }
-    widget.focusNode!.addListener(_onFocusChange);
+    statusTypeInput = StatusTypeInput.valid;
+    colorLabel = Colors.black;
+    colorBorder = CustomColor.black[3]!;
+    widget.focusNode.addListener(_onFocusChange);
   }
 
   void setStateIfMounted(f) {
@@ -72,7 +52,7 @@ class _CustomOutLineInputState extends State<CustomOutLineInputWithHint> {
   }
 
   void _onFocusChange() {
-    if (widget.focusNode!.hasFocus) {
+    if (widget.focusNode.hasFocus) {
       setStateIfMounted(() {
         colorBorder = CustomColor.blue;
         colorLabel = CustomColor.blue;
@@ -85,7 +65,7 @@ class _CustomOutLineInputState extends State<CustomOutLineInputWithHint> {
         setStateIfMounted(() {
           colorBorder = Colors.red;
           colorLabel = Colors.red;
-          widget.statusTypeInput = StatusTypeInput.INVALID;
+          statusTypeInput = StatusTypeInput.invalid;
         });
 
         return;
@@ -93,7 +73,7 @@ class _CustomOutLineInputState extends State<CustomOutLineInputWithHint> {
       setStateIfMounted(() {
         colorBorder = CustomColor.black[3]!;
         colorLabel = Colors.black;
-        widget.statusTypeInput = StatusTypeInput.VALID;
+        statusTypeInput = StatusTypeInput.valid;
       });
     }
   }
@@ -112,20 +92,19 @@ class _CustomOutLineInputState extends State<CustomOutLineInputWithHint> {
               validator: widget.validator == null
                   ? null
                   : (val) {
-                      print(val);
                       return widget.validator!(widget.controller!.text);
                     },
               maxLines: widget.maxLine,
               keyboardType: widget.textInputType,
               style: TextStyle(color: colorLabel, fontSize: 16),
-              enabled: !widget.isDisable!,
+              enabled: !widget.isDisable,
               textInputAction: widget.nextNode != null
                   ? TextInputAction.next
                   : widget.maxLine! > 1
                       ? TextInputAction.newline
                       : TextInputAction.done,
               onFieldSubmitted: (term) {
-                widget.focusNode!.unfocus();
+                widget.focusNode.unfocus();
                 if (widget.nextNode != null) {
                   FocusScope.of(context).requestFocus(widget.nextNode);
                 }

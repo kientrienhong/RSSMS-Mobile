@@ -53,13 +53,13 @@ class _DialogCheckInState extends State<DialogCheckIn>
         widget.idRequest,
       );
       if (result) {
-        CustomSnackBar.buildErrorSnackbar(
+        CustomSnackBar.buildSnackbar(
             context: context,
             message: 'Thao tác thành công',
             color: CustomColor.green);
         Navigator.pop(context, result);
       } else {
-        CustomSnackBar.buildErrorSnackbar(
+        CustomSnackBar.buildSnackbar(
             context: context,
             message: 'Thao tác thất bại',
             color: CustomColor.red);

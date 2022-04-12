@@ -3,7 +3,7 @@ import 'package:rssms/common/custom_color.dart';
 
 class CustomSnackBar {
   CustomSnackBar._();
-  static buildErrorSnackbar(
+  static buildSnackbar(
       {required BuildContext context,
       required String message,
       required Color color}) {

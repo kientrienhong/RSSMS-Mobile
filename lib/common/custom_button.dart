@@ -30,7 +30,6 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // const heightMockUp = 896;
     const widthMockUp = 414;
 
     return GestureDetector(

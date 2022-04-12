@@ -143,7 +143,7 @@ class _ScheduleWidgetState extends State<ScheduleWidget>
       int? typeRequest =
           await _presenter.getRequestId(users.idToken!, widget.invoice.id);
       if (typeRequest == null) {
-        CustomSnackBar.buildErrorSnackbar(
+        CustomSnackBar.buildSnackbar(
             context: context,
             message: 'Lấy thông tin đơn thất bại!',
             color: CustomColor.red);
@@ -171,7 +171,7 @@ class _ScheduleWidgetState extends State<ScheduleWidget>
             ),
           );
         } else {
-          CustomSnackBar.buildErrorSnackbar(
+          CustomSnackBar.buildSnackbar(
               context: context,
               message: 'Lấy thông tin đơn thất bại!',
               color: CustomColor.red);
@@ -179,7 +179,7 @@ class _ScheduleWidgetState extends State<ScheduleWidget>
       }
     } catch (e) {
       log(e.toString());
-      CustomSnackBar.buildErrorSnackbar(
+      CustomSnackBar.buildSnackbar(
           context: context,
           message: 'Lấy thông tin đơn thất bại!',
           color: CustomColor.red);

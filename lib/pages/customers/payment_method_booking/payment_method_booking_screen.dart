@@ -72,7 +72,7 @@ class _PaymentMethodBookingScreenState extends State<PaymentMethodBookingScreen>
         if (isSuccess) {
           orderBooking.setOrderBooking(
               orderBooking: OrderBooking.empty(TypeOrder.doorToDoor));
-          CustomSnackBar.buildErrorSnackbar(
+          CustomSnackBar.buildSnackbar(
               context: context,
               message: 'Tạo yêu cầu đặt đơn hàng thành công',
               color: CustomColor.green);
@@ -106,7 +106,7 @@ class _PaymentMethodBookingScreenState extends State<PaymentMethodBookingScreen>
           if (isSuccess) {
             orderBooking.setOrderBooking(
                 orderBooking: OrderBooking.empty(TypeOrder.doorToDoor));
-            CustomSnackBar.buildErrorSnackbar(
+            CustomSnackBar.buildSnackbar(
                 context: context,
                 message: 'Tạo yêu cầu đặt đơn hàng thành công',
                 color: CustomColor.green);

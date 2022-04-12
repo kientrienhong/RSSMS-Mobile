@@ -121,7 +121,7 @@ class _FormSignUpState extends State<FormSignUp> implements SignUpView {
       Users result = await signupPresenter.handleSignUp();
 
       if (result != null) {
-        CustomSnackBar.buildErrorSnackbar(
+        CustomSnackBar.buildSnackbar(
             context: context,
             message: 'Đăng ký thành công',
             color: CustomColor.green);

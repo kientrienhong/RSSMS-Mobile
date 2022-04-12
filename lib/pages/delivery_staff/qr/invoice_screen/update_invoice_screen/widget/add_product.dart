@@ -61,7 +61,7 @@ class AddProduct extends StatelessWidget {
       }
 
       invoice.setInvoice(invoice: invoiceTemp);
-      CustomSnackBar.buildErrorSnackbar(
+      CustomSnackBar.buildSnackbar(
           context: context,
           message: 'Thêm dịch vụ thành công!',
           color: CustomColor.green);
@@ -111,7 +111,7 @@ class AddProduct extends StatelessWidget {
       }
 
       invoice.setInvoice(invoice: invoiceTemp);
-      CustomSnackBar.buildErrorSnackbar(
+      CustomSnackBar.buildSnackbar(
           context: context,
           message: 'Thêm dịch vụ thành công!',
           color: CustomColor.green);

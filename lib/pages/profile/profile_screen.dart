@@ -101,7 +101,7 @@ class _ProfileScreenState extends State<FormProfileScreen>
     bool response = await profilePresenter.changePassword(
         newPassword, oldPassword, confirmPassword, user.idToken!, user.userId!);
     if (response) {
-      CustomSnackBar.buildErrorSnackbar(
+      CustomSnackBar.buildSnackbar(
           context: context,
           message: 'Đổi mật khẩu thành công',
           color: CustomColor.green);
@@ -122,7 +122,7 @@ class _ProfileScreenState extends State<FormProfileScreen>
       bool response =
           await profilePresenter.updateProfile(user.idToken!, user.userId!);
       if (response) {
-        CustomSnackBar.buildErrorSnackbar(
+        CustomSnackBar.buildSnackbar(
             context: context,
             message: 'Cập nhật thông tin thành công',
             color: CustomColor.green);

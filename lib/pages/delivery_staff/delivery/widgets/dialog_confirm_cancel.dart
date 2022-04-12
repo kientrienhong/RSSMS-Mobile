@@ -45,7 +45,7 @@ class _DialogConfirmCancelState extends State<DialogConfirmCancel>
         bool result = await _presenter.submit(
             _model.note.text, widget.dateTime.toIso8601String(), user.idToken!);
         if (result) {
-          CustomSnackBar.buildErrorSnackbar(
+          CustomSnackBar.buildSnackbar(
               context: context,
               message: 'Yêu cầu thành công',
               color: CustomColor.green);

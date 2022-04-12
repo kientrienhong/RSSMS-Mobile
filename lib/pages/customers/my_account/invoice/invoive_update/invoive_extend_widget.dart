@@ -130,7 +130,7 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
             {...extendInvoice, "isPaid": true}, users, widget.invoice!);
 
         if (isSuccess) {
-          CustomSnackBar.buildErrorSnackbar(
+          CustomSnackBar.buildSnackbar(
               context: context,
               message: 'Gia hạn đơn hàng thành công',
               color: CustomColor.green);

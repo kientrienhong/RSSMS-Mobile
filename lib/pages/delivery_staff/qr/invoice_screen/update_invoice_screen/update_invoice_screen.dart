@@ -144,7 +144,7 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
       Users user = Provider.of<Users>(context, listen: false);
       var response = await _presenter.doneOrder(user, invoice);
       if (response == true) {
-        CustomSnackBar.buildErrorSnackbar(
+        CustomSnackBar.buildSnackbar(
             context: context,
             message: 'Trả đơn thành công',
             color: CustomColor.green);
@@ -185,7 +185,7 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
       Users user = Provider.of<Users>(context, listen: false);
       var response = await _presenter.updateOrder(user, invoice);
       if (response == true) {
-        CustomSnackBar.buildErrorSnackbar(
+        CustomSnackBar.buildSnackbar(
             context: context,
             message: 'Tạo đơn thành công',
             color: CustomColor.green);
@@ -242,7 +242,7 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
       Users user = Provider.of<Users>(context, listen: false);
       var response = await _presenter.sendNoti(user, invoice);
       if (response == true) {
-        CustomSnackBar.buildErrorSnackbar(
+        CustomSnackBar.buildSnackbar(
             context: context,
             message: 'Gửi thông báo thành công',
             color: CustomColor.green);

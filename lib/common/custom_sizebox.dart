@@ -3,8 +3,10 @@ import 'package:flutter/cupertino.dart';
 class CustomSizedBox extends SizedBox {
   static const heightMockUp = 896;
   static const widthMockUp = 414;
-  final height;
-  final width;
+  @override
+  final double? height;
+  @override
+  final double? width;
   CustomSizedBox(
       {Key? key,
       required BuildContext context,
