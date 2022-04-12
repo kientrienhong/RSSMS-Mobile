@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:rssms/api/api_services.dart';
 import 'package:rssms/models/entity/shelf.dart';
@@ -22,7 +23,7 @@ class StoreOrderPresenter {
           decodedReponse["data"]!.map<Shelf>((e) => Shelf.fromMap(e)).toList();
       model!.listShelf = listShelf;
     } catch (e) {
-      print(e);
+      log(e.toString());
     }
   }
 }

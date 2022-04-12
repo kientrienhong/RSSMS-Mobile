@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:rssms/api/api_services.dart';
 import 'package:rssms/models/entity/invoice.dart';
@@ -24,7 +25,7 @@ class QRScanPresenter {
       }
       return true;
     } catch (e) {
-      print(e);
+      log(e.toString());
       return false;
     }
   }
@@ -40,7 +41,7 @@ class QRScanPresenter {
       }
       return true;
     } catch (e) {
-      print(e);
+      log(e.toString());
       return false;
     }
   }

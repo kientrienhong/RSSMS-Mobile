@@ -221,8 +221,6 @@ class InvoiceUpdatePresenter {
     } finally {
       view.updateLoadingUpdate();
     }
-
-    return false;
   }
 
   Future<bool?> doneOrder(Users user, Invoice invoice) async {

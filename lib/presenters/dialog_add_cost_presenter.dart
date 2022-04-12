@@ -1,5 +1,4 @@
 import 'package:rssms/models/dialog_add_cost_model.dart';
-import 'package:rssms/models/entity/order_detail.dart';
 import 'package:rssms/views/dialog%20_add_cost_view.dart';
 
 class DialogAddCostPresenter {

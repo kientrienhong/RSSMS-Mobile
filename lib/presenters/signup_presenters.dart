@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:rssms/api/api_services.dart';
 import 'package:rssms/models/signup_model.dart';
 import 'package:rssms/views/signup_view.dart';
 import 'package:path_provider/path_provider.dart';

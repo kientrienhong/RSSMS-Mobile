@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:rssms/api/api_services.dart';
 import 'package:rssms/models/delivery_screen_model.dart';
@@ -53,7 +54,7 @@ class DeliveryPresenter {
     // String nowString = now.toIso8601String().split('T')[0];
     // now = DateTime.parse(nowString);
     if (model.currentIndex == 0) {
-      now = now.add(Duration(days: 1));
+      now = now.add(const Duration(days: 1));
     }
     var firstDay = now.subtract(Duration(days: now.weekday));
     var firstDayOfWeek = firstDay;
@@ -105,7 +106,7 @@ class DeliveryPresenter {
       }
       return null;
     } catch (e) {
-      print(e);
+      log(e.toString());
       return false;
     }
   }
@@ -119,7 +120,7 @@ class DeliveryPresenter {
       await loadListShedule(
           user.idToken!, model.firstDayOfWeek, model.endDayOfWeek);
     } catch (e) {
-      print(e);
+      log(e.toString());
     } finally {
       view.updateRefresLoading();
     }
@@ -153,7 +154,7 @@ class DeliveryPresenter {
         view.updateView();
       }
     } catch (e) {
-      print(e);
+      log(e.toString());
     }
   }
 }

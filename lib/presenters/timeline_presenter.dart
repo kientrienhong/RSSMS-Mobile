@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:rssms/common/timeline.dart';
 import 'package:rssms/models/entity/timeline.dart';
 import 'package:rssms/models/timeline_model.dart';
 import 'package:rssms/views/timeline_view.dart';

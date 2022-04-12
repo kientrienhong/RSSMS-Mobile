@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:rssms/models/dialog_add_service_model.dart';
 import 'package:rssms/models/entity/product.dart';
@@ -46,7 +47,7 @@ class DialogAddServicePresenter {
       }
       view.updateLoading();
     } catch (e) {
-      print(e);
+      log(e.toString());
       view.updateLoading();
     }
   }

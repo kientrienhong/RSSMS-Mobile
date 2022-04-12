@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/schedule_model.dart';
 import 'package:rssms/views/schedule_view.dart';
-import 'package:rssms/constants/constants.dart' as constants;
 
 class SchedulePresenter {
   late ScheduleView view;

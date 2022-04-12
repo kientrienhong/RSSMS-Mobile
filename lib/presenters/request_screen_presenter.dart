@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:rssms/api/api_services.dart';
 import 'package:rssms/models/entity/request.dart';
@@ -42,7 +43,7 @@ class RequestScreenPresenter {
         model!.controller.add(model!.data);
       }
     } catch (e) {
-      print(e);
+      log(e.toString());
     } finally {
       view!.updateLoadingRequest();
       view!.setChangeList();
@@ -76,10 +77,9 @@ class RequestScreenPresenter {
         model!.data!.addAll(model!.listRequestFull!);
         model!.hasMore = !(model!.page == model!.metadata!["totalPage"]);
         model!.controller.add(model!.data);
-        print(model!.listRequestFull!.length);
       }
     } catch (e) {
-      print(e);
+      log(e.toString());
     } finally {
       view!.updateLoadingRequest();
       view!.setChangeList();
