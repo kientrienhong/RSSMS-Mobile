@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:rssms/api/api_services.dart';
-import 'package:rssms/helpers/firebase_storage_helper.dart';
+import 'package:rssms/helpers/image_handle.dart';
 import 'package:rssms/models/entity/imageEntity.dart';
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/order_additional_fee.dart';
@@ -54,7 +54,7 @@ class InvoiceUpdatePresenter {
       listOrderDetailNew =
           await Future.wait(invoice.orderDetails.map((element) async {
         List<ImageEntity> listImageEntity =
-            await FirebaseStorageHelper.convertImageToBase64(element);
+            await ImageHandle.convertImageToBase64(element);
         return element.copyWith(images: listImageEntity);
       }).toList());
     } catch (e) {
@@ -89,7 +89,7 @@ class InvoiceUpdatePresenter {
     List<OrderDetail> newListOrderDetails =
         await Future.wait(invoice.orderDetails.map((element) async {
       List<ImageEntity> listImageEntity =
-          await FirebaseStorageHelper.convertImageToBase64(element);
+          await ImageHandle.convertImageToBase64(element);
       return element.copyWith(images: listImageEntity);
     }).toList());
     newListOrderDetails.forEach((element) {
@@ -153,7 +153,7 @@ class InvoiceUpdatePresenter {
     };
   }
 
-  Map<String, dynamic> formatDateDoneOrder(Invoice invoice) {
+  Map<String, dynamic> DateFormatHelperDoneOrder(Invoice invoice) {
     List<OrderAdditionalFee>? listOrderAdditionFee;
 
     if (model.isAdditionFee || model.isCompensation) {
@@ -227,7 +227,7 @@ class InvoiceUpdatePresenter {
   Future<bool?> doneOrder(Users user, Invoice invoice) async {
     try {
       view.updateLoadingUpdate();
-      final dataRequest = formatDateDoneOrder(invoice);
+      final dataRequest = DateFormatHelperDoneOrder(invoice);
       log(jsonEncode(dataRequest));
       var response = await model.doneOrder(dataRequest, user.idToken!);
       if (response.statusCode == 200) {

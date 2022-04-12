@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
-import 'package:rssms/helpers/format_date.dart';
+import 'package:rssms/helpers/date_format.dart';
 import 'package:rssms/models/entity/request.dart';
 import 'package:rssms/pages/customers/my_account/request/request_details_screen/cancel_request_screen.dart';
 import 'package:rssms/pages/customers/my_account/request/request_details_screen/create_order_request_screen.dart';
@@ -31,7 +31,7 @@ class RequestWidget extends StatelessWidget {
                 context: context,
                 fontSize: 16),
             CustomText(
-                text: FormatDate.formatToVNDay(request.createdDate),
+                text: DateFormatHelper.formatToVNDay(request.createdDate),
                 color: CustomColor.black,
                 context: context,
                 fontSize: 16),
@@ -100,7 +100,8 @@ class RequestWidget extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                       fontSize: 16),
                   CustomText(
-                      text: FormatDate.formatToVNDay(request.deliveryDate),
+                      text:
+                          DateFormatHelper.formatToVNDay(request.deliveryDate),
                       color: CustomColor.black,
                       context: context,
                       fontSize: 16),
@@ -147,7 +148,7 @@ class RequestWidget extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                       fontSize: 16),
                   CustomText(
-                      text: FormatDate.formatToVNDay(request.returnDate),
+                      text: DateFormatHelper.formatToVNDay(request.returnDate),
                       color: CustomColor.black,
                       context: context,
                       fontSize: 16),
@@ -173,7 +174,8 @@ class RequestWidget extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                       fontSize: 16),
                   CustomText(
-                      text: FormatDate.formatToVNDay(request.deliveryDate),
+                      text:
+                          DateFormatHelper.formatToVNDay(request.deliveryDate),
                       color: CustomColor.black,
                       context: context,
                       fontSize: 16),

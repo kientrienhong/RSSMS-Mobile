@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_button.dart';
@@ -14,7 +13,8 @@ import 'package:rssms/common/button_icon.dart';
 
 class UpdateImageInvoice extends StatefulWidget {
   final bool isDisable;
-  UpdateImageInvoice({Key? key, required this.isDisable}) : super(key: key);
+  const UpdateImageInvoice({Key? key, required this.isDisable})
+      : super(key: key);
 
   @override
   _InvoiceImageDetailState createState() => _InvoiceImageDetailState();

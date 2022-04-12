@@ -1,6 +1,6 @@
 import 'dart:developer';
 import 'package:intl/intl.dart';
-import 'package:rssms/helpers/handle_reponse.dart';
+import 'package:rssms/helpers/response_handle.dart';
 import 'package:rssms/models/profile_model.dart';
 import 'package:rssms/views/profile_view.dart';
 
@@ -40,7 +40,7 @@ class ProfilePresenter {
           DateFormat("dd/MM/yyyy").parse(model.controllerBirthDate.text);
       final response =
           await model.updateProfile(genderCode, tempDate, idToken, userId);
-      final handledResponse = HandleResponse.handle(response);
+      final handledResponse = ResponseHandle.handle(response);
       if (handledResponse['status'] == 'success') {
         return true;
       } else {
@@ -84,7 +84,7 @@ class ProfilePresenter {
       final response = await model.changePassword(
           oldPassword, confirmPassword, newPassword, idToken, userId);
 
-      final handledResponse = HandleResponse.handle(response);
+      final handledResponse = ResponseHandle.handle(response);
 
       if (handledResponse['status'] == 'success') {
         model.controllerConfirmPassword.text = "";

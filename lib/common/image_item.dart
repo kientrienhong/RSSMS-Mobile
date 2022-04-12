@@ -2,17 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
-import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/models/entity/imageEntity.dart';
-import 'package:rssms/models/entity/order_detail.dart';
 
 class ImageItem extends StatefulWidget {
-  ImageEntity image;
-  Function()? onPressDelete;
-  Function()? onPressDetails;
-  int? index;
-  bool? isView;
-  ImageItem(
+  final ImageEntity image;
+  final Function()? onPressDelete;
+  final Function()? onPressDetails;
+  final int? index;
+  final bool? isView;
+  const ImageItem(
       {Key? key,
       required this.image,
       required this.onPressDelete,

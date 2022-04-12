@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-class HandleResponse {
+class ResponseHandle {
   static Map<String, dynamic> handle(response) {
     if (response.statusCode == 200) {
       return {

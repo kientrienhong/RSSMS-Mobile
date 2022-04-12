@@ -23,7 +23,7 @@ class NotificationWidget extends StatelessWidget {
           boxShadow: [
             BoxShadow(
                 blurRadius: 14,
-                color: Color(0x000000).withOpacity(0.06),
+                color: const Color(0x00000000).withOpacity(0.06),
                 offset: const Offset(0, 6))
           ]),
       child: Row(children: [

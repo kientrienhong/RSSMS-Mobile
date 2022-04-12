@@ -4,7 +4,7 @@ import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
-import 'package:rssms/helpers/format_date.dart';
+import 'package:rssms/helpers/date_format.dart';
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/order_detail.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/invoice_info_widget.dart';
@@ -112,7 +112,8 @@ class NewInvoiceScreen extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                         fontSize: 17),
                     CustomText(
-                        text: FormatDate.formatToVNDay(invoice.deliveryDate),
+                        text: DateFormatHelper.formatToVNDay(
+                            invoice.deliveryDate),
                         color: Colors.black,
                         context: context,
                         fontSize: 16),
@@ -159,7 +160,8 @@ class NewInvoiceScreen extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                         fontSize: 17),
                     CustomText(
-                        text: FormatDate.formatToVNDay(invoice.returnDate),
+                        text:
+                            DateFormatHelper.formatToVNDay(invoice.returnDate),
                         color: Colors.black,
                         context: context,
                         fontSize: 16),

@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:rssms/helpers/handle_reponse.dart';
+import 'package:rssms/helpers/response_handle.dart';
 
 import '/models/entity/user.dart';
 import '/models/login_model.dart';
@@ -30,7 +30,7 @@ class LoginPresenter {
     try {
       final response = await model.logInAccount();
 
-      final handledResponse = HandleResponse.handle(response);
+      final handledResponse = ResponseHandle.handle(response);
 
       if (handledResponse['status'] == 'success') {
         return Users.fromMap(handledResponse['data']);

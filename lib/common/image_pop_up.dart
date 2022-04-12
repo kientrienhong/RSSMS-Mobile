@@ -8,7 +8,6 @@ import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_input.dart';
 import 'package:rssms/common/custom_sizebox.dart';
-import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/helpers/validator.dart';
 import 'package:rssms/models/add_image_pop_up_model.dart';
 import 'package:rssms/models/entity/imageEntity.dart';
@@ -36,7 +35,6 @@ class _ImageDetailPopUpState extends State<ImageDetailPopUp>
     implements AddImagePopUpView {
   late AddImagePopUpPresenter _presenter;
   late AddImagePopUpModel _model;
-  late FocusNode _nameFocusNode;
   late FocusNode _noteFocusNode;
   final _formKey = GlobalKey<FormState>();
 
@@ -136,7 +134,6 @@ class _ImageDetailPopUpState extends State<ImageDetailPopUp>
     _presenter = AddImagePopUpPresenter(widget.imageUpdate);
     _model = _presenter.model;
     _presenter.view = this;
-    _nameFocusNode = FocusNode();
     _noteFocusNode = FocusNode();
   }
 

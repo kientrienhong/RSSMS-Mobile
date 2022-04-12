@@ -35,10 +35,10 @@ class TimeLine extends StatelessWidget {
 }
 
 class TimeLineElement extends StatelessWidget {
-  Timeline timeLine;
-  List<Timeline> listTimeLine;
-  int currentIndex;
-  TimeLineElement(
+  final Timeline timeLine;
+  final List<Timeline> listTimeLine;
+  final int currentIndex;
+  const TimeLineElement(
       {Key? key,
       required this.timeLine,
       required this.listTimeLine,

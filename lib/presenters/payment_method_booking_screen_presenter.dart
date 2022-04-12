@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:rssms/helpers/handle_reponse.dart';
+import 'package:rssms/helpers/response_handle.dart';
 import 'package:rssms/models/entity/order_booking.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/models/payment_method_booking_screen_model.dart';
@@ -32,7 +32,7 @@ class PaymentMethodBookingScreenPresenter {
         }
       }
       final response = await model.createOrder(listProduct, orderBooking, user);
-      final handledResponse = HandleResponse.handle(response);
+      final handledResponse = ResponseHandle.handle(response);
       if (handledResponse['status'] == 'success') {
         return true;
       } else {

@@ -110,7 +110,7 @@ class _DeliveryScreenState extends State<DeliveryScreen>
     }
   }
 
-  Widget formatDate(DateTime dateTime, int index) {
+  Widget DateFormatHelper(DateTime dateTime, int index) {
     final splitedDay = DateFormat.yMEd().format(dateTime).split(', ');
     final day = splitedDay[0];
     final splitedDate = splitedDay[1].split('/');
@@ -207,7 +207,7 @@ class _DeliveryScreenState extends State<DeliveryScreen>
                   width: 18,
                 ),
                 ..._model.listDateTime
-                    .mapIndexed((index, e) => formatDate(e, index))
+                    .mapIndexed((index, e) => DateFormatHelper(e, index))
                     .toList(),
                 CustomSizedBox(
                   context: context,

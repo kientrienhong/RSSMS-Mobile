@@ -7,7 +7,7 @@ import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_snack_bar.dart';
 import 'package:rssms/common/custom_text.dart';
-import 'package:rssms/helpers/format_date.dart';
+import 'package:rssms/helpers/date_format.dart';
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/order_detail.dart';
 import 'package:rssms/models/entity/user.dart';
@@ -435,7 +435,7 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
                           fontWeight: FontWeight.bold,
                           fontSize: 18)
                       : CustomText(
-                          text: FormatDate.formatToVNDay(
+                          text: DateFormatHelper.formatToVNDay(
                               returnDateNew.toString()),
                           color: CustomColor.black,
                           context: context,
