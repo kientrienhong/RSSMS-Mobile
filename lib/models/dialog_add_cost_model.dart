@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:rssms/models/entity/order_detail.dart';
 
 class DialogAddCostModel {
   late TextEditingController nameController;

@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
-import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
-import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/order_detail.dart';
 import 'package:rssms/models/entity/product.dart';
 
@@ -13,9 +10,9 @@ class AdditionServiceWidget extends StatefulWidget {
   final bool isView;
   final Product? product;
   final OrderDetail? orderDetail;
-  Function onAddAddition;
-  Function onMinusAddition;
-  AdditionServiceWidget(
+  final Function onAddAddition;
+  final Function onMinusAddition;
+  const AdditionServiceWidget(
       {Key? key,
       this.product,
       this.orderDetail,

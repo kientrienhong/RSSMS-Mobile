@@ -54,7 +54,7 @@ class _InvoiceCancelScreenState extends State<InvoiceCancelScreen>
     Map<String, dynamic> cancelRequest = {
       "cancelReason": _model.controllerReason.text,
       "id": widget.invoice.id,
-      'type': constants.REQUEST_TYPE_CANCEL_ORDER
+      'type': constants.REQUEST_TYPE.cancelRequestCreateOrder.index
     };
     bool result = await _presenter.createRequest(cancelRequest, users);
     if (result) {
@@ -70,7 +70,7 @@ class _InvoiceCancelScreenState extends State<InvoiceCancelScreen>
                       CartScreen(),
                       NotificationDeliveryScreen(),
                     ],
-                    listNavigator: constants.LIST_CUSTOMER_BOTTOM_NAVIGATION,
+                    listNavigator: constants.listCustomerBottomNavigation,
                   )),
           (Route<dynamic> route) => false);
     }

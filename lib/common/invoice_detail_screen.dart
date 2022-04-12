@@ -75,7 +75,7 @@ class _InvoiceDetailScreenState extends State<InvoiceDetailScreen>
     List<TitleTab> mapListTab() {
       int index = 0;
 
-      return constants.TAB_INVOICE_DETAIL
+      return constants.tabInvoiceDetail
           .map<TitleTab>((e) => TitleTab(
                 title: e,
                 index: index++,

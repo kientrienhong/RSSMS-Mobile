@@ -58,8 +58,8 @@ class _ExtendRequestScreenState extends State<ExtendRequestScreen>
     List<OrderDetail> listTemp = _model!.invoice!.orderDetails;
     listProduct = listTemp
         .where((element) =>
-            element.productType == constants.HANDY ||
-            element.productType == constants.UNWEILDY)
+            element.productType == constants.typeProduct.handy.index ||
+            element.productType == constants.typeProduct.unweildy.index)
         .toList();
     setState(() {});
   }

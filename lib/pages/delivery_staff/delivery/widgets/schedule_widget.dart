@@ -1,9 +1,7 @@
-import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:rssms/api/api_services.dart';
 import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
@@ -110,7 +108,7 @@ class _ScheduleWidgetState extends State<ScheduleWidget>
         }
       });
     } catch (e) {
-      print(e.toString());
+      log(e.toString());
     }
   }
 
@@ -130,7 +128,7 @@ class _ScheduleWidgetState extends State<ScheduleWidget>
         }
       });
     } catch (e) {
-      print(e.toString());
+      log(e.toString());
     }
   }
 
@@ -256,7 +254,8 @@ class _ScheduleWidgetState extends State<ScheduleWidget>
                             color: CustomColor.black[3]!,
                             spreadRadius: 3,
                             blurRadius: 16,
-                            offset: Offset(0, 0), // changes position of shadow
+                            offset: const Offset(
+                                0, 0), // changes position of shadow
                           ),
                         ]),
                     child: Column(
@@ -273,8 +272,8 @@ class _ScheduleWidgetState extends State<ScheduleWidget>
                             Flexible(
                               child: CustomText(
                                   text:
-                                      '${LIST_TYPE_REQUES_DELIVERY[widget.invoice.typeRequest]!['name']}',
-                                  color: LIST_TYPE_REQUES_DELIVERY[widget
+                                      '${listDeliveryRequestType[widget.invoice.typeRequest]!['name']}',
+                                  color: listDeliveryRequestType[widget
                                       .invoice.typeRequest]!['color'] as Color,
                                   fontWeight: FontWeight.bold,
                                   maxLines: 2,
@@ -300,9 +299,9 @@ class _ScheduleWidgetState extends State<ScheduleWidget>
                             Flexible(
                               child: CustomText(
                                   text:
-                                      '${LIST_STATUS_REQUEST[widget.invoice.status]['name']}',
+                                      '${listRequestStatus[widget.invoice.status]['name']}',
                                   color:
-                                      LIST_STATUS_REQUEST[widget.invoice.status]
+                                      listRequestStatus[widget.invoice.status]
                                           ['color'] as Color,
                                   fontWeight: FontWeight.bold,
                                   maxLines: 2,

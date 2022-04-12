@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_braintree/flutter_braintree.dart';
 import 'package:intl/intl.dart';
@@ -39,7 +41,6 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
   int totalProduct = 0;
   late InvoiceExtendPresenter _presenter;
   late InvoiceExtendsModel _model;
-  PaymentMethod? _state;
   List<OrderDetail>? listProduct;
   DateTime? returnDateNew;
   DateTime? returnDateOld;
@@ -74,9 +75,9 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
     List<OrderDetail> listTemp = widget.invoice!.orderDetails;
     listProduct = listTemp
         .where((element) =>
-            element.productType == constants.HANDY ||
-            element.productType == constants.UNWEILDY ||
-            element.productType == constants.SELF_STORAGE)
+            element.productType == constants.typeProduct.handy.index ||
+            element.productType == constants.typeProduct.unweildy.index ||
+            element.productType == constants.typeProduct.selfStorage.index)
         .toList();
     listProduct!.forEach((element) {
       totalProduct += (element.price * element.amount);
@@ -96,7 +97,7 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
   @override
   void onClickPayment() async {
     try {
-      if (widget.invoice!.typeOrder == constants.DOOR_TO_DOOR_TYPE_ORDER &&
+      if (widget.invoice!.typeOrder == constants.doorToDoorTypeOrder &&
           _model.dateExtensionString.isEmpty) {
         updateError('Vui lòng chọn ngày muốn gia hạn');
         return;
@@ -105,7 +106,7 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
       Map<String, dynamic> extendInvoice = {
         "oldReturnDate": returnDateOld,
         "newReturnDate":
-            widget.invoice!.typeOrder == constants.DOOR_TO_DOOR_TYPE_ORDER
+            widget.invoice!.typeOrder == constants.doorToDoorTypeOrder
                 ? _model.dateExtension
                 : returnDateNew,
         // "cancelDay": returnDateNew,
@@ -142,14 +143,13 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
                           CartScreen(),
                           NotificationDeliveryScreen(),
                         ],
-                        listNavigator:
-                            constants.LIST_CUSTOMER_BOTTOM_NAVIGATION,
+                        listNavigator: constants.listCustomerBottomNavigation,
                       )),
               (Route<dynamic> route) => false);
         }
       }
     } catch (e) {
-      print(e);
+      log(e.toString());
     }
   }
 
@@ -196,269 +196,263 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
     final deviceSize = MediaQuery.of(context).size;
     return Column(
       children: [
-        Container(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CustomText(
-                  text: "Đơn hàng của bạn",
-                  color: CustomColor.blue,
-                  context: context,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 24),
-              CustomSizedBox(
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CustomText(
+                text: "Đơn hàng của bạn",
+                color: CustomColor.blue,
                 context: context,
-                height: 14,
-              ),
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                decoration: BoxDecoration(
-                    border: Border.all(color: CustomColor.blue, width: 1)),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CustomText(
-                        text: "Kho",
-                        color: CustomColor.blue,
-                        context: context,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20),
-                    CustomSizedBox(
-                      context: context,
-                      height: 16,
-                    ),
-                    Table(
-                      children: [
-                        TableRow(children: [
-                          CustomText(
-                              text: "Sản phẩm",
-                              color: CustomColor.black,
-                              fontWeight: FontWeight.bold,
-                              context: context,
-                              fontSize: 14),
-                          CustomText(
-                              text: "Số lượng",
-                              color: CustomColor.black,
-                              textAlign: TextAlign.right,
-                              fontWeight: FontWeight.bold,
-                              context: context,
-                              fontSize: 14),
-                        ])
-                      ],
-                    ),
-                    CustomSizedBox(
-                      context: context,
-                      height: 16,
-                    ),
-                    Column(
-                      children: mapProductWidget(listProduct),
-                    ),
-                    Container(
-                      color: CustomColor.white,
-                      child: const Divider(
-                        thickness: 0.6,
-                        color: Color(0xFF8D8D8D),
-                      ),
-                    ),
-                    CustomSizedBox(
-                      context: context,
-                      height: 10,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        CustomText(
-                            text: "Tạm tính",
-                            color: Colors.black,
-                            context: context,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16),
-                        CustomText(
-                            text: oCcy.format(totalProduct).toString() + " đ",
-                            color: Colors.black,
-                            context: context,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16),
-                      ],
-                    ),
-                    CustomSizedBox(
-                      context: context,
-                      height: 16,
-                    ),
-                    widget.invoice!.typeOrder ==
-                            constants.DOOR_TO_DOOR_TYPE_ORDER
-                        ? Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              CustomText(
-                                  text: "Số ngày muốn gia hạn",
-                                  color: Colors.black,
-                                  context: context,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16),
-                              GestureDetector(
-                                onTap: () {
-                                  onClickChangeDate();
-                                },
-                                child: Row(
-                                  children: [
-                                    CustomText(
-                                        text: _model.dateExtension != null
-                                            ? _model.dateExtension!
-                                                    .difference(
-                                                        DateFormat("yyyy-MM-dd")
-                                                            .parse(widget
-                                                                .invoice!
-                                                                .returnDate
-                                                                .split('T')[0]))
-                                                    .inDays
-                                                    .toString() +
-                                                ' ngày '
-                                            : '0 ngày',
-                                        color: CustomColor.blue,
-                                        context: context,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16),
-                                    CustomSizedBox(
-                                      context: context,
-                                      width: 8,
-                                    ),
-                                    Image.asset('assets/images/calendar.png'),
-                                  ],
-                                ),
-                              )
-                            ],
-                          )
-                        : Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              CustomText(
-                                  text: "Số tháng muốn gia hạn",
-                                  color: Colors.black,
-                                  context: context,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16),
-                              QuantityWidgetCustom(
-                                quantity: durationMonth,
-                                width: deviceSize.width / 10,
-                                addQuantity: () => onAddQuantity(),
-                                minusQuantity: () => onMinusQuantity(),
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                              ),
-                            ],
-                          ),
-                    CustomSizedBox(
-                      context: context,
-                      height: 6,
-                    ),
-                    Container(
-                      color: CustomColor.white,
-                      child: const Divider(
-                        thickness: 0.6,
-                        color: Color(0xFF8D8D8D),
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        CustomText(
-                            text: "Tổng tiền",
-                            color: Colors.black,
-                            context: context,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16),
-                        CustomText(
-                            text: oCcy
-                                    .format((totalProduct * durationMonth!))
-                                    .toString() +
-                                " đ",
-                            color: CustomColor.blue,
-                            context: context,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 17),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              CustomSizedBox(
-                context: context,
-                height: 16,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                fontWeight: FontWeight.bold,
+                fontSize: 24),
+            CustomSizedBox(
+              context: context,
+              height: 14,
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+              decoration: BoxDecoration(
+                  border: Border.all(color: CustomColor.blue, width: 1)),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomText(
-                      text: "Ngày kết thúc",
-                      color: Colors.black,
+                      text: "Kho",
+                      color: CustomColor.blue,
                       context: context,
                       fontWeight: FontWeight.bold,
-                      fontSize: 18),
-                  CustomText(
-                      text: DateFormat("dd/MM/yyyy").format(
-                          DateFormat("yyyy-MM-dd")
-                              .parse(widget.invoice!.returnDate)),
-                      color: CustomColor.black,
-                      context: context,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18),
-                ],
-              ),
-              CustomSizedBox(
-                context: context,
-                height: 16,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SizedBox(
-                    width: deviceSize.width * 1.3 / 3,
-                    child: CustomText(
-                      text: "Ngày kết thúc sau khi gia hạn",
-                      color: CustomColor.black,
-                      context: context,
-                      fontWeight: FontWeight.bold,
-                      maxLines: 2,
-                      fontSize: 18,
-                      textOverflow: TextOverflow.ellipsis,
+                      fontSize: 20),
+                  CustomSizedBox(
+                    context: context,
+                    height: 16,
+                  ),
+                  Table(
+                    children: [
+                      TableRow(children: [
+                        CustomText(
+                            text: "Sản phẩm",
+                            color: CustomColor.black,
+                            fontWeight: FontWeight.bold,
+                            context: context,
+                            fontSize: 14),
+                        CustomText(
+                            text: "Số lượng",
+                            color: CustomColor.black,
+                            textAlign: TextAlign.right,
+                            fontWeight: FontWeight.bold,
+                            context: context,
+                            fontSize: 14),
+                      ])
+                    ],
+                  ),
+                  CustomSizedBox(
+                    context: context,
+                    height: 16,
+                  ),
+                  Column(
+                    children: mapProductWidget(listProduct),
+                  ),
+                  Container(
+                    color: CustomColor.white,
+                    child: const Divider(
+                      thickness: 0.6,
+                      color: Color(0xFF8D8D8D),
                     ),
                   ),
-                  widget.invoice!.typeOrder == constants.DOOR_TO_DOOR_TYPE_ORDER
-                      ? CustomText(
-                          text: _model.dateExtensionString.isEmpty
-                              ? 'Chưa có'
-                              : _model.dateExtensionString,
-                          color: CustomColor.black,
+                  CustomSizedBox(
+                    context: context,
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CustomText(
+                          text: "Tạm tính",
+                          color: Colors.black,
                           context: context,
                           fontWeight: FontWeight.bold,
-                          fontSize: 18)
-                      : CustomText(
-                          text: DateFormatHelper.formatToVNDay(
-                              returnDateNew.toString()),
-                          color: CustomColor.black,
+                          fontSize: 16),
+                      CustomText(
+                          text: oCcy.format(totalProduct).toString() + " đ",
+                          color: Colors.black,
                           context: context,
                           fontWeight: FontWeight.bold,
-                          fontSize: 18),
+                          fontSize: 16),
+                    ],
+                  ),
+                  CustomSizedBox(
+                    context: context,
+                    height: 16,
+                  ),
+                  widget.invoice!.typeOrder == constants.doorToDoorTypeOrder
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            CustomText(
+                                text: "Số ngày muốn gia hạn",
+                                color: Colors.black,
+                                context: context,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16),
+                            GestureDetector(
+                              onTap: () {
+                                onClickChangeDate();
+                              },
+                              child: Row(
+                                children: [
+                                  CustomText(
+                                      text: _model.dateExtension != null
+                                          ? _model.dateExtension!
+                                                  .difference(
+                                                      DateFormat("yyyy-MM-dd")
+                                                          .parse(widget.invoice!
+                                                              .returnDate
+                                                              .split('T')[0]))
+                                                  .inDays
+                                                  .toString() +
+                                              ' ngày '
+                                          : '0 ngày',
+                                      color: CustomColor.blue,
+                                      context: context,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16),
+                                  CustomSizedBox(
+                                    context: context,
+                                    width: 8,
+                                  ),
+                                  Image.asset('assets/images/calendar.png'),
+                                ],
+                              ),
+                            )
+                          ],
+                        )
+                      : Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            CustomText(
+                                text: "Số tháng muốn gia hạn",
+                                color: Colors.black,
+                                context: context,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16),
+                            QuantityWidgetCustom(
+                              quantity: durationMonth,
+                              width: deviceSize.width / 10,
+                              addQuantity: () => onAddQuantity(),
+                              minusQuantity: () => onMinusQuantity(),
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            ),
+                          ],
+                        ),
+                  CustomSizedBox(
+                    context: context,
+                    height: 6,
+                  ),
+                  Container(
+                    color: CustomColor.white,
+                    child: const Divider(
+                      thickness: 0.6,
+                      color: Color(0xFF8D8D8D),
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CustomText(
+                          text: "Tổng tiền",
+                          color: Colors.black,
+                          context: context,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16),
+                      CustomText(
+                          text: oCcy
+                                  .format((totalProduct * durationMonth!))
+                                  .toString() +
+                              " đ",
+                          color: CustomColor.blue,
+                          context: context,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 17),
+                    ],
+                  ),
                 ],
               ),
-              CustomSizedBox(
+            ),
+            CustomSizedBox(
+              context: context,
+              height: 16,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CustomText(
+                    text: "Ngày kết thúc",
+                    color: Colors.black,
+                    context: context,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18),
+                CustomText(
+                    text: DateFormat("dd/MM/yyyy").format(
+                        DateFormat("yyyy-MM-dd")
+                            .parse(widget.invoice!.returnDate)),
+                    color: CustomColor.black,
+                    context: context,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18),
+              ],
+            ),
+            CustomSizedBox(
+              context: context,
+              height: 16,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(
+                  width: deviceSize.width * 1.3 / 3,
+                  child: CustomText(
+                    text: "Ngày kết thúc sau khi gia hạn",
+                    color: CustomColor.black,
+                    context: context,
+                    fontWeight: FontWeight.bold,
+                    maxLines: 2,
+                    fontSize: 18,
+                    textOverflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                widget.invoice!.typeOrder == constants.doorToDoorTypeOrder
+                    ? CustomText(
+                        text: _model.dateExtensionString.isEmpty
+                            ? 'Chưa có'
+                            : _model.dateExtensionString,
+                        color: CustomColor.black,
+                        context: context,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18)
+                    : CustomText(
+                        text: DateFormatHelper.formatToVNDay(
+                            returnDateNew.toString()),
+                        color: CustomColor.black,
+                        context: context,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18),
+              ],
+            ),
+            CustomSizedBox(
+              context: context,
+              height: 16,
+            ),
+            CustomText(
+                text: "Phương thức thanh toán",
+                color: CustomColor.blue,
                 context: context,
-                height: 16,
-              ),
-              CustomText(
-                  text: "Phương thức thanh toán",
-                  color: CustomColor.blue,
-                  context: context,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 24),
-              CustomSizedBox(
-                context: context,
-                height: 14,
-              ),
-            ],
-          ),
+                fontWeight: FontWeight.bold,
+                fontSize: 24),
+            CustomSizedBox(
+              context: context,
+              height: 14,
+            ),
+          ],
         ),
 
         CustomSizedBox(

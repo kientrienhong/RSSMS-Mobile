@@ -68,7 +68,7 @@ class _InvoiceCancelWidgetState extends State<InvoiceCancelWidget>
                       CartScreen(),
                       NotificationDeliveryScreen(),
                     ],
-                    listNavigator: constants.LIST_CUSTOMER_BOTTOM_NAVIGATION,
+                    listNavigator: constants.listCustomerBottomNavigation,
                   )),
           (Route<dynamic> route) => false);
     }
@@ -84,49 +84,47 @@ class _InvoiceCancelWidgetState extends State<InvoiceCancelWidget>
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
-    return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          CustomText(
-              text: "Lý do",
-              color: CustomColor.black,
-              fontWeight: FontWeight.bold,
-              context: context,
-              fontSize: 16),
-          CustomSizedBox(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        CustomText(
+            text: "Lý do",
+            color: CustomColor.black,
+            fontWeight: FontWeight.bold,
             context: context,
-            height: 16,
-          ),
-          TextFormField(
-            minLines: 6,
-            focusNode: _focusNodeReason,
-            controller: _model.controllerReason,
-            keyboardType: TextInputType.multiline,
-            maxLines: null,
-            decoration: const InputDecoration(
-              hintText: "",
-              contentPadding: EdgeInsets.all(8),
-              border: OutlineInputBorder(
-                borderSide: BorderSide(color: CustomColor.black),
-              ),
+            fontSize: 16),
+        CustomSizedBox(
+          context: context,
+          height: 16,
+        ),
+        TextFormField(
+          minLines: 6,
+          focusNode: _focusNodeReason,
+          controller: _model.controllerReason,
+          keyboardType: TextInputType.multiline,
+          maxLines: null,
+          decoration: const InputDecoration(
+            hintText: "",
+            contentPadding: EdgeInsets.all(8),
+            border: OutlineInputBorder(
+              borderSide: BorderSide(color: CustomColor.black),
             ),
           ),
-          CustomSizedBox(
-            context: context,
-            height: 16,
-          ),
-          CustomButton(
-              height: 24,
-              isLoading: _model.isLoading,
-              text: 'Gửi yêu cầu',
-              textColor: CustomColor.white,
-              onPressFunction: onClickCancelInvoice,
-              width: deviceSize.width,
-              buttonColor: CustomColor.blue,
-              borderRadius: 6),
-        ],
-      ),
+        ),
+        CustomSizedBox(
+          context: context,
+          height: 16,
+        ),
+        CustomButton(
+            height: 24,
+            isLoading: _model.isLoading,
+            text: 'Gửi yêu cầu',
+            textColor: CustomColor.white,
+            onPressFunction: onClickCancelInvoice,
+            width: deviceSize.width,
+            buttonColor: CustomColor.blue,
+            borderRadius: 6),
+      ],
     );
   }
 }

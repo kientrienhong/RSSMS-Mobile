@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/request.dart';
@@ -25,7 +26,7 @@ class ExtendRequestPresenter {
         throw Exception("Máy chủ bị lỗi vui lòng thử lại sau");
       }
     } catch (e) {
-      print(e);
+      log(e.toString());
       throw Exception(e.toString());
     } finally {
       view!.setChangeViewRequest();
@@ -42,7 +43,7 @@ class ExtendRequestPresenter {
         model!.invoice = invoice;
       }
     } catch (e) {
-      print(e);
+      log(e.toString());
     } finally {
       view!.setChangeView();
       view!.changeLoadingStatus();

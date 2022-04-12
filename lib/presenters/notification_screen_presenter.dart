@@ -1,7 +1,3 @@
-import 'dart:convert';
-
-import 'package:rssms/api/api_services.dart';
-import 'package:rssms/models/entity/notification.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/models/notification_screen_model.dart';
 import 'package:rssms/views/notification_screen_view.dart';

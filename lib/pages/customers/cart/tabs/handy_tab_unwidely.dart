@@ -9,7 +9,6 @@ import 'package:rssms/models/entity/product.dart';
 import 'package:rssms/pages/customers/cart/widgets/accessory_widget.dart';
 import 'package:rssms/pages/customers/cart/widgets/booking_pop_up_door_to_door.dart';
 import 'package:rssms/pages/customers/cart/widgets/product_widget.dart';
-import 'package:rssms/pages/customers/cart/widgets/service_widget.dart';
 import '../../../../constants/constants.dart' as constants;
 
 class HandyTabUnwidely extends StatefulWidget {
@@ -37,21 +36,15 @@ class _HandyTabState extends State<HandyTabUnwidely> {
   @override
   Widget build(BuildContext context) {
     final List<Product> listProduct =
-        widget.handyTab![constants.UNWEILDY] == null
+        widget.handyTab![constants.typeProduct.unweildy.index] == null
             ? []
-            : widget.handyTab![constants.UNWEILDY]!
+            : widget.handyTab![constants.typeProduct.unweildy.index]!
                 .map((e) => e.copyWith(quantity: 0))
                 .toList();
     final List<Product> listAccessory =
-        widget.handyTab![constants.ACCESSORY] == null
+        widget.handyTab![constants.typeProduct.accessory.index] == null
             ? []
-            : widget.handyTab![constants.ACCESSORY]!
-                .map((e) => e.copyWith(quantity: 0))
-                .toList();
-    final List<Product> listService =
-        widget.handyTab![constants.SERVICES] == null
-            ? []
-            : widget.handyTab![constants.SERVICES]!
+            : widget.handyTab![constants.typeProduct.accessory.index]!
                 .map((e) => e.copyWith(quantity: 0))
                 .toList();
 

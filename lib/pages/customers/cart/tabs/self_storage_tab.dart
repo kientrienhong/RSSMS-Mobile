@@ -24,15 +24,15 @@ class SelfStorageTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<Product> listSelfStorage =
-        selfStorageTab![constants.SELF_STORAGE] == null
+        selfStorageTab![constants.typeProduct.selfStorage.index] == null
             ? []
-            : selfStorageTab![constants.SELF_STORAGE]!
+            : selfStorageTab![constants.typeProduct.selfStorage.index]!
                 .map((e) => e.copyWith(quantity: 0))
                 .toList();
     final List<Product> listAccessory =
-        selfStorageTab![constants.ACCESSORY] == null
+        selfStorageTab![constants.typeProduct.accessory.index] == null
             ? []
-            : selfStorageTab![constants.ACCESSORY]!
+            : selfStorageTab![constants.typeProduct.accessory.index]!
                 .map((e) => e.copyWith(quantity: 0))
                 .toList();
 

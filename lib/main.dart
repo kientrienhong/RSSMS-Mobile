@@ -1,7 +1,7 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:rssms/models/entity/add_image.dart';
 import 'package:rssms/models/entity/invoice.dart';
@@ -9,7 +9,6 @@ import 'package:rssms/models/entity/order_booking.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_screen/update_invoice_screen.dart';
 
-import '/config/http_overrides.dart';
 import '/pages/log_in/log_in_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -59,7 +58,7 @@ void onClickNotification(String? payload, BuildContext context) {
                   isDone: false,
                 )));
   } catch (e) {
-    print(e);
+    log(e.toString());
   }
 }
 
@@ -72,7 +71,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(fontFamily: 'Helvetica'),
-      home: LogInScreen(),
+      home: const LogInScreen(),
     );
   }
 }

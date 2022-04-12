@@ -26,15 +26,20 @@ class CartScreenPresenter {
     List<Product> listArea =
         decodedReponse['3']!.map<Product>((e) => Product.fromMap(e)).toList();
 
-    model.handyTab!.putIfAbsent(constants.HANDY, () => listHandy);
-    model.handyTab!.putIfAbsent(constants.ACCESSORY, () => listAccessory);
+    model.handyTab!
+        .putIfAbsent(constants.typeProduct.handy.index, () => listHandy);
+    model.handyTab!.putIfAbsent(
+        constants.typeProduct.accessory.index, () => listAccessory);
 
-    model.selfStorageTab!.putIfAbsent(constants.ACCESSORY, () => listAccessory);
-    model.selfStorageTab!
-        .putIfAbsent(constants.SELF_STORAGE, () => listSelfStorage);
+    model.selfStorageTab!.putIfAbsent(
+        constants.typeProduct.accessory.index, () => listAccessory);
+    model.selfStorageTab!.putIfAbsent(
+        constants.typeProduct.selfStorage.index, () => listSelfStorage);
 
-    model.unweildyTab!.putIfAbsent(constants.ACCESSORY, () => listAccessory);
-    model.unweildyTab!.putIfAbsent(constants.UNWEILDY, () => listArea);
+    model.unweildyTab!.putIfAbsent(
+        constants.typeProduct.accessory.index, () => listAccessory);
+    model.unweildyTab!
+        .putIfAbsent(constants.typeProduct.unweildy.index, () => listArea);
     view.setChangeList();
   }
 }

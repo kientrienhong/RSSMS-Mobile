@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:rssms/models/entity/invoice.dart';
-import 'package:rssms/models/entity/order_detail.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/pages/customers/input_information_booking/input_information.dart';
 

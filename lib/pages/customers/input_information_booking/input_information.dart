@@ -14,7 +14,6 @@ import 'package:rssms/models/entity/order_detail.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/models/input_information_model.dart';
 import 'package:rssms/pages/customers/input_information_booking/widgets/input_form_door_to_door.dart';
-import 'package:rssms/pages/customers/input_information_booking/widgets/note_select.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/invoice_product_widget.dart';
 import 'package:rssms/pages/customers/payment_method_booking/payment_method_booking_screen.dart';
 import 'package:rssms/presenters/input_information_presenter.dart';
@@ -102,7 +101,7 @@ class _HandleInputState extends State<HandleInput>
   List<int> currentIndexNoteChoice = [];
 
   List<Widget> _buildListReceivedAddress() {
-    return constants.LIST_ADDRESS_CHOICES
+    return constants.listAddressChoices
         .map((e) => CustomRadioButton(
             function: () {
               setState(() {
@@ -119,7 +118,7 @@ class _HandleInputState extends State<HandleInput>
   }
 
   List<Widget> _buildListPackagingAddress() {
-    return constants.LIST_ADDRESS_PACKAGING_CHOICES
+    return constants.listAddressPackagingChoices
         .map((e) => CustomRadioButton(
             function: () {
               setState(() {

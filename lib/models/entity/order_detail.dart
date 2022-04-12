@@ -2,10 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:rssms/models/entity/imageEntity.dart';
-import 'package:rssms/models/entity/order_detail_service.dart';
 import 'package:rssms/models/entity/product.dart';
-
-import 'image.dart';
 
 class OrderDetail {
   final String id;

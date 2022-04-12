@@ -418,7 +418,6 @@ class _BookingPopUpSelfStorageState extends State<BookingPopUpSelfStorage>
                           setError('Vui lòng chọn tháng!');
                           return;
                         }
-                        final test = orderBooking;
                         Navigator.push(
                             context,
                             MaterialPageRoute(

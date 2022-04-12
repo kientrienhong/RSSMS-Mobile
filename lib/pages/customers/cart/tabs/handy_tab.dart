@@ -8,11 +8,7 @@ import 'package:rssms/models/entity/order_booking.dart';
 import 'package:rssms/models/entity/product.dart';
 import 'package:rssms/pages/customers/cart/widgets/accessory_widget.dart';
 import 'package:rssms/pages/customers/cart/widgets/booking_pop_up_door_to_door.dart';
-import 'package:rssms/pages/customers/cart/widgets/booking_pop_up_self_storage.dart';
-import 'package:rssms/pages/customers/cart/widgets/door_to_door_product_widget.dart';
-import 'package:rssms/pages/customers/cart/widgets/main_product_widget.dart';
 import 'package:rssms/pages/customers/cart/widgets/product_widget.dart';
-import 'package:rssms/pages/customers/cart/widgets/service_widget.dart';
 import '../../../../constants/constants.dart' as constants;
 
 class HandyTab extends StatefulWidget {
@@ -34,21 +30,16 @@ class _HandyTabState extends State<HandyTab> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Product> listProduct = widget.handyTab![constants.HANDY] == null
-        ? []
-        : widget.handyTab![constants.HANDY]!
-            .map((e) => e.copyWith(quantity: 0))
-            .toList();
-    final List<Product> listAccessory =
-        widget.handyTab![constants.ACCESSORY] == null
+    final List<Product> listProduct =
+        widget.handyTab![constants.typeProduct.handy.index] == null
             ? []
-            : widget.handyTab![constants.ACCESSORY]!
+            : widget.handyTab![constants.typeProduct.handy.index]!
                 .map((e) => e.copyWith(quantity: 0))
                 .toList();
-    final List<Product> listService =
-        widget.handyTab![constants.SERVICES] == null
+    final List<Product> listAccessory =
+        widget.handyTab![constants.typeProduct.accessory.index] == null
             ? []
-            : widget.handyTab![constants.SERVICES]!
+            : widget.handyTab![constants.typeProduct.accessory.index]!
                 .map((e) => e.copyWith(quantity: 0))
                 .toList();
 

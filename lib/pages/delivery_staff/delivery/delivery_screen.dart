@@ -4,18 +4,15 @@ import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
-import 'package:rssms/common/custom_snack_bar.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:collection/collection.dart';
 import 'package:rssms/models/delivery_screen_model.dart';
-import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/pages/customers/cart/widgets/product_widget.dart';
 import 'package:rssms/pages/delivery_staff/delivery/widgets/dialog_confirm_cancel.dart';
 import 'package:rssms/pages/delivery_staff/delivery/widgets/schedule_widget.dart';
 import 'package:rssms/presenters/delivery_presenter.dart';
 import 'package:rssms/views/delivery_screen_view.dart';
-import '../../../constants/constants.dart' as constants;
 
 class DeliveryScreen extends StatefulWidget {
   const DeliveryScreen({Key? key}) : super(key: key);
@@ -110,7 +107,7 @@ class _DeliveryScreenState extends State<DeliveryScreen>
     }
   }
 
-  Widget DateFormatHelper(DateTime dateTime, int index) {
+  Widget dateFormatHelper(DateTime dateTime, int index) {
     final splitedDay = DateFormat.yMEd().format(dateTime).split(', ');
     final day = splitedDay[0];
     final splitedDate = splitedDay[1].split('/');
@@ -207,7 +204,7 @@ class _DeliveryScreenState extends State<DeliveryScreen>
                   width: 18,
                 ),
                 ..._model.listDateTime
-                    .mapIndexed((index, e) => DateFormatHelper(e, index))
+                    .mapIndexed((index, e) => dateFormatHelper(e, index))
                     .toList(),
                 CustomSizedBox(
                   context: context,

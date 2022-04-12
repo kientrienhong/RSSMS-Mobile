@@ -86,9 +86,9 @@ class DeliveryPresenter {
           currentListInvoice!.map((e) {
         int newStatus = 0;
 
-        if (e.status == constants.ASSIGNED) {
+        if (e.status == constants.STATUS_INVOICE.assigned.index) {
           newStatus = 3;
-        } else if (e.status == constants.STORED) {
+        } else if (e.status == constants.STATUS_INVOICE.stored.index) {
           newStatus = 7;
         }
 

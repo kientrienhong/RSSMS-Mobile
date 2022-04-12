@@ -24,13 +24,12 @@ class AddProduct extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final deviceSize = MediaQuery.of(context).size;
     final oCcy = NumberFormat("#,##0", "en_US");
 
     void addMainProduct() {
       Invoice invoice = Provider.of<Invoice>(context, listen: false);
       Invoice invoiceTemp = invoice.copyWith();
-      if (product.type == constants.HANDY) {
+      if (product.type == constants.typeProduct.handy.index) {
         invoiceTemp.orderDetails.add(OrderDetail(
             id: invoiceTemp.orderDetails.length.toString(),
             productId: product.id,

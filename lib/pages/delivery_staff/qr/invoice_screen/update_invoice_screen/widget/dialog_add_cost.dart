@@ -6,7 +6,6 @@ import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/helpers/validator.dart';
 import 'package:rssms/models/dialog_add_cost_model.dart';
-import 'package:rssms/models/entity/order_detail.dart';
 import 'package:rssms/presenters/dialog_add_cost_presenter.dart';
 import 'package:rssms/views/dialog%20_add_cost_view.dart';
 
@@ -45,7 +44,6 @@ class _DialogAddCostState extends State<DialogAddCost>
 
   @override
   void onSubmit() {
-    print(widget.additionCost);
     if (widget.additionCost == null) {
       widget.addAdditionCost!(<String, dynamic>{
         "id": widget.listAdditionCost.length,

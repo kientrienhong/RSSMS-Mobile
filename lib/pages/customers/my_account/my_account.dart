@@ -16,16 +16,8 @@ class MyAccountScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<MyAccountScreen>
     with SingleTickerProviderStateMixin {
-  ScrollController? _scrollController;
-  TabController? _tabController;
   @override
   void initState() {
-    _scrollController = ScrollController();
-    _tabController = TabController(
-      vsync: this,
-      length: 3,
-      initialIndex: 1,
-    );
     super.initState();
   }
 
@@ -35,7 +27,7 @@ class _ProfileScreenState extends State<MyAccountScreen>
       onPressed: () {
         setState(() {
           Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (context) => LogInScreen()),
+              MaterialPageRoute(builder: (context) => const LogInScreen()),
               (Route<dynamic> route) => false);
         });
       },
@@ -111,67 +103,5 @@ class _ProfileScreenState extends State<MyAccountScreen>
         ),
       ),
     );
-    // return Scaffold(
-    //   backgroundColor: CustomColor.white,
-    //   body: NestedScrollView(
-    //     physics: const NeverScrollableScrollPhysics(),
-    //     controller: _scrollController,
-    //     headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-    //       return <Widget>[
-    //         SliverAppBar(
-    //           title: const Text("Thông tin tài khoản"),
-    //           actions: <Widget>[
-    //             GestureDetector(
-    //                 onTap: () => {onPressLogout(context)},
-    //                 child: Image.asset('assets/images/logout.png'))
-    //           ],
-    //           titleTextStyle: const TextStyle(
-    //               color: Colors.black,
-    //               fontSize: 25,
-    //               fontWeight: FontWeight.bold),
-    //           centerTitle: true,
-    //           pinned: true,
-    //           floating: false,
-    //           snap: false,
-    //           backgroundColor: CustomColor.white,
-    //           bottom: TabBar(
-
-    //             controller: _tabController,
-    //             indicatorColor: Colors.white,
-    //             labelColor: Colors.blue,
-    //             labelStyle: const TextStyle(color: Colors.red, fontSize: 18),
-    //             unselectedLabelColor: Colors.black,
-    //             unselectedLabelStyle: const TextStyle(
-    //                 color: Colors.black,
-    //                 fontWeight: FontWeight.normal,
-    //                 fontSize: 18),
-    //             tabs: <TabButton>[
-    //               TabButton(
-    //                 text: "Thông Tin",
-    //                 pageNumber: 0,
-    //                 onPressed: () {},
-    //               ),
-    //               TabButton(
-    //                 text: "Đơn Hàng",
-    //                 pageNumber: 1,
-    //                 onPressed: () {},
-    //               ),
-    //               TabButton(
-    //                 text: "Yêu Cầu",
-    //                 pageNumber: 2,
-    //                 onPressed: () {},
-    //               )
-    //             ],
-    //           ),
-    //         )
-    //       ];
-    //     },
-    //     body: TabBarView(
-    //       controller: _tabController,
-
-    //       children: const [ProfileScreen(), InvoiceScreen(), RequestScreen()],
-    //     ),
-    //   ),
-    // );
   }
 }

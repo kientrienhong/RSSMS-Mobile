@@ -40,39 +40,24 @@ class _InvoiceImageDetailState extends State<UpdateImageInvoice> {
     super.initState();
   }
 
-  // Future pickImage(ImageSource source) async {
-  //   try {
-  //     final image = await ImagePicker().pickImage(source: source);
-  //     if (image == null) return;
-  //     final imageTempo = File(image.path);
-  //     setState(() {
-  //       this.imageAdd = imageTempo;
-  //     });
-  //   } on PlatformException catch (e) {
-  //     print("Failed to pickimage: $e");
-  //   } on Exception catch (ex) {
-  //     print(ex);
-  //   }
-  // }
-
   void _pickedImage() {
     showDialog<ImageSource>(
       context: context,
       builder: (context) =>
-          AlertDialog(content: Text("Choose image source"), actions: [
+          AlertDialog(content: const Text("Chọn phương tiện"), actions: [
         TextButton(
-          child: Text("Camera"),
+          child: const Text("Camera"),
           onPressed: () => Navigator.pop(context, ImageSource.camera),
         ),
         TextButton(
-          child: Text("Gallery"),
+          child: const Text("Thư viện ảnh"),
           onPressed: () => Navigator.pop(context, ImageSource.gallery),
         ),
       ]),
     ).then((source) async {
       if (source != null) {
         final pickedFile = await ImagePicker().pickImage(source: source);
-        setState(() => this.imageAdd = File(pickedFile!.path));
+        setState(() => imageAdd = File(pickedFile!.path));
       }
     });
   }

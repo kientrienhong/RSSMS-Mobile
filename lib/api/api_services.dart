@@ -289,13 +289,13 @@ class ApiServices {
         "returnDate": orderBooking.dateTimeReturn.toIso8601String(),
         "returnAddress": orderBooking.addressReturn,
         "deliveryTime": orderBooking.currentSelectTime != -1
-            ? constants.LIST_TIME_PICK_UP[orderBooking.currentSelectTime]
+            ? constants.listPickUpTime[orderBooking.currentSelectTime]
             : '',
         "deliveryDate": orderBooking.dateTimeDelivery.toIso8601String(),
         "type": 1,
         "typeOrder": orderBooking.typeOrder == TypeOrder.selfStorage
-            ? constants.SELF_STORAGE_TYPE_ORDER
-            : constants.DOOR_TO_DOOR_TYPE_ORDER,
+            ? constants.selfStorageTypeOrder
+            : constants.doorToDoorTypeOrder,
         "note": orderBooking.note,
         "requestDetails": listProduct
       }));
@@ -314,13 +314,13 @@ class ApiServices {
           "returnDate": orderBooking.dateTimeReturn.toIso8601String(),
           "returnAddress": orderBooking.addressReturn,
           "deliveryTime": orderBooking.currentSelectTime != -1
-              ? constants.LIST_TIME_PICK_UP[orderBooking.currentSelectTime]
+              ? constants.listPickUpTime[orderBooking.currentSelectTime]
               : '',
           "deliveryDate": orderBooking.dateTimeDelivery.toIso8601String(),
           "type": 1,
           "typeOrder": orderBooking.typeOrder == TypeOrder.selfStorage
-              ? constants.SELF_STORAGE_TYPE_ORDER
-              : constants.DOOR_TO_DOOR_TYPE_ORDER,
+              ? constants.selfStorageTypeOrder
+              : constants.doorToDoorTypeOrder,
           "note": orderBooking.note,
           "requestDetails": listProduct
         }),

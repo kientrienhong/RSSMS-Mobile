@@ -5,7 +5,6 @@ import 'package:rssms/models/entity/order_booking.dart';
 import 'package:rssms/models/entity/product.dart';
 import 'package:rssms/pages/customers/cart/tabs/handy_tab.dart';
 import 'package:rssms/pages/customers/cart/tabs/handy_tab_unwidely.dart';
-import 'package:rssms/pages/customers/cart/tabs/self_storage_tab.dart';
 import 'package:rssms/pages/customers/cart/widgets/title_tab.dart';
 import 'package:rssms/views/door_to_door_view.dart';
 import '../../../../constants/constants.dart' as constants;
@@ -49,7 +48,7 @@ class _DoorToDoorTabState extends State<DoorToDoorTab>
     List<TitleTab> mapListTab() {
       int index = 0;
 
-      return constants.TAB_DOOR_TO_DOOR
+      return constants.tabDoorToDoor
           .map<TitleTab>((e) => TitleTab(
                 title: e,
                 index: index++,

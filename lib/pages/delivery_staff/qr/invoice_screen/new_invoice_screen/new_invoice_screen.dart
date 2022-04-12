@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
@@ -7,7 +6,6 @@ import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/helpers/date_format.dart';
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/order_detail.dart';
-import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/invoice_info_widget.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/invoice_product_widget.dart';
 import 'package:rssms/constants/constants.dart' as constants;
 import 'package:rssms/pages/time_line/time_line_screen.dart';
@@ -30,7 +28,7 @@ class NewInvoiceScreen extends StatelessWidget {
         orderDetails[indexFound].amount += element.amount;
       }
 
-      if (element.productType != constants.ACCESSORY) {
+      if (element.productType != constants.typeProduct.accessory.index) {
         element.listAdditionService!.forEach((ele) {
           int indexFound1 =
               orderDetails.indexWhere((ele1) => ele1.productId == ele.id);
@@ -123,7 +121,7 @@ class NewInvoiceScreen extends StatelessWidget {
                   context: context,
                   height: 24,
                 ),
-                if (invoice.typeOrder == constants.DOOR_TO_DOOR_TYPE_ORDER)
+                if (invoice.typeOrder == constants.doorToDoorTypeOrder)
                   Column(
                     children: [
                       Row(

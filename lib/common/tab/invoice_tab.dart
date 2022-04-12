@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -14,10 +13,10 @@ import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/i
 import 'package:rssms/pages/customers/my_account/invoice/invoive_update/send_request_screen.dart';
 
 class InvoiceTab extends StatelessWidget {
-  Invoice? invoice;
+  final Invoice? invoice;
   final Size deviceSize;
 
-  InvoiceTab({Key? key, required this.deviceSize, this.invoice})
+  const InvoiceTab({Key? key, required this.deviceSize, this.invoice})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -107,7 +106,8 @@ class InvoiceTab extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => InvoiceCancelledScreen()),
+                              builder: (context) =>
+                                  const InvoiceCancelledScreen()),
                         );
                       },
                       width: deviceSize.width / 2.5,

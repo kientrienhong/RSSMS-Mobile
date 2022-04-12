@@ -16,17 +16,15 @@ class InvoiceInfoWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget textStatus = CustomText(
-        text: constants.LIST_STATUS_ORDER[invoice!.status]['name']! as String,
-        color: constants.LIST_STATUS_ORDER[invoice!.status]['color'] as Color,
+        text: constants.listStatusOrder[invoice!.status]['name']! as String,
+        color: constants.listStatusOrder[invoice!.status]['color'] as Color,
         context: context,
         fontWeight: FontWeight.bold,
         fontSize: 17);
     if (!invoice!.isOrder!) {
       textStatus = CustomText(
-          text:
-              constants.LIST_STATUS_REQUEST[invoice!.status]['name']! as String,
-          color:
-              constants.LIST_STATUS_REQUEST[invoice!.status]['color'] as Color,
+          text: constants.listRequestStatus[invoice!.status]['name']! as String,
+          color: constants.listRequestStatus[invoice!.status]['color'] as Color,
           context: context,
           fontWeight: FontWeight.bold,
           fontSize: 17);

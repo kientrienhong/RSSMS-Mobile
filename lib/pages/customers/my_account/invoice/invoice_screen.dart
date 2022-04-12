@@ -19,13 +19,11 @@ class InvoiceScreen extends StatefulWidget {
 class _InvoiceScreenState extends State<InvoiceScreen> implements InvoiceView {
   late InvoicePresenter _presenter;
   late InvoiceModel _model;
-  late bool _isFound;
   final scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
-    _isFound = false;
     Users user = Provider.of<Users>(context, listen: false);
     _presenter = InvoicePresenter();
     _presenter.view = this;

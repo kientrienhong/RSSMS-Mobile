@@ -5,7 +5,6 @@ import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/models/entity/order_booking.dart';
 import 'package:rssms/models/entity/product.dart';
-import 'package:rssms/constants/constants.dart' as constants;
 
 class QuantityWidget extends StatefulWidget {
   final Product? product;
@@ -79,12 +78,6 @@ class _QuantityWidgetState extends State<QuantityWidget> {
                   fontSize: 32),
             ),
           ),
-          // child: SizedBox(
-          //     height: 40,
-          //     child: Image.asset(
-          //       'assets/images/minusButton.png',
-          //       fit: BoxFit.cover,
-          //     )),
         ),
         CustomSizedBox(
           context: context,

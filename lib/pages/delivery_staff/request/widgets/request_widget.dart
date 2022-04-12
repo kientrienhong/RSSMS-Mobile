@@ -1,7 +1,4 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
@@ -14,8 +11,8 @@ import 'package:rssms/pages/customers/my_account/request/request_details_screen/
 import '../../../../constants/constants.dart' as constants;
 
 class RequestWidget extends StatelessWidget {
-  Request? request;
-  RequestWidget({Key? key, this.request}) : super(key: key);
+  final Request? request;
+  const RequestWidget({Key? key, this.request}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +47,7 @@ class RequestWidget extends StatelessWidget {
                 fontWeight: FontWeight.bold,
                 fontSize: 16),
             CustomText(
-                text: constants.LIST_TYPE_REQUEST[request.type]['name']!,
+                text: constants.listRequestType[request.type]['name']!,
                 color: CustomColor.black,
                 context: context,
                 fontSize: 16),
@@ -66,7 +63,7 @@ class RequestWidget extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        if (request!.type == constants.REQUEST_TYPE_EXTEND_ORDER) {
+        if (request!.type == constants.REQUEST_TYPE.extendOrder.index) {
           Navigator.push(
               context,
               MaterialPageRoute(
@@ -74,7 +71,7 @@ class RequestWidget extends StatelessWidget {
                         request: request!,
                       )));
         }
-        if (request!.type == constants.REQUEST_TYPE_CANCEL_SCHEDULE) {
+        if (request!.type == constants.REQUEST_TYPE.cancelSchedule.index) {
           Navigator.push(
               context,
               MaterialPageRoute(
@@ -82,7 +79,7 @@ class RequestWidget extends StatelessWidget {
                         request: request!,
                       )));
         }
-        if (request!.type == constants.REQUEST_TYPE_RETURN_ORDER) {
+        if (request!.type == constants.REQUEST_TYPE.returnOrder.index) {
           Navigator.push(
               context,
               MaterialPageRoute(
@@ -90,7 +87,7 @@ class RequestWidget extends StatelessWidget {
                         request: request!,
                       )));
         }
-        if (request!.type == constants.REQUEST_TYPE_CREATE_ORDER) {
+        if (request!.type == constants.REQUEST_TYPE.createOrder.index) {
           Navigator.push(
               context,
               MaterialPageRoute(
@@ -108,7 +105,7 @@ class RequestWidget extends StatelessWidget {
             boxShadow: [
               BoxShadow(
                   blurRadius: 14,
-                  color: Color(0x000000).withOpacity(0.06),
+                  color: const Color(0x00000000).withOpacity(0.06),
                   offset: const Offset(0, 6)),
             ]),
         child: Column(children: [
@@ -118,8 +115,8 @@ class RequestWidget extends StatelessWidget {
               children: [
                 SizedBox(
                     width: (deviceSize.width - 72) / 6,
-                    child: Image.asset(constants
-                        .LIST_ICON_REQUEST[request!.type]["name"]
+                    child: Image.asset(constants.listIconRequest[request!.type]
+                            ["name"]
                         .toString())),
                 CustomSizedBox(
                   context: context,

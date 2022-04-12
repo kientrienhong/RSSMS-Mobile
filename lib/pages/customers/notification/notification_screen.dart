@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/notifcation_widget.dart';
-import 'package:rssms/constants/constants.dart' as constants;
 import 'package:rssms/models/entity/notification.dart';
 import 'package:rssms/models/entity/user.dart';
-import 'package:rssms/models/notification_screen_model.dart';
 import 'package:rssms/presenters/notification_screen_presenter.dart';
 import 'package:rssms/views/notification_screen_view.dart';
 
@@ -18,7 +16,6 @@ class NotificationScreen extends StatefulWidget {
 
 class _NotificationScreenState extends State<NotificationScreen>
     implements NotificationScreenView {
-  late NotificationScreenModel _model;
   late NotificationScreenPresenter _presenter;
 
   List<Widget> mapNotifcationWidget(
@@ -38,7 +35,6 @@ class _NotificationScreenState extends State<NotificationScreen>
   void initState() {
     _presenter = NotificationScreenPresenter();
     _presenter.view = this;
-    _model = _presenter.model;
     Users user = Provider.of<Users>(context, listen: false);
 
     _presenter.loadListNotification(user);

@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
-import 'package:rssms/api/api_services.dart';
 import 'package:rssms/helpers/image_handle.dart';
 import 'package:rssms/models/entity/imageEntity.dart';
 import 'package:rssms/models/entity/invoice.dart';
@@ -70,17 +68,20 @@ class InvoiceUpdatePresenter {
     double price = 0;
 
     invoice.orderDetails.forEach((element) {
-      if (element.productType == HANDY || element.productType == UNWEILDY) {
+      if (element.productType == typeProduct.handy.index ||
+          element.productType == typeProduct.unweildy.index) {
         price += element.price * (invoice.durationDays / 30).ceil();
-      } else if (element.productType == ACCESSORY) {
+      } else if (element.productType == typeProduct.accessory.index) {
         price += element.price;
-      } else if (element.productType == SELF_STORAGE) {
+      } else if (element.productType == typeProduct.selfStorage.index) {
         price += element.price * invoice.durationMonths;
       }
 
       element.listAdditionService!.forEach((ele1) {
-        if (ele1.type == ACCESSORY || ele1.type == SERVICES)
+        if (ele1.type == typeProduct.accessory.index ||
+            ele1.type == typeProduct.services.index) {
           price += ele1.price * ele1.quantity!;
+        }
       });
     });
 
@@ -153,7 +154,7 @@ class InvoiceUpdatePresenter {
     };
   }
 
-  Map<String, dynamic> DateFormatHelperDoneOrder(Invoice invoice) {
+  Map<String, dynamic> dateFormatHelperDoneOrder(Invoice invoice) {
     List<OrderAdditionalFee>? listOrderAdditionFee;
 
     if (model.isAdditionFee || model.isCompensation) {
@@ -227,7 +228,7 @@ class InvoiceUpdatePresenter {
   Future<bool?> doneOrder(Users user, Invoice invoice) async {
     try {
       view.updateLoadingUpdate();
-      final dataRequest = DateFormatHelperDoneOrder(invoice);
+      final dataRequest = dateFormatHelperDoneOrder(invoice);
       log(jsonEncode(dataRequest));
       var response = await model.doneOrder(dataRequest, user.idToken!);
       if (response.statusCode == 200) {

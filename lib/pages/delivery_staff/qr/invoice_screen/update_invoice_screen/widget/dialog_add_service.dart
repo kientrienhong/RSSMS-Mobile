@@ -226,8 +226,7 @@ class _DialogAddServiceState extends State<DialogAddService>
                     child: _model.idOrderDetail == null
                         ? widget.isSeperate
                             ? _buildAddition()
-                            : invoice.typeOrder ==
-                                    constants.DOOR_TO_DOOR_TYPE_ORDER
+                            : invoice.typeOrder == constants.doorToDoorTypeOrder
                                 ? _buildMainProduct()
                                 : _buildSelfStorage()
                         : _buildAddition()),

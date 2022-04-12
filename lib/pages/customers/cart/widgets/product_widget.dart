@@ -104,7 +104,7 @@ class _ProductWidgetState extends State<ProductWidget> implements ProductView {
           boxShadow: [
             BoxShadow(
                 blurRadius: 14,
-                color: Color(0x000000).withOpacity(0.06),
+                color: const Color(0x00000000).withOpacity(0.06),
                 offset: const Offset(0, 6)),
           ]),
       child: Column(children: [
@@ -115,7 +115,7 @@ class _ProductWidgetState extends State<ProductWidget> implements ProductView {
             SizedBox(
                 width: (deviceSize.width - 64) / 4,
                 child: Image.network(widget.product!.imageUrl)),
-            SizedBox(
+            const SizedBox(
               width: 16,
             ),
             SizedBox(

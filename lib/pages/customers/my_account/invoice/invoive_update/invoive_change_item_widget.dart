@@ -102,7 +102,7 @@ class _ChangeItemWidgetState extends State<ChangeItemWidget>
     Map<String, dynamic> request = {
       "orderId": widget.invoice!.id,
       "deliveryAddress": _model.controllerStreet.text,
-      "deliveryTime": constants.LIST_TIME_PICK_UP[_currentIndex],
+      "deliveryTime": constants.listPickUpTime[_currentIndex],
       "deliveryDate": DateTime.parse(date![2] + "-" + date[1] + '-' + date[0]),
       "type": 4
     };
@@ -120,7 +120,7 @@ class _ChangeItemWidgetState extends State<ChangeItemWidget>
                       CartScreen(),
                       NotificationDeliveryScreen(),
                     ],
-                    listNavigator: constants.LIST_CUSTOMER_BOTTOM_NAVIGATION,
+                    listNavigator: constants.listCustomerBottomNavigation,
                   )),
           (Route<dynamic> route) => false);
     }

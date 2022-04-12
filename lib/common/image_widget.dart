@@ -188,7 +188,7 @@ class _ImageWidgetState extends State<ImageWidget> {
                   onMinusAddition: onMinusAddition,
                 ),
               widget.isView == false
-                  ? invoice.typeOrder == constants.SELF_STORAGE_TYPE_ORDER
+                  ? invoice.typeOrder == constants.selfStorageTypeOrder
                       ? Column(
                           children: [
                             const Divider(),
@@ -295,7 +295,7 @@ class _ImageWidgetState extends State<ImageWidget> {
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 if (widget.orderDetail.productType ==
-                                    constants.HANDY)
+                                    constants.typeProduct.handy.index)
                                   CustomButton(
                                       height: 24,
                                       text: 'Chỉnh sửa kích thước',
@@ -317,7 +317,7 @@ class _ImageWidgetState extends State<ImageWidget> {
                                     height: 24,
                                     text: 'Xóa',
                                     width: widget.orderDetail.productType !=
-                                            constants.HANDY
+                                            constants.typeProduct.handy.index
                                         ? deviceSize.width - 72
                                         : deviceSize.width / 2 - 40,
                                     onPressFunction: () {

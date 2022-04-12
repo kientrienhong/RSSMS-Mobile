@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_button.dart';
@@ -65,7 +67,7 @@ class _DialogCheckInState extends State<DialogCheckIn>
             color: CustomColor.red);
       }
     } catch (e) {
-      print(e);
+      log(e.toString());
     }
   }
 

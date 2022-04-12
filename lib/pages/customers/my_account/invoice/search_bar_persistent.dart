@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PersistentHeader extends SliverPersistentHeaderDelegate {
@@ -9,11 +8,11 @@ class PersistentHeader extends SliverPersistentHeaderDelegate {
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return Container(
+    return SizedBox(
       width: double.infinity,
       height: 56.0,
       child: Card(
-        margin: EdgeInsets.all(0),
+        margin: const EdgeInsets.all(0),
         color: Colors.white,
         elevation: 5.0,
         child: Center(child: widget),

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_app_bar.dart';
@@ -84,8 +86,7 @@ class _PaymentMethodBookingScreenState extends State<PaymentMethodBookingScreen>
                           CartScreen(),
                           NotificationDeliveryScreen(),
                         ],
-                        listNavigator:
-                            constants.LIST_CUSTOMER_BOTTOM_NAVIGATION,
+                        listNavigator: constants.listCustomerBottomNavigation,
                       )),
               (Route<dynamic> route) => false);
         }
@@ -118,20 +119,19 @@ class _PaymentMethodBookingScreenState extends State<PaymentMethodBookingScreen>
                             CartScreen(),
                             NotificationDeliveryScreen(),
                           ],
-                          listNavigator:
-                              constants.LIST_CUSTOMER_BOTTOM_NAVIGATION,
+                          listNavigator: constants.listCustomerBottomNavigation,
                         )),
                 (Route<dynamic> route) => false);
           }
         }
       }
     } catch (e) {
-      print(e.toString());
+      log(e.toString());
     }
   }
 
   List<Widget> _buildListDropDownPaymentMethods() {
-    return constants.LIST_PAYMENT_METHOD_CHOICES
+    return constants.listPaymentMethodChoices
         .map((e) => CustomRadioButton(
             function: () {
               setState(() {

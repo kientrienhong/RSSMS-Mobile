@@ -34,9 +34,9 @@ class NoteSelect extends StatelessWidget {
                       color: CustomColor.black[3]!,
                       spreadRadius: 1,
                       blurRadius: 4,
-                      offset: Offset(0, 0), // changes position of shadow
+                      offset: const Offset(0, 0), // changes position of shadow
                     )
-                  : BoxShadow(),
+                  : const BoxShadow(),
             ],
             border: indexFound == -1
                 ? Border.all(width: 0)

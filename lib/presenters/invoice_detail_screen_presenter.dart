@@ -1,11 +1,11 @@
 import 'dart:convert';
+import 'dart:developer';
 
+import 'package:rssms/constants/constants.dart';
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/order_detail.dart';
 import 'package:rssms/models/invoice_detail_screen.dart';
-import 'package:rssms/presenters/invoice_cancel_presenter.dart';
 import 'package:rssms/views/invoice_detail_screen_view.dart';
-import 'package:rssms/constants/constants.dart';
 
 class InvoiceDetailScreenPresenter {
   late InvoiceDetailScreenModel model;
@@ -19,14 +19,16 @@ class InvoiceDetailScreenPresenter {
     Invoice invoiceResult = invoice.copyWith();
 
     invoiceResult.orderDetails.forEach((element) {
-      if (element.productType == ACCESSORY || element.productType == SERVICES) {
+      if (element.productType == typeProduct.accessory.index ||
+          element.productType == typeProduct.services.index) {
         element.serviceImageUrl = element.listAdditionService![0].imageUrl;
         element.price = element.listAdditionService![0].price;
         element.amount = element.listAdditionService![0].quantity!;
       } else {
         element.listAdditionService = element.listAdditionService!
             .where((element) =>
-                element.type == ACCESSORY || element.type == SERVICES)
+                element.type == typeProduct.accessory.index ||
+                element.type == typeProduct.services.index)
             .toList();
       }
     });
@@ -44,7 +46,7 @@ class InvoiceDetailScreenPresenter {
         view.updateView(formatItemTabInvoice(invoice), updatedInvoice);
       }
     } catch (e) {
-      print(e);
+      log(e.toString());
     } finally {
       view.updateLoading();
     }

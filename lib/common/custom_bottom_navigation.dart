@@ -41,8 +41,8 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation>
 
       element.listAdditionService = element.listAdditionService!
           .where((element) =>
-              element.type == constants.ACCESSORY ||
-              element.type == constants.SERVICES)
+              element.type == constants.typeProduct.accessory.index ||
+              element.type == constants.typeProduct.services.index)
           .toList();
 
       element = element.copyWith(amount: quantity);

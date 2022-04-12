@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -14,19 +15,14 @@ import 'package:rssms/helpers/validator.dart';
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/order_additional_fee.dart';
 import 'package:rssms/models/entity/order_detail.dart';
-import 'package:rssms/models/entity/product.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/models/invoice_update_model.dart';
-import 'package:rssms/pages/customers/cart/cart_screen.dart';
-import 'package:rssms/pages/customers/my_account/my_account.dart';
-import 'package:rssms/pages/customers/notification/notification_screen.dart';
 import 'package:rssms/pages/delivery_staff/delivery/delivery_screen.dart';
 import 'package:rssms/pages/delivery_staff/my_account/my_account_delivery.dart';
 import 'package:rssms/pages/delivery_staff/notifcation/notification_delivery.dart';
 import 'package:rssms/pages/delivery_staff/qr/invoice_screen/new_invoice_screen/new_invoice_screen.dart';
 import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_screen/widget/addition_cost.dart';
 import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_screen/widget/addition_service_widget.dart';
-import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_screen/widget/dialog_add_cost.dart';
 import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_screen/widget/dialog_add_service.dart';
 import 'package:rssms/pages/delivery_staff/qr/qr_screen.dart';
 import 'package:rssms/pages/office_staff/my_account/my_account_office.dart';
@@ -38,7 +34,7 @@ class UpdateInvoiceScreen extends StatefulWidget {
   final bool? isView;
   final bool? isScanQR;
   final bool isDone;
-  UpdateInvoiceScreen(
+  const UpdateInvoiceScreen(
       {Key? key, this.isView, this.isScanQR, required this.isDone})
       : super(key: key);
 
@@ -158,7 +154,7 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                           QrScreen(),
                           NotificationDeliveryScreen(),
                         ],
-                        listNavigator: constant.LIST_DELIVERY_BOTTOM_NAVIGATION,
+                        listNavigator: constant.listDeliveryBottomNavigation,
                       )),
               (Route<dynamic> route) => false);
         } else if (user.roleName == 'Office Staff') {
@@ -169,13 +165,13 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                           MyAccountOfficeScreen(),
                           QrScreen(),
                         ],
-                        listNavigator: constant.LIST_OFFICE_BOTTOM_NAVIGATION,
+                        listNavigator: constant.listOfficeBottomNavigation,
                       )),
               (Route<dynamic> route) => false);
         }
       }
     } catch (e) {
-      print(e);
+      log(e.toString());
     }
   }
 
@@ -199,7 +195,7 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                           QrScreen(),
                           NotificationDeliveryScreen(),
                         ],
-                        listNavigator: constant.LIST_DELIVERY_BOTTOM_NAVIGATION,
+                        listNavigator: constant.listDeliveryBottomNavigation,
                       )),
               (Route<dynamic> route) => false);
         } else if (user.roleName == 'Office Staff') {
@@ -210,13 +206,13 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                           MyAccountOfficeScreen(),
                           QrScreen(),
                         ],
-                        listNavigator: constant.LIST_OFFICE_BOTTOM_NAVIGATION,
+                        listNavigator: constant.listOfficeBottomNavigation,
                       )),
               (Route<dynamic> route) => false);
         }
       }
     } catch (e) {
-      print(e);
+      log(e.toString());
     }
   }
 
@@ -248,7 +244,7 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
             color: CustomColor.green);
       }
     } catch (e) {
-      print(e);
+      log(e.toString());
     }
   }
 
@@ -385,7 +381,7 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                             showDialog(
                                 context: context,
                                 builder: (context) {
-                                  return DialogAddService(
+                                  return const DialogAddService(
                                     isSeperate: false,
                                   );
                                 });
@@ -405,8 +401,10 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                     return Column(
                       children: mapInvoiceWidget(invoiceLocal.orderDetails
                           .where((element) =>
-                              element.productType != SERVICES &&
-                              element.productType != ACCESSORY)
+                              element.productType !=
+                                  typeProduct.services.index &&
+                              element.productType !=
+                                  typeProduct.accessory.index)
                           .toList()),
                     );
                   },
@@ -435,7 +433,7 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                             showDialog(
                                 context: context,
                                 builder: (context) {
-                                  return DialogAddService(
+                                  return const DialogAddService(
                                     isSeperate: true,
                                   );
                                 });
@@ -455,8 +453,10 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                     return Column(
                       children: mapAdditionSeperate(invoiceLocal.orderDetails
                           .where((element) =>
-                              element.productType == SERVICES ||
-                              element.productType == ACCESSORY)
+                              element.productType ==
+                                  typeProduct.services.index ||
+                              element.productType ==
+                                  typeProduct.accessory.index)
                           .toList()),
                     );
                   },
@@ -464,8 +464,8 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                 if (widget.isDone &&
                     invoice.orderDetails
                         .where((element) =>
-                            element.productType == SERVICES ||
-                            element.productType == ACCESSORY)
+                            element.productType == typeProduct.services.index ||
+                            element.productType == typeProduct.accessory.index)
                         .toList()
                         .isEmpty)
                   Center(
@@ -655,15 +655,17 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                             bool emptyImage = false;
                             for (var image in listImage) {
                               if (image.images.isEmpty &&
-                                  (image.productType == HANDY ||
-                                      image.productType == UNWEILDY)) {
+                                  (image.productType ==
+                                          typeProduct.handy.index ||
+                                      image.productType ==
+                                          typeProduct.unweildy.index)) {
                                 emptyImage = true;
                                 break;
                               }
                             }
                             if (emptyImage &&
                                 invoice.typeOrder ==
-                                    constant.DOOR_TO_DOOR_TYPE_ORDER) {
+                                    constant.doorToDoorTypeOrder) {
                               showDialog(
                                   context: context,
                                   builder: (context) {
@@ -688,7 +690,8 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                               if (element.height == 0 &&
                                   element.width == 0 &&
                                   element.length == 0 &&
-                                  element.productType != constant.ACCESSORY) {
+                                  element.productType !=
+                                      typeProduct.accessory.index) {
                                 updateError(
                                     'Vui lòng nhập kích thước của các dịch vụ');
                                 isValid = false;

@@ -19,12 +19,12 @@ class ListTimeSelect extends StatelessWidget {
       padding: const EdgeInsets.all(0),
       physics: const NeverScrollableScrollPhysics(),
       children: List.generate(
-          constants.LIST_TIME_PICK_UP.length,
+          constants.listPickUpTime.length,
           (index) => TimeSelect(
                 onChangeTime: onChangeTab,
                 currentIdex: currentIndex,
                 index: index,
-                time: constants.LIST_TIME_PICK_UP[index],
+                time: constants.listPickUpTime[index],
                 key: UniqueKey(),
               )),
     );

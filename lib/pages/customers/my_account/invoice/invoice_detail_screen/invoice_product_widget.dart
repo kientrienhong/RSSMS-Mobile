@@ -35,8 +35,8 @@ class InvoiceProductWidget extends StatelessWidget {
     List<OrderDetail> listTemp = invoice!.orderDetails;
     List<OrderDetail> listProduct = listTemp
         .where((element) =>
-            element.productType == constants.HANDY ||
-            element.productType == constants.UNWEILDY)
+            element.productType == constants.typeProduct.handy.index ||
+            element.productType == constants.typeProduct.unweildy.index)
         .toList();
     if (listProduct.isEmpty) {
       listProduct =
@@ -92,7 +92,7 @@ class InvoiceProductWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CustomText(
-                text: invoice!.typeOrder == constants.SELF_STORAGE_TYPE_ORDER
+                text: invoice!.typeOrder == constants.selfStorageTypeOrder
                     ? "Kho"
                     : "Dịch vụ",
                 color: CustomColor.blue,
@@ -217,10 +217,9 @@ class InvoiceProductWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CustomText(
-                    text:
-                        invoice!.typeOrder == constants.SELF_STORAGE_TYPE_ORDER
-                            ? "Tổng tiền thuê kho"
-                            : "Tổng tiền thuê dịch vụ",
+                    text: invoice!.typeOrder == constants.selfStorageTypeOrder
+                        ? "Tổng tiền thuê kho"
+                        : "Tổng tiền thuê dịch vụ",
                     color: Colors.black,
                     context: context,
                     fontWeight: FontWeight.bold,

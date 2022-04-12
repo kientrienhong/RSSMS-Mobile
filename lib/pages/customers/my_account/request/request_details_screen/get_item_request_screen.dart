@@ -26,10 +26,8 @@ class _GetItemRequestScreenState extends State<GetItemRequestScreen>
   ExtendRequestPresenter? _presenter;
   ExtendRequestModel? _model;
   List<OrderDetail>? listProduct;
-
-  void loadRequestDetails() {
-    // TODO: implement loadRequestDetails
-  }
+  @override
+  void loadRequestDetails() {}
 
   @override
   void initState() {
@@ -58,8 +56,8 @@ class _GetItemRequestScreenState extends State<GetItemRequestScreen>
     List<OrderDetail> listTemp = _model!.invoice!.orderDetails;
     listProduct = listTemp
         .where((element) =>
-            element.productType == constants.HANDY ||
-            element.productType == constants.UNWEILDY)
+            element.productType == constants.typeProduct.handy.index ||
+            element.productType == constants.typeProduct.unweildy.index)
         .toList();
     setState(() {});
   }
@@ -138,9 +136,9 @@ class _GetItemRequestScreenState extends State<GetItemRequestScreen>
                                 fontWeight: FontWeight.bold,
                                 fontSize: 17),
                             CustomText(
-                                text: constants.LIST_STATUS_REQUEST[
+                                text: constants.listRequestStatus[
                                     widget.request.status]['name'] as String,
-                                color: constants.LIST_STATUS_REQUEST[
+                                color: constants.listRequestStatus[
                                     widget.request.status]['color'] as Color,
                                 context: context,
                                 fontWeight: FontWeight.bold,

@@ -1,9 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
-import 'package:rssms/common/invoice_image_detail.dart';
 
 class ImageSelectWidget extends StatelessWidget {
   Map<String, dynamic> image;
@@ -88,7 +86,7 @@ class ImageSelectWidget extends StatelessWidget {
                   ? const BoxShadow()
                   : BoxShadow(
                       blurRadius: 14,
-                      color: Color(0x000000).withOpacity(0.06),
+                      color: const Color(0x00000000).withOpacity(0.06),
                       offset: const Offset(0, 6)),
             ]),
       ),

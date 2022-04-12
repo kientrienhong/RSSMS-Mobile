@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_button.dart';
@@ -64,7 +66,7 @@ class _DialogReportState extends State<DialogReport>
         }
         Navigator.pop(context, result);
       } catch (e) {
-        print(e);
+        log(e.toString());
       }
     }
   }
@@ -121,7 +123,7 @@ class _DialogReportState extends State<DialogReport>
                     onPressFunction: onClickSubmit,
                     isLoading: _model.isLoading,
                     textColor: CustomColor.white,
-                    buttonColor: Color.fromRGBO(4, 191, 254, 1),
+                    buttonColor: const Color.fromRGBO(4, 191, 254, 1),
                     borderRadius: 6),
               ],
             ),

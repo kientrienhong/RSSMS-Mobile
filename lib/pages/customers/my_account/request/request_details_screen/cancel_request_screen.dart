@@ -7,10 +7,8 @@ import 'package:rssms/models/entity/order_detail.dart';
 import 'package:rssms/models/entity/request.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/models/extend_request_model.dart';
-import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/product_in_invoice/product_widget.dart';
 import 'package:rssms/presenters/extend_request_presenter.dart';
 import 'package:rssms/views/extend_request_view.dart';
-import 'package:rssms/constants/constants.dart' as constants;
 
 class CancelledRequestScreen extends StatefulWidget {
   Request request;
@@ -27,10 +25,8 @@ class _CancelledRequestScreenState extends State<CancelledRequestScreen>
   ExtendRequestModel? _model;
   List<OrderDetail>? listProduct;
   TextEditingController? noteController;
-
-  void loadRequestDetails() {
-    // TODO: implement loadRequestDetails
-  }
+  @override
+  void loadRequestDetails() {}
 
   @override
   void initState() {

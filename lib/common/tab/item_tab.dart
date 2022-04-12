@@ -9,9 +9,9 @@ import 'package:rssms/constants/constants.dart' as constants;
 import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_screen/widget/addition_service_widget.dart';
 
 class ItemTab extends StatefulWidget {
-  Invoice? invoice;
+  final Invoice? invoice;
 
-  ItemTab({Key? key, required this.invoice}) : super(key: key);
+  const ItemTab({Key? key, required this.invoice}) : super(key: key);
 
   @override
   _ItemTabState createState() => _ItemTabState();
@@ -20,7 +20,8 @@ class ItemTab extends StatefulWidget {
 class _ItemTabState extends State<ItemTab> {
   List<Widget> mapInvoiceWidget(List<OrderDetail> listOrderDetail) =>
       listOrderDetail
-          .where((element) => element.productType == constants.HANDY)
+          .where((element) =>
+              element.productType == constants.typeProduct.handy.index)
           .map((e) => ImageWidget(
                 orderDetail: e,
                 isView: true,
@@ -28,11 +29,12 @@ class _ItemTabState extends State<ItemTab> {
           .toList();
 
   List<Widget> mapSeperateAdditionWidget(List<OrderDetail> listOrderDetail) {
-    final list = listOrderDetail
-        .where((element) => element.productType == constants.ACCESSORY);
+    final list = listOrderDetail.where((element) =>
+        element.productType == constants.typeProduct.accessory.index);
     if (list.isNotEmpty) {
       return list
-          .where((element) => element.productType == constants.ACCESSORY)
+          .where((element) =>
+              element.productType == constants.typeProduct.accessory.index)
           .map((e) => AdditionServiceWidget(
                 isView: true,
                 onAddAddition: () {},

@@ -160,7 +160,7 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
                       CartScreen(),
                       NotificationScreen(),
                     ],
-                    listNavigator: constant.LIST_CUSTOMER_BOTTOM_NAVIGATION,
+                    listNavigator: constant.listCustomerBottomNavigation,
                   )),
         );
       } else if (user.roleName == 'Delivery Staff') {
@@ -174,7 +174,7 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
                       QrScreen(),
                       NotificationDeliveryScreen(),
                     ],
-                    listNavigator: constant.LIST_DELIVERY_BOTTOM_NAVIGATION,
+                    listNavigator: constant.listDeliveryBottomNavigation,
                   )),
         );
       } else if (user.roleName == 'Office Staff') {
@@ -186,7 +186,7 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
                       MyAccountOfficeScreen(),
                       QrScreen(),
                     ],
-                    listNavigator: constant.LIST_OFFICE_BOTTOM_NAVIGATION,
+                    listNavigator: constant.listOfficeBottomNavigation,
                   )),
         );
       } else {
