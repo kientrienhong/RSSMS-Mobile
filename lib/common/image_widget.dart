@@ -153,12 +153,14 @@ class _ImageWidgetState extends State<ImageWidget> {
                   maxLines: 3,
                   fontSize: 14),
             ),
-            CustomText(
-                text:
-                    (widget.orderDetail.images.length).toString() + ' hình ảnh',
-                color: Colors.black38,
-                context: context,
-                fontSize: 14)
+            if (widget.orderDetail.productType !=
+                constants.typeProduct.selfStorage.index)
+              CustomText(
+                  text: (widget.orderDetail.images.length).toString() +
+                      ' hình ảnh',
+                  color: Colors.black38,
+                  context: context,
+                  fontSize: 14)
           ],
         ),
         children: [
