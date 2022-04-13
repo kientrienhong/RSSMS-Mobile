@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rssms/common/confirm_dialog.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
@@ -27,7 +28,18 @@ class _ExtendRequestScreenState extends State<ExtendRequestScreen>
   ExtendRequestModel? _model;
   List<OrderDetail>? listProduct;
   @override
-  void onPressCancel() {}
+  void onPressCancel() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return ConfirmDialog(
+            confirmFunction: _presenter!.cancelRequest,
+            id: _model!.request!.id);
+      },
+    ).then((value) => {
+          if (value) {init()}
+        });
+  }
 
   @override
   void initState() {
