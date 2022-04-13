@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_tabbutton.dart';
 import 'package:rssms/common/custom_text.dart';
+import 'package:rssms/models/entity/add_image.dart';
+import 'package:rssms/models/entity/invoice.dart';
+import 'package:rssms/models/entity/order_booking.dart';
+import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoice_screen.dart';
 import 'package:rssms/pages/customers/my_account/request/request_screen.dart';
 import 'package:rssms/pages/log_in/log_in_screen.dart';
@@ -26,6 +31,17 @@ class _ProfileScreenState extends State<MyAccountScreen>
       child: const Text("Đồng ý"),
       onPressed: () {
         setState(() {
+          Invoice invoice = Provider.of<Invoice>(context, listen: false);
+          invoice.setInvoice(invoice: Invoice.empty());
+          Users users = Provider.of<Users>(context, listen: false);
+          users.setUser(user: Users.empty());
+          OrderBooking orderBooking =
+              Provider.of<OrderBooking>(context, listen: false);
+          orderBooking.setOrderBooking(
+              orderBooking: OrderBooking.empty(TypeOrder.doorToDoor));
+          AddedImage addedImage =
+              Provider.of<AddedImage>(context, listen: false);
+          addedImage.setImage(aimage: AddedImage.empty());
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(builder: (context) => const LogInScreen()),
               (Route<dynamic> route) => false);
