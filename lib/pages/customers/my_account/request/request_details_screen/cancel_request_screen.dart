@@ -26,7 +26,7 @@ class _CancelledRequestScreenState extends State<CancelledRequestScreen>
   List<OrderDetail>? listProduct;
   TextEditingController? noteController;
   @override
-  void loadRequestDetails() {}
+  void onPressCancel() {}
 
   @override
   void initState() {

@@ -26,10 +26,8 @@ class _ExtendRequestScreenState extends State<ExtendRequestScreen>
   ExtendRequestPresenter? _presenter;
   ExtendRequestModel? _model;
   List<OrderDetail>? listProduct;
-
-  void loadRequestDetails() {
-    // TODO: implement loadRequestDetails
-  }
+  @override
+  void onPressCancel() {}
 
   @override
   void initState() {

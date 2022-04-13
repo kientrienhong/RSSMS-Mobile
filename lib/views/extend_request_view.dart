@@ -1,6 +1,6 @@
-abstract class ExtendRequestView{
-  void loadRequestDetails();
+abstract class ExtendRequestView {
   void setChangeView();
   void setChangeViewRequest();
   void changeLoadingStatus();
+  void onPressCancel();
 }

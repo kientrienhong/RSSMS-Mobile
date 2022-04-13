@@ -11,6 +11,8 @@ enum REQUEST_TYPE {
 }
 enum STATUS_INVOICE { booked, assigned, deliveried, stored, expired, done }
 
+enum STATUS_REQUEST { canceled, inProcess, processed, completed }
+
 enum ADDITION_FEE_TYPE {
   takingAdditionFee,
   returningAdditionFee,

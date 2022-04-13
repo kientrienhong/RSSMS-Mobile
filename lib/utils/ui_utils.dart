@@ -17,6 +17,7 @@ class UIUtils {
               textAlign: TextAlign.center,
               color: CustomColor.red,
               context: context,
+              maxLines: 3,
               fontSize: 16,
               fontWeight: FontWeight.bold,
             ),

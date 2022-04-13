@@ -49,4 +49,12 @@ class ExtendRequestPresenter {
       view!.changeLoadingStatus();
     }
   }
+
+  Future<dynamic> cancelRequest(String idToken, String id) async {
+    try {
+      return await model!.cancelRequest(idToken, id);
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
 }

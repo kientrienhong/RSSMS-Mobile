@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rssms/common/confirm_dialog.dart';
+import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
+import 'package:rssms/helpers/date_format.dart';
 import 'package:rssms/models/entity/order_detail.dart';
 import 'package:rssms/models/entity/request.dart';
 import 'package:rssms/models/entity/user.dart';
@@ -26,8 +29,20 @@ class _GetItemRequestScreenState extends State<GetItemRequestScreen>
   ExtendRequestPresenter? _presenter;
   ExtendRequestModel? _model;
   List<OrderDetail>? listProduct;
+
   @override
-  void loadRequestDetails() {}
+  void onPressCancel() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return ConfirmDialog(
+            confirmFunction: _presenter!.cancelRequest,
+            id: _model!.request!.id);
+      },
+    ).then((value) => {
+          if (value) {init()}
+        });
+  }
 
   @override
   void initState() {
@@ -93,6 +108,7 @@ class _GetItemRequestScreenState extends State<GetItemRequestScreen>
     final deviceSize = MediaQuery.of(context).size;
 
     return Scaffold(
+      backgroundColor: CustomColor.white,
       body: SingleChildScrollView(
           child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
@@ -104,9 +120,13 @@ class _GetItemRequestScreenState extends State<GetItemRequestScreen>
                     padding: const EdgeInsets.symmetric(vertical: 24),
                     child: GestureDetector(
                       onTap: () => {Navigator.of(context).pop()},
-                      child: Image.asset(
-                        'assets/images/arrowLeft.png',
-                        fit: BoxFit.contain,
+                      child: SizedBox(
+                        width: 24,
+                        height: 24,
+                        child: Image.asset(
+                          'assets/images/arrowLeft.png',
+                          fit: BoxFit.contain,
+                        ),
                       ),
                     ),
                   ),
@@ -137,9 +157,9 @@ class _GetItemRequestScreenState extends State<GetItemRequestScreen>
                                 fontSize: 17),
                             CustomText(
                                 text: constants.listRequestStatus[
-                                    widget.request.status]['name'] as String,
+                                    _model!.request!.status]['name'] as String,
                                 color: constants.listRequestStatus[
-                                    widget.request.status]['color'] as Color,
+                                    _model!.request!.status]['color'] as Color,
                                 context: context,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16),
@@ -162,13 +182,15 @@ class _GetItemRequestScreenState extends State<GetItemRequestScreen>
                           height: 24,
                         ),
                         _buildInformation(
-                            "Ngày trả hàng:", _model!.request!.returnDate),
+                            "Ngày trả hàng:",
+                            DateFormatHelper.formatToVNDay(
+                                _model!.invoice!.deliveryDate)),
                         CustomSizedBox(
                           context: context,
                           height: 24,
                         ),
-                        _buildInformation(
-                            "Khung giờ trả hàng:", _model!.request!.returnTime),
+                        _buildInformation("Khung giờ trả hàng:",
+                            _model!.request!.deliveryTime),
                         CustomSizedBox(
                           context: context,
                           height: 24,
@@ -184,7 +206,8 @@ class _GetItemRequestScreenState extends State<GetItemRequestScreen>
                                 fontSize: 17),
                             Flexible(
                                 child: CustomText(
-                                    text: _model?.request?.returnAddress ?? "",
+                                    text:
+                                        _model?.request?.deliveryAddress ?? "",
                                     color: CustomColor.black,
                                     maxLines: 2,
                                     context: context,
@@ -194,6 +217,20 @@ class _GetItemRequestScreenState extends State<GetItemRequestScreen>
                         CustomSizedBox(
                           context: context,
                           height: 24,
+                        ),
+                        Center(
+                          child: CustomButton(
+                              height: 24,
+                              text: 'Hủy yêu cầu',
+                              width: deviceSize.width * 1 / 3,
+                              onPressFunction: () {
+                                onPressCancel();
+                              },
+                              isLoading: false,
+                              textColor: CustomColor.red,
+                              buttonColor: CustomColor.white,
+                              isCancelButton: true,
+                              borderRadius: 6),
                         ),
                       ],
                     )

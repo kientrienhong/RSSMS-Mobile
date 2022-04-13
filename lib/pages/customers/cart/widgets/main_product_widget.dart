@@ -86,7 +86,7 @@ class _MainProductWidgetState extends State<MainProductWidget>
     SizeConfig().init(context);
     return Container(
         height: deviceSize.height > 640
-            ? SizeConfig.blockSizeVertical! * 19
+            ? SizeConfig.blockSizeVertical! * 21
             : SizeConfig.blockSizeVertical! * 22,
         width: deviceSize.width - 32,
         padding: EdgeInsets.only(top: deviceSize.height / 45, left: 16),

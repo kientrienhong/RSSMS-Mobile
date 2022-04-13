@@ -396,7 +396,8 @@ class ApiServices {
       final url = Uri.parse('$_domain/api/v1/requests/$idRequest');
       return http.put(url,
           headers: headers,
-          body: jsonEncode({'id': idRequest, 'status': status}));
+          body: jsonEncode(
+              {'id': idRequest, 'status': status, 'description': ''}));
     } catch (e) {
       print(e.toString());
       throw Exception('Update Failed');
