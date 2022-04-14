@@ -192,6 +192,7 @@ class InvoiceUpdatePresenter {
       final dataRequest = await formatDataCreateOrder(invoice);
       log(jsonEncode(dataRequest));
       var response = await model.createOrder(dataRequest, user.idToken!);
+      log(response.statusCode.toString());
       if (response.statusCode == 200) {
         return true;
       } else if (response.statusCode == 400) {

@@ -82,6 +82,7 @@ const listRequestStatus = [
   {'name': 'Hoàn thành', 'color': CustomColor.green},
   {'name': 'Đang vận chuyển', 'color': CustomColor.brown},
   {'name': 'Khách không có mặt', 'color': CustomColor.red},
+  {'name': 'Đã xử lý', 'color': CustomColor.blue},
 ];
 
 const listRequestType = [

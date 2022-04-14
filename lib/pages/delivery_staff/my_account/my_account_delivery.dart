@@ -30,6 +30,52 @@ class _MyAccountDeliveryScreenState extends State<MyAccountDeliveryScreen>
     super.initState();
   }
 
+  onPressLogout(BuildContext context) {
+    Widget cancelButton = TextButton(
+      child: const Text("Đồng ý"),
+      onPressed: () {
+        setState(() {
+          Invoice invoice = Provider.of<Invoice>(context, listen: false);
+          invoice.setInvoice(invoice: Invoice.empty());
+          Users users = Provider.of<Users>(context, listen: false);
+          users.setUser(user: Users.empty());
+          OrderBooking orderBooking =
+              Provider.of<OrderBooking>(context, listen: false);
+          orderBooking.setOrderBooking(
+              orderBooking: OrderBooking.empty(TypeOrder.doorToDoor));
+          AddedImage addedImage =
+              Provider.of<AddedImage>(context, listen: false);
+          addedImage.setImage(aimage: AddedImage.empty());
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => const LogInScreen()),
+              (Route<dynamic> route) => false);
+        });
+      },
+    );
+    Widget continueButton = TextButton(
+      child: const Text("Không"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+
+    AlertDialog alert = AlertDialog(
+      title: const Text("Thông báo"),
+      content: const Text("Bạn chắc chắn muốn đăng xuất?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,24 +90,7 @@ class _MyAccountDeliveryScreenState extends State<MyAccountDeliveryScreen>
                 actions: <Widget>[
                   GestureDetector(
                       onTap: () {
-                        Invoice invoice =
-                            Provider.of<Invoice>(context, listen: false);
-                        invoice.setInvoice(invoice: Invoice.empty());
-                        Users users =
-                            Provider.of<Users>(context, listen: false);
-                        users.setUser(user: Users.empty());
-                        OrderBooking orderBooking =
-                            Provider.of<OrderBooking>(context, listen: false);
-                        orderBooking.setOrderBooking(
-                            orderBooking:
-                                OrderBooking.empty(TypeOrder.doorToDoor));
-                        AddedImage addedImage =
-                            Provider.of<AddedImage>(context, listen: false);
-                        addedImage.setImage(aimage: AddedImage.empty());
-                        Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(
-                                builder: (context) => const LogInScreen()),
-                            (Route<dynamic> route) => false);
+                        onPressLogout(context);
                       },
                       child: Image.asset('assets/images/logout.png'))
                 ],
