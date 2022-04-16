@@ -51,8 +51,7 @@ class DeliveryPresenter {
     model.listDateTime = [];
     DateTime now = DateTime.now();
     if (currentDate != null) now = currentDate;
-    // String nowString = now.toIso8601String().split('T')[0];
-    // now = DateTime.parse(nowString);
+
     if (model.currentIndex == 0) {
       now = now.add(const Duration(days: 1));
     }

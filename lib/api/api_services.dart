@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/order_booking.dart';
 import 'package:rssms/models/entity/user.dart';
@@ -444,7 +445,7 @@ class ApiServices {
       };
 
       final url = Uri.parse(
-          '$_domain/api/v1/schedules?DateFrom=${firstDay.toIso8601String()}&DateTo=${endDay.toIso8601String()}&page=1&size=-1');
+          '$_domain/api/v1/schedules?DateFrom=${DateFormat('yyyy-MM-dd').format(firstDay)}&DateTo=${DateFormat('yyyy-MM-dd').format(endDay)}&page=1&size=-1');
       return http.get(
         url,
         headers: headers,

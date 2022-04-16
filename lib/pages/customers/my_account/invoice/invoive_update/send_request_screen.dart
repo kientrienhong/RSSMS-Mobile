@@ -92,19 +92,6 @@ class SendRequestScreenState extends State<SendRequestScreen> {
                         : CustomColor.white,
                     state: _state,
                     value: CurrentRadioState.modifyItem),
-              if (widget.invoice!.typeOrder == 0)
-                CustomRadioButton(
-                    function: () {
-                      setState(() {
-                        _state = CurrentRadioState.modifyItem;
-                      });
-                    },
-                    text: "Dời lịch nhận kho",
-                    color: _state == CurrentRadioState.modifyItem
-                        ? CustomColor.blue
-                        : CustomColor.white,
-                    state: _state,
-                    value: CurrentRadioState.modifyItem),
               const SizedBox(
                 child: Divider(color: CustomColor.black, thickness: 0.5),
               ),
