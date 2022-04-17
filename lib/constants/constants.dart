@@ -74,6 +74,11 @@ const listAreaType = [
   {'color': CustomColor.blue, 'name': 'Giữ đồ thuê'},
 ];
 
+const listSpaceType = [
+  {'color': CustomColor.blue, 'name': 'Không gian chứa đồ'},
+  {'color': CustomColor.purple, 'name': 'Kho'},
+];
+
 const listIconRequest = [
   {'name': 'assets/images/truck1.png'},
   {'name': 'assets/images/invoice.png'},

@@ -135,6 +135,25 @@ class ApiServices {
     }
   }
 
+  static Future<dynamic> getListSpaces(
+      String idToken, String areaId, String name) {
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        'Authorization': 'Bearer $idToken'
+      };
+      final url = Uri.parse(
+          '$_domain/api/v1/spaces?AreaId=$areaId&Name=$name&page=1&size=-1');
+      return http.get(
+        url,
+        headers: headers,
+      );
+    } catch (e) {
+      log(e.toString());
+      throw Exception(e.toString());
+    }
+  }
+
   static Future<dynamic> getInvoice(String idToken, String page, String total) {
     try {
       Map<String, String> headers = {
@@ -220,7 +239,7 @@ class ApiServices {
         headers: headers,
       );
     } catch (e) {
-      print(e);
+      log(e.toString());
       throw Exception(e.toString());
     }
   }

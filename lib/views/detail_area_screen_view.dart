@@ -1,4 +1,4 @@
-abstract class StorageScreenView {
+abstract class DetailAreaScreenView {
   void updateLoading();
   void updateErrorMsg(String error);
 }

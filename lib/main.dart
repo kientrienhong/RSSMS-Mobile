@@ -47,13 +47,12 @@ void main() async {
 void onClickNotification(String? payload, BuildContext context) {
   try {
     Invoice invoice = Provider.of<Invoice>(context, listen: false);
-    // print(json.decode(payload!));
     Invoice invoiceTemp = Invoice.fromJson(json.decode(payload!)['data']);
     invoice.setInvoice(invoice: invoiceTemp);
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => UpdateInvoiceScreen(
+            builder: (context) => const UpdateInvoiceScreen(
                   isView: true,
                   isDone: false,
                 )));

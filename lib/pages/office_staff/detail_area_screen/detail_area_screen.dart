@@ -3,32 +3,32 @@ import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
+import 'package:rssms/models/detail_area_screen_model.dart';
 import 'package:rssms/models/entity/user.dart';
-import 'package:rssms/models/storage_screen_model.dart';
-import 'package:rssms/pages/office_staff/storage_screen/widgets/area_widget.dart';
-import 'package:rssms/presenters/storage_screen_presenter.dart';
-import 'package:rssms/views/storage_screen_view.dart';
+import 'package:rssms/pages/office_staff/detail_area_screen/widgets/space_widget.dart';
+import 'package:rssms/presenters/detail_area_screen_presenter.dart';
+import 'package:rssms/views/detail_area_screen_view.dart';
 
-class StorageScreen extends StatefulWidget {
-  const StorageScreen({Key? key}) : super(key: key);
+class DetailAreaScreen extends StatefulWidget {
+  final String idArea;
+  const DetailAreaScreen({Key? key, required this.idArea}) : super(key: key);
 
   @override
-  State<StorageScreen> createState() => _StorageScreenState();
+  State<DetailAreaScreen> createState() => _DetailAreaScreenState();
 }
 
-class _StorageScreenState extends State<StorageScreen>
-    implements StorageScreenView {
-  late StorageScreenModel _model;
-  late StorageScreenPresenter _presenter;
+class _DetailAreaScreenState extends State<DetailAreaScreen>
+    implements DetailAreaScreenView {
+  late DetailAreaScreenModel _model;
+  late DetailAreaScreenPresenter _presenter;
 
   @override
   void initState() {
-    Users users = Provider.of<Users>(context, listen: false);
-
-    _presenter = StorageScreenPresenter();
-    _presenter.view = this;
+    _presenter = DetailAreaScreenPresenter();
     _model = _presenter.model;
-    _presenter.getListAreas(users.idToken!, users.storageId!);
+    _presenter.view = this;
+    Users users = Provider.of<Users>(context, listen: false);
+    _presenter.getListSpace(users.idToken!, widget.idArea);
     super.initState();
   }
 
@@ -76,7 +76,7 @@ class _StorageScreenState extends State<StorageScreen>
                   height: 32,
                 ),
                 CustomText(
-                  text: 'Trang danh sách khu vực ',
+                  text: 'Trang danh sách không gian',
                   color: CustomColor.black,
                   context: context,
                   fontSize: 24,
@@ -90,9 +90,9 @@ class _StorageScreenState extends State<StorageScreen>
                   child: ListView.builder(
                       shrinkWrap: true,
                       padding: const EdgeInsets.symmetric(horizontal: 24),
-                      itemCount: _model.listArea.length,
+                      itemCount: _model.listSpace.length,
                       itemBuilder: (_, index) {
-                        return AreaWidget(area: _model.listArea[index]);
+                        return SpaceWidget(space: _model.listSpace[index]);
                       }),
                 )
               ],
