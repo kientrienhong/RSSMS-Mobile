@@ -1,4 +1,5 @@
 import 'package:provider/provider.dart';
+import 'package:rssms/common/invoice_screen.dart';
 import 'package:rssms/constants/constants.dart' as constant;
 import 'package:rssms/common/custom_bottom_navigation.dart';
 import 'package:rssms/models/entity/user.dart';
@@ -11,6 +12,7 @@ import 'package:rssms/pages/delivery_staff/notifcation/notification_delivery.dar
 import 'package:rssms/pages/delivery_staff/qr/qr_screen.dart';
 import 'package:rssms/pages/no_permission/no_permission.dart';
 import 'package:rssms/pages/office_staff/my_account/my_account_office.dart';
+import 'package:rssms/pages/office_staff/storage_screen/storage_screen.dart';
 import 'package:rssms/pages/sign_up/sign_up_screen.dart';
 import '/common/background.dart';
 import '/common/custom_button.dart';
@@ -181,10 +183,32 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
         Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => const CustomBottomNavigation(
+              builder: (context) => CustomBottomNavigation(
                     listIndexStack: [
-                      MyAccountOfficeScreen(),
-                      QrScreen(),
+                      const MyAccountOfficeScreen(),
+                      const QrScreen(),
+                      Scaffold(
+                          backgroundColor: CustomColor.white,
+                          body: Container(
+                            padding: const EdgeInsets.symmetric(vertical: 24),
+                            child: Column(
+                              children: [
+                                CustomSizedBox(
+                                  context: context,
+                                  height: 8,
+                                ),
+                                CustomText(
+                                    text: 'Trang đơn hàng',
+                                    color: CustomColor.black,
+                                    context: context,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 24),
+                                CustomSizedBox(context: context, height: 8),
+                                const Expanded(child: InvoiceScreen()),
+                              ],
+                            ),
+                          )),
+                      const StorageScreen(),
                     ],
                     listNavigator: constant.listOfficeBottomNavigation,
                   )),

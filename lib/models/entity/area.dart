@@ -1,15 +1,21 @@
 import 'dart:convert';
 
 class Area {
-  final int id;
+  final String id;
   final String name;
   final int type;
   final String description;
-  final int usage;
+  final double usage;
   final int status;
+  final double width;
+  final double height;
+  final double length;
   Area({
     required this.id,
     required this.name,
+    required this.width,
+    required this.height,
+    required this.length,
     required this.type,
     required this.description,
     required this.usage,
@@ -17,12 +23,15 @@ class Area {
   });
 
   Area copyWith({
-    int? id,
+    String? id,
     String? name,
     int? type,
     String? description,
-    int? usage,
+    double? usage,
     int? status,
+    double? width,
+    double? height,
+    double? length,
   }) {
     return Area(
       id: id ?? this.id,
@@ -31,6 +40,9 @@ class Area {
       description: description ?? this.description,
       usage: usage ?? this.usage,
       status: status ?? this.status,
+      width: width ?? this.width,
+      height: height ?? this.height,
+      length: length ?? this.length,
     );
   }
 
@@ -47,11 +59,14 @@ class Area {
 
   factory Area.fromMap(Map<String, dynamic> map) {
     return Area(
-      id: map['id']?.toInt() ?? 0,
+      id: map['id'] ?? '',
       name: map['name'] ?? '',
       type: map['type']?.toInt() ?? 0,
       description: map['description'] ?? '',
-      usage: map['usage']?.toInt() ?? 0,
+      usage: map['usage']?.toDouble() ?? 0,
+      width: map['width']?.toDouble() ?? 0,
+      length: map['length']?.toDouble() ?? 0,
+      height: map['height']?.toDouble() ?? 0,
       status: map['status']?.toInt() ?? 0,
     );
   }

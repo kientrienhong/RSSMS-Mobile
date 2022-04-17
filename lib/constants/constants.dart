@@ -69,6 +69,11 @@ const listStatusOrder = [
   {'color': CustomColor.red, 'name': 'Đã thanh lý'},
 ];
 
+const listAreaType = [
+  {'color': CustomColor.purple, 'name': 'Kho tự quản'},
+  {'color': CustomColor.blue, 'name': 'Giữ đồ thuê'},
+];
+
 const listIconRequest = [
   {'name': 'assets/images/truck1.png'},
   {'name': 'assets/images/invoice.png'},

@@ -117,6 +117,24 @@ class ApiServices {
     }
   }
 
+  static Future<dynamic> getArea(String idToken, String storageId) {
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        'Authorization': 'Bearer $idToken'
+      };
+      final url = Uri.parse(
+          '$_domain/api/v1/areas?storageid=$storageId&page=1&size=-1');
+      return http.get(
+        url,
+        headers: headers,
+      );
+    } catch (e) {
+      log(e.toString());
+      throw Exception(e.toString());
+    }
+  }
+
   static Future<dynamic> getInvoice(String idToken, String page, String total) {
     try {
       Map<String, String> headers = {
