@@ -4,11 +4,11 @@ import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/common/invoice_detail_screen.dart';
-import '../../../../constants/constants.dart' as constants;
+import '../constants/constants.dart' as constants;
 
 class InvoiceWidget extends StatelessWidget {
-  Invoice? invoice;
-  InvoiceWidget({Key? key, this.invoice}) : super(key: key);
+  final Invoice invoice;
+  const InvoiceWidget({Key? key, required this.invoice}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +46,7 @@ class InvoiceWidget extends StatelessWidget {
             children: [
               SizedBox(
                   width: (deviceSize.width - 32) / 4,
-                  child: invoice!.typeOrder == 1
+                  child: invoice.typeOrder == 1
                       ? Image.asset(icon['box']!)
                       : Image.asset(icon['warehose']!)),
               SizedBox(
@@ -61,7 +61,7 @@ class InvoiceWidget extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           CustomText(
-                              text: "#" + invoice!.name,
+                              text: "#" + invoice.name,
                               color: CustomColor.black,
                               context: context,
                               fontWeight: FontWeight.bold,
@@ -69,11 +69,10 @@ class InvoiceWidget extends StatelessWidget {
                           Flexible(
                             child: CustomText(
                                 textAlign: TextAlign.right,
-                                text: constants.listStatusOrder[invoice!.status]
+                                text: constants.listStatusOrder[invoice.status]
                                     ['name']! as String,
-                                color:
-                                    constants.listStatusOrder[invoice!.status]
-                                        ['color'] as Color,
+                                color: constants.listStatusOrder[invoice.status]
+                                    ['color'] as Color,
                                 context: context,
                                 maxLines: 2,
                                 fontWeight: FontWeight.bold,
@@ -94,8 +93,8 @@ class InvoiceWidget extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                               fontSize: 14),
                           CustomText(
-                              text: invoice!.deliveryDate.substring(
-                                  0, invoice!.deliveryDate.indexOf("T")),
+                              text: invoice.deliveryDate.substring(
+                                  0, invoice.deliveryDate.indexOf("T")),
                               color: CustomColor.black,
                               fontWeight: FontWeight.w100,
                               context: context,
@@ -115,8 +114,8 @@ class InvoiceWidget extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                               fontSize: 14),
                           CustomText(
-                              text: invoice!.returnDate.substring(
-                                  0, invoice!.returnDate.indexOf("T")),
+                              text: invoice.returnDate.substring(
+                                  0, invoice.returnDate.indexOf("T")),
                               color: CustomColor.black[2]!,
                               context: context,
                               fontWeight: FontWeight.w500,

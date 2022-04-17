@@ -5,7 +5,7 @@ import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/models/invoice_model.dart';
-import 'package:rssms/pages/customers/my_account/invoice/invoice_widget.dart';
+import 'package:rssms/common/invoice_widget.dart';
 import 'package:rssms/presenters/invoice_presenter.dart';
 import 'package:rssms/views/invoice_view.dart';
 
@@ -19,7 +19,6 @@ class InvoiceScreen extends StatefulWidget {
 class _InvoiceScreenState extends State<InvoiceScreen> implements InvoiceView {
   late InvoicePresenter _presenter;
   late InvoiceModel _model;
-  final scrollController = ScrollController();
 
   @override
   void initState() {
@@ -27,18 +26,8 @@ class _InvoiceScreenState extends State<InvoiceScreen> implements InvoiceView {
     Users user = Provider.of<Users>(context, listen: false);
     _presenter = InvoicePresenter();
     _presenter.view = this;
-    _model = _presenter.model!;
-    _presenter.loadInvoice(idToken: user.idToken);
-    _model.searchValue.addListener(onHandleChangeInput);
-    scrollController.addListener(() {
-      if (scrollController.position.maxScrollExtent ==
-          scrollController.offset) {
-        if (_model.hasMore!) {
-          _model.page = _model.page! + 1;
-          _presenter.loadInvoice(idToken: user.idToken);
-        }
-      }
-    });
+    _model = _presenter.model;
+    _presenter.init(user.idToken!);
   }
 
   List<Widget> mapInvoiceWidget(listInvoice) => listInvoice
@@ -55,7 +44,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> implements InvoiceView {
   @override
   void updateIsLoadingInvoice() {
     setState(() {
-      _model.isLoadingInvoice = !_model.isLoadingInvoice!;
+      _model.isLoadingInvoice = !_model.isLoadingInvoice;
     });
   }
 
@@ -101,14 +90,14 @@ class _InvoiceScreenState extends State<InvoiceScreen> implements InvoiceView {
             child: ListView.builder(
               physics: const BouncingScrollPhysics(
                   parent: AlwaysScrollableScrollPhysics()),
-              controller: scrollController,
+              controller: _model.scrollController,
               itemCount: snapshot.data!.length + 1,
               itemBuilder: (context, index) {
                 if (index < snapshot.data.length) {
                   return InvoiceWidget(
                     invoice: snapshot.data[index],
                   );
-                } else if (_model.hasMore!) {
+                } else if (_model.hasMore) {
                   return Column(
                     children: [
                       CustomSizedBox(

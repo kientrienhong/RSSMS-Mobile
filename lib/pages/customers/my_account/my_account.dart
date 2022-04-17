@@ -7,7 +7,7 @@ import 'package:rssms/models/entity/add_image.dart';
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/order_booking.dart';
 import 'package:rssms/models/entity/user.dart';
-import 'package:rssms/pages/customers/my_account/invoice/invoice_screen.dart';
+import 'package:rssms/common/invoice_screen.dart';
 import 'package:rssms/pages/customers/my_account/request/request_screen.dart';
 import 'package:rssms/pages/log_in/log_in_screen.dart';
 import 'package:rssms/pages/profile/profile_screen.dart';

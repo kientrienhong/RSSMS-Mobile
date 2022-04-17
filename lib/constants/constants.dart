@@ -28,21 +28,23 @@ const doorToDoorTypeOrder = 1;
 const selfStorageTypeOrder = 0;
 
 const List<Map<String, String>> listCustomerBottomNavigation = [
-  {'url': "assets/images/profile.png", 'label': 'Profile'},
-  {'url': "assets/images/addIcon.png", 'label': 'Cart'},
-  {'url': "assets/images/notification.png", 'label': 'Notification'},
+  {'url': "assets/images/profile.png", 'label': 'Thông tin tài khoản'},
+  {'url': "assets/images/addIcon.png", 'label': 'Giỏ hàng'},
+  {'url': "assets/images/notification.png", 'label': 'Thông báo'},
 ];
 
 const List<Map<String, String>> listDeliveryBottomNavigation = [
-  {'url': "assets/images/profile.png", 'label': 'Profile'},
-  {'url': "assets/images/deliveryNav.png", 'label': 'Schedule'},
+  {'url': "assets/images/profile.png", 'label': 'Thông tin tài khoản'},
+  {'url': "assets/images/deliveryNav.png", 'label': 'Lịch giao'},
   {'url': "assets/images/qrCode.png", 'label': 'QR'},
-  {'url': "assets/images/notification.png", 'label': 'Notification'},
+  {'url': "assets/images/notification.png", 'label': 'Thông báo'},
 ];
 
 const List<Map<String, String>> listOfficeBottomNavigation = [
-  {'url': "assets/images/profile.png", 'label': 'Profile'},
+  {'url': "assets/images/profile.png", 'label': 'Thông tin tài khoản'},
   {'url': "assets/images/qrCode.png", 'label': 'QR'},
+  {'url': "assets/images/paper.png", 'label': 'Đơn hàng'},
+  {'url': "assets/images/storage.png", 'label': 'Kho'},
 ];
 
 const doorToDoorTab = 0;
