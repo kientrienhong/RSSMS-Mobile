@@ -248,7 +248,7 @@ class ApiServices {
     try {
       Map<String, String> headers = {
         "Content-type": "application/json",
-        'Authorization': 'Bearer ${idToken}'
+        'Authorization': 'Bearer $idToken'
       };
 
       final url = Uri.parse('$_domain/api/v1/orders');
@@ -400,13 +400,7 @@ class ApiServices {
         "Content-type": "application/json",
         'Authorization': 'Bearer ${user.idToken}'
       };
-      final test = {
-        "orderId": request["orderId"],
-        "deliveryAddress": request["deliveryAddress"],
-        "deliveryTime": request["deliveryTime"],
-        "deliveryDate": request["deliveryDate"].toIso8601String(),
-        "type": request["type"],
-      };
+
       final url = Uri.parse('$_domain/api/v1/requests');
       return http.post(
         url,
@@ -438,7 +432,7 @@ class ApiServices {
           body: jsonEncode(
               {'id': idRequest, 'status': status, 'description': ''}));
     } catch (e) {
-      print(e.toString());
+      log(e.toString());
       throw Exception('Update Failed');
     }
   }
@@ -469,7 +463,7 @@ class ApiServices {
             "phone": phone
           }));
     } catch (e) {
-      print(e.toString());
+      log(e.toString());
       throw Exception('Update Failed');
     }
   }
@@ -502,7 +496,7 @@ class ApiServices {
       final url = Uri.parse('$_domain/api/v1/orders/send_noti_to_customer');
       return http.post(url, headers: headers, body: jsonEncode(dataRequest));
     } catch (e) {
-      print(e.toString());
+      log(e.toString());
       throw Exception('Log In failed');
     }
   }
@@ -515,7 +509,7 @@ class ApiServices {
       final url = Uri.parse('$_domain/api/v1/roles?page=1&size=250');
       return http.get(url, headers: headers);
     } catch (e) {
-      print(e.toString());
+      log(e.toString());
       throw Exception('Update Failed');
     }
   }
@@ -529,7 +523,7 @@ class ApiServices {
       final url = Uri.parse('$_domain/api/v1/orders/${invoice.id}');
       return http.put(url, headers: headers, body: jsonEncode(invoice.toMap()));
     } catch (e) {
-      print(e.toString());
+      log(e.toString());
       throw Exception('Update Failed');
     }
   }
@@ -544,7 +538,7 @@ class ApiServices {
           '$_domain/api/v1/orders/done/order/${dataRequest['orderId']}/request/${dataRequest['requestId']}');
       return http.put(url, body: jsonEncode(dataRequest), headers: headers);
     } catch (e) {
-      print(e.toString());
+      log(e.toString());
       throw Exception(e.toString());
     }
   }
@@ -565,7 +559,7 @@ class ApiServices {
           body: jsonEncode(
               {"cancelDay": dateCancel, "type": type, "note": note}));
     } catch (e) {
-      print(e.toString());
+      log(e.toString());
       throw Exception('Request Failed');
     }
   }
@@ -584,8 +578,70 @@ class ApiServices {
         headers: headers,
       );
     } catch (e) {
-      print(e.toString());
+      log(e.toString());
       throw Exception('Get Notification Failed');
+    }
+  }
+
+  static Future<dynamic> loadListAvailableStorages(
+      List<Map<String, dynamic>> listProduct,
+      OrderBooking orderBooking,
+      Users user) {
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        'Authorization': 'Bearer ${user.idToken}'
+      };
+      log(jsonEncode({
+        "isPaid": orderBooking.isPaid,
+        "isCustomerDelivery": orderBooking.isCustomerDelivery,
+        "orderId": null,
+        "totalPrice": 0,
+        "customerId": user.userId,
+        "deliveryAddress": orderBooking.addressDelivery,
+        "returnDate": orderBooking.dateTimeReturn.toIso8601String(),
+        "returnAddress": '',
+        "deliveryTime": orderBooking.currentSelectTime != -1
+            ? constants.listPickUpTime[orderBooking.currentSelectTime]
+            : '',
+        "deliveryDate": orderBooking.dateTimeDelivery.toIso8601String(),
+        "type": 1,
+        "typeOrder": orderBooking.typeOrder == TypeOrder.selfStorage
+            ? constants.selfStorageTypeOrder
+            : constants.doorToDoorTypeOrder,
+        "note": orderBooking.note,
+        "requestDetails": listProduct
+      }));
+      final url = Uri.parse('$_domain/api/v1/requests/get-storage-available');
+      bool isCustomerDelivery = orderBooking.typeOrder.index == 0
+          ? true
+          : orderBooking.isCustomerDelivery;
+      return http.post(
+        url,
+        body: jsonEncode({
+          "isPaid": orderBooking.isPaid,
+          "isCustomerDelivery": isCustomerDelivery,
+          "orderId": null,
+          "totalPrice": 0,
+          "customerId": user.userId,
+          "deliveryAddress": orderBooking.addressDelivery,
+          "returnDate": orderBooking.dateTimeReturn.toIso8601String(),
+          "returnAddress": '',
+          "deliveryTime": orderBooking.currentSelectTime != -1
+              ? constants.listPickUpTime[orderBooking.currentSelectTime]
+              : '',
+          "deliveryDate": orderBooking.dateTimeDelivery.toIso8601String(),
+          "type": 1,
+          "typeOrder": orderBooking.typeOrder == TypeOrder.selfStorage
+              ? constants.selfStorageTypeOrder
+              : constants.doorToDoorTypeOrder,
+          "note": orderBooking.note,
+          "requestDetails": listProduct
+        }),
+        headers: headers,
+      );
+    } catch (e) {
+      throw Exception(e.toString());
     }
   }
 
@@ -601,7 +657,7 @@ class ApiServices {
       return http.put(url,
           headers: headers, body: jsonEncode({"ids": listNoti}));
     } catch (e) {
-      print(e.toString());
+      log(e.toString());
       throw Exception('Update Failed');
     }
   }
@@ -617,7 +673,7 @@ class ApiServices {
       final url = Uri.parse('$_domain/api/v1/orders');
       return http.put(url, headers: headers, body: jsonEncode(listOrderStatus));
     } catch (e) {
-      print(e.toString());
+      log(e.toString());
       throw Exception('Update Failed');
     }
   }
@@ -634,7 +690,7 @@ class ApiServices {
           Uri.parse('$_domain/api/v1/requests/deliver request/$idRequest');
       return http.put(url, headers: headers);
     } catch (e) {
-      print(e.toString());
+      log(e.toString());
       throw Exception(e.toString());
     }
   }
@@ -652,7 +708,7 @@ class ApiServices {
       return http.post(url,
           body: jsonEncode({"message": message}), headers: headers);
     } catch (e) {
-      print(e.toString());
+      log(e.toString());
       throw Exception(e.toString());
     }
   }
@@ -669,7 +725,7 @@ class ApiServices {
           '$_domain/api/v1/requests/cancel request to order/${cancelOrder['id']}');
       return http.put(url, headers: headers, body: jsonEncode(cancelOrder));
     } catch (e) {
-      print(e.toString());
+      log(e.toString());
       throw Exception('Update Failed');
     }
   }

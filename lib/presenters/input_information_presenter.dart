@@ -1,5 +1,4 @@
 import 'package:rssms/models/entity/order_booking.dart';
-import 'package:rssms/models/entity/order_detail.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/models/input_information_model.dart';
 import 'package:rssms/views/input_information_view.dart';
@@ -24,38 +23,6 @@ class InputInformationPresenter {
       emailCustomer: model.controllerEmail.text,
       addressReturn: model.controllerAddress.text,
     ));
-  }
-
-  void formatDisplayInvoice(OrderBooking orderBooking) {
-    orderBooking.productOrder.keys.forEach((key) {
-      orderBooking.productOrder[key]!.forEach((e) {
-        int indexFound = model.invoiceDisplay.orderDetails
-            .indexWhere((element) => element.productId == e['id']);
-        if (indexFound != -1) {
-          model.invoiceDisplay.orderDetails[indexFound].amount++;
-        } else {
-          model.invoiceDisplay.orderDetails.add(OrderDetail(
-              id: '0',
-              productId: e['id'],
-              productName: e['name'],
-              price: e['price'],
-              amount: e['quantity'],
-              serviceImageUrl: e['imageUrl'],
-              productType: e['type'],
-              note: e['note'] ?? '',
-              images: []));
-        }
-      });
-    });
-
-    model.invoiceDisplay = model.invoiceDisplay.copyWith(
-      deliveryAddress: orderBooking.addressDelivery,
-      deliveryDate: orderBooking.dateTimeDeliveryString,
-      returnDate: orderBooking.dateTimeReturnString,
-      durationMonths: orderBooking.months,
-      isOrder: false,
-      typeOrder: orderBooking.typeOrder.index,
-    );
   }
 
   void dispose() {

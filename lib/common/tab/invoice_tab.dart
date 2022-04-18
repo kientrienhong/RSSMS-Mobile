@@ -13,10 +13,10 @@ import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/i
 import 'package:rssms/pages/customers/my_account/invoice/invoive_update/send_request_screen.dart';
 
 class InvoiceTab extends StatelessWidget {
-  final Invoice? invoice;
+  final Invoice invoice;
   final Size deviceSize;
 
-  const InvoiceTab({Key? key, required this.deviceSize, this.invoice})
+  const InvoiceTab({Key? key, required this.deviceSize, required this.invoice})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -64,7 +64,7 @@ class InvoiceTab extends StatelessWidget {
                 width: double.infinity,
                 child: Center(
                   child: QrImage(
-                    data: invoice!.requestId!,
+                    data: invoice.requestId!,
                     size: 88.0,
                     gapless: true,
                     version: 4,
@@ -75,7 +75,7 @@ class InvoiceTab extends StatelessWidget {
                 context: context,
                 height: 16,
               ),
-              if (invoice!.status != 0 && user.roleName == 'Customer')
+              if (invoice.status != 0 && user.roleName == 'Customer')
                 Center(
                   child: CustomButton(
                       height: 24,
@@ -95,7 +95,7 @@ class InvoiceTab extends StatelessWidget {
                       buttonColor: CustomColor.blue,
                       borderRadius: 6),
                 ),
-              if (invoice!.status == 0)
+              if (invoice.status == 0)
                 Center(
                   child: CustomButton(
                       height: 24,

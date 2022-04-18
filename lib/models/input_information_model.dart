@@ -1,9 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/user.dart';
 
 class InputInformationModel {
-  late Invoice invoiceDisplay;
   late TextEditingController controllerEmail;
   late TextEditingController controllerPhone;
   late TextEditingController controllerName;
@@ -21,7 +19,6 @@ class InputInformationModel {
     controllerName = TextEditingController(text: user.name);
     controllerAddress = TextEditingController(text: user.address);
     controllerNote = TextEditingController();
-    invoiceDisplay = Invoice.empty();
     focusNodeAddress = FocusNode();
     focusNodeEmail = FocusNode();
     focusNodePhone = FocusNode();

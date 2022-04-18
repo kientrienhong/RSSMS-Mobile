@@ -11,6 +11,9 @@ class Invoice with ChangeNotifier {
   late String customerPhone;
   late String deliveryAddress;
   late String addressReturn;
+  late String storageId;
+  late String storageName;
+  late String storageAddress;
   late String? orderId;
   late double totalPrice;
   late String rejectedReason;
@@ -32,34 +35,36 @@ class Invoice with ChangeNotifier {
   late List<OrderDetail> orderDetails;
   late bool? isOrder;
   late List<OrderAdditionalFee> orderAdditionalFees;
-  Invoice({
-    required this.id,
-    required this.customerName,
-    required this.customerPhone,
-    required this.orderAdditionalFees,
-    required this.deliveryAddress,
-    required this.addressReturn,
-    required this.totalPrice,
-    required this.rejectedReason,
-    required this.customerId,
-    required this.typeOrder,
-    required this.isUserDelivery,
-    this.orderId,
-    required this.deliveryDate,
-    this.typeRequest,
-    required this.deliveryTime,
-    required this.returnDate,
-    required this.returnTime,
-    required this.paymentMethod,
-    required this.durationDays,
-    required this.durationMonths,
-    required this.name,
-    this.requestId,
-    required this.status,
-    required this.isPaid,
-    required this.orderDetails,
-    required this.isOrder,
-  });
+  Invoice(
+      {required this.id,
+      required this.customerName,
+      required this.customerPhone,
+      required this.orderAdditionalFees,
+      required this.deliveryAddress,
+      required this.addressReturn,
+      required this.totalPrice,
+      required this.rejectedReason,
+      required this.customerId,
+      required this.typeOrder,
+      required this.isUserDelivery,
+      this.orderId,
+      required this.deliveryDate,
+      this.typeRequest,
+      required this.deliveryTime,
+      required this.returnDate,
+      required this.returnTime,
+      required this.paymentMethod,
+      required this.durationDays,
+      required this.durationMonths,
+      required this.name,
+      this.requestId,
+      required this.status,
+      required this.isPaid,
+      required this.orderDetails,
+      required this.isOrder,
+      required this.storageAddress,
+      required this.storageId,
+      required this.storageName});
 
   Invoice.empty() {
     id = '';
@@ -88,37 +93,42 @@ class Invoice with ChangeNotifier {
     orderDetails = [];
     isOrder = false;
     typeRequest = -1;
+    storageId = '';
+    storageName = '';
+    storageAddress = '';
   }
 
-  Invoice copyWith({
-    String? id,
-    String? customerName,
-    String? customerPhone,
-    String? deliveryAddress,
-    String? addressReturn,
-    double? totalPrice,
-    String? rejectedReason,
-    int? typeOrder,
-    bool? isUserDelivery,
-    String? deliveryDate,
-    String? deliveryTime,
-    List<OrderAdditionalFee>? orderAdditionalFees,
-    String? returnDate,
-    String? returnTime,
-    int? typeRequest,
-    int? paymentMethod,
-    int? durationDays,
-    String? orderId,
-    int? durationMonths,
-    String? name,
-    String? customerId,
-    String? requestId,
-    int? status,
-    bool? isPaid,
-    List<OrderDetail>? orderDetails,
-    List<Map<String, dynamic>>? listRequests,
-    bool? isOrder,
-  }) {
+  Invoice copyWith(
+      {String? id,
+      String? customerName,
+      String? customerPhone,
+      String? deliveryAddress,
+      String? addressReturn,
+      double? totalPrice,
+      String? rejectedReason,
+      int? typeOrder,
+      bool? isUserDelivery,
+      String? deliveryDate,
+      String? deliveryTime,
+      List<OrderAdditionalFee>? orderAdditionalFees,
+      String? returnDate,
+      String? returnTime,
+      int? typeRequest,
+      int? paymentMethod,
+      int? durationDays,
+      String? orderId,
+      int? durationMonths,
+      String? name,
+      String? customerId,
+      String? requestId,
+      int? status,
+      bool? isPaid,
+      List<OrderDetail>? orderDetails,
+      List<Map<String, dynamic>>? listRequests,
+      bool? isOrder,
+      String? storageName,
+      String? storageId,
+      String? storageAddress}) {
     return Invoice(
       isOrder: isOrder ?? this.isOrder,
       id: id ?? this.id,
@@ -146,6 +156,9 @@ class Invoice with ChangeNotifier {
       status: status ?? this.status,
       isPaid: isPaid ?? this.isPaid,
       orderDetails: orderDetails ?? this.orderDetails,
+      storageName: storageName ?? this.storageName,
+      storageId: storageId ?? this.storageId,
+      storageAddress: storageAddress ?? this.storageAddress,
     );
   }
 
@@ -198,6 +211,9 @@ class Invoice with ChangeNotifier {
       customerPhone: map['customerPhone'] ?? '',
       deliveryAddress: map['deliveryAddress'] ?? '',
       orderId: map['id'] ?? '',
+      storageAddress: map['storageAddress'] ?? '',
+      storageId: map['storageId'] ?? '',
+      storageName: map['storageName'] ?? '',
       isOrder: true,
       addressReturn: map['addressReturn'] ?? '',
       totalPrice: map['totalPrice']?.toDouble() ?? 0,
@@ -239,6 +255,9 @@ class Invoice with ChangeNotifier {
       rejectedReason: map['rejectedReason'] ?? '',
       orderAdditionalFees: [],
       orderId: map['orderId'] ?? '',
+      storageAddress: map['storageAddress'] ?? '',
+      storageId: map['storageId'] ?? '',
+      storageName: map['storageName'] ?? '',
       typeOrder: map['typeOrder']?.toInt() ?? 0,
       isUserDelivery: map['isUserDelivery'] ?? false,
       deliveryDate: map['deliveryDate'] ?? '',
@@ -285,6 +304,9 @@ class Invoice with ChangeNotifier {
     isOrder = invoice.isOrder;
     customerId = invoice.customerId;
     orderAdditionalFees = invoice.orderAdditionalFees;
+    storageAddress = invoice.storageAddress;
+    storageId = invoice.storageId;
+    storageName = invoice.storageName;
     notifyListeners();
   }
 

@@ -12,6 +12,7 @@ class OrderBooking with ChangeNotifier {
   late String dateTimeReturnString;
   late String nameCustomer;
   late String addressDelivery;
+  late String storageId;
   late String phoneCustomer;
   late String emailCustomer;
   late TypeOrder typeOrder;
@@ -36,57 +37,20 @@ class OrderBooking with ChangeNotifier {
       required this.isCustomerDelivery,
       required this.isPaid,
       required this.months,
+      required this.storageId,
       required this.nameCustomer,
       required this.note,
       required this.phoneCustomer,
       required this.productOrder,
       required this.totalPrice,
       required this.typeOrder});
-
-  // OrderBooking(
-  //     {Map<String, List<dynamic>>? productOrder,
-  //     DateTime? dateTimeDelivery,
-  //     DateTime? dateTimeReturn,
-  //     String? dateTimeDeliveryString,
-  //     String? dateTimeReturnString,
-  //     TypeOrder? typeOrder,
-  //     int? months,
-  //     int? diffDay,
-  //     int? currentSelectTime,
-  //     bool? isCustomerDelivery,
-  //     String? nameCustomer,
-  //     String? addressDelivery,
-  //     double? totalPrice,
-  //     bool? isPaid,
-  //     String? phoneCustomer,
-  //     String? emailCustomer,
-  //     String? note}) {
-  //   typeOrder = typeOrder;
-  //   productOrder = productOrder;
-  //   dateTimeDelivery = dateTimeDelivery;
-  //   dateTimeReturn = dateTimeReturn;
-  //   dateTimeDeliveryString = dateTimeDeliveryString;
-  //   dateTimeReturnString = dateTimeReturnString;
-  //   months = months;
-  //   diffDay = diffDay;
-  //   currentSelectTime = currentSelectTime;
-  //   isCustomerDelivery = isCustomerDelivery;
-  //   nameCustomer = nameCustomer;
-  //   addressDelivery = addressDelivery;
-  //   phoneCustomer = phoneCustomer;
-  //   emailCustomer = emailCustomer;
-  //   isPaid = isPaid;
-  //   totalPrice = totalPrice;
-  //   note = note;
-  //   notifyListeners();
-  // }
-
   OrderBooking.empty(TypeOrder newTypeOrder) {
     productOrder = {
       'product': [],
       'accessory': [],
       'service': [],
     };
+    storageId = '';
     typeOrder = newTypeOrder;
     dateTimeDeliveryString = '';
     dateTimeReturnString = '';
@@ -125,10 +89,12 @@ class OrderBooking with ChangeNotifier {
       String? phoneCustomer,
       double? totalPrice,
       String? emailCustomer,
+      String? storageId,
       String? note,
       bool? isPaid}) {
     return OrderBooking(
       productOrder: productOrder ?? this.productOrder,
+      storageId: storageId ?? this.storageId,
       dateTimeDelivery: dateTimeDelivery ?? this.dateTimeDelivery,
       dateTimeReturn: dateTimeReturn ?? this.dateTimeReturn,
       months: months ?? this.months,
@@ -160,6 +126,7 @@ class OrderBooking with ChangeNotifier {
         invoice.returnDate.substring(0, invoice.returnDate.indexOf("T")));
     return OrderBooking(
       productOrder: productOrder,
+      storageId: invoice.storageId,
       dateTimeDelivery: DateTime.parse(invoice.returnDate),
       dateTimeReturn: returnDateTimeNew,
       months: durationMonth,

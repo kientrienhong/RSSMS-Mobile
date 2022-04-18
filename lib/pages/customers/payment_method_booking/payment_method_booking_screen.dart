@@ -14,6 +14,7 @@ import 'package:rssms/models/entity/order_booking.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/models/payment_method_booking_screen_model.dart';
 import 'package:rssms/pages/customers/cart/cart_screen.dart';
+import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/invoice_product_widget.dart';
 import 'package:rssms/pages/customers/my_account/my_account.dart';
 import 'package:rssms/pages/delivery_staff/notifcation/notification_delivery.dart';
 import 'package:rssms/presenters/payment_method_booking_screen_presenter.dart';
@@ -43,6 +44,7 @@ class _PaymentMethodBookingScreenState extends State<PaymentMethodBookingScreen>
     _presenter = PaymentMethodBookingScreenPresenter();
     _model = _presenter.model;
     _presenter.view = this;
+    _presenter.view.formatDataDisplayInvoice();
   }
 
   @override
@@ -148,6 +150,14 @@ class _PaymentMethodBookingScreenState extends State<PaymentMethodBookingScreen>
   }
 
   @override
+  void formatDataDisplayInvoice() {
+    OrderBooking orderBooking =
+        Provider.of<OrderBooking>(context, listen: false);
+
+    _presenter.formatDisplayInvoice(orderBooking);
+  }
+
+  @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
     return Scaffold(
@@ -178,6 +188,22 @@ class _PaymentMethodBookingScreenState extends State<PaymentMethodBookingScreen>
               CustomSizedBox(
                 context: context,
                 height: 16,
+              ),
+              CustomText(
+                  text: 'Thông tin chi tiết đơn hàng',
+                  color: CustomColor.blue,
+                  context: context,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20),
+              CustomSizedBox(
+                context: context,
+                height: 24,
+              ),
+              InvoiceProductWidget(
+                  deviceSize: deviceSize, invoice: _model.invoiceDisplay),
+              CustomSizedBox(
+                context: context,
+                height: 24,
               ),
               UIUtils.buildErrorUI(error: _model.error, context: context),
               SizedBox(

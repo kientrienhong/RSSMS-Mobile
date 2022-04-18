@@ -7,17 +7,13 @@ import 'package:rssms/common/custom_input_with_hint.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/helpers/validator.dart';
-import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/order_booking.dart';
-import 'package:rssms/models/entity/order_detail.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/models/input_information_model.dart';
+import 'package:rssms/pages/customers/choice_storage/choice_storage_screen.dart';
 import 'package:rssms/pages/customers/input_information_booking/widgets/input_form_door_to_door.dart';
-import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/invoice_product_widget.dart';
-import 'package:rssms/pages/customers/payment_method_booking/payment_method_booking_screen.dart';
 import 'package:rssms/presenters/input_information_presenter.dart';
 import 'package:rssms/views/input_information_view.dart';
-import '../../../constants/constants.dart' as constants;
 
 Widget buildTitle(String name, BuildContext context) {
   return Row(
@@ -86,10 +82,6 @@ class _HandleInputState extends State<HandleInput>
 
   late InputInformationPresenter _presenter;
   late InputInformationModel _model;
-  final _focusNodeEmail = FocusNode();
-  final _focusNodePhone = FocusNode();
-  final _focusNodeName = FocusNode();
-  final _focusNodeAddress = FocusNode();
 
   @override
   void initState() {
@@ -98,15 +90,6 @@ class _HandleInputState extends State<HandleInput>
     _presenter = InputInformationPresenter(users);
     _model = _presenter.model;
     _presenter.view = this;
-    _presenter.view.formatDataDisplayInvoice();
-  }
-
-  @override
-  void formatDataDisplayInvoice() {
-    OrderBooking orderBooking =
-        Provider.of<OrderBooking>(context, listen: false);
-
-    _presenter.formatDisplayInvoice(orderBooking);
   }
 
   @override
@@ -117,10 +100,8 @@ class _HandleInputState extends State<HandleInput>
 
       _presenter.onPressContinue(orderBooking, widget.isSelfStorageOrder);
 
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => const PaymentMethodBookingScreen()));
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const ChoiceStorageScreen()));
     }
   }
 
@@ -140,11 +121,11 @@ class _HandleInputState extends State<HandleInput>
           CustomOutLineInputWithHint(
             controller: _model.controllerName,
             isDisable: false,
-            focusNode: _focusNodeName,
+            focusNode: _model.focusNodeName,
             deviceSize: deviceSize,
             hintText: 'Tên của bạn',
             validator: Validator.checkFullname,
-            nextNode: _focusNodePhone,
+            nextNode: _model.focusNodePhone,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -154,11 +135,11 @@ class _HandleInputState extends State<HandleInput>
                 child: CustomOutLineInputWithHint(
                   controller: _model.controllerPhone,
                   isDisable: false,
-                  focusNode: _focusNodePhone,
+                  focusNode: _model.focusNodePhone,
                   deviceSize: deviceSize,
                   validator: Validator.checkPhoneNumber,
                   hintText: 'Số điện thoại',
-                  nextNode: _focusNodeEmail,
+                  nextNode: _model.focusNodeEmail,
                 ),
               ),
               SizedBox(
@@ -166,38 +147,22 @@ class _HandleInputState extends State<HandleInput>
                 child: CustomOutLineInputWithHint(
                   controller: _model.controllerEmail,
                   isDisable: false,
-                  focusNode: _focusNodeEmail,
+                  focusNode: _model.focusNodeEmail,
                   deviceSize: deviceSize,
                   hintText: 'Email',
                   validator: Validator.checkEmail,
-                  nextNode: _focusNodeAddress,
+                  nextNode: _model.focusNodeAddress,
                 ),
               ),
             ],
           ),
           InputFormDoorToDoor(
             controllerAddress: _model.controllerAddress,
-            focusNodeAddress: _focusNodeAddress,
+            focusNodeAddress: _model.focusNodeAddress,
           ),
           CustomSizedBox(
             context: context,
             height: 8,
-          ),
-          CustomText(
-              text: 'Thông tin chi tiết đơn hàng',
-              color: CustomColor.blue,
-              context: context,
-              fontWeight: FontWeight.bold,
-              fontSize: 20),
-          CustomSizedBox(
-            context: context,
-            height: 24,
-          ),
-          InvoiceProductWidget(
-              deviceSize: deviceSize, invoice: _model.invoiceDisplay),
-          CustomSizedBox(
-            context: context,
-            height: 24,
           ),
           SizedBox(
             width: double.infinity,

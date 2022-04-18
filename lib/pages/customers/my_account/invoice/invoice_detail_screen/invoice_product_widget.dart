@@ -11,7 +11,7 @@ import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/p
 import 'package:rssms/constants/constants.dart' as constants;
 
 class InvoiceProductWidget extends StatelessWidget {
-  Invoice? invoice;
+  final Invoice invoice;
   final Size deviceSize;
   final oCcy = NumberFormat("#,##0", "en_US");
 
@@ -32,7 +32,7 @@ class InvoiceProductWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<OrderDetail> listTemp = invoice!.orderDetails;
+    List<OrderDetail> listTemp = invoice.orderDetails;
     List<OrderDetail> listProduct = listTemp
         .where((element) =>
             element.productType == constants.typeProduct.handy.index ||
@@ -58,8 +58,8 @@ class InvoiceProductWidget extends StatelessWidget {
     listPackaging.forEach((element) {
       totalPackaging += element.amount * element.price;
     });
-    DateTime deliveryDate = DateTime.parse(invoice!.deliveryDate);
-    DateTime returnDate = DateTime.parse(invoice!.returnDate);
+    DateTime deliveryDate = DateTime.parse(invoice.deliveryDate);
+    DateTime returnDate = DateTime.parse(invoice.returnDate);
     String takingAdditionalDescription = '';
     double takingAdditionalFee = 0;
     String returningAdditionalDescription = '';
@@ -67,7 +67,7 @@ class InvoiceProductWidget extends StatelessWidget {
     String composationDescription = '';
     double composationFee = 0;
 
-    invoice!.orderAdditionalFees.forEach((e) {
+    invoice.orderAdditionalFees.forEach((e) {
       if (e.type == constants.ADDITION_FEE_TYPE.compensationFee.index) {
         composationDescription = e.description;
         composationFee = e.price;
@@ -92,7 +92,7 @@ class InvoiceProductWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CustomText(
-                text: invoice!.typeOrder == constants.selfStorageTypeOrder
+                text: invoice.typeOrder == constants.selfStorageTypeOrder
                     ? "Kho"
                     : "Dịch vụ",
                 color: CustomColor.blue,
@@ -161,7 +161,7 @@ class InvoiceProductWidget extends StatelessWidget {
               context: context,
               height: 14,
             ),
-            if (invoice!.typeOrder == 0)
+            if (invoice.typeOrder == 0)
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -172,14 +172,14 @@ class InvoiceProductWidget extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                       fontSize: 16),
                   CustomText(
-                      text: "x" + invoice!.durationMonths.toString(),
+                      text: "x" + invoice.durationMonths.toString(),
                       color: Colors.black,
                       context: context,
                       fontWeight: FontWeight.bold,
                       fontSize: 16),
                 ],
               ),
-            if (invoice!.typeOrder == 1)
+            if (invoice.typeOrder == 1)
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -217,7 +217,7 @@ class InvoiceProductWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CustomText(
-                    text: invoice!.typeOrder == constants.selfStorageTypeOrder
+                    text: invoice.typeOrder == constants.selfStorageTypeOrder
                         ? "Tổng tiền thuê kho"
                         : "Tổng tiền thuê dịch vụ",
                     color: Colors.black,
@@ -225,13 +225,13 @@ class InvoiceProductWidget extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     fontSize: 16),
                 CustomText(
-                    text: invoice!.typeOrder == TypeOrder.doorToDoor.index
+                    text: invoice.typeOrder == TypeOrder.doorToDoor.index
                         ? oCcy.format(totalProduct *
                                 (returnDate.difference(deliveryDate).inDays /
                                         30)
                                     .ceil()) +
                             " đ"
-                        : oCcy.format(totalProduct * invoice!.durationMonths) +
+                        : oCcy.format(totalProduct * invoice.durationMonths) +
                             " đ",
                     color: CustomColor.blue,
                     context: context,
@@ -374,7 +374,7 @@ class InvoiceProductWidget extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     fontSize: 19),
                 CustomText(
-                    text: invoice!.typeOrder == TypeOrder.doorToDoor.index
+                    text: invoice.typeOrder == TypeOrder.doorToDoor.index
                         ? oCcy.format(totalProduct *
                                     (returnDate
                                                 .difference(deliveryDate)
@@ -385,7 +385,7 @@ class InvoiceProductWidget extends StatelessWidget {
                                 totalPackaging +
                                 takingAdditionalFee) +
                             " đ"
-                        : oCcy.format(totalProduct * invoice!.durationMonths +
+                        : oCcy.format(totalProduct * invoice.durationMonths +
                                 totalAccessory +
                                 totalPackaging +
                                 takingAdditionalFee) +
