@@ -137,17 +137,6 @@ const Map<String, String> invoiceIcons = {
   "warehose": "assets/images/warehouse1.png"
 };
 
-const List<Map<String, dynamic>> listAddressChoices = [
-  {'name': 'Giống địa chỉ lấy đồ đạc', 'value': SelectDistrict.same},
-  {'name': 'Khác địa chỉ lấy đồ đạc', 'value': SelectDistrict.different},
-  {'name': 'Chưa xác định (Bổ sung sau)', 'value': SelectDistrict.notYet},
-];
-
-const List<Map<String, dynamic>> listAddressPackagingChoices = [
-  {'name': 'Giống địa chỉ người thuê', 'value': SelectDistrict.same},
-  {'name': 'Khác địa chỉ người thuê', 'value': SelectDistrict.different},
-];
-
 const List<Map<String, dynamic>> listPaymentMethodChoices = [
   {'name': 'Thanh toán tiền mặt', 'value': PAYMENT_METHOD.cash},
   {'name': 'Thánh toán thông qua paypal', 'value': PAYMENT_METHOD.paypal},

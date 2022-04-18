@@ -4,16 +4,12 @@ import 'package:rssms/helpers/validator.dart';
 
 class InputFormDoorToDoor extends StatefulWidget {
   TextEditingController controllerAddress;
-  TextEditingController controllerFloor;
   FocusNode focusNodeAddress;
-  FocusNode focusNodeFloor;
 
   InputFormDoorToDoor({
     Key? key,
     required this.controllerAddress,
-    required this.controllerFloor,
     required this.focusNodeAddress,
-    required this.focusNodeFloor,
   }) : super(key: key);
 
   @override
@@ -35,7 +31,6 @@ class _InputFormDoorToDoorState extends State<InputFormDoorToDoor> {
             focusNode: widget.focusNodeAddress,
             deviceSize: deviceSize,
             hintText: 'Địa chỉ',
-            nextNode: widget.focusNodeFloor,
             validator: Validator.checkAddress),
       ],
     );

@@ -113,7 +113,7 @@ class _BookingPopUpSelfStorageState extends State<BookingPopUpSelfStorage>
       sum += element['price'] * element['quantity'] as int;
     });
     if (type == 'product') {
-      sum *= orderBooking.months as int;
+      sum *= orderBooking.months;
     }
     return '${oCcy.format(sum)} VND';
   }
@@ -123,21 +123,20 @@ class _BookingPopUpSelfStorageState extends State<BookingPopUpSelfStorage>
     OrderBooking orderBooking =
         Provider.of<OrderBooking>(context, listen: false);
 
-    List listKeys = orderBooking.productOrder!.keys.toList();
+    List listKeys = orderBooking.productOrder.keys.toList();
 
     listKeys.forEach((element) {
       if (element == 'product') {
-        orderBooking.productOrder![element]!.forEach((ele) {
+        orderBooking.productOrder[element]!.forEach((ele) {
           sum += ele['price'] * ele['quantity'] * orderBooking.months as int;
         });
       } else {
-        orderBooking.productOrder![element]!.forEach((ele) {
+        orderBooking.productOrder[element]!.forEach((ele) {
           sum += ele['price'] * ele['quantity'] as int;
         });
       }
     });
     return sum;
-    // return '${oCcy.format(sum)} VND';
   }
 
   _selectDateDelivery(BuildContext context) async {
@@ -155,7 +154,7 @@ class _BookingPopUpSelfStorageState extends State<BookingPopUpSelfStorage>
         _model.dateDeliveryController.text =
             picked.toIso8601String().split("T")[0];
         _model.dateReturn = DateTime(
-            picked.year, picked.month + orderBooking.months as int, picked.day);
+            picked.year, picked.month + orderBooking.months, picked.day);
         orderBooking.setOrderBooking(
             orderBooking: orderBooking.copyWith(
                 dateTimeDelivery: picked,
@@ -351,7 +350,7 @@ class _BookingPopUpSelfStorageState extends State<BookingPopUpSelfStorage>
               buildInfo(
                   'Chi phí thuê: ',
                   totalEachPart(
-                      orderBooking.productOrder!['product']!, 'product'),
+                      orderBooking.productOrder['product']!, 'product'),
                   CustomColor.black),
               CustomSizedBox(
                 context: context,
@@ -360,7 +359,7 @@ class _BookingPopUpSelfStorageState extends State<BookingPopUpSelfStorage>
               buildInfo(
                   'Phụ kiện đóng gói: ',
                   totalEachPart(
-                      orderBooking.productOrder!['accessory']!, 'accessory'),
+                      orderBooking.productOrder['accessory']!, 'accessory'),
                   CustomColor.black),
               CustomSizedBox(
                 context: context,

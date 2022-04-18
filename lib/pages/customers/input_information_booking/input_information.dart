@@ -4,7 +4,6 @@ import 'package:rssms/common/custom_app_bar.dart';
 import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_input_with_hint.dart';
-import 'package:rssms/common/custom_radio_button.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/helpers/validator.dart';
@@ -19,8 +18,6 @@ import 'package:rssms/pages/customers/payment_method_booking/payment_method_book
 import 'package:rssms/presenters/input_information_presenter.dart';
 import 'package:rssms/views/input_information_view.dart';
 import '../../../constants/constants.dart' as constants;
-
-enum SelectDistrict { same, different, notYet }
 
 Widget buildTitle(String name, BuildContext context) {
   return Row(
@@ -90,57 +87,26 @@ class _HandleInputState extends State<HandleInput>
   late InputInformationPresenter _presenter;
   late InputInformationModel _model;
   final _focusNodeEmail = FocusNode();
-  final _focusNodeFloor = FocusNode();
   final _focusNodePhone = FocusNode();
   final _focusNodeName = FocusNode();
   final _focusNodeAddress = FocusNode();
-  final _focusNodeFloorReturn = FocusNode();
-  final _focusNodeAddressReturn = FocusNode();
-
-  SelectDistrict currentIndex = SelectDistrict.same;
-  List<int> currentIndexNoteChoice = [];
-
-  List<Widget> _buildListReceivedAddress() {
-    return constants.listAddressChoices
-        .map((e) => CustomRadioButton(
-            function: () {
-              setState(() {
-                currentIndex = e['value'];
-              });
-            },
-            text: e['name'],
-            color: currentIndex == e['value']
-                ? CustomColor.blue
-                : CustomColor.white,
-            state: currentIndex,
-            value: e['value']))
-        .toList();
-  }
-
-  List<Widget> _buildListPackagingAddress() {
-    return constants.listAddressPackagingChoices
-        .map((e) => CustomRadioButton(
-            function: () {
-              setState(() {
-                currentIndex = e['value'];
-              });
-            },
-            text: e['name'],
-            color: currentIndex == e['value']
-                ? CustomColor.blue
-                : CustomColor.white,
-            state: currentIndex,
-            value: e['value']))
-        .toList();
-  }
 
   @override
   void initState() {
     super.initState();
     Users users = Provider.of<Users>(context, listen: false);
     _presenter = InputInformationPresenter(users);
-    _model = _presenter.model!;
+    _model = _presenter.model;
     _presenter.view = this;
+    _presenter.view.formatDataDisplayInvoice();
+  }
+
+  @override
+  void formatDataDisplayInvoice() {
+    OrderBooking orderBooking =
+        Provider.of<OrderBooking>(context, listen: false);
+
+    _presenter.formatDisplayInvoice(orderBooking);
   }
 
   @override
@@ -149,111 +115,13 @@ class _HandleInputState extends State<HandleInput>
       OrderBooking orderBooking =
           Provider.of<OrderBooking>(context, listen: false);
 
-      if (currentIndex == SelectDistrict.different) {
-        orderBooking.setOrderBooking(
-            orderBooking: orderBooking.copyWith(
-                typeOrder: widget.isSelfStorageOrder
-                    ? TypeOrder.selfStorage
-                    : TypeOrder.doorToDoor,
-                selectDistrict: currentIndex,
-                addressDelivery: _model.controllerAddress.text,
-                nameCustomer: _model.controllerName.text,
-                phoneCustomer: _model.controllerPhone.text,
-                note: _model.controllerNote.text,
-                floorAddressDelivery: _model.controllerFloor.text,
-                emailCustomer: _model.controllerEmail.text,
-                addressReturn: _model.controllerAddress.text,
-                floorAddressReturn: _model.controllerFloorReturn.text));
-      } else if (currentIndex == SelectDistrict.same) {
-        orderBooking.setOrderBooking(
-            orderBooking: orderBooking.copyWith(
-                typeOrder: widget.isSelfStorageOrder
-                    ? TypeOrder.selfStorage
-                    : TypeOrder.doorToDoor,
-                selectDistrict: currentIndex,
-                note: _model.controllerNote.text,
-                addressDelivery: _model.controllerAddress.text,
-                nameCustomer: _model.controllerName.text,
-                phoneCustomer: _model.controllerPhone.text,
-                floorAddressDelivery: _model.controllerFloor.text,
-                emailCustomer: _model.controllerEmail.text,
-                addressReturn: _model.controllerAddress.text,
-                floorAddressReturn: _model.controllerFloor.text));
-      } else {
-        orderBooking.setOrderBooking(
-            orderBooking: orderBooking.copyWith(
-                typeOrder: widget.isSelfStorageOrder
-                    ? TypeOrder.selfStorage
-                    : TypeOrder.doorToDoor,
-                selectDistrict: currentIndex,
-                note: _model.controllerNote.text,
-                addressDelivery: _model.controllerAddress.text,
-                nameCustomer: _model.controllerName.text,
-                phoneCustomer: _model.controllerPhone.text,
-                floorAddressDelivery: _model.controllerFloor.text,
-                emailCustomer: _model.controllerEmail.text,
-                addressReturn: '',
-                floorAddressReturn: '0'));
-      }
+      _presenter.onPressContinue(orderBooking, widget.isSelfStorageOrder);
 
       Navigator.push(
           context,
           MaterialPageRoute(
               builder: (context) => const PaymentMethodBookingScreen()));
     }
-  }
-
-  @override
-  void onTapChoice(int index, int indexFound) {
-    if (indexFound == -1) {
-      setState(() {
-        currentIndexNoteChoice.add(index);
-      });
-    } else {
-      setState(() {
-        currentIndexNoteChoice.remove(index);
-      });
-    }
-  }
-
-  Invoice formatInvoice() {
-    OrderBooking orderBooking =
-        Provider.of<OrderBooking>(context, listen: false);
-
-    Invoice invoice = Invoice.empty();
-
-    orderBooking.productOrder.keys.forEach((key) {
-      orderBooking.productOrder[key].forEach((e) {
-        int indexFound = invoice.orderDetails
-            .indexWhere((element) => element.productId == e['id']);
-        if (indexFound != -1) {
-          invoice.orderDetails[indexFound].amount++;
-        } else {
-          invoice.orderDetails.add(OrderDetail(
-              id: '0',
-              productId: e['id'],
-              productName: e['name'],
-              price: e['price'],
-              amount: e['quantity'],
-              serviceImageUrl: e['imageUrl'],
-              productType: e['type'],
-              note: e['note'] ?? '',
-              images: []));
-        }
-      });
-    });
-
-    invoice = invoice.copyWith(
-      addressReturn: orderBooking.addressReturn,
-      deliveryAddress: orderBooking.addressDelivery,
-      deliveryDate: orderBooking.dateTimeDeliveryString,
-      returnDate: orderBooking.dateTimeReturnString,
-      durationMonths: orderBooking.months,
-      isOrder: false,
-      typeOrder: orderBooking.typeOrder.index,
-    );
-
-    return invoice;
   }
 
   @override
@@ -308,10 +176,9 @@ class _HandleInputState extends State<HandleInput>
             ],
           ),
           InputFormDoorToDoor(
-              controllerAddress: _model.controllerAddress,
-              controllerFloor: _model.controllerFloor,
-              focusNodeAddress: _focusNodeAddress,
-              focusNodeFloor: _focusNodeFloor),
+            controllerAddress: _model.controllerAddress,
+            focusNodeAddress: _focusNodeAddress,
+          ),
           CustomSizedBox(
             context: context,
             height: 8,
@@ -327,7 +194,7 @@ class _HandleInputState extends State<HandleInput>
             height: 24,
           ),
           InvoiceProductWidget(
-              deviceSize: deviceSize, invoice: formatInvoice()),
+              deviceSize: deviceSize, invoice: _model.invoiceDisplay),
           CustomSizedBox(
             context: context,
             height: 24,

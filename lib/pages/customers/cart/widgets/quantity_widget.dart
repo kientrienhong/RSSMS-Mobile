@@ -40,7 +40,7 @@ class _QuantityWidgetState extends State<QuantityWidget> {
         Provider.of<OrderBooking>(context, listen: false);
 
     List<dynamic> listCurrentProduct = orderBooking
-        .productOrder[widget.productType]
+        .productOrder[widget.productType]!
         .where((e) => e['id'] == widget.product!.id)
         .toList();
 

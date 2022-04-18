@@ -17,10 +17,10 @@ class PaymentMethodBookingScreenPresenter {
       view.updateLoading();
       List<Map<String, dynamic>> listProduct = [];
 
-      List listKeys = orderBooking.productOrder!.keys.toList();
+      List listKeys = orderBooking.productOrder.keys.toList();
 
       for (var element in listKeys) {
-        for (var ele in orderBooking.productOrder![element]!) {
+        for (var ele in orderBooking.productOrder[element]!) {
           listProduct.add({
             "serviceId": ele['id'],
             "price": ele['price'],

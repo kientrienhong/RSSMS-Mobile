@@ -1,109 +1,108 @@
 import 'package:flutter/cupertino.dart';
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/user.dart';
-import 'package:rssms/pages/customers/input_information_booking/input_information.dart';
 
 enum TypeOrder { selfStorage, doorToDoor }
 
 class OrderBooking with ChangeNotifier {
-  Map<String, List<dynamic>>? _productOrder;
-  DateTime? _dateTimeDelivery;
-  DateTime? _dateTimeReturn;
-  String? _dateTimeDeliveryString;
-  String? _dateTimeReturnString;
-  String? _nameCustomer;
-  String? _addressDelivery;
-  String? _addressReturn;
-  String? _floorAddressDelivery;
-  String? _floorAddressReturn;
-  String? _phoneCustomer;
-  String? _emailCustomer;
-  SelectDistrict? _selectDistrict;
-  TypeOrder? _typeOrder;
-  bool? _isPaid;
-  double? _totalPrice;
-  late String? _note;
+  late Map<String, List<dynamic>> productOrder;
+  late DateTime dateTimeDelivery;
+  late DateTime dateTimeReturn;
+  late String dateTimeDeliveryString;
+  late String dateTimeReturnString;
+  late String nameCustomer;
+  late String addressDelivery;
+  late String phoneCustomer;
+  late String emailCustomer;
+  late TypeOrder typeOrder;
+  late bool isPaid;
+  late double totalPrice;
+  late String note;
 
-  get note => _note;
-
-  set note(value) => _note = value;
-  int? _months;
-  int? _diffDay;
-  int? _currentSelectTime;
-  bool? _isCustomerDelivery;
+  late int months;
+  late int diffDay;
+  late int currentSelectTime;
+  late bool isCustomerDelivery;
 
   OrderBooking(
-      {Map<String, List<dynamic>>? productOrder,
-      DateTime? dateTimeDelivery,
-      DateTime? dateTimeReturn,
-      String? dateTimeDeliveryString,
-      String? dateTimeReturnString,
-      TypeOrder? typeOrder,
-      int? months,
-      int? diffDay,
-      int? currentSelectTime,
-      bool? isCustomerDelivery,
-      String? nameCustomer,
-      String? addressDelivery,
-      String? addressReturn,
-      double? totalPrice,
-      bool? isPaid,
-      String? floorAddressDelivery,
-      String? floorAddressReturn,
-      String? phoneCustomer,
-      String? emailCustomer,
-      SelectDistrict? selectDistrict,
-      String? note}) {
-    _typeOrder = typeOrder;
-    _productOrder = productOrder;
-    _dateTimeDelivery = dateTimeDelivery;
-    _dateTimeReturn = dateTimeReturn;
-    _dateTimeDeliveryString = dateTimeDeliveryString;
-    _dateTimeReturnString = dateTimeReturnString;
-    _months = months;
-    _diffDay = diffDay;
-    _currentSelectTime = currentSelectTime;
-    _isCustomerDelivery = isCustomerDelivery;
-    _nameCustomer = nameCustomer;
-    _addressDelivery = addressDelivery;
-    _addressReturn = addressReturn;
-    _floorAddressDelivery = floorAddressDelivery;
-    _floorAddressReturn = floorAddressReturn;
-    _phoneCustomer = phoneCustomer;
-    _emailCustomer = emailCustomer;
-    _selectDistrict = selectDistrict;
-    _isPaid = isPaid;
-    _totalPrice = totalPrice;
-    _note = note;
-    notifyListeners();
-  }
+      {required this.addressDelivery,
+      required this.currentSelectTime,
+      required this.dateTimeDelivery,
+      required this.dateTimeDeliveryString,
+      required this.dateTimeReturn,
+      required this.dateTimeReturnString,
+      required this.diffDay,
+      required this.emailCustomer,
+      required this.isCustomerDelivery,
+      required this.isPaid,
+      required this.months,
+      required this.nameCustomer,
+      required this.note,
+      required this.phoneCustomer,
+      required this.productOrder,
+      required this.totalPrice,
+      required this.typeOrder});
 
-  OrderBooking.empty(TypeOrder typeOrder) {
-    _productOrder = {
+  // OrderBooking(
+  //     {Map<String, List<dynamic>>? productOrder,
+  //     DateTime? dateTimeDelivery,
+  //     DateTime? dateTimeReturn,
+  //     String? dateTimeDeliveryString,
+  //     String? dateTimeReturnString,
+  //     TypeOrder? typeOrder,
+  //     int? months,
+  //     int? diffDay,
+  //     int? currentSelectTime,
+  //     bool? isCustomerDelivery,
+  //     String? nameCustomer,
+  //     String? addressDelivery,
+  //     double? totalPrice,
+  //     bool? isPaid,
+  //     String? phoneCustomer,
+  //     String? emailCustomer,
+  //     String? note}) {
+  //   typeOrder = typeOrder;
+  //   productOrder = productOrder;
+  //   dateTimeDelivery = dateTimeDelivery;
+  //   dateTimeReturn = dateTimeReturn;
+  //   dateTimeDeliveryString = dateTimeDeliveryString;
+  //   dateTimeReturnString = dateTimeReturnString;
+  //   months = months;
+  //   diffDay = diffDay;
+  //   currentSelectTime = currentSelectTime;
+  //   isCustomerDelivery = isCustomerDelivery;
+  //   nameCustomer = nameCustomer;
+  //   addressDelivery = addressDelivery;
+  //   phoneCustomer = phoneCustomer;
+  //   emailCustomer = emailCustomer;
+  //   isPaid = isPaid;
+  //   totalPrice = totalPrice;
+  //   note = note;
+  //   notifyListeners();
+  // }
+
+  OrderBooking.empty(TypeOrder newTypeOrder) {
+    productOrder = {
       'product': [],
       'accessory': [],
       'service': [],
     };
-    _typeOrder = typeOrder;
-    _dateTimeDeliveryString = '';
-    _dateTimeReturnString = '';
-    _dateTimeDelivery = DateTime.now().add(const Duration(days: 1));
-    _dateTimeReturn = DateTime.now().add(const Duration(days: 1));
-    _currentSelectTime = -1;
-    _isCustomerDelivery = false;
-    _diffDay = 0;
-    _months = (_diffDay! / 30).ceil();
-    _nameCustomer = '';
-    _addressDelivery = '';
-    _addressReturn = '';
-    _floorAddressDelivery = '';
-    _floorAddressReturn = '';
-    _phoneCustomer = '';
-    _emailCustomer = '';
-    _selectDistrict = SelectDistrict.same;
-    _isPaid = false;
-    _totalPrice = 0;
-    _note = '';
+    typeOrder = newTypeOrder;
+    dateTimeDeliveryString = '';
+    dateTimeReturnString = '';
+    dateTimeDelivery = DateTime.now().add(const Duration(days: 1));
+    dateTimeReturn = DateTime.now().add(const Duration(days: 1));
+    currentSelectTime = -1;
+    isCustomerDelivery = false;
+    diffDay = 0;
+    months = (diffDay / 30).ceil();
+    nameCustomer = '';
+    addressDelivery = '';
+    phoneCustomer = '';
+    emailCustomer = '';
+    isPaid = false;
+    totalPrice = 0;
+    note = '';
     notifyListeners();
   }
 
@@ -127,31 +126,27 @@ class OrderBooking with ChangeNotifier {
       double? totalPrice,
       String? emailCustomer,
       String? note,
-      bool? isPaid,
-      SelectDistrict? selectDistrict}) {
+      bool? isPaid}) {
     return OrderBooking(
-        productOrder: productOrder ?? _productOrder,
-        dateTimeDelivery: dateTimeDelivery ?? _dateTimeDelivery,
-        dateTimeReturn: dateTimeReturn ?? _dateTimeReturn,
-        months: months ?? _months,
-        diffDay: diffDay ?? _diffDay,
-        note: note ?? _note,
-        typeOrder: typeOrder ?? _typeOrder,
-        isPaid: isPaid ?? _isPaid,
-        currentSelectTime: currentSelectTime ?? _currentSelectTime,
-        isCustomerDelivery: isCustomerDelivery ?? _isCustomerDelivery,
-        dateTimeDeliveryString:
-            dateTimeDeliveryString ?? _dateTimeDeliveryString,
-        dateTimeReturnString: dateTimeReturnString ?? _dateTimeReturnString,
-        nameCustomer: nameCustomer ?? _nameCustomer,
-        addressDelivery: addressDelivery ?? _addressDelivery,
-        addressReturn: addressReturn ?? _addressReturn,
-        floorAddressDelivery: floorAddressDelivery ?? _floorAddressDelivery,
-        floorAddressReturn: floorAddressReturn ?? _floorAddressReturn,
-        phoneCustomer: phoneCustomer ?? _phoneCustomer,
-        emailCustomer: emailCustomer ?? _emailCustomer,
-        totalPrice: totalPrice ?? _totalPrice,
-        selectDistrict: selectDistrict ?? _selectDistrict);
+      productOrder: productOrder ?? this.productOrder,
+      dateTimeDelivery: dateTimeDelivery ?? this.dateTimeDelivery,
+      dateTimeReturn: dateTimeReturn ?? this.dateTimeReturn,
+      months: months ?? this.months,
+      diffDay: diffDay ?? this.diffDay,
+      note: note ?? this.note,
+      typeOrder: typeOrder ?? this.typeOrder,
+      isPaid: isPaid ?? this.isPaid,
+      currentSelectTime: currentSelectTime ?? this.currentSelectTime,
+      isCustomerDelivery: isCustomerDelivery ?? this.isCustomerDelivery,
+      dateTimeDeliveryString:
+          dateTimeDeliveryString ?? this.dateTimeDeliveryString,
+      dateTimeReturnString: dateTimeReturnString ?? this.dateTimeReturnString,
+      nameCustomer: nameCustomer ?? this.nameCustomer,
+      addressDelivery: addressDelivery ?? this.addressDelivery,
+      phoneCustomer: phoneCustomer ?? this.phoneCustomer,
+      emailCustomer: emailCustomer ?? this.emailCustomer,
+      totalPrice: totalPrice ?? this.totalPrice,
+    );
   }
 
   OrderBooking fromInvoice(
@@ -164,132 +159,45 @@ class OrderBooking with ChangeNotifier {
     DateTime returnDateOld = DateTime.parse(
         invoice.returnDate.substring(0, invoice.returnDate.indexOf("T")));
     return OrderBooking(
-        productOrder: productOrder ?? _productOrder,
-        dateTimeDelivery: DateTime.parse(invoice.returnDate),
-        dateTimeReturn: returnDateTimeNew,
-        months: durationMonth,
-        diffDay: returnDateTimeNew.difference(returnDateOld).inDays,
-        typeOrder: invoice.typeOrder == 0
-            ? TypeOrder.selfStorage
-            : TypeOrder.doorToDoor,
-        isPaid: isPaid,
-        currentSelectTime: currentSelectTime ?? _currentSelectTime,
-        isCustomerDelivery: invoice.isUserDelivery,
-        dateTimeDeliveryString: invoice.deliveryTime,
-        dateTimeReturnString: invoice.returnTime,
-        nameCustomer: invoice.customerName,
-        addressDelivery: invoice.deliveryAddress,
-        addressReturn: invoice.addressReturn,
-        floorAddressDelivery: "0",
-        floorAddressReturn: "0",
-        phoneCustomer: user.phone,
-        emailCustomer: user.email,
-        totalPrice: double.parse(totalPrice.toString()),
-        selectDistrict: SelectDistrict.same);
+      productOrder: productOrder,
+      dateTimeDelivery: DateTime.parse(invoice.returnDate),
+      dateTimeReturn: returnDateTimeNew,
+      months: durationMonth,
+      diffDay: returnDateTimeNew.difference(returnDateOld).inDays,
+      typeOrder:
+          invoice.typeOrder == 0 ? TypeOrder.selfStorage : TypeOrder.doorToDoor,
+      isPaid: isPaid,
+      note: '',
+      currentSelectTime: currentSelectTime,
+      isCustomerDelivery: invoice.isUserDelivery,
+      dateTimeDeliveryString: invoice.deliveryTime,
+      dateTimeReturnString: invoice.returnTime,
+      nameCustomer: invoice.customerName,
+      addressDelivery: invoice.deliveryAddress,
+      phoneCustomer: user.phone!,
+      emailCustomer: user.email!,
+      totalPrice: double.parse(totalPrice.toString()),
+    );
   }
 
   void setOrderBooking({required OrderBooking orderBooking}) {
-    _productOrder = orderBooking.productOrder;
-    _dateTimeDelivery = orderBooking.dateTimeDelivery;
-    _dateTimeReturn = orderBooking.dateTimeReturn;
-    _months = orderBooking.months;
-    _diffDay = orderBooking.diffDay;
-    _currentSelectTime = orderBooking.currentSelectTime;
-    _isCustomerDelivery = orderBooking.isCustomerDelivery;
-    _dateTimeDeliveryString = orderBooking.dateTimeDeliveryString;
-    _dateTimeReturnString = orderBooking.dateTimeReturnString;
-    _nameCustomer = orderBooking.nameCustomer;
-    _addressDelivery = orderBooking.addressDelivery;
-    _addressReturn = orderBooking.addressReturn;
-    _floorAddressDelivery = orderBooking.floorAddressDelivery;
-    _floorAddressReturn = orderBooking.floorAddressReturn;
-    _phoneCustomer = orderBooking.phoneCustomer;
-    _emailCustomer = orderBooking.emailCustomer;
-    _typeOrder = orderBooking.typeOrder;
-    _selectDistrict = orderBooking.selectDistrict;
-    _isPaid = orderBooking.isPaid;
-    _totalPrice = orderBooking.totalPrice;
-    _note = orderBooking.note;
+    productOrder = orderBooking.productOrder;
+    dateTimeDelivery = orderBooking.dateTimeDelivery;
+    dateTimeReturn = orderBooking.dateTimeReturn;
+    months = orderBooking.months;
+    diffDay = orderBooking.diffDay;
+    currentSelectTime = orderBooking.currentSelectTime;
+    isCustomerDelivery = orderBooking.isCustomerDelivery;
+    dateTimeDeliveryString = orderBooking.dateTimeDeliveryString;
+    dateTimeReturnString = orderBooking.dateTimeReturnString;
+    nameCustomer = orderBooking.nameCustomer;
+    addressDelivery = orderBooking.addressDelivery;
+    phoneCustomer = orderBooking.phoneCustomer;
+    emailCustomer = orderBooking.emailCustomer;
+    typeOrder = orderBooking.typeOrder;
+    isPaid = orderBooking.isPaid;
+    totalPrice = orderBooking.totalPrice;
+    note = orderBooking.note;
     notifyListeners();
   }
-
-  get totalPrice => _totalPrice;
-
-  set totalPrice(value) => _totalPrice = value;
-
-  get isPaid => _isPaid;
-
-  set isPaid(value) => _isPaid = value;
-
-  get selectDistrict => _selectDistrict;
-
-  set selectDistrict(value) => _selectDistrict = value;
-
-  get nameCustomer => _nameCustomer;
-
-  set nameCustomer(value) => _nameCustomer = value;
-
-  get addressDelivery => _addressDelivery;
-
-  set addressDelivery(value) => _addressDelivery = value;
-
-  get addressReturn => _addressReturn;
-
-  set addressReturn(value) => _addressReturn = value;
-
-  get floorAddressDelivery => _floorAddressDelivery;
-
-  set floorAddressDelivery(value) => _floorAddressDelivery = value;
-
-  get floorAddressReturn => _floorAddressReturn;
-
-  set floorAddressReturn(value) => _floorAddressReturn = value;
-
-  get phoneCustomer => _phoneCustomer;
-
-  set phoneCustomer(value) => _phoneCustomer = value;
-
-  get emailCustomer => _emailCustomer;
-
-  set emailCustomer(value) => _emailCustomer = value;
-
-  get typeOrder => _typeOrder;
-
-  set typeOrder(value) => _typeOrder = value;
-
-  get dateTimeDeliveryString => _dateTimeDeliveryString;
-
-  set dateTimeDeliveryString(value) => _dateTimeDeliveryString = value;
-
-  get dateTimeReturnString => _dateTimeReturnString;
-
-  set dateTimeReturnString(value) => _dateTimeReturnString = value;
-
-  get isCustomerDelivery => _isCustomerDelivery;
-
-  set isCustomerDelivery(value) => _isCustomerDelivery = value;
-
-  get currentSelectTime => _currentSelectTime;
-
-  set currentSelectTime(value) => _currentSelectTime = value;
-
-  get productOrder => _productOrder;
-
-  set productOrder(value) => _productOrder = value;
-
-  get dateTimeDelivery => _dateTimeDelivery;
-
-  set dateTimeDelivery(value) => _dateTimeDelivery = value;
-
-  get dateTimeReturn => _dateTimeReturn;
-
-  set dateTimeReturn(value) => _dateTimeReturn = value;
-
-  get months => _months;
-
-  set months(value) => _months = value;
-
-  get diffDay => _diffDay;
-
-  set diffDay(value) => _diffDay = value;
 }

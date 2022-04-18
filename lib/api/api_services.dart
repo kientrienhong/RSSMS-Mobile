@@ -325,7 +325,7 @@ class ApiServices {
         "customerId": user.userId,
         "deliveryAddress": orderBooking.addressDelivery,
         "returnDate": orderBooking.dateTimeReturn.toIso8601String(),
-        "returnAddress": orderBooking.addressReturn,
+        "returnAddress": '',
         "deliveryTime": orderBooking.currentSelectTime != -1
             ? constants.listPickUpTime[orderBooking.currentSelectTime]
             : '',
@@ -338,8 +338,9 @@ class ApiServices {
         "requestDetails": listProduct
       }));
       final url = Uri.parse('$_domain/api/v1/requests');
-      bool isCustomerDelivery =
-          orderBooking.typeOrder == 0 ? true : orderBooking.isCustomerDelivery;
+      bool isCustomerDelivery = orderBooking.typeOrder.index == 0
+          ? true
+          : orderBooking.isCustomerDelivery;
       return http.post(
         url,
         body: jsonEncode({
@@ -350,7 +351,7 @@ class ApiServices {
           "customerId": user.userId,
           "deliveryAddress": orderBooking.addressDelivery,
           "returnDate": orderBooking.dateTimeReturn.toIso8601String(),
-          "returnAddress": orderBooking.addressReturn,
+          "returnAddress": '',
           "deliveryTime": orderBooking.currentSelectTime != -1
               ? constants.listPickUpTime[orderBooking.currentSelectTime]
               : '',

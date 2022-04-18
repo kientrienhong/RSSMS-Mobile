@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rssms/common/custom_app_bar.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
@@ -69,33 +70,26 @@ class _DetailAreaScreenState extends State<DetailAreaScreen>
                     ),
                   ]),
             )
-          : Column(
-              children: [
-                CustomSizedBox(
-                  context: context,
-                  height: 32,
-                ),
-                CustomText(
-                  text: 'Trang danh sách không gian',
-                  color: CustomColor.black,
-                  context: context,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-                CustomSizedBox(
-                  context: context,
-                  height: 16,
-                ),
-                Expanded(
-                  child: ListView.builder(
-                      shrinkWrap: true,
-                      padding: const EdgeInsets.symmetric(horizontal: 24),
-                      itemCount: _model.listSpace.length,
-                      itemBuilder: (_, index) {
-                        return SpaceWidget(space: _model.listSpace[index]);
-                      }),
-                )
-              ],
+          : Container(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Column(
+                children: [
+                  CustomSizedBox(
+                    context: context,
+                    height: 32,
+                  ),
+                  const CustomAppBar(
+                      isHome: false, name: 'Trang danh sách không gian'),
+                  Expanded(
+                    child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: _model.listSpace.length,
+                        itemBuilder: (_, index) {
+                          return SpaceWidget(space: _model.listSpace[index]);
+                        }),
+                  )
+                ],
+              ),
             ),
     );
   }

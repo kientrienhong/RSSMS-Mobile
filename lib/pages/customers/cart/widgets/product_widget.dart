@@ -36,7 +36,7 @@ class _ProductWidgetState extends State<ProductWidget> implements ProductView {
         Provider.of<OrderBooking>(context, listen: false);
     Product tempProduct = widget.product!.copyWith();
     tempProduct = tempProduct.copyWith(quantity: tempProduct.quantity! + 1);
-    orderBooking.productOrder!['product']!.add({
+    orderBooking.productOrder['product']!.add({
       ...widget.product!.toMap(),
       'quantity': 1,
       'idOfList': '${widget.product!.id}-${tempProduct.quantity}',
@@ -57,13 +57,13 @@ class _ProductWidgetState extends State<ProductWidget> implements ProductView {
     if (tempProduct.quantity == 0) {
       return;
     }
-    final foundItem = orderBooking.productOrder!['product']!.indexWhere(
+    final foundItem = orderBooking.productOrder['product']!.indexWhere(
       (e) =>
           e['idOfList'].toString() ==
           '${widget.product!.id}-${tempProduct.quantity}',
     );
 
-    orderBooking.productOrder!['product']!.removeAt(foundItem);
+    orderBooking.productOrder['product']!.removeAt(foundItem);
 
     tempProduct = tempProduct.copyWith(quantity: tempProduct.quantity! - 1);
     setState(() {
@@ -77,16 +77,16 @@ class _ProductWidgetState extends State<ProductWidget> implements ProductView {
     String unit = widget.product!.unit == 'quantity' ? 'cái' : 'tháng';
     OrderBooking orderBooking =
         Provider.of<OrderBooking>(context, listen: false);
-    List<dynamic> listProduct = orderBooking.productOrder!['product']
+    List<dynamic> listProduct = orderBooking.productOrder['product']!
         .where((e) => e['id'] == widget.product!.id)
         .toList();
     final deviceSize = MediaQuery.of(context).size;
     SizeConfig().init(context);
     String findInitialValue(int index) {
-      final foundItem = orderBooking.productOrder!['product']!.indexWhere(
+      final foundItem = orderBooking.productOrder['product']!.indexWhere(
         (e) => e['idOfList'].toString() == '${widget.product!.id}-${index + 1}',
       );
-      return orderBooking.productOrder!['product']![foundItem]['note'];
+      return orderBooking.productOrder['product']![foundItem]['note'];
     }
 
     return AnimatedContainer(
@@ -212,12 +212,12 @@ class _ProductWidgetState extends State<ProductWidget> implements ProductView {
                   validator: (value) => Validator.notEmpty(value),
                   onChanged: (text) {
                     final foundItem =
-                        orderBooking.productOrder!['product']!.indexWhere(
+                        orderBooking.productOrder['product']!.indexWhere(
                       (e) =>
                           e['idOfList'].toString() ==
                           '${widget.product!.id}-${index + 1}',
                     );
-                    orderBooking.productOrder!['product']![foundItem]['note'] =
+                    orderBooking.productOrder['product']![foundItem]['note'] =
                         text;
                   },
                   initialValue: findInitialValue(index),

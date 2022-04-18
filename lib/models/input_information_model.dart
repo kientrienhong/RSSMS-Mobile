@@ -1,23 +1,31 @@
 import 'package:flutter/cupertino.dart';
+import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/user.dart';
 
 class InputInformationModel {
+  late Invoice invoiceDisplay;
   late TextEditingController controllerEmail;
-  late TextEditingController controllerFloor;
   late TextEditingController controllerPhone;
   late TextEditingController controllerName;
   late TextEditingController controllerAddress;
   late TextEditingController controllerNote;
-  late TextEditingController controllerFloorReturn;
-  late TextEditingController controllerAddressReturn;
+
+  late FocusNode focusNodeEmail;
+  late FocusNode focusNodePhone;
+  late FocusNode focusNodeName;
+  late FocusNode focusNodeAddress;
+  late FocusNode focusNodeNote;
   InputInformationModel(Users user) {
     controllerEmail = TextEditingController(text: user.email);
-    controllerFloor = TextEditingController();
     controllerPhone = TextEditingController(text: user.phone);
     controllerName = TextEditingController(text: user.name);
     controllerAddress = TextEditingController(text: user.address);
     controllerNote = TextEditingController();
-    controllerFloorReturn = TextEditingController();
-    controllerAddressReturn = TextEditingController();
+    invoiceDisplay = Invoice.empty();
+    focusNodeAddress = FocusNode();
+    focusNodeEmail = FocusNode();
+    focusNodePhone = FocusNode();
+    focusNodeName = FocusNode();
+    focusNodeNote = FocusNode();
   }
 }

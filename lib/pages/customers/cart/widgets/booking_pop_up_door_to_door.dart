@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -37,7 +39,7 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
       _presenter.view = this;
       _model = _presenter.models;
     } catch (e) {
-      print(e.toString());
+      log(e.toString());
     }
   }
 
@@ -101,7 +103,7 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
     }
 
     if (type == 'product') {
-      sum *= orderBooking.months as int;
+      sum *= orderBooking.months;
     }
     return '${oCcy.format(sum)} VND';
   }
@@ -111,15 +113,15 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
     OrderBooking orderBooking =
         Provider.of<OrderBooking>(context, listen: false);
 
-    List listKeys = orderBooking.productOrder!.keys.toList();
+    List listKeys = orderBooking.productOrder.keys.toList();
 
     for (var element in listKeys) {
       if (element == 'product') {
-        for (var ele in orderBooking.productOrder![element]!) {
+        for (var ele in orderBooking.productOrder[element]!) {
           sum += ele['price'] * ele['quantity'] * orderBooking.months as int;
         }
       } else {
-        for (var ele in orderBooking.productOrder![element]!) {
+        for (var ele in orderBooking.productOrder[element]!) {
           sum += ele['price'] * ele['quantity'] as int;
         }
       }
@@ -178,10 +180,11 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
     if (picked != null && picked != orderBooking.dateTimeDelivery) {
       setState(() {
         String dateDeliveryString = picked.toIso8601String().split("T")[0];
-        orderBooking.setOrderBooking(
-            orderBooking: orderBooking.copyWith(
-                dateTimeDelivery: picked,
-                dateTimeDeliveryString: dateDeliveryString));
+
+        final orderBookingTemp = orderBooking.copyWith(
+            dateTimeDelivery: picked,
+            dateTimeDeliveryString: dateDeliveryString);
+        orderBooking.setOrderBooking(orderBooking: orderBookingTemp);
         _model.dateDeliveryController.text = dateDeliveryString;
       });
 
@@ -396,7 +399,7 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
                 buildInfo(
                     'Chi phí thuê: ',
                     totalEachPart(
-                        orderBooking.productOrder!['product']!, 'product'),
+                        orderBooking.productOrder['product']!, 'product'),
                     CustomColor.black),
                 CustomSizedBox(
                   context: context,
@@ -405,7 +408,7 @@ class _BookingPopUpDoorToDoorState extends State<BookingPopUpDoorToDoor>
                 buildInfo(
                     'Phụ kiện đóng gói: ',
                     totalEachPart(
-                        orderBooking.productOrder!['accessory']!, 'accessory'),
+                        orderBooking.productOrder['accessory']!, 'accessory'),
                     CustomColor.black),
                 CustomSizedBox(
                   context: context,

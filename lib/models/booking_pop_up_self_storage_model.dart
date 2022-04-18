@@ -9,7 +9,7 @@ class BookingPopUpSelfStorageModel {
   BookingPopUpSelfStorageModel(OrderBooking orderBooking) {
     error = '';
     dateDeliveryController =
-        TextEditingController(text: orderBooking.dateTimeDeliveryString ?? '');
+        TextEditingController(text: orderBooking.dateTimeDeliveryString);
     monthController =
         TextEditingController(text: orderBooking.months.toString());
 

@@ -28,17 +28,17 @@ class _ItemWidgetState extends State<ItemWidget> implements ItemWidgetView {
         Provider.of<OrderBooking>(context, listen: false);
     Product tempProduct = widget.product!.copyWith();
 
-    final foundItem = orderBooking.productOrder![widget.nameType]!.indexWhere(
-      (e) => e['idOfList'].toString() == '${widget.product!.id}',
+    final foundItem = orderBooking.productOrder[widget.nameType]!.indexWhere(
+      (e) => e['idOfList'].toString() == widget.product!.id,
     );
 
     if (foundItem != -1) {
-      orderBooking.productOrder![widget.nameType]![foundItem]['quantity'] += 1;
+      orderBooking.productOrder[widget.nameType]![foundItem]['quantity'] += 1;
     } else {
-      orderBooking.productOrder![widget.nameType]!.add({
+      orderBooking.productOrder[widget.nameType]!.add({
         ...widget.product!.toMap(),
         'quantity': 1,
-        'idOfList': '${widget.product!.id}',
+        'idOfList': widget.product!.id,
       });
     }
     int newQuantity = tempProduct.quantity! + 1;
@@ -53,7 +53,7 @@ class _ItemWidgetState extends State<ItemWidget> implements ItemWidgetView {
     OrderBooking orderBooking =
         Provider.of<OrderBooking>(context, listen: false);
     Product tempProduct = widget.product!.copyWith();
-    final foundItem = orderBooking.productOrder![widget.nameType]!.indexWhere(
+    final foundItem = orderBooking.productOrder[widget.nameType]!.indexWhere(
       (e) => e['idOfList'].toString() == '${widget.product!.id}',
     );
     if (tempProduct.quantity == 0 && foundItem == -1) {
@@ -62,12 +62,11 @@ class _ItemWidgetState extends State<ItemWidget> implements ItemWidgetView {
 
     if (foundItem != -1) {
       final quantity =
-          orderBooking.productOrder![widget.nameType]![foundItem]['quantity'];
+          orderBooking.productOrder[widget.nameType]![foundItem]['quantity'];
       if (quantity == 1) {
-        orderBooking.productOrder![widget.nameType]!.removeAt(foundItem);
+        orderBooking.productOrder[widget.nameType]!.removeAt(foundItem);
       } else {
-        orderBooking.productOrder![widget.nameType]![foundItem]['quantity'] -=
-            1;
+        orderBooking.productOrder[widget.nameType]![foundItem]['quantity'] -= 1;
       }
     }
     tempProduct = tempProduct.copyWith(quantity: tempProduct.quantity! - 1);

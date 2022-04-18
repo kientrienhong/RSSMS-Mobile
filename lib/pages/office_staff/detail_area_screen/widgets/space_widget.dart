@@ -17,6 +17,7 @@ class SpaceWidget extends StatefulWidget {
 class _SpaceWidgetState extends State<SpaceWidget> {
   @override
   Widget build(BuildContext context) {
+    final deviceSize = MediaQuery.of(context).size;
     return Container(
         margin: const EdgeInsets.symmetric(vertical: 16),
         decoration: BoxDecoration(
@@ -34,14 +35,17 @@ class _SpaceWidgetState extends State<SpaceWidget> {
             children: [
               Row(
                 children: [
-                  CustomText(
-                    text: constants.listSpaceType[widget.space.type]['name']
-                        as String,
-                    color: constants.listSpaceType[widget.space.type]['color']
-                        as Color,
-                    context: context,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
+                  Flexible(
+                    child: CustomText(
+                      text: constants.listSpaceType[widget.space.type]['name']
+                          as String,
+                      color: constants.listSpaceType[widget.space.type]['color']
+                          as Color,
+                      context: context,
+                      fontSize: 16,
+                      maxLines: 3,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   CustomSizedBox(
                     context: context,
@@ -57,6 +61,7 @@ class _SpaceWidgetState extends State<SpaceWidget> {
                     width: 8,
                   ),
                   CustomText(
+                      maxLines: 2,
                       text: widget.space.name,
                       color: CustomColor.black,
                       context: context,
