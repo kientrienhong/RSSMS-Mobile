@@ -386,6 +386,7 @@ class ApiServices {
           "isPaid": orderBooking.isPaid,
           "isCustomerDelivery": isCustomerDelivery,
           "orderId": null,
+          "storageId": orderBooking.storageId,
           "totalPrice": 0,
           "customerId": user.userId,
           "deliveryAddress": orderBooking.addressDelivery,

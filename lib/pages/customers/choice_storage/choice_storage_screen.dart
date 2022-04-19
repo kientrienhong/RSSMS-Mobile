@@ -148,11 +148,12 @@ class _ChoiceStorageScreenState extends State<ChoiceStorageScreen>
                                       listen: false);
                               _model.listStorage.forEach((element) {
                                 if (element.id == _model.indexIdStorage) {
-                                  orderBooking.setOrderBooking(
-                                      orderBooking: orderBooking.copyWith(
-                                          deliveryFee: element.deliveryFee,
-                                          distants: element.deliveryDistance,
-                                          storageId: _model.indexIdStorage));
+                                  orderBooking.storageId =
+                                      _model.indexIdStorage!;
+                                  orderBooking.deliveryFee =
+                                      element.deliveryFee;
+                                  orderBooking.distants =
+                                      element.deliveryDistance;
                                 }
                               });
 
