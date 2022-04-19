@@ -467,7 +467,7 @@ class _ProfileScreenState extends State<FormProfileScreen>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CustomText(
-                      text: "QR Code",
+                      text: "Mã QR",
                       color: Colors.black,
                       context: context,
                       fontSize: 17,
