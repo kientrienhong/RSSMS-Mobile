@@ -4,8 +4,10 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
+import 'package:rssms/common/custom_snack_bar.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/models/entity/invoice.dart';
+import 'package:rssms/models/entity/placing_items.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/invoice_cancelled_screen/invoice_cancelled_screen.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/invoice_info_widget.dart';
@@ -14,9 +16,14 @@ import 'package:rssms/pages/customers/my_account/invoice/invoive_update/send_req
 
 class InvoiceTab extends StatelessWidget {
   final Invoice invoice;
+  final Invoice orginalInvoice;
   final Size deviceSize;
 
-  const InvoiceTab({Key? key, required this.deviceSize, required this.invoice})
+  const InvoiceTab(
+      {Key? key,
+      required this.orginalInvoice,
+      required this.deviceSize,
+      required this.invoice})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -113,7 +120,28 @@ class InvoiceTab extends StatelessWidget {
                       width: deviceSize.width / 2.5,
                       buttonColor: CustomColor.blue,
                       borderRadius: 6),
-                )
+                ),
+              if (invoice.status == 1 && user.roleName == 'Office Staff')
+                Center(
+                  child: CustomButton(
+                      height: 24,
+                      isLoading: false,
+                      text: 'Lưu trữ kho',
+                      textColor: CustomColor.white,
+                      onPressFunction: () {
+                        final placingItems =
+                            Provider.of<PlacingItems>(context, listen: false);
+                        placingItems.setUpStoredOrder(orginalInvoice);
+                        Navigator.pop(context);
+                        CustomSnackBar.buildSnackbar(
+                            context: context,
+                            message: 'Thao tác thành công',
+                            color: CustomColor.green);
+                      },
+                      width: deviceSize.width / 2.5,
+                      buttonColor: CustomColor.blue,
+                      borderRadius: 6),
+                ),
             ],
           ),
         ),

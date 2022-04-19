@@ -17,18 +17,30 @@ class PlacingItems with ChangeNotifier {
     notifyListeners();
   }
 
+  void removePlacing(int idPlacing) {
+    final index =
+        placingItems['floors'].indexWhere((e) => e['idPlacing'] == idPlacing);
+
+    final placingOrderDetail = placingItems['floors'][index];
+    if (index != -1) {
+      placingItems['floors'].removeAt(index);
+      storedItems['totalQuantity']++;
+      storedItems['items'].add(OrderDetail.fromMap(placingOrderDetail));
+      notifyListeners();
+    }
+  }
+
   void placeItems(String idFloor, String orderDetailId,
       Map<String, String> currentPosition) {
     final orderDetailFound =
-        storedItems['items'].find((e) => e.id == orderDetailId);
+        storedItems['items'].firstWhere((e) => e.id == orderDetailId);
+    Map<String, dynamic> placingOrderTemp = orderDetailFound.toMap();
+    placingOrderTemp['idPlacing'] = placingItems['floors'].length;
+    placingOrderTemp['areaName'] = currentPosition['areaName'];
+    placingOrderTemp['floorName'] = currentPosition['floorName'];
+    placingOrderTemp['floorId'] = currentPosition['floorId'];
 
-    placingItems['floors'].push({
-      ...orderDetailFound.toMap(),
-      'idPlacing': placingItems['floors'].length,
-      'areaName': currentPosition['areaName'],
-      'floorName': currentPosition['floorName'],
-      'storageName': currentPosition['storageName'],
-    });
+    placingItems['floors'].add(placingOrderTemp);
     storedItems['items'] =
         storedItems['items'].where((e) => e.id != orderDetailId).toList();
     storedItems['totalQuantity']--;
@@ -51,7 +63,14 @@ class PlacingItems with ChangeNotifier {
             element.productType == constants.typeProduct.handy.index ||
             element.productType == constants.typeProduct.unweildy.index ||
             element.productType == constants.typeProduct.selfStorage.index)
-        .toList();
+        .toList()
+        .map((e) {
+      final listAdditionServiceTemp = e.listAdditionService!
+          .where((addService) =>
+              addService.type == constants.typeProduct.accessory.index)
+          .toList();
+      return e.copyWith(listAdditionService: listAdditionServiceTemp);
+    }).toList();
 
     storedItems = {
       'orderId': invoice.id,

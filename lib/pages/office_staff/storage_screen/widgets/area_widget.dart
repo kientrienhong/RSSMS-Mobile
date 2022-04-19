@@ -43,7 +43,10 @@ class AreaWidget extends StatelessWidget {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => DetailAreaScreen(idArea: area.id)));
+                builder: (context) => DetailAreaScreen(
+                      idArea: area.id,
+                      nameArea: area.name,
+                    )));
       },
       child: Container(
         width: deviceSize.width - 48,

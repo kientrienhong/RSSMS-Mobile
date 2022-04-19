@@ -9,6 +9,7 @@ import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/order_detail.dart';
 import 'package:rssms/common/image_pop_up.dart';
 import 'package:rssms/models/entity/product.dart';
+import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_screen/widget/addition_service_widget.dart';
 import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_screen/widget/dialog_add_service.dart';
 import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_screen/widget/update_real_size.dart';
@@ -16,12 +17,18 @@ import './image_item.dart';
 import 'package:rssms/constants/constants.dart' as constants;
 
 class ImageWidget extends StatefulWidget {
-  OrderDetail orderDetail;
-  Function? deleteItem;
+  final OrderDetail orderDetail;
+  final Function? deleteItem;
+  final Function? placingItem;
+  final Function? movingItem;
+  final Function? removePlacingItem;
   final bool isView;
-  ImageWidget(
+  const ImageWidget(
       {Key? key,
       required this.orderDetail,
+      this.placingItem,
+      this.movingItem,
+      this.removePlacingItem,
       required this.isView,
       this.deleteItem})
       : super(key: key);
@@ -127,6 +134,7 @@ class _ImageWidgetState extends State<ImageWidget> {
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
     Invoice invoice = Provider.of<Invoice>(context, listen: false);
+    Users user = Provider.of<Users>(context, listen: false);
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 4),
       decoration: BoxDecoration(
@@ -154,13 +162,51 @@ class _ImageWidgetState extends State<ImageWidget> {
                   fontSize: 14),
             ),
             if (widget.orderDetail.productType !=
-                constants.typeProduct.selfStorage.index)
+                    constants.typeProduct.selfStorage.index &&
+                user.roleName != 'Office Staff')
               CustomText(
                   text: (widget.orderDetail.images.length).toString() +
                       ' hình ảnh',
                   color: Colors.black38,
                   context: context,
-                  fontSize: 14)
+                  fontSize: 14),
+            if (user.roleName == 'Office Staff' && widget.movingItem != null)
+              CustomButton(
+                  height: 24,
+                  text: 'Di chuyển',
+                  width: deviceSize.width / 3 - 40,
+                  onPressFunction: () {
+                    widget.movingItem!();
+                  },
+                  isLoading: false,
+                  textColor: CustomColor.white,
+                  buttonColor: CustomColor.blue,
+                  borderRadius: 4),
+            if (user.roleName == 'Office Staff' && widget.placingItem != null)
+              CustomButton(
+                  height: 24,
+                  text: 'Đặt vào',
+                  width: deviceSize.width / 3 - 40,
+                  onPressFunction: () {
+                    widget.placingItem!();
+                  },
+                  isLoading: false,
+                  textColor: CustomColor.white,
+                  buttonColor: CustomColor.blue,
+                  borderRadius: 4),
+            if (user.roleName == 'Office Staff' &&
+                widget.removePlacingItem != null)
+              CustomButton(
+                  height: 24,
+                  text: 'Hoàn tác',
+                  width: deviceSize.width / 3 - 40,
+                  onPressFunction: () {
+                    widget.removePlacingItem!();
+                  },
+                  isLoading: false,
+                  textColor: CustomColor.white,
+                  buttonColor: CustomColor.red,
+                  borderRadius: 4),
           ],
         ),
         children: [

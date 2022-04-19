@@ -15,20 +15,25 @@ class StoreItemsButton extends StatelessWidget {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => const PlacingItemsScreen()));
+                builder: (context) => const PlacingItemsScreen(
+                      areaName: '',
+                      floorId: '',
+                      floorName: '',
+                      isView: true,
+                    )));
       },
       child: Consumer<PlacingItems>(
         builder: (_, items, child) => Badge(
           badgeContent: Text(items.storedItems['totalQuantity'].toString()),
           child: Container(
-            width: 32,
-            height: 32,
+            width: 40,
+            height: 40,
             padding: const EdgeInsets.all(8),
             decoration:
                 BoxDecoration(border: Border.all(color: CustomColor.black[3]!)),
             child: Image.asset(
               'assets/images/product.png',
-              fit: BoxFit.contain,
+              fit: BoxFit.cover,
             ),
           ),
         ),

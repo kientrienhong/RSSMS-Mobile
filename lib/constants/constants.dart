@@ -1,5 +1,4 @@
 import 'package:rssms/common/custom_color.dart';
-import 'package:rssms/pages/customers/input_information_booking/input_information.dart';
 import 'package:rssms/pages/customers/payment_method_booking/payment_method_booking_screen.dart';
 
 enum REQUEST_TYPE {

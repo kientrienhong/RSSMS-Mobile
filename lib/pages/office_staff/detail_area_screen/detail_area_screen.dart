@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_app_bar.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
-import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/models/detail_area_screen_model.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/pages/office_staff/detail_area_screen/widgets/space_widget.dart';
@@ -12,7 +11,10 @@ import 'package:rssms/views/detail_area_screen_view.dart';
 
 class DetailAreaScreen extends StatefulWidget {
   final String idArea;
-  const DetailAreaScreen({Key? key, required this.idArea}) : super(key: key);
+  final String nameArea;
+  const DetailAreaScreen(
+      {Key? key, required this.idArea, required this.nameArea})
+      : super(key: key);
 
   @override
   State<DetailAreaScreen> createState() => _DetailAreaScreenState();
@@ -85,7 +87,10 @@ class _DetailAreaScreenState extends State<DetailAreaScreen>
                         shrinkWrap: true,
                         itemCount: _model.listSpace.length,
                         itemBuilder: (_, index) {
-                          return SpaceWidget(space: _model.listSpace[index]);
+                          return SpaceWidget(
+                            space: _model.listSpace[index],
+                            areaName: widget.nameArea,
+                          );
                         }),
                   )
                 ],

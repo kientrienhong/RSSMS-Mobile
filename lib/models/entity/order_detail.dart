@@ -71,11 +71,15 @@ class OrderDetail {
       'serviceId': productId,
       'serviceName': productName,
       'price': price,
+      'height': height,
+      'width': width,
+      'length': length,
       'amount': amount,
       'serviceImageUrl': serviceImageUrl,
       'serviceType': productType,
       'note': note,
       'images': images.map((x) => x.toMap()).toList(),
+      'listAdditionService': listAdditionService!.map((e) => e.toMap()).toList()
     };
   }
 
@@ -128,9 +132,7 @@ class OrderDetail {
       length: map['length']?.toDouble() ?? 0,
       productId: map['serviceId'] ?? '',
       productName: map['serviceName'] ?? '',
-      // price: map['price']?.toInt() ?? 0,
       price: map['servicePrice']?.toInt() ?? 0,
-
       amount: map['amount']?.toInt() ?? 0,
       serviceImageUrl: map['serviceImageUrl'] ?? '',
       listAdditionService: map['orderDetailServices'] != null

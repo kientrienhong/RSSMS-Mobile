@@ -8,7 +8,9 @@ import 'package:rssms/pages/office_staff/detail_area_screen/widgets/floor_widget
 
 class SpaceWidget extends StatefulWidget {
   final Space space;
-  const SpaceWidget({Key? key, required this.space}) : super(key: key);
+  final String areaName;
+  const SpaceWidget({Key? key, required this.space, required this.areaName})
+      : super(key: key);
 
   @override
   State<SpaceWidget> createState() => _SpaceWidgetState();
@@ -88,7 +90,10 @@ class _SpaceWidgetState extends State<SpaceWidget> {
                 padding: const EdgeInsets.all(8),
                 shrinkWrap: true,
                 itemBuilder: (_, index) {
-                  return FloorWidget(floor: widget.space.floors[index]);
+                  return FloorWidget(
+                    floor: widget.space.floors[index],
+                    areaName: widget.areaName,
+                  );
                 })
           ],
         ));
