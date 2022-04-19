@@ -19,6 +19,8 @@ class OrderBooking with ChangeNotifier {
   late bool isPaid;
   late double totalPrice;
   late String note;
+  late double deliveryFee;
+  late String distants;
 
   late int months;
   late int diffDay;
@@ -39,6 +41,8 @@ class OrderBooking with ChangeNotifier {
       required this.months,
       required this.storageId,
       required this.nameCustomer,
+      required this.deliveryFee,
+      required this.distants,
       required this.note,
       required this.phoneCustomer,
       required this.productOrder,
@@ -63,6 +67,8 @@ class OrderBooking with ChangeNotifier {
     nameCustomer = '';
     addressDelivery = '';
     phoneCustomer = '';
+    deliveryFee = 0;
+    distants = '';
     emailCustomer = '';
     isPaid = false;
     totalPrice = 0;
@@ -88,6 +94,8 @@ class OrderBooking with ChangeNotifier {
       String? floorAddressReturn,
       String? phoneCustomer,
       double? totalPrice,
+      double? deliveryFee,
+      String? distants,
       String? emailCustomer,
       String? storageId,
       String? note,
@@ -111,6 +119,8 @@ class OrderBooking with ChangeNotifier {
       addressDelivery: addressDelivery ?? this.addressDelivery,
       phoneCustomer: phoneCustomer ?? this.phoneCustomer,
       emailCustomer: emailCustomer ?? this.emailCustomer,
+      deliveryFee: deliveryFee ?? this.deliveryFee,
+      distants: distants ?? this.distants,
       totalPrice: totalPrice ?? this.totalPrice,
     );
   }
@@ -121,7 +131,9 @@ class OrderBooking with ChangeNotifier {
       required int durationMonth,
       required Users user,
       required bool isPaid,
-      required int totalPrice}) {
+      required int totalPrice,
+      double? deliveryFee,
+      String? distants}) {
     DateTime returnDateOld = DateTime.parse(
         invoice.returnDate.substring(0, invoice.returnDate.indexOf("T")));
     return OrderBooking(
@@ -143,6 +155,8 @@ class OrderBooking with ChangeNotifier {
       addressDelivery: invoice.deliveryAddress,
       phoneCustomer: user.phone!,
       emailCustomer: user.email!,
+      deliveryFee: deliveryFee!,
+      distants: distants!,
       totalPrice: double.parse(totalPrice.toString()),
     );
   }

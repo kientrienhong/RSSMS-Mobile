@@ -76,7 +76,7 @@ class InvoicePresenter {
           model.listInvoiceFull.addAll(listTemp!);
           model.listInvoice = model.listInvoiceFull;
           model.data.addAll(listTemp);
-          model.hasMore = (model.page == model.metadata!["totalPage"]);
+          model.hasMore = !(model.page == model.metadata!["totalPage"]);
           model.controller.add(model.data);
         }
       } else if (response.statusCode >= 500) {

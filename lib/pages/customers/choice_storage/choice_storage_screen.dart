@@ -1,12 +1,17 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_app_bar.dart';
+import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
+import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/models/choice_storage_screen_model.dart';
 import 'package:rssms/models/entity/order_booking.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/pages/customers/choice_storage/widgets/storage_choice.dart';
+import 'package:rssms/pages/customers/payment_method_booking/payment_method_booking_screen.dart';
 import 'package:rssms/presenters/choice_storage_screen_presenter.dart';
 import 'package:rssms/views/choice_storage_screen_view.dart';
 
@@ -111,6 +116,67 @@ class _ChoiceStorageScreenState extends State<ChoiceStorageScreen>
                           onChoice: chooseIndex);
                     },
                     itemCount: _model.listStorage.length,
+                  ),
+                  CustomSizedBox(
+                    context: context,
+                    height: 24,
+                  ),
+                  if (!_model.isChoose)
+                    CustomText(
+                        text: "Vui lòng chọn kho",
+                        color: CustomColor.red,
+                        context: context,
+                        fontSize: 16),
+                  CustomSizedBox(
+                    context: context,
+                    height: 24,
+                  ),
+                  SizedBox(
+                    width: double.infinity,
+                    child: Center(
+                      child: CustomButton(
+                          height: 24,
+                          text: 'Tiếp theo',
+                          width: deviceSize.width * 1.2 / 3,
+                          onPressFunction: () {
+                            if (_model.indexIdStorage != '') {
+                              setState(() {
+                                _model.isChoose = true;
+                              });
+                              OrderBooking orderBooking =
+                                  Provider.of<OrderBooking>(context,
+                                      listen: false);
+                              _model.listStorage.forEach((element) {
+                                if (element.id == _model.indexIdStorage) {
+                                  orderBooking.storageId =
+                                      _model.indexIdStorage!;
+                                  orderBooking.deliveryFee =
+                                      element.deliveryFee;
+                                  orderBooking.distants =
+                                      element.deliveryDistance;
+                                }
+                              });
+
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const PaymentMethodBookingScreen()));
+                            } else {
+                              setState(() {
+                                _model.isChoose = false;
+                              });
+                            }
+                          },
+                          isLoading: false,
+                          textColor: CustomColor.white,
+                          buttonColor: CustomColor.blue,
+                          borderRadius: 6),
+                    ),
+                  ),
+                  CustomSizedBox(
+                    context: context,
+                    height: 24,
                   ),
                 ],
               ),

@@ -34,7 +34,7 @@ class ChoiceStorageScreenPresenter {
       final result = ResponseHandle.handle(response);
 
       if (result['status'] == 'success') {
-        model.listStorage = result['data']['data']
+        model.listStorage = result['data']
             .map<StorageEntity>((e) => StorageEntity.fromMap(e))
             .toList();
       } else {

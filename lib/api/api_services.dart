@@ -372,7 +372,9 @@ class ApiServices {
             ? constants.selfStorageTypeOrder
             : constants.doorToDoorTypeOrder,
         "note": orderBooking.note,
-        "requestDetails": listProduct
+        "requestDetails": listProduct,
+        "deliveryFee": orderBooking.deliveryFee,
+        "distance": orderBooking.distants
       }));
       final url = Uri.parse('$_domain/api/v1/requests');
       bool isCustomerDelivery = orderBooking.typeOrder.index == 0
@@ -384,6 +386,7 @@ class ApiServices {
           "isPaid": orderBooking.isPaid,
           "isCustomerDelivery": isCustomerDelivery,
           "orderId": null,
+          "storageId": orderBooking.storageId,
           "totalPrice": 0,
           "customerId": user.userId,
           "deliveryAddress": orderBooking.addressDelivery,
@@ -481,7 +484,8 @@ class ApiServices {
       int gender,
       String address,
       String idToken,
-      String userId) {
+      String userId,
+      Map<String, dynamic> image) {
     try {
       Map<String, String> headers = {
         "Content-type": "application/json",
@@ -497,7 +501,8 @@ class ApiServices {
             "gender": gender,
             "birthdate": birthday.toIso8601String(),
             "address": address,
-            "phone": phone
+            "phone": phone,
+            "image": image
           }));
     } catch (e) {
       log(e.toString());
@@ -775,6 +780,23 @@ class ApiServices {
       };
 
       final url = Uri.parse('$_domain/api/v1/floors/' + id.toString());
+      return http.get(
+        url,
+        headers: headers,
+      );
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  static Future<dynamic> getAccountbyId(String idToken, String id) {
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        'Authorization': 'Bearer $idToken'
+      };
+
+      final url = Uri.parse('$_domain/api/v1/accounts/' + id.toString());
       return http.get(
         url,
         headers: headers,

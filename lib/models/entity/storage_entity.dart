@@ -14,52 +14,53 @@ class StorageEntity {
   final int usage;
   final String managerName;
   final double deliveryFee;
-  StorageEntity({
-    required this.id,
-    required this.name,
-    required this.type,
-    required this.status,
-    required this.address,
-    required this.description,
-    required this.imageUrl,
-    required this.height,
-    required this.width,
-    required this.length,
-    required this.usage,
-    required this.managerName,
-    required this.deliveryFee,
-  });
+  final String deliveryDistance;
+  StorageEntity(
+      {required this.id,
+      required this.name,
+      required this.type,
+      required this.status,
+      required this.address,
+      required this.description,
+      required this.imageUrl,
+      required this.height,
+      required this.width,
+      required this.length,
+      required this.usage,
+      required this.managerName,
+      required this.deliveryFee,
+      required this.deliveryDistance});
 
-  StorageEntity copyWith({
-    String? id,
-    String? name,
-    int? type,
-    int? status,
-    String? address,
-    String? description,
-    String? imageUrl,
-    double? height,
-    double? width,
-    double? length,
-    int? usage,
-    String? managerName,
-    double? deliveryFee,
-  }) {
+  StorageEntity copyWith(
+      {String? id,
+      String? name,
+      int? type,
+      int? status,
+      String? address,
+      String? description,
+      String? imageUrl,
+      double? height,
+      double? width,
+      double? length,
+      int? usage,
+      String? managerName,
+      double? deliveryFee,
+      String? deliveryDistance}) {
     return StorageEntity(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      type: type ?? this.type,
-      status: status ?? this.status,
-      address: address ?? this.address,
-      description: description ?? this.description,
-      imageUrl: imageUrl ?? this.imageUrl,
-      height: height ?? this.height,
-      width: width ?? this.width,
-      length: length ?? this.length,
-      usage: usage ?? this.usage,
-      managerName: managerName ?? this.managerName,
-      deliveryFee: deliveryFee ?? this.deliveryFee,
-    );
+        id: id ?? this.id,
+        name: name ?? this.name,
+        type: type ?? this.type,
+        status: status ?? this.status,
+        address: address ?? this.address,
+        description: description ?? this.description,
+        imageUrl: imageUrl ?? this.imageUrl,
+        height: height ?? this.height,
+        width: width ?? this.width,
+        length: length ?? this.length,
+        usage: usage ?? this.usage,
+        managerName: managerName ?? this.managerName,
+        deliveryFee: deliveryFee ?? this.deliveryFee,
+        deliveryDistance: deliveryDistance ?? this.deliveryDistance);
   }
 
   Map<String, dynamic> toMap() {
@@ -77,25 +78,26 @@ class StorageEntity {
       'usage': usage,
       'managerName': managerName,
       'deliveryFee': deliveryFee,
+      'deliveryDistance': deliveryDistance
     };
   }
 
   factory StorageEntity.fromMap(Map<String, dynamic> map) {
     return StorageEntity(
-      id: map['id'] ?? '',
-      name: map['name'] ?? '',
-      type: map['type']?.toInt() ?? 0,
-      status: map['status']?.toInt() ?? 0,
-      address: map['address'] ?? '',
-      description: map['description'] ?? '',
-      imageUrl: map['imageUrl'] ?? '',
-      height: map['height']?.toDouble() ?? 0,
-      width: map['width']?.toDouble() ?? 0,
-      length: map['length']?.toDouble() ?? 0,
-      usage: map['usage']?.toInt() ?? 0,
-      managerName: map['managerName'] ?? '',
-      deliveryFee: map['deliveryFee']?.toDouble() ?? 0,
-    );
+        id: map['id'] ?? '',
+        name: map['name'] ?? '',
+        type: map['type']?.toInt() ?? 0,
+        status: map['status']?.toInt() ?? 0,
+        address: map['address'] ?? '',
+        description: map['description'] ?? '',
+        imageUrl: map['imageUrl'] ?? '',
+        height: map['height']?.toDouble() ?? 0,
+        width: map['width']?.toDouble() ?? 0,
+        length: map['length']?.toDouble() ?? 0,
+        usage: map['usage']?.toInt() ?? 0,
+        managerName: map['managerName'] ?? '',
+        deliveryFee: map['deliveryFee']?.toDouble() ?? 0,
+        deliveryDistance: map['deliveryDistance'] ?? '');
   }
 
   String toJson() => json.encode(toMap());

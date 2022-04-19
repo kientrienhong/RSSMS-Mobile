@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:rssms/api/api_services.dart';
@@ -30,6 +32,8 @@ class ProfileModel {
   late FocusNode focusNodeDistrict;
   late String textGender;
   late String errorProfileMsg;
+  late String imageUrl;
+  late bool isEditAvatar;
   ProfileModel(Users user) {
     errorMsgChangePassword = '';
     errorProfileMsg = '';
@@ -67,10 +71,12 @@ class ProfileModel {
         textGender = "Nam";
         break;
     }
+    imageUrl = user.imageUrl!;
+    isEditAvatar = false;
   }
 
   Future<dynamic> updateProfile(
-      int gender, DateTime birthday, String idToken, String userId) async {
+      int gender, DateTime birthday, Map<String, dynamic> image, String idToken, String userId) async {
     try {
       return await ApiServices.updateProfile(
           controllerFullname.text,
@@ -79,7 +85,8 @@ class ProfileModel {
           gender,
           controllerStreet.text,
           idToken,
-          userId);
+          userId,
+          image);
     } catch (e) {
       throw Exception(e);
     }
