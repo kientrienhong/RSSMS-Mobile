@@ -49,6 +49,7 @@ class _DetailAreaScreenState extends State<DetailAreaScreen>
     });
   }
 
+
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;

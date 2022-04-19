@@ -353,7 +353,9 @@ class ApiServices {
             ? constants.selfStorageTypeOrder
             : constants.doorToDoorTypeOrder,
         "note": orderBooking.note,
-        "requestDetails": listProduct
+        "requestDetails": listProduct,
+        "deliveryFee": orderBooking.deliveryFee,
+        "distance": orderBooking.distants
       }));
       final url = Uri.parse('$_domain/api/v1/requests');
       bool isCustomerDelivery = orderBooking.typeOrder.index == 0
