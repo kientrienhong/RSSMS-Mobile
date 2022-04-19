@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'dart:developer' as developer;
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:rssms/common/background.dart';
 import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
@@ -114,8 +118,7 @@ class _ProfileScreenState extends State<FormProfileScreen>
   }
 
   @override
-  void onClickUpdateProfile(String fullname, String phone, String birthdate,
-      String gender, String address) async {
+  void onClickUpdateProfile() async {
     try {
       Users user = Provider.of<Users>(context, listen: false);
       bool response =
@@ -149,8 +152,36 @@ class _ProfileScreenState extends State<FormProfileScreen>
   final _formKey = GlobalKey<FormState>();
   final _formKeyPassword = GlobalKey<FormState>();
 
+  void onClickImage() {
+    showDialog<ImageSource>(
+      context: context,
+      builder: (context) =>
+          AlertDialog(content: const Text("Chọn nguồn ảnh"), actions: [
+        TextButton(
+          child: const Text("Camera"),
+          onPressed: () => Navigator.pop(context, ImageSource.camera),
+        ),
+        TextButton(
+          child: const Text("Thư viện ảnh"),
+          onPressed: () => Navigator.pop(context, ImageSource.gallery),
+        ),
+      ]),
+    ).then((source) async {
+      if (source != null) {
+        final pickedFile = await ImagePicker().pickImage(source: source);
+        if (pickedFile != null) {
+          setState(() {
+            _model.imageUrl = pickedFile.path;
+            _model.isEditAvatar = true;
+          });
+        }
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    Users user = Provider.of(context, listen: false);
     return Scaffold(
       backgroundColor: CustomColor.white,
       body: SingleChildScrollView(
@@ -160,6 +191,33 @@ class _ProfileScreenState extends State<FormProfileScreen>
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              if (user.roleName == 'Delivery Staff')
+                Center(
+                  child: GestureDetector(
+                    onTap: () {
+                      onClickImage();
+                    },
+                    child: CircleAvatar(
+                      backgroundImage: _model.isEditAvatar
+                          ? FileImage(File(_model.imageUrl)) as ImageProvider
+                          : NetworkImage(_model.imageUrl),
+                      radius: 80,
+                      child: const Align(
+          
+                        alignment: Alignment.bottomRight,
+                        child: CircleAvatar(
+                          backgroundColor: Colors.white,
+                          radius: 25.0,
+                          child: Icon(
+                            Icons.camera_alt,
+                            size: 25.0,
+                            color: Color(0xFF404040),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
               CustomSizedBox(
                 context: context,
                 height: 16,
@@ -309,12 +367,7 @@ class _ProfileScreenState extends State<FormProfileScreen>
                             textColor: CustomColor.white,
                             onPressFunction: () {
                               if (_formKey.currentState!.validate()) {
-                                onClickUpdateProfile(
-                                    _model.controllerFullname.text,
-                                    _model.controllerPhone.text,
-                                    _model.controllerBirthDate.text,
-                                    _model.textGender,
-                                    _model.controllerStreet.text);
+                                onClickUpdateProfile();
                               }
                             },
                             buttonColor: CustomColor.blue,
@@ -408,7 +461,39 @@ class _ProfileScreenState extends State<FormProfileScreen>
                     ),
                   ],
                 ),
-              )
+              ),
+              if (user.roleName == "Delivery Staff")
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomText(
+                      text: "QR Code",
+                      color: Colors.black,
+                      context: context,
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    CustomSizedBox(
+                      context: context,
+                      height: 16,
+                    ),
+                    SizedBox(
+                      width: double.infinity,
+                      child: Center(
+                        child: QrImage(
+                          data: user.userId! + "_user",
+                          size: 100.0,
+                          gapless: true,
+                          version: 4,
+                        ),
+                      ),
+                    ),
+                    CustomSizedBox(
+                      context: context,
+                      height: 48,
+                    ),
+                  ],
+                ),
             ],
           ),
         ),

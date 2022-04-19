@@ -444,7 +444,8 @@ class ApiServices {
       int gender,
       String address,
       String idToken,
-      String userId) {
+      String userId,
+      Map<String, dynamic> image) {
     try {
       Map<String, String> headers = {
         "Content-type": "application/json",
@@ -460,7 +461,8 @@ class ApiServices {
             "gender": gender,
             "birthdate": birthday.toIso8601String(),
             "address": address,
-            "phone": phone
+            "phone": phone,
+            "image": image
           }));
     } catch (e) {
       log(e.toString());
@@ -730,7 +732,7 @@ class ApiServices {
     }
   }
 
-    static Future<dynamic> getFloorbyId(String idToken, String id) {
+  static Future<dynamic> getFloorbyId(String idToken, String id) {
     try {
       Map<String, String> headers = {
         "Content-type": "application/json",

@@ -7,8 +7,7 @@ abstract class ProfileView {
   void updateLoadingPassword();
   void updateLoadingProfile();
 
-  void onClickUpdateProfile(String fullname, String phone, String birthdate,
-      String gender, String address);
+  void onClickUpdateProfile();
   void onClickChangePassword(
       String oldPassword, String newPassword, String confirmPassword);
 }
