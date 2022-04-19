@@ -7,6 +7,7 @@ import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_snack_bar.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/common/image_widget.dart';
+import 'package:rssms/models/entity/area.dart';
 import 'package:rssms/models/entity/order_detail.dart';
 import 'package:rssms/models/entity/placing_items.dart';
 import 'package:rssms/models/entity/user.dart';
@@ -17,12 +18,14 @@ import 'package:rssms/views/placing_items_screen_view.dart';
 class PlacingItemsScreen extends StatefulWidget {
   final String floorId;
   final String floorName;
-  final String areaName;
+  final Area area;
   final bool isView;
+  final Map<String, double> sizeOfFloor;
   const PlacingItemsScreen(
       {Key? key,
       required this.floorId,
-      required this.areaName,
+      required this.sizeOfFloor,
+      required this.area,
       required this.floorName,
       required this.isView})
       : super(key: key);
@@ -57,6 +60,32 @@ class _PlacingItemsScreenState extends State<PlacingItemsScreen>
       _model.isLoading = !_model.isLoading;
     });
   }
+
+  @override
+  void onClickPlace(int index) {
+    final placingItems = Provider.of<PlacingItems>(context, listen: false);
+    bool result = _presenter.onPressPlace(
+        placingItems,
+        widget.sizeOfFloor,
+        placingItems.storedItems['items'][index],
+        widget.floorId,
+        widget.area,
+        widget.floorName);
+    if (result) {
+      CustomSnackBar.buildSnackbar(
+          context: context,
+          message: 'Đặt thành công',
+          color: CustomColor.green);
+    } else {
+      CustomSnackBar.buildSnackbar(
+          context: context,
+          message: 'Vui lòng đặt vào không gian phù hợp',
+          color: CustomColor.red);
+    }
+  }
+
+  @override
+  void onClickUndo(int index) {}
 
   @override
   void onClickConfirm() async {
@@ -136,16 +165,7 @@ class _PlacingItemsScreenState extends State<PlacingItemsScreen>
                         itemBuilder: (_, index) => ImageWidget(
                             placingItem: !widget.isView
                                 ? () {
-                                    items.placeItems(widget.floorId,
-                                        items.storedItems['items'][index].id, {
-                                      'areaName': widget.areaName,
-                                      'floorName': widget.floorName,
-                                      'floorId': widget.floorId
-                                    });
-                                    CustomSnackBar.buildSnackbar(
-                                        context: context,
-                                        message: 'Đặt thành công',
-                                        color: CustomColor.green);
+                                    onClickPlace(index);
                                   }
                                 : null,
                             orderDetail: items.storedItems['items'][index],
@@ -233,7 +253,7 @@ class _PlacingItemsScreenState extends State<PlacingItemsScreen>
                 CustomButton(
                     height: 24,
                     text: 'Hủy thao tác',
-                    width: deviceSize.width / 3 - 40,
+                    width: deviceSize.width / 3,
                     onPressFunction: onClickEmptyPlacing,
                     isLoading: false,
                     textColor: CustomColor.white,

@@ -4,6 +4,7 @@ import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
+import 'package:rssms/models/entity/area.dart';
 import 'package:rssms/models/entity/floor.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/pages/office_staff/floor_details_screen/floor_detail_screen.dart';
@@ -13,12 +14,12 @@ class FloorWidget extends StatelessWidget {
   final Floor floor;
   final String areaName;
   final Function getListSpace;
-  final String idArea;
+  final Area area;
   const FloorWidget(
       {Key? key,
       required this.getListSpace,
       required this.floor,
-      required this.idArea,
+      required this.area,
       required this.areaName})
       : super(key: key);
 
@@ -123,8 +124,13 @@ class FloorWidget extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                           builder: (context) => PlacingItemsScreen(
-                                areaName: areaName,
+                                area: area,
                                 floorId: floor.id,
+                                sizeOfFloor: {
+                                  'height': floor.height,
+                                  'width': floor.width,
+                                  'length': floor.length
+                                },
                                 floorName: floor.name,
                                 isView: false,
                               )),
@@ -132,7 +138,7 @@ class FloorWidget extends StatelessWidget {
                       if (value) {
                         Users users =
                             Provider.of<Users>(context, listen: false);
-                        getListSpace(users.idToken!, idArea);
+                        getListSpace(users.idToken!, area.id);
                       }
                     });
                   },

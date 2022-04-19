@@ -3,4 +3,7 @@ abstract class PlacingItemsScreenView {
   void onClickEmptyPlacing();
   void updateError(String error);
   void updateLoading();
+  void onClickPlace(int index);
+
+  void onClickUndo(int index);
 }

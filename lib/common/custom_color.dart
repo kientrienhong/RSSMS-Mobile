@@ -35,9 +35,13 @@ class CustomColor {
   static const MaterialColor brown = MaterialColor(
       _brownPrimaryValue, <int, Color>{0: Color(_brownPrimaryValue)});
 
-  static const _redSemantic = 0xFFCE0200;
+  static const _redSemantic = 0xFFFF3835;
   static const MaterialColor red =
       MaterialColor(_redSemantic, <int, Color>{0: Color(_redSemantic)});
+
+  static const _redOpacitySemantic = 0x07FF3835;
+  static const MaterialColor redOpacity = MaterialColor(
+      _redOpacitySemantic, <int, Color>{0: Color(_redOpacitySemantic)});
 
   static const _greenSemantic = 0xFF00993C;
   static const MaterialColor green =

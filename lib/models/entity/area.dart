@@ -1,15 +1,15 @@
 import 'dart:convert';
 
 class Area {
-  final String id;
-  final String name;
-  final int type;
-  final String description;
-  final double usage;
-  final int status;
-  final double width;
-  final double height;
-  final double length;
+  late String id;
+  late String name;
+  late int type;
+  late String description;
+  late double usage;
+  late int status;
+  late double width;
+  late double height;
+  late double length;
   Area({
     required this.id,
     required this.name,
@@ -21,6 +21,18 @@ class Area {
     required this.usage,
     required this.status,
   });
+
+  Area.empty() {
+    id = '';
+    name = '';
+    type = 0;
+    description = '';
+    usage = 0;
+    status = 0;
+    width = 0;
+    height = 0;
+    length = 0;
+  }
 
   Area copyWith({
     String? id,
