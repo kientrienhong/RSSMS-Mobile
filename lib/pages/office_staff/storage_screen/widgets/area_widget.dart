@@ -44,7 +44,7 @@ class AreaWidget extends StatelessWidget {
             context,
             MaterialPageRoute(
                 builder: (context) => DetailAreaScreen(
-                      idArea: area.id,
+                      area: area,
                       nameArea: area.name,
                     )));
       },

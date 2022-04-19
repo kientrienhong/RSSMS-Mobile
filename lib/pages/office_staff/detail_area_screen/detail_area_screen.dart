@@ -4,16 +4,16 @@ import 'package:rssms/common/custom_app_bar.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/models/detail_area_screen_model.dart';
+import 'package:rssms/models/entity/area.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/pages/office_staff/detail_area_screen/widgets/space_widget.dart';
 import 'package:rssms/presenters/detail_area_screen_presenter.dart';
 import 'package:rssms/views/detail_area_screen_view.dart';
 
 class DetailAreaScreen extends StatefulWidget {
-  final String idArea;
+  final Area area;
   final String nameArea;
-  const DetailAreaScreen(
-      {Key? key, required this.idArea, required this.nameArea})
+  const DetailAreaScreen({Key? key, required this.area, required this.nameArea})
       : super(key: key);
 
   @override
@@ -31,7 +31,7 @@ class _DetailAreaScreenState extends State<DetailAreaScreen>
     _model = _presenter.model;
     _presenter.view = this;
     Users users = Provider.of<Users>(context, listen: false);
-    _presenter.getListSpace(users.idToken!, widget.idArea);
+    _presenter.getListSpace(users.idToken!, widget.area.id);
     super.initState();
   }
 
@@ -91,7 +91,7 @@ class _DetailAreaScreenState extends State<DetailAreaScreen>
                           return SpaceWidget(
                             space: _model.listSpace[index],
                             areaName: widget.nameArea,
-                            idArea: widget.idArea,
+                            area: widget.area,
                             getListSpace: _presenter.getListSpace,
                           );
                         }),

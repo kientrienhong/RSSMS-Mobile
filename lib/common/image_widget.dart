@@ -216,8 +216,8 @@ class _ImageWidgetState extends State<ImageWidget> {
                     widget.removePlacingItem!();
                   },
                   isLoading: false,
-                  textColor: CustomColor.white,
-                  buttonColor: CustomColor.red,
+                  textColor: CustomColor.red,
+                  buttonColor: CustomColor.redOpacity,
                   borderRadius: 4),
           ],
         ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:badges/badges.dart';
 import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_color.dart';
+import 'package:rssms/models/entity/area.dart';
 import 'package:rssms/models/entity/placing_items.dart';
 import 'package:rssms/pages/office_staff/placing_items_screen.dart/placing_items_screen.dart';
 
@@ -15,10 +16,11 @@ class StoreItemsButton extends StatelessWidget {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => const PlacingItemsScreen(
-                      areaName: '',
+                builder: (context) => PlacingItemsScreen(
+                      area: Area.empty(),
                       floorId: '',
                       floorName: '',
+                      sizeOfFloor: const {},
                       isView: true,
                     )));
       },

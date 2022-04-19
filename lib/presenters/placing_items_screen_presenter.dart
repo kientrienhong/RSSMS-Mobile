@@ -1,10 +1,13 @@
 import 'dart:developer';
 
 import 'package:rssms/helpers/response_handle.dart';
+import 'package:rssms/models/entity/area.dart';
+import 'package:rssms/models/entity/order_detail.dart';
 import 'package:rssms/models/entity/placing_items.dart';
 import 'package:rssms/models/entity/account.dart';
 import 'package:rssms/models/placing_items_screen_model.dart';
 import 'package:rssms/views/placing_items_screen_view.dart';
+import 'package:rssms/constants/constants.dart' as constants;
 
 class PlacingItemsScreenPresenter {
   late PlacingItemsScreenModel model;
@@ -61,6 +64,30 @@ class PlacingItemsScreenPresenter {
     } finally {
       view.updateLoading();
     }
+  }
+
+  bool onPressPlace(PlacingItems placingItems, Map<String, double> sizeOfFloor,
+      OrderDetail orderDetail, String floorId, Area area, String floorName) {
+    if (orderDetail.length! > sizeOfFloor['length']! ||
+        orderDetail.height! > sizeOfFloor['height']! ||
+        orderDetail.width! > sizeOfFloor['width']!) {
+      return false;
+    }
+
+    if ((orderDetail.productType == constants.typeProduct.handy.index ||
+            orderDetail.productType == constants.typeProduct.unweildy.index) &&
+        area.type == 0) {
+      return false;
+    }
+
+    if (orderDetail.productType == constants.typeProduct.selfStorage.index &&
+        area.type == 1) {
+      return false;
+    }
+
+    placingItems.placeItems(floorId, orderDetail.id,
+        {'areaName': area.name, 'floorName': floorName, 'floorId': floorId});
+    return true;
   }
 
   Future<bool> onPressConfirmStore(

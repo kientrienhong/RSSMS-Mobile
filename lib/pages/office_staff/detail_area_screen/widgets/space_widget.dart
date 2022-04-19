@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
+import 'package:rssms/models/entity/area.dart';
 import 'package:rssms/models/entity/space.dart';
 import 'package:rssms/constants/constants.dart' as constants;
 import 'package:rssms/pages/office_staff/detail_area_screen/widgets/floor_widget.dart';
@@ -10,12 +11,12 @@ class SpaceWidget extends StatefulWidget {
   final Space space;
   final String areaName;
   final Function getListSpace;
-  final String idArea;
+  final Area area;
   const SpaceWidget(
       {Key? key,
       required this.getListSpace,
       required this.space,
-      required this.idArea,
+      required this.area,
       required this.areaName})
       : super(key: key);
 
@@ -100,7 +101,7 @@ class _SpaceWidgetState extends State<SpaceWidget> {
                     floor: widget.space.floors[index],
                     areaName: widget.areaName,
                     getListSpace: widget.getListSpace,
-                    idArea: widget.idArea,
+                    area: widget.area,
                   );
                 })
           ],
