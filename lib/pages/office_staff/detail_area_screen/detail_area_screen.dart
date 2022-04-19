@@ -90,6 +90,8 @@ class _DetailAreaScreenState extends State<DetailAreaScreen>
                           return SpaceWidget(
                             space: _model.listSpace[index],
                             areaName: widget.nameArea,
+                            idArea: widget.idArea,
+                            getListSpace: _presenter.getListSpace,
                           );
                         }),
                   )

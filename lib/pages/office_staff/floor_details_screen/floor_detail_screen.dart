@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_app_bar.dart';
-import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/common/image_widget.dart';
@@ -10,7 +9,6 @@ import 'package:rssms/models/entity/order_detail.dart';
 import 'package:rssms/constants/constants.dart' as constants;
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/models/floor_detail_model.dart';
-import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_screen/widget/addition_service_widget.dart';
 import 'package:rssms/presenters/floor_detail_presenter.dart';
 import 'package:rssms/views/floor_detail_view.dart';
 

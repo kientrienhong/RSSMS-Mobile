@@ -65,7 +65,7 @@ class _PlacingItemsScreenState extends State<PlacingItemsScreen>
 
     bool result = await _presenter.onPressConfirm(user.idToken!, placingItems);
     if (result) {
-      Navigator.pop(context);
+      Navigator.pop(context, result);
       CustomSnackBar.buildSnackbar(
           context: context,
           message: 'Thao tác thành công',

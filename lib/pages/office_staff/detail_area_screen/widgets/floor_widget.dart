@@ -1,16 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/models/entity/floor.dart';
+import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/pages/office_staff/floor_details_screen/floor_detail_screen.dart';
 import 'package:rssms/pages/office_staff/placing_items_screen.dart/placing_items_screen.dart';
 
 class FloorWidget extends StatelessWidget {
   final Floor floor;
   final String areaName;
-  const FloorWidget({Key? key, required this.floor, required this.areaName})
+  final Function getListSpace;
+  final String idArea;
+  const FloorWidget(
+      {Key? key,
+      required this.getListSpace,
+      required this.floor,
+      required this.idArea,
+      required this.areaName})
       : super(key: key);
 
   @override
@@ -119,7 +128,13 @@ class FloorWidget extends StatelessWidget {
                                 floorName: floor.name,
                                 isView: false,
                               )),
-                    );
+                    ).then((value) {
+                      if (value) {
+                        Users users =
+                            Provider.of<Users>(context, listen: false);
+                        getListSpace(users.idToken!, idArea);
+                      }
+                    });
                   },
                   isLoading: false,
                   textColor: CustomColor.white,
