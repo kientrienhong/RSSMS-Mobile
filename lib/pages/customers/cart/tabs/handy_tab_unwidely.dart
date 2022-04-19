@@ -126,7 +126,7 @@ class _HandyTabState extends State<HandyTabUnwidely> {
                       builder: (context) {
                         return AlertDialog(
                           title: const Text("Thông báo"),
-                          content:
+                            content:
                               const Text("Vui lòng chọn ít nhất một dịch vụ!"),
                           actions: [
                             TextButton(
