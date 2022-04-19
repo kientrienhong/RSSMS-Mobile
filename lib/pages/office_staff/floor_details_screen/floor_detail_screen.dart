@@ -32,37 +32,18 @@ class _FloorDetailScreenState extends State<FloorDetailScreen>
       listOrderDetail
           .where((element) =>
               element.productType == constants.typeProduct.handy.index)
-          .map((e) => ImageWidget(
-                orderDetail: e,
+          .map((e) {
+            final listAdditionTemp = e.listAdditionService!
+                .where((element) =>
+                    element.type == constants.typeProduct.accessory.index)
+                .toList();
+            return e.copyWith(listAdditionService: listAdditionTemp);
+          })
+          .map((e1) => ImageWidget(
+                orderDetail: e1,
                 isView: true,
               ))
           .toList();
-
-  List<Widget> mapSeperateAdditionWidget(List<OrderDetail> listOrderDetail) {
-    final list = listOrderDetail.where((element) =>
-        element.productType == constants.typeProduct.accessory.index);
-    if (list.isNotEmpty) {
-      return list
-          .where((element) =>
-              element.productType == constants.typeProduct.accessory.index)
-          .map((e) => AdditionServiceWidget(
-                isView: true,
-                onAddAddition: () {},
-                onMinusAddition: () {},
-                orderDetail: e,
-              ))
-          .toList();
-    } else {
-      return [
-        Center(
-            child: CustomText(
-                text: '(Trống)',
-                color: CustomColor.black[3]!,
-                context: context,
-                fontSize: 16))
-      ];
-    }
-  }
 
   @override
   void initState() {
@@ -85,54 +66,39 @@ class _FloorDetailScreenState extends State<FloorDetailScreen>
 
   @override
   Widget build(BuildContext context) {
-    final deviceSize = MediaQuery.of(context).size;
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.only(left: 24, right: 24, bottom: 24),
-        child: SizedBox(
-          width: deviceSize.width,
-          height: deviceSize.height,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CustomSizedBox(context: context, height: 12),
-              CustomSizedBox(
-                context: context,
-                height: 24,
-              ),
-              const CustomAppBar(
-                  isHome: false, name: 'Danh sách đồ trên kệ'),
-              CustomText(
-                  text: "Danh sách phụ kiện riêng: ",
-                  color: Colors.black,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.only(left: 24, right: 24, bottom: 24),
+          child: SizedBox(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CustomSizedBox(context: context, height: 12),
+                CustomSizedBox(
                   context: context,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 17),
-              CustomSizedBox(
-                context: context,
-                height: 8,
-              ),
-              Column(
-                children: mapSeperateAdditionWidget(_model.listOrderDetails),
-              ),
-              CustomSizedBox(
-                context: context,
-                height: 8,
-              ),
-              CustomText(
-                  text: "Hình ảnh đồ đạc được lưu kho: ",
-                  color: Colors.black,
+                  height: 24,
+                ),
+                const CustomAppBar(isHome: false, name: 'Danh sách đồ trên kệ'),
+                CustomSizedBox(
                   context: context,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 17),
-              CustomSizedBox(
-                context: context,
-                height: 8,
-              ),
-              Column(
-                children: mapInvoiceWidget(_model.listOrderDetails),
-              )
-            ],
+                  height: 8,
+                ),
+                CustomText(
+                    text: "Hình ảnh đồ đạc được lưu kho: ",
+                    color: Colors.black,
+                    context: context,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 17),
+                CustomSizedBox(
+                  context: context,
+                  height: 8,
+                ),
+                Column(
+                  children: mapInvoiceWidget(_model.listOrderDetails),
+                )
+              ],
+            ),
           ),
         ),
       ),
