@@ -12,7 +12,42 @@ class PlacingItemsScreenPresenter {
     model = PlacingItemsScreenModel();
   }
 
-  Future<bool> onPressConfirm(String idToken, PlacingItems placingItems) async {
+  Future<bool> onPressConfirmMove(
+      String idToken, PlacingItems placingItems) async {
+    try {
+      view.updateLoading();
+      if (placingItems.storedItems['totalQuantity'] > 0) {
+        view.updateError('Vui lòng đặt hết hàng vào không gian');
+        return false;
+      }
+      final listAssigned = placingItems.placingItems['floors'].map((e) {
+        return {
+          "oldFloorId": e['idFloor'],
+          "orderDetailId": e['id'],
+          "floorId": e['floorId'],
+          "serviceType": e['serviceType']
+        };
+      }).toList();
+      final response = await model.moveOrderToAnotherFloor(
+          idToken, {"orderDetailAssignFloor": listAssigned});
+      final result = ResponseHandle.handle(response);
+      if (result['status'] == 'success') {
+        return true;
+      } else {
+        view.updateError(result['data']);
+        return false;
+      }
+    } catch (e) {
+      log(e.toString());
+      view.updateError('Xảy ra lỗi hệ thống. Vui lòng thử lại sau');
+      return false;
+    } finally {
+      view.updateLoading();
+    }
+  }
+
+  Future<bool> onPressConfirmStore(
+      String idToken, PlacingItems placingItems) async {
     try {
       view.updateLoading();
       if (placingItems.storedItems['totalQuantity'] > 0) {

@@ -17,4 +17,12 @@ class PlacingItemsScreenModel {
       log(e.toString());
     }
   }
+
+  Future<dynamic> moveOrderToAnotherFloor(String idToken, listAssigned) async {
+    try {
+      return await ApiServices.assignOrderToAnotherFloor(listAssigned, idToken);
+    } catch (e) {
+      log(e.toString());
+    }
+  }
 }

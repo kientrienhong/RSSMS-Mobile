@@ -10,6 +10,7 @@ class OrderDetail {
   String productName;
   int price;
   int amount;
+  final String? idFloor;
   int productType;
   final String note;
   final List<ImageEntity> images;
@@ -18,14 +19,17 @@ class OrderDetail {
   final double? length;
   String serviceImageUrl;
   List<Product>? listAdditionService;
+  final int? status;
   OrderDetail(
       {required this.id,
       required this.productId,
       this.width,
       this.height,
+      required this.status,
       this.length,
       required this.productName,
       required this.price,
+      this.idFloor,
       required this.amount,
       required this.serviceImageUrl,
       required this.productType,
@@ -43,6 +47,8 @@ class OrderDetail {
     int? productType,
     double? height,
     double? length,
+    String? idFloor,
+    int? status,
     double? width,
     String? note,
     List<ImageEntity>? images,
@@ -53,6 +59,8 @@ class OrderDetail {
         id: id ?? this.id,
         height: height ?? this.height,
         length: length ?? this.length,
+        status: status ?? this.status,
+        idFloor: idFloor ?? this.idFloor,
         width: width ?? this.width,
         productId: productId ?? this.productId,
         productName: productName ?? this.productName,
@@ -72,9 +80,11 @@ class OrderDetail {
       'serviceName': productName,
       'price': price,
       'height': height,
+      'idFloor': idFloor,
       'width': width,
       'length': length,
       'amount': amount,
+      'orderStatus': status,
       'serviceImageUrl': serviceImageUrl,
       'serviceType': productType,
       'note': note,
@@ -86,6 +96,8 @@ class OrderDetail {
   factory OrderDetail.formRequest(Map<String, dynamic> map) {
     return OrderDetail(
       id: map['id'] ?? '',
+      status: map['status']?.toInt() ?? 0,
+      idFloor: '',
       note: map['note'] ?? '',
       width: map['serviceWidth']?.toDouble() ?? 0,
       height: map['serviceHeight']?.toDouble() ?? 0,
@@ -127,6 +139,8 @@ class OrderDetail {
     return OrderDetail(
       id: map['id'] ?? '',
       note: map['note'] ?? '',
+      status: map['orderStatus']?.toInt() ?? 0,
+      idFloor: map['idFloor'] ?? '',
       width: map['width']?.toDouble() ?? 0,
       height: map['height']?.toDouble() ?? 0,
       length: map['length']?.toDouble() ?? 0,

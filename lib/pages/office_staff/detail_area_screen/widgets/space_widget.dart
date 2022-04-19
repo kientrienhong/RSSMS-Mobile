@@ -9,7 +9,14 @@ import 'package:rssms/pages/office_staff/detail_area_screen/widgets/floor_widget
 class SpaceWidget extends StatefulWidget {
   final Space space;
   final String areaName;
-  const SpaceWidget({Key? key, required this.space, required this.areaName})
+  final Function getListSpace;
+  final String idArea;
+  const SpaceWidget(
+      {Key? key,
+      required this.getListSpace,
+      required this.space,
+      required this.idArea,
+      required this.areaName})
       : super(key: key);
 
   @override
@@ -19,7 +26,6 @@ class SpaceWidget extends StatefulWidget {
 class _SpaceWidgetState extends State<SpaceWidget> {
   @override
   Widget build(BuildContext context) {
-    final deviceSize = MediaQuery.of(context).size;
     return Container(
         margin: const EdgeInsets.symmetric(vertical: 16),
         decoration: BoxDecoration(
@@ -93,6 +99,8 @@ class _SpaceWidgetState extends State<SpaceWidget> {
                   return FloorWidget(
                     floor: widget.space.floors[index],
                     areaName: widget.areaName,
+                    getListSpace: widget.getListSpace,
+                    idArea: widget.idArea,
                   );
                 })
           ],

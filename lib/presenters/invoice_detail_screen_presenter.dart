@@ -66,6 +66,7 @@ class InvoiceDetailScreenPresenter {
               productId: ele.id,
               productName: ele.name,
               price: ele.price,
+              status: -1,
               amount: ele.quantity!,
               serviceImageUrl: ele.imageUrl,
               productType: ele.type,
