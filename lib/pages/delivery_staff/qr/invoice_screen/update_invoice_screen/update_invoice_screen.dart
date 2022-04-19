@@ -100,6 +100,7 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
           productId: product.id,
           productName: product.productName,
           price: product.price,
+          status: -1,
           amount: 1,
           serviceImageUrl: product.serviceImageUrl,
           productType: product.productType,

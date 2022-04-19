@@ -26,6 +26,7 @@ class PaymentMethodBookingScreenPresenter {
               productId: e['id'],
               productName: e['name'],
               price: e['price'],
+              status: -1,
               amount: e['quantity'],
               serviceImageUrl: e['imageUrl'],
               productType: e['type'],

@@ -34,6 +34,7 @@ class AddProduct extends StatelessWidget {
             id: invoiceTemp.orderDetails.length.toString(),
             productId: product.id,
             productName: product.name,
+            status: -1,
             price: product.price,
             height: product.height,
             width: product.width,
@@ -48,6 +49,7 @@ class AddProduct extends StatelessWidget {
             id: invoiceTemp.orderDetails.length.toString(),
             productId: product.id,
             productName: product.name,
+            status: -1,
             price: product.price,
             width: product.width,
             length: product.length,
@@ -96,6 +98,7 @@ class AddProduct extends StatelessWidget {
           invoiceTemp.orderDetails.add(OrderDetail(
               id: '${invoiceTemp.orderDetails.length.toString()} + ${product.name}',
               productId: product.id,
+              status: -1,
               productName: product.name,
               price: product.price,
               amount: 1,

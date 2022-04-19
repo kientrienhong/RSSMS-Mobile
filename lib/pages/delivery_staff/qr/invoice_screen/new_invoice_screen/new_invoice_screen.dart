@@ -11,14 +11,13 @@ import 'package:rssms/constants/constants.dart' as constants;
 import 'package:rssms/pages/time_line/time_line_screen.dart';
 
 class NewInvoiceScreen extends StatelessWidget {
-  Invoice invoice;
-  NewInvoiceScreen({Key? key, required this.invoice}) : super(key: key);
+  final Invoice invoice;
+  const NewInvoiceScreen({Key? key, required this.invoice}) : super(key: key);
   Invoice formatNewInvoice() {
     Invoice invoiceTemp = invoice.copyWith();
 
     List<OrderDetail> orderDetails = [];
-
-    invoiceTemp.orderDetails.forEach((element) {
+    for (var element in invoiceTemp.orderDetails) {
       int indexFound =
           orderDetails.indexWhere((ele) => ele.productId == element.productId);
 
@@ -29,13 +28,14 @@ class NewInvoiceScreen extends StatelessWidget {
       }
 
       if (element.productType != constants.typeProduct.accessory.index) {
-        element.listAdditionService!.forEach((ele) {
+        for (var ele in element.listAdditionService!) {
           int indexFound1 =
               orderDetails.indexWhere((ele1) => ele1.productId == ele.id);
           if (indexFound1 == -1) {
             orderDetails.add(OrderDetail(
                 id: '0',
                 productId: ele.id,
+                status: -1,
                 productName: ele.name,
                 price: ele.price,
                 amount: ele.quantity!,
@@ -46,10 +46,9 @@ class NewInvoiceScreen extends StatelessWidget {
           } else {
             orderDetails[indexFound1].amount += ele.quantity!;
           }
-        });
+        }
       }
-    });
-
+    }
     return invoiceTemp.copyWith(orderDetails: orderDetails);
   }
 

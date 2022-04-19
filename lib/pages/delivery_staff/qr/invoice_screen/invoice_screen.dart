@@ -39,6 +39,7 @@ class _QRInvoiceDetailsScreenState extends State<QRInvoiceDetailsScreen> {
               productId: ele.id,
               productName: ele.name,
               price: ele.price,
+              status: -1,
               amount: ele.quantity!,
               serviceImageUrl: ele.imageUrl,
               productType: ele.type,

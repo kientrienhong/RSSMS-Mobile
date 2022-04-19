@@ -68,6 +68,26 @@ const listStatusOrder = [
   {'color': CustomColor.red, 'name': 'Đã thanh lý'},
 ];
 
+const listStatusOfOrderDetail = [
+  {'name': "Đang được gỡ xuống", 'color': CustomColor.brown},
+  {
+    'name': "Đang trong quá trình đặt lên kệ",
+    'color': CustomColor.green,
+  },
+  {
+    'name': "Đã đặt lên kệ",
+    'color': CustomColor.blue,
+  },
+  {
+    'name': "Sắp hết hạn",
+    'color': CustomColor.orange,
+  },
+  {
+    'name': "Đã hết hạn",
+    'color': CustomColor.red,
+  },
+];
+
 const listAreaType = [
   {'color': CustomColor.purple, 'name': 'Kho tự quản'},
   {'color': CustomColor.blue, 'name': 'Giữ đồ thuê'},

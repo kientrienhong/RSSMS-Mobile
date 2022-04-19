@@ -137,15 +137,24 @@ class _ImageWidgetState extends State<ImageWidget> {
     Users user = Provider.of<Users>(context, listen: false);
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 4),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          color: CustomColor.white,
-          boxShadow: [
-            BoxShadow(
-                blurRadius: 14,
-                color: const Color(0x00000000).withOpacity(0.16),
-                offset: const Offset(0, 1)),
-          ]),
+      decoration: widget.orderDetail.status == -1
+          ? BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              color: CustomColor.white,
+              boxShadow: [
+                  BoxShadow(
+                      blurRadius: 14,
+                      color: const Color(0x00000000).withOpacity(0.16),
+                      offset: const Offset(0, 1)),
+                ])
+          : BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              color: CustomColor.white,
+              border: Border.all(
+                  color: constants
+                          .listStatusOfOrderDetail[widget.orderDetail.status!]
+                      ['color'] as Color,
+                  width: 2)),
       child: ExpansionTile(
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -170,7 +179,10 @@ class _ImageWidgetState extends State<ImageWidget> {
                   color: Colors.black38,
                   context: context,
                   fontSize: 14),
-            if (user.roleName == 'Office Staff' && widget.movingItem != null)
+            if (user.roleName == 'Office Staff' &&
+                widget.movingItem != null &&
+                widget.orderDetail.status != 0 &&
+                widget.orderDetail.status != 1)
               CustomButton(
                   height: 24,
                   text: 'Di chuyển',

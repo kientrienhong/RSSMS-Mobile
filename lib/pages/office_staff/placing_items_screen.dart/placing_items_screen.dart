@@ -62,8 +62,13 @@ class _PlacingItemsScreenState extends State<PlacingItemsScreen>
   void onClickConfirm() async {
     final placingItems = Provider.of<PlacingItems>(context, listen: false);
     final user = Provider.of<Users>(context, listen: false);
-
-    bool result = await _presenter.onPressConfirm(user.idToken!, placingItems);
+    bool result = false;
+    if (placingItems.isMoving) {
+      result = await _presenter.onPressConfirmMove(user.idToken!, placingItems);
+    } else {
+      result =
+          await _presenter.onPressConfirmStore(user.idToken!, placingItems);
+    }
     if (result) {
       Navigator.pop(context, result);
       CustomSnackBar.buildSnackbar(
