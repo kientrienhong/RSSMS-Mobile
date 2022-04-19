@@ -70,7 +70,7 @@ class _PaymentMethodBookingScreenState extends State<PaymentMethodBookingScreen>
       Users users = Provider.of<Users>(context, listen: false);
       if (_model.currentIndexPaymentMethod == PAYMENT_METHOD.cash) {
         orderBooking.setOrderBooking(
-            orderBooking: orderBooking.copyWith(isPaid: false, ));
+            orderBooking: orderBooking.copyWith(isPaid: false));
         bool isSuccess = await _presenter.createOrder(orderBooking, users);
 
         if (isSuccess) {

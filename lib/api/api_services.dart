@@ -787,4 +787,21 @@ class ApiServices {
       throw Exception(e.toString());
     }
   }
+
+  static Future<dynamic> getAccountbyId(String idToken, String id) {
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        'Authorization': 'Bearer $idToken'
+      };
+
+      final url = Uri.parse('$_domain/api/v1/accounts/' + id.toString());
+      return http.get(
+        url,
+        headers: headers,
+      );
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
 }

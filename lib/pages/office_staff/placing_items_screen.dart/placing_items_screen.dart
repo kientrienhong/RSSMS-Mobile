@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_app_bar.dart';
 import 'package:rssms/common/custom_button.dart';
@@ -35,7 +37,7 @@ class _PlacingItemsScreenState extends State<PlacingItemsScreen>
     implements PlacingItemsScreenView {
   late PlacingItemsScreenPresenter _presenter;
   late PlacingItemsScreenModel _model;
-
+  String qrCode = "";
   @override
   void initState() {
     _presenter = PlacingItemsScreenPresenter();
@@ -66,8 +68,8 @@ class _PlacingItemsScreenState extends State<PlacingItemsScreen>
     if (placingItems.isMoving) {
       result = await _presenter.onPressConfirmMove(user.idToken!, placingItems);
     } else {
-      result =
-          await _presenter.onPressConfirmStore(user.idToken!, placingItems);
+      result = await _presenter.onPressConfirmStore(
+          user.idToken!, placingItems, _model.deliveryStaff.id);
     }
     if (result) {
       Navigator.pop(context, result);
@@ -89,6 +91,50 @@ class _PlacingItemsScreenState extends State<PlacingItemsScreen>
         context: context,
         message: 'Hủy thao tác thành công',
         color: CustomColor.green);
+  }
+
+  Future<void> scanQR(Size deviceSize) async {
+    String barcodeScanRes;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+          '#ff6666', 'Cancel', true, ScanMode.QR);
+    } on PlatformException {
+      barcodeScanRes = 'Failed to get platform version.';
+    }
+
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    if (!mounted) return;
+
+    if (barcodeScanRes == '-1') {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Không tìm thấy nhân viên"),
+      ));
+      return;
+    }
+    setState(() {
+      qrCode = barcodeScanRes;
+    });
+    if (qrCode.split("_")[1] == "user") {
+      Users user = Provider.of<Users>(context, listen: false);
+      bool result =
+          await _presenter.getStaffDetail(user.idToken!, qrCode.split("_")[0]);
+      if (!result) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text("Không tìm thấy nhân viên"),
+        ));
+        return;
+      } else {
+        setState(() {});
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        backgroundColor: CustomColor.red,
+        content: Text("Vui lòng quét mã trên nhân viên vận chuyển!"),
+      ));
+    }
   }
 
   @override
@@ -175,54 +221,107 @@ class _PlacingItemsScreenState extends State<PlacingItemsScreen>
                   ])
                 : Consumer<PlacingItems>(
                     builder: (_, items, child) => ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: items.placingItems['floors'].length,
-                        itemBuilder: (_, index) => Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    CustomText(
-                                      text: 'Vị trí: ',
-                                      color: CustomColor.black,
-                                      context: context,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                    CustomSizedBox(
-                                      context: context,
-                                      width: 8,
-                                    ),
-                                    CustomText(
-                                      text:
-                                          '${items.placingItems['floors'][index]['areaName']} / ${items.placingItems['floors'][index]['floorName']}',
-                                      color: CustomColor.blue,
-                                      context: context,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                    )
-                                  ],
-                                ),
-                                CustomSizedBox(
+                      shrinkWrap: true,
+                      itemCount: items.placingItems['floors'].length,
+                      itemBuilder: (_, index) => Column(
+                        children: [
+                          Row(
+                            children: [
+                              CustomText(
+                                text: 'Vị trí: ',
+                                color: CustomColor.black,
+                                context: context,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              CustomSizedBox(
+                                context: context,
+                                width: 8,
+                              ),
+                              CustomText(
+                                text:
+                                    '${items.placingItems['floors'][index]['areaName']} / ${items.placingItems['floors'][index]['floorName']}',
+                                color: CustomColor.blue,
+                                context: context,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              )
+                            ],
+                          ),
+                          CustomSizedBox(
+                            context: context,
+                            height: 8,
+                          ),
+                          ImageWidget(
+                              removePlacingItem: !widget.isView
+                                  ? () {
+                                      items.removePlacing(
+                                          items.placingItems['floors'][index]
+                                              ['idPlacing']);
+                                      CustomSnackBar.buildSnackbar(
+                                          context: context,
+                                          message: 'Hoàn tác thành công',
+                                          color: CustomColor.green);
+                                    }
+                                  : null,
+                              orderDetail: OrderDetail.fromMap(
+                                  items.placingItems['floors'][index]),
+                              isView: true),
+                          CustomSizedBox(
+                            context: context,
+                            height: 8,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              CustomText(
+                                  text: "Thông tin vận chuyển",
+                                  color: CustomColor.black,
                                   context: context,
-                                  height: 8,
-                                ),
-                                ImageWidget(
-                                    removePlacingItem: !widget.isView
-                                        ? () {
-                                            items.removePlacing(
-                                                items.placingItems['floors']
-                                                    [index]['idPlacing']);
-                                            CustomSnackBar.buildSnackbar(
-                                                context: context,
-                                                message: 'Hoàn tác thành công',
-                                                color: CustomColor.green);
-                                          }
-                                        : null,
-                                    orderDetail: OrderDetail.fromMap(
-                                        items.placingItems['floors'][index]),
-                                    isView: true),
-                              ],
-                            ))),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16),
+                              CustomButton(
+                                  height: 20,
+                                  text: 'Quét QR',
+                                  width: deviceSize.width / 3 - 50,
+                                  onPressFunction: () {
+                                    scanQR(deviceSize);
+                                  },
+                                  isLoading: _model.isLoading,
+                                  textColor: CustomColor.white,
+                                  buttonColor: CustomColor.blue,
+                                  textSize: 12,
+                                  borderRadius: 4),
+                            ],
+                          ),
+                          CustomSizedBox(
+                            context: context,
+                            height: 16,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              CustomText(
+                                  text: "Người vận chuyển",
+                                  color: CustomColor.black,
+                                  context: context,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16),
+                              CustomText(
+                                  text: _model.deliveryStaff.name == ''
+                                      ? '(Trống)'
+                                      : _model.deliveryStaff.name,
+                                  color: _model.deliveryStaff.name == ''
+                                      ? Colors.grey
+                                      : CustomColor.black,
+                                  context: context,
+                                  fontSize: 16)
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
             CustomSizedBox(
               context: context,
               height: 16,
