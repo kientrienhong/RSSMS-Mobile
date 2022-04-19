@@ -262,6 +262,24 @@ class ApiServices {
     }
   }
 
+  static Future<dynamic> assignOrderToFloor(dataRequest, String idToken) {
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        'Authorization': 'Bearer $idToken'
+      };
+
+      final url = Uri.parse('$_domain/api/v1/orders/assign to floor');
+      return http.post(
+        url,
+        body: jsonEncode(dataRequest),
+        headers: headers,
+      );
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
   static Future<dynamic> getRequestbyId(String idToken, String id) {
     try {
       Map<String, String> headers = {

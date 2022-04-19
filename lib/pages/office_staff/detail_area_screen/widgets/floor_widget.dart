@@ -5,10 +5,13 @@ import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/models/entity/floor.dart';
 import 'package:rssms/pages/office_staff/floor_details_screen/floor_detail_screen.dart';
+import 'package:rssms/pages/office_staff/placing_items_screen.dart/placing_items_screen.dart';
 
 class FloorWidget extends StatelessWidget {
   final Floor floor;
-  const FloorWidget({Key? key, required this.floor}) : super(key: key);
+  final String areaName;
+  const FloorWidget({Key? key, required this.floor, required this.areaName})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +49,7 @@ class FloorWidget extends StatelessWidget {
                 height: 80,
                 width: 80,
                 child: CircularProgressIndicator(
-                  value: floor.usage,
+                  value: floor.usage / 100,
                   color: CustomColor.blue,
                 ),
               ),
@@ -106,7 +109,18 @@ class FloorWidget extends StatelessWidget {
                   height: 24,
                   text: 'Lưu trữ đồ',
                   width: deviceSize.width / 3 - 40,
-                  onPressFunction: () {},
+                  onPressFunction: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => PlacingItemsScreen(
+                                areaName: areaName,
+                                floorId: floor.id,
+                                floorName: floor.name,
+                                isView: false,
+                              )),
+                    );
+                  },
                   isLoading: false,
                   textColor: CustomColor.white,
                   buttonColor: CustomColor.blue,

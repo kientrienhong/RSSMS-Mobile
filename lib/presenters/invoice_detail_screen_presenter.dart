@@ -42,6 +42,7 @@ class InvoiceDetailScreenPresenter {
       if (response.statusCode == 200) {
         final decodedResponse = jsonDecode(response.body);
         Invoice invoice = Invoice.fromMap(decodedResponse);
+        model.orginalInvoice = invoice;
         Invoice updatedInvoice = formatUIInvoice(invoice);
         view.updateView(formatItemTabInvoice(invoice), updatedInvoice);
       }

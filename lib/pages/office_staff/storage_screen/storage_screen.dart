@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
+import 'package:rssms/common/store_items_button.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/models/storage_screen_model.dart';
 import 'package:rssms/pages/office_staff/storage_screen/widgets/area_widget.dart';
@@ -73,14 +74,24 @@ class _StorageScreenState extends State<StorageScreen>
               children: [
                 CustomSizedBox(
                   context: context,
-                  height: 32,
+                  height: 48,
                 ),
-                CustomText(
-                  text: 'Trang danh sách khu vực ',
-                  color: CustomColor.black,
-                  context: context,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CustomText(
+                      text: 'Trang danh sách khu vực ',
+                      color: CustomColor.black,
+                      context: context,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    CustomSizedBox(
+                      context: context,
+                      height: 8,
+                    ),
+                    const StoreItemsButton()
+                  ],
                 ),
                 CustomSizedBox(
                   context: context,

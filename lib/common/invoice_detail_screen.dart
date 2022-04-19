@@ -14,11 +14,11 @@ import 'package:rssms/presenters/invoice_detail_screen_presenter.dart';
 import 'package:rssms/views/invoice_detail_screen_view.dart';
 
 class InvoiceDetailScreen extends StatefulWidget {
-  Invoice? invoice;
+  final Invoice invoice;
 
-  InvoiceDetailScreen({
+  const InvoiceDetailScreen({
     Key? key,
-    this.invoice,
+    required this.invoice,
   }) : super(key: key);
 
   @override
@@ -53,7 +53,7 @@ class _InvoiceDetailScreenState extends State<InvoiceDetailScreen>
     _presenter.view = this;
     Users user = Provider.of<Users>(context, listen: false);
 
-    _presenter.loadingDetailInvoice(widget.invoice!.id, user.idToken!);
+    _presenter.loadingDetailInvoice(widget.invoice.id, user.idToken!);
     _index = 0;
   }
 
@@ -137,6 +137,7 @@ class _InvoiceDetailScreenState extends State<InvoiceDetailScreen>
                       _index == 0
                           ? InvoiceTab(
                               deviceSize: deviceSize,
+                              orginalInvoice: _model.orginalInvoice,
                               invoice: _model.showUIInvoice,
                             )
                           : ItemTab(invoice: _model.invoice)

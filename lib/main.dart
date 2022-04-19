@@ -6,6 +6,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:rssms/models/entity/add_image.dart';
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/order_booking.dart';
+import 'package:rssms/models/entity/placing_items.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_screen/update_invoice_screen.dart';
 
@@ -32,6 +33,9 @@ void main() async {
       ),
       ChangeNotifierProvider<OrderBooking>(
         create: (_) => OrderBooking.empty(TypeOrder.doorToDoor),
+      ),
+      ChangeNotifierProvider<PlacingItems>(
+        create: (_) => PlacingItems.empty(),
       ),
       ChangeNotifierProvider<AddedImage>(
         create: (_) => AddedImage.empty(),
