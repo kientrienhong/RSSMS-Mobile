@@ -151,7 +151,7 @@ class _ScheduleWidgetState extends State<ScheduleWidget>
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => QRInvoiceDetailsScreen(
+            builder: (context) => const QRInvoiceDetailsScreen(
               isScanQR: false,
               isDone: false,
             ),

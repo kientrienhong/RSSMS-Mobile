@@ -1,4 +1,4 @@
-import 'dart:convert';
+import 'dart:convert' as convert;
 
 import 'dart:io';
 
@@ -43,10 +43,10 @@ class ImageEntity {
         name: map['name'] ?? '');
   }
 
-  String toJson() => json.encode(toMap());
+  String toJson() => convert.json.encode(toMap());
 
   factory ImageEntity.fromJson(String source) =>
-      ImageEntity.fromMap(json.decode(source));
+      ImageEntity.fromMap(convert.json.decode(source));
 
   @override
   String toString() => 'ImageEntity(id: $id, url: $url, name: $name)';

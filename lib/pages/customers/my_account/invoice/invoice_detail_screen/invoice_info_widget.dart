@@ -9,10 +9,11 @@ import 'package:rssms/pages/time_line/time_line_screen.dart';
 import 'package:rssms/constants/constants.dart';
 
 class InvoiceInfoWidget extends StatelessWidget {
-  Invoice? invoice;
+  final Invoice invoice;
   final Size deviceSize;
 
-  InvoiceInfoWidget({Key? key, required this.invoice, required this.deviceSize})
+  const InvoiceInfoWidget(
+      {Key? key, required this.invoice, required this.deviceSize})
       : super(key: key);
 
   @override
@@ -30,8 +31,8 @@ class InvoiceInfoWidget extends StatelessWidget {
           Row(
             children: [
               CustomText(
-                  text: listStatusOrder[invoice!.status]['name']! as String,
-                  color: listStatusOrder[invoice!.status]['color'] as Color,
+                  text: listStatusOrder[invoice.status]['name']! as String,
+                  color: listStatusOrder[invoice.status]['color'] as Color,
                   context: context,
                   fontWeight: FontWeight.bold,
                   fontSize: 16),
@@ -42,8 +43,8 @@ class InvoiceInfoWidget extends StatelessWidget {
                 margin: const EdgeInsets.symmetric(horizontal: 4),
               ),
               CustomText(
-                  text: mapIsPaid[invoice!.isPaid]!['name']! as String,
-                  color: mapIsPaid[invoice!.isPaid]!['color'] as Color,
+                  text: mapIsPaid[invoice.isPaid]!['name']! as String,
+                  color: mapIsPaid[invoice.isPaid]!['color'] as Color,
                   context: context,
                   fontWeight: FontWeight.bold,
                   fontSize: 16),
@@ -65,7 +66,7 @@ class InvoiceInfoWidget extends StatelessWidget {
               fontWeight: FontWeight.bold,
               fontSize: 17),
           CustomText(
-              text: DateFormatHelper.formatToVNDay(invoice!.deliveryDate),
+              text: DateFormatHelper.formatToVNDay(invoice.deliveryDate),
               color: Colors.black,
               context: context,
               fontSize: 16),
@@ -85,9 +86,9 @@ class InvoiceInfoWidget extends StatelessWidget {
               fontWeight: FontWeight.bold,
               fontSize: 17),
           CustomText(
-              text: invoice!.deliveryTime.isEmpty
+              text: invoice.deliveryTime.isEmpty
                   ? 'Khách tự vận chuyển'
-                  : invoice!.deliveryTime,
+                  : invoice.deliveryTime,
               color: Colors.black,
               context: context,
               fontSize: 16),
@@ -107,7 +108,7 @@ class InvoiceInfoWidget extends StatelessWidget {
               fontWeight: FontWeight.bold,
               fontSize: 17),
           CustomText(
-              text: DateFormatHelper.formatToVNDay(invoice!.returnDate),
+              text: DateFormatHelper.formatToVNDay(invoice.returnDate),
               color: Colors.black,
               context: context,
               fontSize: 16),
@@ -129,7 +130,7 @@ class InvoiceInfoWidget extends StatelessWidget {
           SizedBox(
             width: deviceSize.width * 1.5 / 3,
             child: CustomText(
-              text: invoice!.deliveryAddress,
+              text: invoice.deliveryAddress,
               color: CustomColor.black,
               textAlign: TextAlign.right,
               context: context,
@@ -163,7 +164,7 @@ class InvoiceInfoWidget extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                         builder: (context) => TimeLineScreen(
-                              invoiceId: invoice!.id,
+                              invoiceId: invoice.id,
                             )));
               },
               width: deviceSize.width / 3,

@@ -13,8 +13,8 @@ import 'package:rssms/presenters/dialog_update_real_size_presenter.dart';
 import 'package:rssms/views/dialog_update_real_size.dart';
 
 class DialogUpdateRealSize extends StatefulWidget {
-  OrderDetail? orderDetail;
-  DialogUpdateRealSize({Key? key, this.orderDetail}) : super(key: key);
+  final OrderDetail? orderDetail;
+  const DialogUpdateRealSize({Key? key, this.orderDetail}) : super(key: key);
 
   @override
   State<DialogUpdateRealSize> createState() => _DialogUpdateRealSizeState();

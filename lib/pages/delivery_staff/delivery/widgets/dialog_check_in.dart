@@ -13,8 +13,8 @@ import 'package:rssms/presenters/dialog_check_in_presenter.dart';
 import 'package:rssms/views/dialog_confirm_view.dart';
 
 class DialogCheckIn extends StatefulWidget {
-  String idRequest;
-  DialogCheckIn({Key? key, required this.idRequest}) : super(key: key);
+  final String idRequest;
+  const DialogCheckIn({Key? key, required this.idRequest}) : super(key: key);
 
   @override
   State<DialogCheckIn> createState() => _DialogCheckInState();

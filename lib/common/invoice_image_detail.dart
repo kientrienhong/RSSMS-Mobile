@@ -5,9 +5,10 @@ import 'package:rssms/common/custom_input.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 
 class InvoiceImageDetail extends StatefulWidget {
-  Map<String, dynamic> image;
+  final Map<String, dynamic> image;
   final bool isDisable;
-  InvoiceImageDetail({Key? key, required this.image, required this.isDisable})
+  const InvoiceImageDetail(
+      {Key? key, required this.image, required this.isDisable})
       : super(key: key);
 
   @override

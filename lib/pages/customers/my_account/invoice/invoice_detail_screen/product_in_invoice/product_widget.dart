@@ -6,9 +6,9 @@ import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/models/entity/order_detail.dart';
 
 class ProductInvoiceWidget extends StatelessWidget {
-  OrderDetail? product;
+  final OrderDetail? product;
 
-  ProductInvoiceWidget({Key? key, this.product}) : super(key: key);
+  const ProductInvoiceWidget({Key? key, this.product}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;

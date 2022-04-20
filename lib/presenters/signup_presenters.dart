@@ -38,7 +38,7 @@ class SignUpPresenter {
         model.controllerBirthDate.text);
   }
 
-  Future<dynamic> handleSignUp() async {
+  Future<Users?> handleSignUp() async {
     view.updateLoading();
     unfocusAllFocusNode();
     model.errorMsg = "";

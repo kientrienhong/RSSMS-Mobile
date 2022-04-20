@@ -14,8 +14,8 @@ class PaymentMethodBookingScreenPresenter {
   }
 
   void formatDisplayInvoice(OrderBooking orderBooking) {
-    orderBooking.productOrder.keys.forEach((key) {
-      orderBooking.productOrder[key]!.forEach((e) {
+    for (var key in orderBooking.productOrder.keys) {
+      for (var e in orderBooking.productOrder[key]!) {
         int indexFound = model.invoiceDisplay.orderDetails
             .indexWhere((element) => element.productId == e['id']);
         if (indexFound != -1) {
@@ -33,8 +33,8 @@ class PaymentMethodBookingScreenPresenter {
               note: e['note'] ?? '',
               images: []));
         }
-      });
-    });
+      }
+    }
 
     model.invoiceDisplay = model.invoiceDisplay.copyWith(
       deliveryAddress: orderBooking.addressDelivery,

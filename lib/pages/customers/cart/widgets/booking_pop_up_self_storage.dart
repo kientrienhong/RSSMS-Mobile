@@ -108,10 +108,9 @@ class _BookingPopUpSelfStorageState extends State<BookingPopUpSelfStorage>
     OrderBooking orderBooking =
         Provider.of<OrderBooking>(context, listen: false);
     var sum = 0;
-
-    list.forEach((element) {
+    for (var element in list) {
       sum += element['price'] * element['quantity'] as int;
-    });
+    }
     if (type == 'product') {
       sum *= orderBooking.months;
     }
@@ -124,18 +123,17 @@ class _BookingPopUpSelfStorageState extends State<BookingPopUpSelfStorage>
         Provider.of<OrderBooking>(context, listen: false);
 
     List listKeys = orderBooking.productOrder.keys.toList();
-
-    listKeys.forEach((element) {
+    for (var element in listKeys) {
       if (element == 'product') {
-        orderBooking.productOrder[element]!.forEach((ele) {
+        for (var ele in orderBooking.productOrder[element]!) {
           sum += ele['price'] * ele['quantity'] * orderBooking.months as int;
-        });
+        }
       } else {
-        orderBooking.productOrder[element]!.forEach((ele) {
+        for (var ele in orderBooking.productOrder[element]!) {
           sum += ele['price'] * ele['quantity'] as int;
-        });
+        }
       }
-    });
+    }
     return sum;
   }
 

@@ -9,8 +9,8 @@ import 'package:rssms/presenters/timeline_presenter.dart';
 import 'package:rssms/views/timeline_view.dart';
 
 class TimeLineScreen extends StatefulWidget {
-  String invoiceId;
-  TimeLineScreen({Key? key, required this.invoiceId}) : super(key: key);
+  final String invoiceId;
+  const TimeLineScreen({Key? key, required this.invoiceId}) : super(key: key);
 
   @override
   State<TimeLineScreen> createState() => _TimeLineScreenState();

@@ -66,8 +66,7 @@ class InvoiceUpdatePresenter {
     invoice = invoice.copyWith();
 
     double price = 0;
-
-    invoice.orderDetails.forEach((element) {
+    for (var element in invoice.orderDetails) {
       if (element.productType == typeProduct.handy.index ||
           element.productType == typeProduct.unweildy.index) {
         price += element.price * (invoice.durationDays / 30).ceil();
@@ -76,14 +75,13 @@ class InvoiceUpdatePresenter {
       } else if (element.productType == typeProduct.selfStorage.index) {
         price += element.price * invoice.durationMonths;
       }
-
-      element.listAdditionService!.forEach((ele1) {
+      for (var ele1 in element.listAdditionService!) {
         if (ele1.type == typeProduct.accessory.index ||
             ele1.type == typeProduct.services.index) {
           price += ele1.price * ele1.quantity!;
         }
-      });
-    });
+      }
+    }
 
     final orderDetails = [];
 
@@ -93,7 +91,7 @@ class InvoiceUpdatePresenter {
           await ImageHandle.convertImageToBase64(element);
       return element.copyWith(images: listImageEntity);
     }).toList());
-    newListOrderDetails.forEach((element) {
+    for (var element in newListOrderDetails) {
       final orderDetailImages = element.images.map((e) {
         return {"file": e.base64, "note": e.note};
       }).toList();
@@ -105,14 +103,13 @@ class InvoiceUpdatePresenter {
           "totalPrice": element.price
         }
       ];
-
-      element.listAdditionService!.forEach((element) {
+      for (var element in element.listAdditionService!) {
         orderDetailServices.add({
           "serviceId": element.id,
           "amount": element.quantity!,
           "totalPrice": element.price
         });
-      });
+      }
 
       orderDetails.add({
         "height": element.height,
@@ -121,7 +118,7 @@ class InvoiceUpdatePresenter {
         "orderDetailImages": orderDetailImages,
         "orderDetailServices": orderDetailServices
       });
-    });
+    }
 
     return {
       "customerId": invoice.customerId,
@@ -205,23 +202,6 @@ class InvoiceUpdatePresenter {
     }
 
     return false;
-  }
-
-  Future<bool?> sendNoti(Users user, Invoice invoice) async {
-    try {
-      view.updateLoadingUpdate();
-      final dataRequest = await formatDataCreateOrder(invoice);
-
-      // var response = await model.sendNotification(dataRequest, user.idToken!);
-      // if (response.statusCode == 200) {
-      //   return true;
-      // }
-      return false;
-    } catch (e) {
-      throw Exception(e);
-    } finally {
-      view.updateLoadingUpdate();
-    }
   }
 
   Future<bool?> doneOrder(Users user, Invoice invoice) async {

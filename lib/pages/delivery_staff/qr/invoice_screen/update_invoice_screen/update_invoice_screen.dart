@@ -232,23 +232,6 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
         .toList();
   }
 
-  void sendNoti() async {
-    try {
-      Invoice invoice = Provider.of<Invoice>(context, listen: false);
-
-      Users user = Provider.of<Users>(context, listen: false);
-      var response = await _presenter.sendNoti(user, invoice);
-      if (response == true) {
-        CustomSnackBar.buildSnackbar(
-            context: context,
-            message: 'Gửi thông báo thành công',
-            color: CustomColor.green);
-      }
-    } catch (e) {
-      log(e.toString());
-    }
-  }
-
   void deleteImageEntity(String id) {
     Invoice invoice = Provider.of<Invoice>(context, listen: false);
     Invoice invoiceTemp = invoice.copyWith();
@@ -687,7 +670,7 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                               return;
                             }
                             bool isValid = true;
-                            invoice.orderDetails.forEach((element) {
+                            for (var element in invoice.orderDetails) {
                               if (element.height == 0 &&
                                   element.width == 0 &&
                                   element.length == 0 &&
@@ -697,7 +680,7 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                                     'Vui lòng nhập kích thước của các dịch vụ');
                                 isValid = false;
                               }
-                            });
+                            }
 
                             if (!isValid) {
                               return;

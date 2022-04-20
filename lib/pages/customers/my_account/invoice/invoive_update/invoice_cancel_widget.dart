@@ -17,9 +17,10 @@ import 'package:rssms/views/invoice_cancel_view.dart';
 import 'package:rssms/constants/constants.dart' as constants;
 
 class InvoiceCancelWidget extends StatefulWidget {
-  Invoice? invoice;
+  final Invoice? invoice;
 
-  InvoiceCancelWidget({Key? key, required this.invoice}) : super(key: key);
+  const InvoiceCancelWidget({Key? key, required this.invoice})
+      : super(key: key);
 
   @override
   _InvoiceCancelWidgetState createState() => _InvoiceCancelWidgetState();

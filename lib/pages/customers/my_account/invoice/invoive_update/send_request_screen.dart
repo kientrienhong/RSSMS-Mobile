@@ -8,9 +8,9 @@ import 'package:rssms/pages/customers/my_account/invoice/invoive_update/invoive_
 import 'package:rssms/pages/customers/my_account/invoice/invoive_update/invoive_extend_widget.dart';
 
 class SendRequestScreen extends StatefulWidget {
-  Invoice? invoice;
+  final Invoice? invoice;
 
-  SendRequestScreen({Key? key, required this.invoice}) : super(key: key);
+  const SendRequestScreen({Key? key, required this.invoice}) : super(key: key);
 
   @override
   SendRequestScreenState createState() => SendRequestScreenState();
