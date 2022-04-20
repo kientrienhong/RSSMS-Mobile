@@ -21,15 +21,14 @@ class UpdateImageInvoice extends StatefulWidget {
 }
 
 class _InvoiceImageDetailState extends State<UpdateImageInvoice> {
-  late final _nameController;
-  late final _noteController;
-  late final _nameFocusNode;
-  late final _noteFocusNode;
+  late TextEditingController _nameController;
+  late TextEditingController _noteController;
+  late FocusNode _nameFocusNode;
+  late FocusNode _noteFocusNode;
 
-  var imageAdd;
+  File? imageAdd;
   String get _name => _nameController.text;
   String get _note => _noteController.text;
-
   @override
   void initState() {
     _nameController = TextEditingController();
@@ -78,7 +77,7 @@ class _InvoiceImageDetailState extends State<UpdateImageInvoice> {
                   if (imageAdd != null)
                     SizedBox(
                         height: deviceSize.width * 1 / 3,
-                        child: Image.file(imageAdd)),
+                        child: Image.file(imageAdd!)),
                   CustomSizedBox(
                     context: context,
                     height: 16,

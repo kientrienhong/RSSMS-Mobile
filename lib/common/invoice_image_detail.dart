@@ -16,10 +16,10 @@ class InvoiceImageDetail extends StatefulWidget {
 }
 
 class _InvoiceImageDetailState extends State<InvoiceImageDetail> {
-  late final _nameController;
-  late final _noteController;
-  late final _nameFocusNode;
-  late final _noteFocusNode;
+  late TextEditingController _nameController;
+  late TextEditingController _noteController;
+  late FocusNode _nameFocusNode;
+  late FocusNode _noteFocusNode;
 
   @override
   void initState() {
