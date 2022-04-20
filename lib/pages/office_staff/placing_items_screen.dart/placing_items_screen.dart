@@ -291,53 +291,56 @@ class _PlacingItemsScreenState extends State<PlacingItemsScreen>
                             context: context,
                             height: 8,
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              CustomText(
-                                  text: "Thông tin vận chuyển",
-                                  color: CustomColor.black,
-                                  context: context,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16),
-                              CustomButton(
-                                  height: 20,
-                                  text: 'Quét QR',
-                                  width: deviceSize.width / 3 - 50,
-                                  onPressFunction: () {
-                                    scanQR(deviceSize);
-                                  },
-                                  isLoading: _model.isLoading,
-                                  textColor: CustomColor.white,
-                                  buttonColor: CustomColor.blue,
-                                  textSize: 12,
-                                  borderRadius: 4),
-                            ],
-                          ),
-                          CustomSizedBox(
-                            context: context,
-                            height: 16,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              CustomText(
-                                  text: "Người vận chuyển",
-                                  color: CustomColor.black,
-                                  context: context,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16),
-                              CustomText(
-                                  text: _model.deliveryStaff.name == ''
-                                      ? '(Trống)'
-                                      : _model.deliveryStaff.name,
-                                  color: _model.deliveryStaff.name == ''
-                                      ? Colors.grey
-                                      : CustomColor.black,
-                                  context: context,
-                                  fontSize: 16)
-                            ],
-                          ),
+                          if (!placingItems.isMoving)
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                CustomText(
+                                    text: "Thông tin vận chuyển",
+                                    color: CustomColor.black,
+                                    context: context,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16),
+                                CustomButton(
+                                    height: 20,
+                                    text: 'Quét QR',
+                                    width: deviceSize.width / 3 - 50,
+                                    onPressFunction: () {
+                                      scanQR(deviceSize);
+                                    },
+                                    isLoading: _model.isLoading,
+                                    textColor: CustomColor.white,
+                                    buttonColor: CustomColor.blue,
+                                    textSize: 12,
+                                    borderRadius: 4),
+                              ],
+                            ),
+                          if (!placingItems.isMoving)
+                            CustomSizedBox(
+                              context: context,
+                              height: 16,
+                            ),
+                          if (!placingItems.isMoving)
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                CustomText(
+                                    text: "Người vận chuyển",
+                                    color: CustomColor.black,
+                                    context: context,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16),
+                                CustomText(
+                                    text: _model.deliveryStaff.name == ''
+                                        ? '(Trống)'
+                                        : _model.deliveryStaff.name,
+                                    color: _model.deliveryStaff.name == ''
+                                        ? Colors.grey
+                                        : CustomColor.black,
+                                    context: context,
+                                    fontSize: 16)
+                              ],
+                            ),
                         ],
                       ),
                     ),
