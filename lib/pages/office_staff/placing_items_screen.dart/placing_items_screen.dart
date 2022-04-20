@@ -9,6 +9,7 @@ import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_snack_bar.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/common/image_widget.dart';
+import 'package:rssms/helpers/validator.dart';
 import 'package:rssms/models/entity/area.dart';
 import 'package:rssms/models/entity/order_detail.dart';
 import 'package:rssms/models/entity/placing_items.dart';
@@ -291,57 +292,89 @@ class _PlacingItemsScreenState extends State<PlacingItemsScreen>
                             context: context,
                             height: 8,
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              CustomText(
-                                  text: "Thông tin vận chuyển",
-                                  color: CustomColor.black,
-                                  context: context,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16),
-                              CustomButton(
-                                  height: 20,
-                                  text: 'Quét QR',
-                                  width: deviceSize.width / 3 - 50,
-                                  onPressFunction: () {
-                                    scanQR(deviceSize);
+                          if (!items.isMoving)
+                            Column(
+                              children: [
+                                TextFormField(
+                                  validator: (value) =>
+                                      Validator.notEmpty(value),
+                                  onChanged: (text) {
+                                    items.onChange(text, index);
                                   },
-                                  isLoading: _model.isLoading,
-                                  textColor: CustomColor.white,
-                                  buttonColor: CustomColor.blue,
-                                  textSize: 12,
-                                  borderRadius: 4),
-                            ],
-                          ),
-                          CustomSizedBox(
-                            context: context,
-                            height: 16,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              CustomText(
-                                  text: "Người vận chuyển",
-                                  color: CustomColor.black,
+                                  initialValue: items.placingItems['floors']
+                                      [index]['note'],
+                                  textAlignVertical: TextAlignVertical.center,
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.only(
+                                        top: deviceSize.width / 60, left: 8),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(4),
+                                      borderSide: const BorderSide(),
+                                    ),
+                                    hintText: 'Nhập mô tả món hàng',
+                                  ),
+                                ),
+                                CustomSizedBox(
                                   context: context,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16),
-                              CustomText(
-                                  text: _model.deliveryStaff.name == ''
-                                      ? '(Trống)'
-                                      : _model.deliveryStaff.name,
-                                  color: _model.deliveryStaff.name == ''
-                                      ? Colors.grey
-                                      : CustomColor.black,
-                                  context: context,
-                                  fontSize: 16)
-                            ],
-                          ),
+                                  height: 8,
+                                ),
+                              ],
+                            ),
                         ],
                       ),
                     ),
                   ),
+            CustomSizedBox(
+              context: context,
+              height: 8,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CustomText(
+                    text: "Thông tin vận chuyển",
+                    color: CustomColor.black,
+                    context: context,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16),
+                CustomButton(
+                    height: 20,
+                    text: 'Quét QR',
+                    width: deviceSize.width / 3 - 50,
+                    onPressFunction: () {
+                      scanQR(deviceSize);
+                    },
+                    isLoading: _model.isLoading,
+                    textColor: CustomColor.white,
+                    buttonColor: CustomColor.blue,
+                    textSize: 12,
+                    borderRadius: 4),
+              ],
+            ),
+            CustomSizedBox(
+              context: context,
+              height: 16,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CustomText(
+                    text: "Người vận chuyển",
+                    color: CustomColor.black,
+                    context: context,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16),
+                CustomText(
+                    text: _model.deliveryStaff.name == ''
+                        ? '(Trống)'
+                        : _model.deliveryStaff.name,
+                    color: _model.deliveryStaff.name == ''
+                        ? Colors.grey
+                        : CustomColor.black,
+                    context: context,
+                    fontSize: 16)
+              ],
+            ),
             CustomSizedBox(
               context: context,
               height: 16,
