@@ -84,7 +84,7 @@ class _BookingPopUpSelfStorageState extends State<BookingPopUpSelfStorage>
 
       _model.dateReturn = DateTime(
           orderBooking.dateTimeDelivery.year,
-          orderBooking.dateTimeDelivery.month + month as int,
+          orderBooking.dateTimeDelivery.month + month,
           orderBooking.dateTimeDelivery.day);
       orderBooking.setOrderBooking(
           orderBooking: orderBooking.copyWith(

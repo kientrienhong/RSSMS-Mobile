@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:rssms/api/api_services.dart';
@@ -75,8 +73,8 @@ class ProfileModel {
     isEditAvatar = false;
   }
 
-  Future<dynamic> updateProfile(
-      int gender, DateTime birthday, Map<String, dynamic> image, String idToken, String userId) async {
+  Future<dynamic> updateProfile(int gender, DateTime birthday,
+      Map<String, dynamic> image, String idToken, String userId) async {
     try {
       return await ApiServices.updateProfile(
           controllerFullname.text,

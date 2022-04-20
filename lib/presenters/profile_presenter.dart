@@ -1,11 +1,8 @@
-import 'dart:convert';
 import 'dart:developer';
-import 'dart:io';
 import 'package:intl/intl.dart';
 import 'package:rssms/helpers/image_handle.dart';
 import 'package:rssms/helpers/response_handle.dart';
 import 'package:rssms/models/entity/imageEntity.dart';
-import 'package:rssms/models/entity/image_entity.dart';
 import 'package:rssms/models/profile_model.dart';
 import 'package:rssms/views/profile_view.dart';
 
@@ -45,7 +42,7 @@ class ProfilePresenter {
           DateFormat("dd/MM/yyyy").parse(model.controllerBirthDate.text);
       ImageEntity avatarTemp =
           await ImageHandle.convertImagePathToBase64(model.imageUrl);
-    
+
       final response = await model.updateProfile(
           genderCode, tempDate, avatarTemp.toMap(), idToken, userId);
 

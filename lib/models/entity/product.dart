@@ -16,7 +16,7 @@ class Product {
   final double height;
   final String imageUrl;
   Product({
-    int? this.quantity,
+    this.quantity,
     required this.id,
     required this.name,
     required this.price,

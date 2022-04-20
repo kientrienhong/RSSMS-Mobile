@@ -54,7 +54,7 @@ class _ItemWidgetState extends State<ItemWidget> implements ItemWidgetView {
         Provider.of<OrderBooking>(context, listen: false);
     Product tempProduct = widget.product!.copyWith();
     final foundItem = orderBooking.productOrder[widget.nameType]!.indexWhere(
-      (e) => e['idOfList'].toString() == '${widget.product!.id}',
+      (e) => e['idOfList'].toString() == widget.product!.id,
     );
     if (tempProduct.quantity == 0 && foundItem == -1) {
       return;

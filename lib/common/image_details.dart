@@ -1,7 +1,4 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_input.dart';
@@ -28,8 +25,6 @@ class _InvoiceImageDetailState extends State<ImageDetailsInvoice> {
   late final _noteFocusNode;
 
   var imageAdd;
-  String get _name => _nameController.text;
-  String get _note => _noteController.text;
   @override
   void initState() {
     _nameController = TextEditingController(text: widget.image["name"]);
@@ -38,28 +33,6 @@ class _InvoiceImageDetailState extends State<ImageDetailsInvoice> {
     _nameFocusNode = FocusNode();
     _noteFocusNode = FocusNode();
     super.initState();
-  }
-
-  void _pickedImage() {
-    showDialog<ImageSource>(
-      context: context,
-      builder: (context) =>
-          AlertDialog(content: Text("Choose image source"), actions: [
-        TextButton(
-          child: Text("Camera"),
-          onPressed: () => Navigator.pop(context, ImageSource.camera),
-        ),
-        TextButton(
-          child: Text("Gallery"),
-          onPressed: () => Navigator.pop(context, ImageSource.gallery),
-        ),
-      ]),
-    ).then((source) async {
-      if (source != null) {
-        final pickedFile = await ImagePicker().pickImage(source: source);
-        setState(() => imageAdd = File(pickedFile!.path));
-      }
-    });
   }
 
   @override
