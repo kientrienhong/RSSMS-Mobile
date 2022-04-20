@@ -31,7 +31,7 @@ class DeliveryPresenter {
     }
     var firstDay = now.subtract(Duration(days: now.weekday));
     var firstDayOfWeek = firstDay;
-    var endDayOfWeek;
+    var endDayOfWeek = firstDay;
     model.currentIndex = 0;
     for (int i = 0; i < 7; i++) {
       endDayOfWeek = firstDay;
@@ -57,7 +57,7 @@ class DeliveryPresenter {
     }
     var firstDay = now.subtract(Duration(days: now.weekday));
     var firstDayOfWeek = firstDay;
-    var endDayOfWeek;
+    var endDayOfWeek = firstDay;
     for (int i = 0; i < 7; i++) {
       endDayOfWeek = firstDay;
       model.listDateTime.add(firstDay);
@@ -95,15 +95,12 @@ class DeliveryPresenter {
         return {"id": e.id, "status": newStatus};
       }).toList();
 
-      if (currentListInvoice != null) {
-        final response = await model.updateListOrders(idToken, listOrderStatus);
-        if (response.statusCode == 204) {
-          return true;
-        } else {
-          return false;
-        }
+      final response = await model.updateListOrders(idToken, listOrderStatus);
+      if (response.statusCode == 204) {
+        return true;
+      } else {
+        return false;
       }
-      return null;
     } catch (e) {
       log(e.toString());
       return false;

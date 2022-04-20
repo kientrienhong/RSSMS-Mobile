@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_app_bar.dart';
@@ -146,7 +144,7 @@ class _ChoiceStorageScreenState extends State<ChoiceStorageScreen>
                               OrderBooking orderBooking =
                                   Provider.of<OrderBooking>(context,
                                       listen: false);
-                              _model.listStorage.forEach((element) {
+                              for (var element in _model.listStorage) {
                                 if (element.id == _model.indexIdStorage) {
                                   orderBooking.storageId =
                                       _model.indexIdStorage!;
@@ -155,7 +153,7 @@ class _ChoiceStorageScreenState extends State<ChoiceStorageScreen>
                                   orderBooking.distants =
                                       element.deliveryDistance;
                                 }
-                              });
+                              }
 
                               Navigator.push(
                                   context,

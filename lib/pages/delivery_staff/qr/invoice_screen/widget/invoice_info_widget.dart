@@ -7,10 +7,11 @@ import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/constants/constants.dart' as constants;
 
 class InvoiceInfoWidget extends StatelessWidget {
-  Invoice? invoice;
+  final Invoice? invoice;
   final Size deviceSize;
 
-  InvoiceInfoWidget({Key? key, required this.invoice, required this.deviceSize})
+  const InvoiceInfoWidget(
+      {Key? key, required this.invoice, required this.deviceSize})
       : super(key: key);
 
   @override

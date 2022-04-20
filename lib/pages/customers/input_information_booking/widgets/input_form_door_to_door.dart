@@ -3,10 +3,10 @@ import 'package:rssms/common/custom_input_with_hint.dart';
 import 'package:rssms/helpers/validator.dart';
 
 class InputFormDoorToDoor extends StatefulWidget {
-  TextEditingController controllerAddress;
-  FocusNode focusNodeAddress;
+  final TextEditingController controllerAddress;
+  final FocusNode focusNodeAddress;
 
-  InputFormDoorToDoor({
+  const InputFormDoorToDoor({
     Key? key,
     required this.controllerAddress,
     required this.focusNodeAddress,

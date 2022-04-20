@@ -17,8 +17,7 @@ class InvoiceDetailScreenPresenter {
 
   Invoice formatItemTabInvoice(Invoice invoice) {
     Invoice invoiceResult = invoice.copyWith();
-
-    invoiceResult.orderDetails.forEach((element) {
+    for (var element in invoiceResult.orderDetails) {
       if (element.productType == typeProduct.accessory.index ||
           element.productType == typeProduct.services.index) {
         element.serviceImageUrl = element.listAdditionService![0].imageUrl;
@@ -31,7 +30,7 @@ class InvoiceDetailScreenPresenter {
                 element.type == typeProduct.services.index)
             .toList();
       }
-    });
+    }
 
     return invoiceResult;
   }
@@ -55,9 +54,8 @@ class InvoiceDetailScreenPresenter {
 
   Invoice formatUIInvoice(Invoice invoice) {
     Invoice invoiceResult = invoice.copyWith(orderDetails: []);
-
-    invoice.orderDetails.forEach((element) {
-      element.listAdditionService!.forEach((ele) {
+    for (var element in invoice.orderDetails) {
+      for (var ele in element.listAdditionService!) {
         int index = invoiceResult.orderDetails
             .indexWhere((ele1) => ele1.productId == ele.id);
         if (index == -1) {
@@ -75,8 +73,8 @@ class InvoiceDetailScreenPresenter {
         } else {
           invoiceResult.orderDetails[index].amount += ele.quantity!;
         }
-      });
-    });
+      }
+    }
     return invoiceResult;
   }
 }

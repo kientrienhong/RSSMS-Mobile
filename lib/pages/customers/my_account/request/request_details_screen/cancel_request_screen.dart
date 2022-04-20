@@ -11,9 +11,10 @@ import 'package:rssms/presenters/extend_request_presenter.dart';
 import 'package:rssms/views/extend_request_view.dart';
 
 class CancelledRequestScreen extends StatefulWidget {
-  Request request;
+  final Request request;
 
-  CancelledRequestScreen({Key? key, required this.request}) : super(key: key);
+  const CancelledRequestScreen({Key? key, required this.request})
+      : super(key: key);
 
   @override
   State<CancelledRequestScreen> createState() => _CancelledRequestScreenState();

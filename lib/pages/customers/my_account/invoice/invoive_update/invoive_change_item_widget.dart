@@ -21,9 +21,9 @@ import 'package:rssms/views/invoice_get_view.dart';
 import 'package:rssms/constants/constants.dart' as constants;
 
 class ChangeItemWidget extends StatefulWidget {
-  Invoice? invoice;
+  final Invoice? invoice;
 
-  ChangeItemWidget({Key? key, required this.invoice}) : super(key: key);
+  const ChangeItemWidget({Key? key, required this.invoice}) : super(key: key);
 
   @override
   _ChangeItemWidgetState createState() => _ChangeItemWidgetState();

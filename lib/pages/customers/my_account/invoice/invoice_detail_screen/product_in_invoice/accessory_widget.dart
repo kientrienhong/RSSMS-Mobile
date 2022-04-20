@@ -6,12 +6,11 @@ import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/models/entity/order_detail.dart';
 
 class AccessoryInvoiceWidget extends StatelessWidget {
-  OrderDetail? product;
+  final OrderDetail? product;
 
-  AccessoryInvoiceWidget({Key? key, this.product}) : super(key: key);
+  const AccessoryInvoiceWidget({Key? key, this.product}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final deviceSize = MediaQuery.of(context).size;
     final oCcy = NumberFormat("#,##0", "en_US");
 
     return SizedBox(

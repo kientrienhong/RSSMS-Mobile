@@ -48,10 +48,9 @@ class _QuantityWidgetState extends State<QuantityWidget> {
 
     if (listCurrentProduct.isNotEmpty) {
       int quantity = 0;
-
-      listCurrentProduct.forEach((element) {
+      for (var element in listCurrentProduct) {
         quantity += element['quantity'] as int;
-      });
+      }
 
       _controller = TextEditingController(text: quantity.toString());
     } else {

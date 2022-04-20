@@ -5,9 +5,9 @@ import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/common/invoice_image_detail.dart';
 
 class InvoiceImageWidget extends StatelessWidget {
-  Map<String, dynamic> image;
+  final Map<String, dynamic> image;
 
-  InvoiceImageWidget({Key? key, required this.image}) : super(key: key);
+  const InvoiceImageWidget({Key? key, required this.image}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

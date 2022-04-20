@@ -15,7 +15,7 @@ import 'package:rssms/utils/ui_utils.dart';
 class QRInvoiceDetailsScreen extends StatefulWidget {
   final bool isScanQR;
   final bool isDone;
-  QRInvoiceDetailsScreen(
+  const QRInvoiceDetailsScreen(
       {Key? key, required this.isScanQR, required this.isDone})
       : super(key: key);
 
@@ -28,9 +28,8 @@ class _QRInvoiceDetailsScreenState extends State<QRInvoiceDetailsScreen> {
 
   Invoice formatUIInvoice(Invoice invoice) {
     Invoice invoiceResult = invoice.copyWith(orderDetails: []);
-
-    invoice.orderDetails.forEach((element) {
-      element.listAdditionService!.forEach((ele) {
+    for (var element in invoice.orderDetails) {
+      for (var ele in element.listAdditionService!) {
         int index = invoiceResult.orderDetails
             .indexWhere((ele1) => ele1.productId == ele.id);
         if (index == -1) {
@@ -48,21 +47,21 @@ class _QRInvoiceDetailsScreenState extends State<QRInvoiceDetailsScreen> {
         } else {
           invoiceResult.orderDetails[index].amount += ele.quantity!;
         }
-      });
-    });
+      }
+    }
     return invoiceResult;
   }
 
   Invoice formatInvoiceForUpdate(Invoice invoice) {
     Invoice invoiceResult = invoice.copyWith();
     int index = 0;
-    invoiceResult.orderDetails.forEach((element) {
+    for (var element in invoiceResult.orderDetails) {
       int quantity = 0;
-      element.listAdditionService!.forEach((ele) {
+      for (var ele in element.listAdditionService!) {
         if (ele.id == element.productId) {
           quantity += ele.quantity!;
         }
-      });
+      }
 
       element.listAdditionService = element.listAdditionService!
           .where((element) =>
@@ -71,7 +70,7 @@ class _QRInvoiceDetailsScreenState extends State<QRInvoiceDetailsScreen> {
           .toList();
       element = element.copyWith(amount: quantity);
       invoiceResult.orderDetails[index++] = element.copyWith(amount: quantity);
-    });
+    }
 
     return invoiceResult;
   }

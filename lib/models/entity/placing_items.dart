@@ -32,12 +32,18 @@ class PlacingItems with ChangeNotifier {
     }
   }
 
+  void onChange(String note, int index) {
+    placingItems['floors'][index]['note'] = note;
+    notifyListeners();
+  }
+
   void placeItems(String idFloor, String orderDetailId,
       Map<String, String> currentPosition) {
     final orderDetailFound =
         storedItems['items'].firstWhere((e) => e.id == orderDetailId);
     Map<String, dynamic> placingOrderTemp = orderDetailFound.toMap();
-    placingOrderTemp['idPlacing'] = placingItems['floors'].length;
+    placingOrderTemp['idPlacing'] = placingOrderTemp['id'];
+    placingOrderTemp['note'] = '';
     placingOrderTemp['areaName'] = currentPosition['areaName'];
     placingOrderTemp['floorName'] = currentPosition['floorName'];
     placingOrderTemp['floorId'] = currentPosition['floorId'];
@@ -79,7 +85,7 @@ class PlacingItems with ChangeNotifier {
     if (isMoving) {
       return false;
     }
-
+    emptyPlacing();
     List<OrderDetail> listStoredItems = invoice.orderDetails
         .where((element) =>
             element.productType == constants.typeProduct.handy.index ||
@@ -91,7 +97,8 @@ class PlacingItems with ChangeNotifier {
           .where((addService) =>
               addService.type == constants.typeProduct.accessory.index)
           .toList();
-      return e.copyWith(listAdditionService: listAdditionServiceTemp);
+      return e.copyWith(
+          listAdditionService: listAdditionServiceTemp, status: -1);
     }).toList();
 
     storedItems = {

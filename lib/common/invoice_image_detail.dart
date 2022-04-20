@@ -5,9 +5,10 @@ import 'package:rssms/common/custom_input.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 
 class InvoiceImageDetail extends StatefulWidget {
-  Map<String, dynamic> image;
+  final Map<String, dynamic> image;
   final bool isDisable;
-  InvoiceImageDetail({Key? key, required this.image, required this.isDisable})
+  const InvoiceImageDetail(
+      {Key? key, required this.image, required this.isDisable})
       : super(key: key);
 
   @override
@@ -15,10 +16,10 @@ class InvoiceImageDetail extends StatefulWidget {
 }
 
 class _InvoiceImageDetailState extends State<InvoiceImageDetail> {
-  late final _nameController;
-  late final _noteController;
-  late final _nameFocusNode;
-  late final _noteFocusNode;
+  late TextEditingController _nameController;
+  late TextEditingController _noteController;
+  late FocusNode _nameFocusNode;
+  late FocusNode _noteFocusNode;
 
   @override
   void initState() {

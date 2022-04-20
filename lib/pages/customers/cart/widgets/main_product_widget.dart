@@ -60,7 +60,7 @@ class _MainProductWidgetState extends State<MainProductWidget>
       return;
     }
     final foundItem = orderBooking.productOrder[widget.nameType]!.indexWhere(
-      (e) => e['idOfList'].toString() == '${widget.product!.id}',
+      (e) => e['idOfList'].toString() == widget.product!.id,
     );
     if (foundItem != -1) {
       final quantity =
@@ -165,7 +165,7 @@ class _MainProductWidgetState extends State<MainProductWidget>
                       height: 8,
                     ),
                     Container(
-                      padding: EdgeInsets.only(right: 16),
+                      padding: const EdgeInsets.only(right: 16),
                       width: (deviceSize.width - 32) / 8,
                       child: QuantityWidget(
                         product: widget.product,

@@ -15,8 +15,8 @@ import 'package:rssms/presenters/dialog_confirm_presenter.dart';
 import 'package:rssms/views/dialog_confirm_view.dart';
 
 class DialogReport extends StatefulWidget {
-  String idRequest;
-  DialogReport({Key? key, required this.idRequest}) : super(key: key);
+  final String idRequest;
+  const DialogReport({Key? key, required this.idRequest}) : super(key: key);
 
   @override
   State<DialogReport> createState() => _DialogReportState();

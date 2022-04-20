@@ -118,7 +118,7 @@ class _FormSignUpState extends State<FormSignUp> implements SignUpView {
   @override
   void onClickSignUp() async {
     try {
-      Users result = await signupPresenter.handleSignUp();
+      Users? result = await signupPresenter.handleSignUp();
 
       if (result != null) {
         CustomSnackBar.buildSnackbar(

@@ -49,15 +49,15 @@ class InvoiceProductWidget extends StatelessWidget {
     int totalProduct = 0;
     int totalAccessory = 0;
     int totalPackaging = 0;
-    listAccessory.forEach((element) {
+    for (var element in listAccessory) {
       totalAccessory += (element.price * element.amount);
-    });
-    listProduct.forEach((element) {
+    }
+    for (var element in listProduct) {
       totalProduct += (element.price * element.amount);
-    });
-    listPackaging.forEach((element) {
+    }
+    for (var element in listPackaging) {
       totalPackaging += element.amount * element.price;
-    });
+    }
     DateTime deliveryDate = DateTime.parse(invoice.deliveryDate);
     DateTime returnDate = DateTime.parse(invoice.returnDate);
     String takingAdditionalDescription = '';
@@ -66,8 +66,7 @@ class InvoiceProductWidget extends StatelessWidget {
     double returningAdditionalFee = 0;
     String composationDescription = '';
     double composationFee = 0;
-
-    invoice.orderAdditionalFees.forEach((e) {
+    for (var e in invoice.orderAdditionalFees) {
       if (e.type == constants.ADDITION_FEE_TYPE.compensationFee.index) {
         composationDescription = e.description;
         composationFee = e.price;
@@ -80,7 +79,7 @@ class InvoiceProductWidget extends StatelessWidget {
         takingAdditionalDescription = e.description;
         takingAdditionalFee = e.price;
       }
-    });
+    }
 
     return Container(
       decoration: BoxDecoration(

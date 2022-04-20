@@ -4,12 +4,12 @@ import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 
 class ImageSelectWidget extends StatelessWidget {
-  Map<String, dynamic> image;
-  List<Map<String, dynamic>> listCurrent;
-  int index;
+  final Map<String, dynamic> image;
+  final List<Map<String, dynamic>> listCurrent;
+  final int index;
   final Function onTapChoice;
 
-  ImageSelectWidget(
+  const ImageSelectWidget(
       {Key? key,
       required this.image,
       required this.listCurrent,

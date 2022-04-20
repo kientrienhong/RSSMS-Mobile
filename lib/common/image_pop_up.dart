@@ -18,9 +18,9 @@ import 'package:rssms/views/add_image_pop_up_view.dart';
 
 class ImageDetailPopUp extends StatefulWidget {
   final bool isView;
-  OrderDetail orderDetail;
-  ImageEntity? imageUpdate;
-  ImageDetailPopUp(
+  final OrderDetail orderDetail;
+  final ImageEntity? imageUpdate;
+  const ImageDetailPopUp(
       {Key? key,
       required this.isView,
       required this.orderDetail,

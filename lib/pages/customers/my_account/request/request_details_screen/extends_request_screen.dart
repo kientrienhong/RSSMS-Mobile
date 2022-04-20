@@ -14,9 +14,10 @@ import 'package:rssms/views/extend_request_view.dart';
 import 'package:rssms/constants/constants.dart' as constants;
 
 class ExtendRequestScreen extends StatefulWidget {
-  Request request;
+  final Request request;
 
-  ExtendRequestScreen({Key? key, required this.request}) : super(key: key);
+  const ExtendRequestScreen({Key? key, required this.request})
+      : super(key: key);
 
   @override
   State<ExtendRequestScreen> createState() => _ExtendRequestScreenState();

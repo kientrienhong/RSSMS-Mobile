@@ -24,9 +24,10 @@ import 'package:rssms/views/extend_invoice_view.dart';
 import 'package:rssms/constants/constants.dart' as constants;
 
 class InvoiveExtendWidget extends StatefulWidget {
-  Invoice? invoice;
+  final Invoice? invoice;
 
-  InvoiveExtendWidget({Key? key, required this.invoice}) : super(key: key);
+  const InvoiveExtendWidget({Key? key, required this.invoice})
+      : super(key: key);
 
   @override
   State<InvoiveExtendWidget> createState() => _InvoiveExtendWidgetState();
@@ -79,9 +80,9 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
             element.productType == constants.typeProduct.unweildy.index ||
             element.productType == constants.typeProduct.selfStorage.index)
         .toList();
-    listProduct!.forEach((element) {
+    for (var element in listProduct!) {
       totalProduct += (element.price * element.amount);
-    });
+    }
     durationMonth = 1;
     returnDateOld = DateTime.parse(widget.invoice!.returnDate
         .substring(0, widget.invoice!.returnDate.indexOf("T")));
