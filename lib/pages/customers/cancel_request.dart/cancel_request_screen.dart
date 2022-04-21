@@ -67,7 +67,7 @@ class _InvoiceCancelScreenState extends State<InvoiceCancelScreen>
           MaterialPageRoute(
               builder: (context) => const CustomBottomNavigation(
                     listIndexStack: [
-                      MyAccountScreen(),
+                      MyAccountScreen(initIndex: 2,),
                       CartScreen(),
                       NotificationDeliveryScreen(),
                     ],

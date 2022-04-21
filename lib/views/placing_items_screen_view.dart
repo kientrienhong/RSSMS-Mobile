@@ -6,4 +6,6 @@ abstract class PlacingItemsScreenView {
   void onClickPlace(int index);
 
   void onClickUndo(int index);
+
+  void onClickAcceptImport();
 }

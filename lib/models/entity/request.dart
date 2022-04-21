@@ -1,32 +1,32 @@
 import 'dart:convert';
 
 class Request {
-  final String id;
-  final String orderId;
-  final String orderName;
-  final String userId;
-  final int type;
-  final int typeOrder;
-  final int status;
-  final bool isCustomerDelivery;
-  final String deliveryStaffName;
-  final String deliveryStaffPhone;
-  final String customerName;
-  final String customerPhone;
-  final String storageId;
-  final String storageName;
-  final String deliveryDate;
-  final String deliveryTime;
-  final String deliveryAddress;
-  final String returnAddress;
-  final String returnDate;
-  final String returnTime;
-  final String cancelReason;
-  final String fromDate;
-  final String toDate;
-  final String note;
-  final String createdDate;
-  final double totalPrice;
+  late String id;
+  late String orderId;
+  late String orderName;
+  late String userId;
+  late int type;
+  late int typeOrder;
+  late int status;
+  late bool isCustomerDelivery;
+  late String deliveryStaffName;
+  late String deliveryStaffPhone;
+  late String customerName;
+  late String customerPhone;
+  late String storageId;
+  late String storageName;
+  late String deliveryDate;
+  late String deliveryTime;
+  late String deliveryAddress;
+  late String returnAddress;
+  late String returnDate;
+  late String returnTime;
+  late String cancelReason;
+  late String fromDate;
+  late String toDate;
+  late String note;
+  late String createdDate;
+  late double totalPrice;
   Request({
     required this.id,
     required this.totalPrice,
@@ -55,6 +55,35 @@ class Request {
     required this.note,
     required this.createdDate,
   });
+
+  Request.empty() {
+    id = '';
+    totalPrice = 0;
+    orderId = '';
+    orderName = '';
+    userId = '';
+    type = 0;
+    typeOrder = 0;
+    status = 0;
+    isCustomerDelivery = false;
+    deliveryStaffName = '';
+    deliveryStaffPhone = '';
+    customerName = '';
+    customerPhone = '';
+    storageId = '';
+    storageName = '';
+    deliveryDate = '';
+    deliveryTime = '';
+    deliveryAddress = '';
+    returnAddress = '';
+    returnDate = '';
+    returnTime = '';
+    cancelReason = '';
+    fromDate = '';
+    toDate = '';
+    note = '';
+    createdDate = '';
+  }
 
   Request copyWith({
     String? id,

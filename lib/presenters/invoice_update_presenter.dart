@@ -183,6 +183,16 @@ class InvoiceUpdatePresenter {
     return result;
   }
 
+  Map<String, dynamic> dateFormatHelperDoneOrderOfficeStaff(Invoice invoice) {
+    Map<String, dynamic> result = {
+      "orderId": invoice.id,
+      "requestId": invoice.requestId,
+      'status': 6,
+    };
+
+    return result;
+  }
+
   Future<bool> updateOrder(Users user, Invoice invoice) async {
     try {
       view.updateLoadingUpdate();
@@ -207,7 +217,14 @@ class InvoiceUpdatePresenter {
   Future<bool?> doneOrder(Users user, Invoice invoice) async {
     try {
       view.updateLoadingUpdate();
-      final dataRequest = dateFormatHelperDoneOrder(invoice);
+      var dataRequest = {};
+      if (user.roleName == "Delivery Staff") {
+        dataRequest = dateFormatHelperDoneOrder(invoice);
+      } else if (user.roleName == "Office Staff") {
+        dataRequest = dateFormatHelperDoneOrderOfficeStaff(invoice);
+      } else {
+        return false;
+      }
       log(jsonEncode(dataRequest));
       var response = await model.doneOrder(dataRequest, user.idToken!);
       if (response.statusCode == 200) {

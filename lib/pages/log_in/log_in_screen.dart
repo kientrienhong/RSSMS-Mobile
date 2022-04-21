@@ -158,7 +158,7 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
           MaterialPageRoute(
               builder: (context) => const CustomBottomNavigation(
                     listIndexStack: [
-                      MyAccountScreen(),
+                      MyAccountScreen(initIndex: 1,),
                       CartScreen(),
                       NotificationScreen(),
                     ],
@@ -298,7 +298,7 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
             height: 24,
           ),
           CustomButton(
-              height: 24,
+              height: 32,
               isLoading: _model.isLoading,
               text: 'Đăng nhập',
               width: deviceSize.width,

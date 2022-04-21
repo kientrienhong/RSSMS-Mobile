@@ -84,7 +84,7 @@ class _PaymentMethodBookingScreenState extends State<PaymentMethodBookingScreen>
               MaterialPageRoute(
                   builder: (context) => const CustomBottomNavigation(
                         listIndexStack: [
-                          MyAccountScreen(),
+                          MyAccountScreen(initIndex: 2),
                           CartScreen(),
                           NotificationDeliveryScreen(),
                         ],
@@ -117,7 +117,7 @@ class _PaymentMethodBookingScreenState extends State<PaymentMethodBookingScreen>
                 MaterialPageRoute(
                     builder: (context) => const CustomBottomNavigation(
                           listIndexStack: [
-                            MyAccountScreen(),
+                            MyAccountScreen(initIndex: 2),
                             CartScreen(),
                             NotificationDeliveryScreen(),
                           ],

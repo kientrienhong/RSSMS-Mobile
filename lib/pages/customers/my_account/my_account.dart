@@ -13,7 +13,8 @@ import 'package:rssms/pages/log_in/log_in_screen.dart';
 import 'package:rssms/pages/profile/profile_screen.dart';
 
 class MyAccountScreen extends StatefulWidget {
-  const MyAccountScreen({Key? key}) : super(key: key);
+  final int? initIndex;
+  const MyAccountScreen({Key? key, this.initIndex}) : super(key: key);
 
   @override
   State<MyAccountScreen> createState() => _ProfileScreenState();
@@ -76,7 +77,7 @@ class _ProfileScreenState extends State<MyAccountScreen>
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 3,
-      initialIndex: 1,
+      initialIndex: widget.initIndex ?? 1,
       child: Scaffold(
         appBar: AppBar(
           title: CustomText(

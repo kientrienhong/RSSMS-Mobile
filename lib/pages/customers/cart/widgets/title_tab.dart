@@ -38,7 +38,7 @@ class _TitleTabState extends State<TitleTab> {
             text: widget.title['name']!,
             color: color,
             context: context,
-            fontSize: 22),
+            fontSize: 16),
         CustomSizedBox(context: context, height: 4),
         widget.index == widget.currentIndex
             ? Container(

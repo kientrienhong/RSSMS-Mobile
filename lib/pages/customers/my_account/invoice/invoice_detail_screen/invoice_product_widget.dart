@@ -72,6 +72,7 @@ class InvoiceProductWidget extends StatelessWidget {
         composationFee = e.price;
       } else if (e.type ==
           constants.ADDITION_FEE_TYPE.returningAdditionFee.index) {
+            
         returningAdditionalDescription = e.description;
         returningAdditionalFee = e.price;
       } else if (e.type ==

@@ -32,8 +32,14 @@ class Invoice with ChangeNotifier {
   late int durationMonths;
   late int status;
   late bool isPaid;
+  late String importDeliveryBy;
+  late String importDay;
+  late String importStaff;
+  late String importCode;
   late List<OrderDetail> orderDetails;
   late bool? isOrder;
+  late String? exportAddress;
+
   late List<OrderAdditionalFee> orderAdditionalFees;
   Invoice(
       {required this.id,
@@ -58,13 +64,18 @@ class Invoice with ChangeNotifier {
       required this.durationMonths,
       required this.name,
       this.requestId,
+      this.exportAddress,
       required this.status,
       required this.isPaid,
       required this.orderDetails,
       required this.isOrder,
       required this.storageAddress,
       required this.storageId,
-      required this.storageName});
+      required this.storageName,
+      required this.importCode,
+      required this.importDay,
+      required this.importDeliveryBy,
+      required this.importStaff});
 
   Invoice.empty() {
     id = '';
@@ -96,6 +107,11 @@ class Invoice with ChangeNotifier {
     storageId = '';
     storageName = '';
     storageAddress = '';
+    importCode = '';
+    importDay = '';
+    importDeliveryBy = '';
+    importStaff = '';
+    exportAddress = '';
   }
 
   Invoice copyWith(
@@ -128,38 +144,47 @@ class Invoice with ChangeNotifier {
       bool? isOrder,
       String? storageName,
       String? storageId,
-      String? storageAddress}) {
+      String? storageAddress,
+      String? importDeliveryBy,
+      String? importDay,
+      String? importStaff,
+      String? importCode,
+      String? exportAddress}) {
     return Invoice(
-      isOrder: isOrder ?? this.isOrder,
-      id: id ?? this.id,
-      orderAdditionalFees: orderAdditionalFees ?? this.orderAdditionalFees,
-      name: name ?? this.name,
-      customerId: customerId ?? this.customerId,
-      customerName: customerName ?? this.customerName,
-      customerPhone: customerPhone ?? this.customerPhone,
-      deliveryAddress: deliveryAddress ?? this.deliveryAddress,
-      addressReturn: addressReturn ?? this.addressReturn,
-      totalPrice: totalPrice ?? this.totalPrice,
-      rejectedReason: rejectedReason ?? this.rejectedReason,
-      typeOrder: typeOrder ?? this.typeOrder,
-      requestId: requestId ?? this.requestId,
-      orderId: orderId ?? this.orderId,
-      typeRequest: typeRequest ?? this.typeRequest,
-      isUserDelivery: isUserDelivery ?? this.isUserDelivery,
-      deliveryDate: deliveryDate ?? this.deliveryDate,
-      deliveryTime: deliveryTime ?? this.deliveryTime,
-      returnDate: returnDate ?? this.returnDate,
-      returnTime: returnTime ?? this.returnTime,
-      paymentMethod: paymentMethod ?? this.paymentMethod,
-      durationDays: durationDays ?? this.durationDays,
-      durationMonths: durationMonths ?? this.durationMonths,
-      status: status ?? this.status,
-      isPaid: isPaid ?? this.isPaid,
-      orderDetails: orderDetails ?? this.orderDetails,
-      storageName: storageName ?? this.storageName,
-      storageId: storageId ?? this.storageId,
-      storageAddress: storageAddress ?? this.storageAddress,
-    );
+        isOrder: isOrder ?? this.isOrder,
+        id: id ?? this.id,
+        orderAdditionalFees: orderAdditionalFees ?? this.orderAdditionalFees,
+        name: name ?? this.name,
+        customerId: customerId ?? this.customerId,
+        customerName: customerName ?? this.customerName,
+        customerPhone: customerPhone ?? this.customerPhone,
+        deliveryAddress: deliveryAddress ?? this.deliveryAddress,
+        addressReturn: addressReturn ?? this.addressReturn,
+        totalPrice: totalPrice ?? this.totalPrice,
+        rejectedReason: rejectedReason ?? this.rejectedReason,
+        typeOrder: typeOrder ?? this.typeOrder,
+        requestId: requestId ?? this.requestId,
+        orderId: orderId ?? this.orderId,
+        typeRequest: typeRequest ?? this.typeRequest,
+        isUserDelivery: isUserDelivery ?? this.isUserDelivery,
+        deliveryDate: deliveryDate ?? this.deliveryDate,
+        deliveryTime: deliveryTime ?? this.deliveryTime,
+        returnDate: returnDate ?? this.returnDate,
+        returnTime: returnTime ?? this.returnTime,
+        paymentMethod: paymentMethod ?? this.paymentMethod,
+        durationDays: durationDays ?? this.durationDays,
+        durationMonths: durationMonths ?? this.durationMonths,
+        status: status ?? this.status,
+        isPaid: isPaid ?? this.isPaid,
+        orderDetails: orderDetails ?? this.orderDetails,
+        storageName: storageName ?? this.storageName,
+        storageId: storageId ?? this.storageId,
+        storageAddress: storageAddress ?? this.storageAddress,
+        importCode: importCode ?? this.importCode,
+        importDay: importDay ?? this.importDay,
+        importDeliveryBy: importDeliveryBy ?? this.importDeliveryBy,
+        importStaff: importStaff ?? this.importStaff,
+        exportAddress: exportAddress ?? this.exportAddress);
   }
 
   Map<String, dynamic> toMap() {
@@ -188,94 +213,106 @@ class Invoice with ChangeNotifier {
       'status': status,
       'isPaid': isPaid,
       'orderDetails': orderDetails.map((x) => x.toMap()).toList(),
+      'exportAddress': 'exportAddress'
     };
   }
 
   factory Invoice.fromMap(Map<String, dynamic> map) {
     String requestIdFound = '';
+    String exportAddressRequest = '';
     if (map['requests'] != null) {
       if (map['requests'].length > 0) {
         map['requests'].forEach((e) {
           if (e['type'] == 1) {
             requestIdFound = e['id'];
           }
+          if (e['type'] == 4) {
+            exportAddressRequest = e['deliveryAddress'];
+          }
         });
       }
     }
 
     return Invoice(
-      id: map['id'] ?? '',
-      name: map['name'] ?? '',
-      customerId: map['customerId'] ?? '',
-      customerName: map['customerName'] ?? '',
-      customerPhone: map['customerPhone'] ?? '',
-      deliveryAddress: map['deliveryAddress'] ?? '',
-      orderId: map['id'] ?? '',
-      storageAddress: map['storageAddress'] ?? '',
-      storageId: map['storageId'] ?? '',
-      storageName: map['storageName'] ?? '',
-      isOrder: true,
-      addressReturn: map['addressReturn'] ?? '',
-      totalPrice: map['totalPrice']?.toDouble() ?? 0,
-      requestId: requestIdFound,
-      rejectedReason: map['rejectedReason'] ?? '',
-      typeOrder: map['type']?.toInt() ?? 0,
-      isUserDelivery: map['isUserDelivery'] ?? false,
-      deliveryDate: map['deliveryDate'] ?? '',
-      deliveryTime: map['deliveryTime'] ?? '',
-      returnDate: map['returnDate'] ?? '',
-      typeRequest: -1,
-      returnTime: map['returnTime'] ?? '',
-      paymentMethod: map['paymentMethod']?.toInt() ?? 0,
-      durationDays: map['durationDays']?.toInt() ?? 0,
-      durationMonths: map['durationMonths']?.toInt() ?? 0,
-      status: map['status']?.toInt() ?? 0,
-      isPaid: map['isPaid'] ?? false,
-      orderAdditionalFees: List<OrderAdditionalFee>.from(
-          map['orderAdditionalFees']
-              ?.map((x) => OrderAdditionalFee.fromMap(x))),
-      orderDetails: map['orderDetails'] != null
-          ? List<OrderDetail>.from(
-              map['orderDetails']?.map((x) => OrderDetail.fromMap(x)))
-          : [],
-    );
+        id: map['id'] ?? '',
+        name: map['name'] ?? '',
+        customerId: map['customerId'] ?? '',
+        customerName: map['customerName'] ?? '',
+        customerPhone: map['customerPhone'] ?? '',
+        deliveryAddress: map['deliveryAddress'] ?? '',
+        orderId: map['id'] ?? '',
+        storageAddress: map['storageAddress'] ?? '',
+        storageId: map['storageId'] ?? '',
+        storageName: map['storageName'] ?? '',
+        isOrder: true,
+        addressReturn: map['addressReturn'] ?? '',
+        totalPrice: map['totalPrice']?.toDouble() ?? 0,
+        requestId: requestIdFound,
+        rejectedReason: map['rejectedReason'] ?? '',
+        typeOrder: map['type']?.toInt() ?? 0,
+        isUserDelivery: map['isUserDelivery'] ?? false,
+        deliveryDate: map['deliveryDate'] ?? '',
+        deliveryTime: map['deliveryTime'] ?? '',
+        returnDate: map['returnDate'] ?? '',
+        typeRequest: -1,
+        returnTime: map['returnTime'] ?? '',
+        paymentMethod: map['paymentMethod']?.toInt() ?? 0,
+        durationDays: map['durationDays']?.toInt() ?? 0,
+        durationMonths: map['durationMonths']?.toInt() ?? 0,
+        status: map['status']?.toInt() ?? 0,
+        isPaid: map['isPaid'] ?? false,
+        orderAdditionalFees: List<OrderAdditionalFee>.from(
+            map['orderAdditionalFees']
+                ?.map((x) => OrderAdditionalFee.fromMap(x))),
+        orderDetails: map['orderDetails'] != null
+            ? List<OrderDetail>.from(
+                map['orderDetails']?.map((x) => OrderDetail.fromMap(x)))
+            : [],
+        importCode: map['importCode'] ?? '',
+        importDay: map['importDay'] ?? '',
+        importDeliveryBy: map['importDeliveryBy'] ?? '',
+        exportAddress: exportAddressRequest,
+        importStaff: map['importStaff'] ?? '');
   }
 
   factory Invoice.fromRequest(Map<String, dynamic> map) {
     return Invoice(
-      id: map['id'] ?? '',
-      customerId: map['customerId'] ?? '',
-      name: map['name'] ?? '',
-      customerName: map['customerName'] ?? '',
-      customerPhone: map['customerPhone'] ?? '',
-      deliveryAddress: map['deliveryAddress'] ?? '',
-      isOrder: false,
-      addressReturn: map['returnAddress'] ?? '',
-      totalPrice: map['totalPrice']?.toDouble() ?? 0,
-      rejectedReason: map['rejectedReason'] ?? '',
-      orderAdditionalFees: [],
-      orderId: map['orderId'] ?? '',
-      storageAddress: map['storageAddress'] ?? '',
-      storageId: map['storageId'] ?? '',
-      storageName: map['storageName'] ?? '',
-      typeOrder: map['typeOrder']?.toInt() ?? 0,
-      isUserDelivery: map['isUserDelivery'] ?? false,
-      deliveryDate: map['deliveryDate'] ?? '',
-      requestId: map['id'] ?? '',
-      typeRequest: map['type']?.toInt() ?? -1,
-      deliveryTime: map['deliveryTime'] ?? '',
-      returnDate: map['returnDate'] ?? '',
-      returnTime: map['returnTime'] ?? '',
-      paymentMethod: map['paymentMethod']?.toInt() ?? 0,
-      durationDays: map['durationDays']?.toInt() ?? 0,
-      durationMonths: map['durationMonths']?.toInt() ?? 0,
-      status: map['status']?.toInt() ?? 0,
-      isPaid: map['isPaid'] ?? false,
-      orderDetails: map['requestDetails'] != null
-          ? List<OrderDetail>.from(
-              map['requestDetails']?.map((x) => OrderDetail.formRequest(x)))
-          : [],
-    );
+        id: map['id'] ?? '',
+        customerId: map['customerId'] ?? '',
+        name: map['name'] ?? '',
+        customerName: map['customerName'] ?? '',
+        customerPhone: map['customerPhone'] ?? '',
+        deliveryAddress: map['deliveryAddress'] ?? '',
+        isOrder: false,
+        addressReturn: map['returnAddress'] ?? '',
+        totalPrice: map['totalPrice']?.toDouble() ?? 0,
+        rejectedReason: map['rejectedReason'] ?? '',
+        orderAdditionalFees: [],
+        orderId: map['orderId'] ?? '',
+        storageAddress: map['storageAddress'] ?? '',
+        storageId: map['storageId'] ?? '',
+        storageName: map['storageName'] ?? '',
+        typeOrder: map['typeOrder']?.toInt() ?? 0,
+        isUserDelivery: map['isUserDelivery'] ?? false,
+        deliveryDate: map['deliveryDate'] ?? '',
+        requestId: map['id'] ?? '',
+        typeRequest: map['type']?.toInt() ?? -1,
+        deliveryTime: map['deliveryTime'] ?? '',
+        returnDate: map['returnDate'] ?? '',
+        returnTime: map['returnTime'] ?? '',
+        paymentMethod: map['paymentMethod']?.toInt() ?? 0,
+        durationDays: map['durationDays']?.toInt() ?? 0,
+        durationMonths: map['durationMonths']?.toInt() ?? 0,
+        status: map['status']?.toInt() ?? 0,
+        isPaid: map['isPaid'] ?? false,
+        orderDetails: map['requestDetails'] != null
+            ? List<OrderDetail>.from(
+                map['requestDetails']?.map((x) => OrderDetail.formRequest(x)))
+            : [],
+        importCode: map['importCode'] ?? '',
+        importDay: map['importDay'] ?? '',
+        importDeliveryBy: map['importDeliveryBy'] ?? '',
+        importStaff: map['importStaff'] ?? '');
   }
 
   void setInvoice({required Invoice invoice}) {
@@ -307,6 +344,10 @@ class Invoice with ChangeNotifier {
     storageAddress = invoice.storageAddress;
     storageId = invoice.storageId;
     storageName = invoice.storageName;
+    importCode = invoice.importCode;
+    importDay = invoice.importDay;
+    importDeliveryBy = invoice.importDeliveryBy;
+    importStaff = invoice.importStaff;
     notifyListeners();
   }
 

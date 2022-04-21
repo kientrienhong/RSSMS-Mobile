@@ -5,7 +5,7 @@ class BookingPopUpSelfStorageModel {
   late String error;
   late TextEditingController dateDeliveryController;
   late TextEditingController monthController;
-  var dateReturn;
+  late dynamic dateReturn;
   BookingPopUpSelfStorageModel(OrderBooking orderBooking) {
     error = '';
     dateDeliveryController =

@@ -20,7 +20,9 @@ enum ADDITION_FEE_TYPE {
 
 const List<Map<String, String>> tabInvoiceDetail = [
   {"name": "Hóa đơn"},
-  {"name": "Đồ đạc"}
+  {"name": "Đồ đạc"},
+  {"name": "Phiếu nhập"},
+  {"name": "Phiếu xuất"},
 ];
 
 const doorToDoorTypeOrder = 1;
@@ -66,6 +68,8 @@ const listStatusOrder = [
   {'color': CustomColor.red, 'name': 'Đang thanh lý'},
   {'color': CustomColor.green, 'name': 'Đã hoàn tất'},
   {'color': CustomColor.red, 'name': 'Đã thanh lý'},
+  {'color': CustomColor.blue, 'name': 'Đã xuất kho'},
+
 ];
 
 const listStatusOfOrderDetail = [

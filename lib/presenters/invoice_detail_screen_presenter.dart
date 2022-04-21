@@ -2,8 +2,11 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:rssms/constants/constants.dart';
+import 'package:rssms/models/entity/export.dart';
+import 'package:rssms/models/entity/import.dart';
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/order_detail.dart';
+import 'package:rssms/models/entity/request.dart';
 import 'package:rssms/models/invoice_detail_screen.dart';
 import 'package:rssms/views/invoice_detail_screen_view.dart';
 
@@ -35,6 +38,16 @@ class InvoiceDetailScreenPresenter {
     return invoiceResult;
   }
 
+  bool checkRequestReturnItem(List<Request> invoice) {
+    for (var element in invoice) {
+      if ((element.status == 1 || element.status == 2) && element.type == 4) {
+        model.request = element;
+        return true;
+      }
+    }
+    return false;
+  }
+
   void loadingDetailInvoice(String id, String idToken) async {
     try {
       final response = await model.loadingDetailInvoice(id, idToken);
@@ -42,6 +55,16 @@ class InvoiceDetailScreenPresenter {
         final decodedResponse = jsonDecode(response.body);
         Invoice invoice = Invoice.fromMap(decodedResponse);
         model.orginalInvoice = invoice;
+        if (decodedResponse['importCode'] != null) {
+          model.import = Import.fromMap(decodedResponse);
+        }
+        if (decodedResponse['exportCode'] != null) {
+          model.export = Export.fromMap(decodedResponse);
+        }
+        List<Request>? listTemp = decodedResponse['requests']
+            .map<Request>((e) => Request.fromMap(e))
+            .toList();
+        model.isRequestReturn = checkRequestReturnItem(listTemp!);
         Invoice updatedInvoice = formatUIInvoice(invoice);
         view.updateView(formatItemTabInvoice(invoice), updatedInvoice);
       }
