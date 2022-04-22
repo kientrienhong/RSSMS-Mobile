@@ -106,7 +106,7 @@ class _InvoiceDetailScreenState extends State<InvoiceDetailScreen>
             return ImportWidget(
                 onClickAcceptImport: () {},
                 import: _model.import,
-                orderDetail: _model.orginalInvoice.orderDetails);
+                orderDetail: _model.showUIInvoice.orderDetails);
           } else {
             return Center(
               child: CustomText(
@@ -120,10 +120,9 @@ class _InvoiceDetailScreenState extends State<InvoiceDetailScreen>
         case 3:
           if (_model.export.id != '') {
             return ExportWidget(
-                
                 onClickAcceptImport: () {},
                 export: _model.export,
-                orderDetail: _model.orginalInvoice.orderDetails);
+                orderDetail: _model.showUIInvoice.orderDetails);
           } else {
             return Center(
               child: CustomText(

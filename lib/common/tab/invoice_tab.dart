@@ -128,7 +128,7 @@ class _InvoiceTabState extends State<InvoiceTab> implements UpdateInvoiceView {
                 context: context,
                 height: 16,
               ),
-              if (widget.invoice.status != 0 && user.roleName == 'Customer')
+              if (widget.invoice.status != 0 && user.roleName == 'Customer' && widget.invoice.status != 8)
                 Center(
                   child: CustomButton(
                       height: 24,
@@ -234,7 +234,7 @@ class _InvoiceTabState extends State<InvoiceTab> implements UpdateInvoiceView {
                                       onClickAcceptImport: () {},
                                       export: export,
                                       orderDetail:
-                                          widget.orginalInvoice.orderDetails,
+                                          widget.invoice.orderDetails,
                                     )));
                       },
                       width: widget.deviceSize.width / 2.5,

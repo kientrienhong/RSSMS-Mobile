@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/models/entity/order_detail.dart';
+import 'package:rssms/models/entity/product.dart';
 
 class ImportExportItem extends StatelessWidget {
   final OrderDetail orderDetail;
@@ -11,9 +12,9 @@ class ImportExportItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
+
     return Table(
       defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-      defaultColumnWidth: const FlexColumnWidth(1),
       children: [
         TableRow(children: [
           Row(
@@ -23,7 +24,7 @@ class ImportExportItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
-                    width: deviceSize.width * 2 / 8,
+ 
                     child: CustomText(
                         text: orderDetail.productName,
                         color: CustomColor.black,

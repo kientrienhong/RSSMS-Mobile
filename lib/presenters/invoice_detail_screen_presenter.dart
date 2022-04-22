@@ -40,11 +40,16 @@ class InvoiceDetailScreenPresenter {
 
   bool checkRequestReturnItem(List<Request> invoice) {
     for (var element in invoice) {
-      if ((element.status == 1 || element.status == 2) && element.type == 4) {
-        model.request = element;
-        return true;
+      if (element.type == 4) {
+        if ((element.status == 1 ||
+            element.status == 2 ||
+            element.status == 4)) {
+          model.request = element;
+          return true;
+        }
       }
     }
+
     return false;
   }
 
@@ -60,11 +65,13 @@ class InvoiceDetailScreenPresenter {
         }
         if (decodedResponse['exportCode'] != null) {
           model.export = Export.fromMap(decodedResponse);
+        } else {
+          List<Request>? listTemp = decodedResponse['requests']
+              .map<Request>((e) => Request.fromMap(e))
+              .toList();
+          model.isRequestReturn = checkRequestReturnItem(listTemp!);
         }
-        List<Request>? listTemp = decodedResponse['requests']
-            .map<Request>((e) => Request.fromMap(e))
-            .toList();
-        model.isRequestReturn = checkRequestReturnItem(listTemp!);
+
         Invoice updatedInvoice = formatUIInvoice(invoice);
         view.updateView(formatItemTabInvoice(invoice), updatedInvoice);
       }

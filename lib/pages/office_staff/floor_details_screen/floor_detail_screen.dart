@@ -34,7 +34,9 @@ class _FloorDetailScreenState extends State<FloorDetailScreen>
       List<OrderDetail> listOrderDetail, PlacingItems placingItems) {
     return listOrderDetail
         .where((element) =>
-            element.productType == constants.typeProduct.handy.index)
+            element.productType == constants.typeProduct.handy.index ||
+            element.productType == constants.typeProduct.unweildy.index ||
+            element.productType == constants.typeProduct.selfStorage.index)
         .map((e) {
       final listAdditionTemp = e.listAdditionService!
           .where((element) =>
