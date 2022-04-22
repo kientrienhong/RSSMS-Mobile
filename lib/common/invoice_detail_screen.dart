@@ -179,7 +179,11 @@ class _InvoiceDetailScreenState extends State<InvoiceDetailScreen>
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: mapListTab(),
+                        children: widget.invoice.typeOrder == 1
+                            ? mapListTab()
+                            : mapListTab().where((element) =>
+                                element.index  != 2 &&
+                                element.index != 3).toList(),
                       ),
                       CustomSizedBox(
                         context: context,

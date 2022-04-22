@@ -69,7 +69,6 @@ const listStatusOrder = [
   {'color': CustomColor.green, 'name': 'Đã hoàn tất'},
   {'color': CustomColor.red, 'name': 'Đã thanh lý'},
   {'color': CustomColor.blue, 'name': 'Đã xuất kho'},
-
 ];
 
 const listStatusOfOrderDetail = [
@@ -161,8 +160,8 @@ const Map<String, String> invoiceIcons = {
 };
 
 const List<Map<String, dynamic>> listPaymentMethodChoices = [
-  {'name': 'Thanh toán tiền mặt', 'value': PAYMENT_METHOD.cash},
   {'name': 'Thánh toán thông qua paypal', 'value': PAYMENT_METHOD.paypal},
+  // {'name': 'Thanh toán tiền mặt', 'value': PAYMENT_METHOD.cash},
 ];
 
 Map<bool, Map<String, dynamic>> mapIsPaid = {
@@ -171,4 +170,9 @@ Map<bool, Map<String, dynamic>> mapIsPaid = {
     'color': CustomColor.black[3],
   },
   true: {'name': 'Đã thanh toán', 'color': CustomColor.blue}
+};
+
+
+const Map<String, String> createRequestCreatingError = {
+  "paymentfail": "Đặt cọc thất bại, đã có lỗi xảy ra",
 };

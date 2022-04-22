@@ -95,18 +95,19 @@ class _PaymentMethodBookingScreenState extends State<PaymentMethodBookingScreen>
       } else {
         orderBooking.setOrderBooking(
             orderBooking: orderBooking.copyWith(isPaid: true));
-        var request = BraintreeDropInRequest(
+        bool isSuccess = await _presenter.createOrder(orderBooking, users);
+        if (isSuccess) {
+          var request = BraintreeDropInRequest(
             tokenizationKey: 'sandbox_x62jjpjk_n5rdrcwx7kv3ppb7',
             collectDeviceData: true,
             paypalRequest: BraintreePayPalRequest(
-                currencyCode: 'VND',
-                amount: orderBooking.totalPrice.toString(),
-                displayName: users.name));
-        BraintreeDropInResult? result = await BraintreeDropIn.start(request);
-        if (result != null) {
-          bool isSuccess = await _presenter.createOrder(orderBooking, users);
-
-          if (isSuccess) {
+              currencyCode: 'VND',
+              amount: (orderBooking.totalPrice / 2).toString(),
+              displayName: users.name,
+            ),
+          );
+          BraintreeDropInResult? result = await BraintreeDropIn.start(request);
+          if (result != null) {
             orderBooking.setOrderBooking(
                 orderBooking: OrderBooking.empty(TypeOrder.doorToDoor));
             CustomSnackBar.buildSnackbar(
@@ -124,29 +125,33 @@ class _PaymentMethodBookingScreenState extends State<PaymentMethodBookingScreen>
                           listNavigator: constants.listCustomerBottomNavigation,
                         )),
                 (Route<dynamic> route) => false);
+          } else {
+            bool isSuccess = await _presenter.cancelRequest(_model.request,
+                users, constants.createRequestCreatingError['paymentfail']!);
+            if (isSuccess) {
+              CustomSnackBar.buildSnackbar(
+                  context: context,
+                  message: 'Tạo yêu cầu đặt đơn hàng không thành công',
+                  color: CustomColor.red);
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(
+                      builder: (context) => const CustomBottomNavigation(
+                            listIndexStack: [
+                              MyAccountScreen(initIndex: 2),
+                              CartScreen(),
+                              NotificationDeliveryScreen(),
+                            ],
+                            listNavigator:
+                                constants.listCustomerBottomNavigation,
+                          )),
+                  (Route<dynamic> route) => false);
+            }
           }
         }
       }
     } catch (e) {
       log(e.toString());
     }
-  }
-
-  List<Widget> _buildListDropDownPaymentMethods() {
-    return constants.listPaymentMethodChoices
-        .map((e) => CustomRadioButton(
-            function: () {
-              setState(() {
-                _model.currentIndexPaymentMethod = e['value'];
-              });
-            },
-            text: e['name'],
-            color: _model.currentIndexPaymentMethod == e['value']
-                ? CustomColor.blue
-                : CustomColor.white,
-            state: _model.currentIndexPaymentMethod,
-            value: e['value']))
-        .toList();
   }
 
   @override
@@ -182,9 +187,20 @@ class _PaymentMethodBookingScreenState extends State<PaymentMethodBookingScreen>
                 context: context,
                 height: 16,
               ),
-              Column(
-                children: _buildListDropDownPaymentMethods(),
-              ),
+              CustomRadioButton(
+                  function: () {
+                    setState(() {
+                      _model.currentIndexPaymentMethod =
+                          constants.listPaymentMethodChoices[0]['value'];
+                    });
+                  },
+                  text: constants.listPaymentMethodChoices[0]['name'],
+                  color: _model.currentIndexPaymentMethod ==
+                          constants.listPaymentMethodChoices[0]['value']
+                      ? CustomColor.blue
+                      : CustomColor.white,
+                  state: _model.currentIndexPaymentMethod,
+                  value: constants.listPaymentMethodChoices[0]['value']),
               CustomSizedBox(
                 context: context,
                 height: 16,

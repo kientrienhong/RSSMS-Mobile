@@ -120,7 +120,7 @@ class _HandleInputState extends State<HandleInput>
           ),
           CustomOutLineInputWithHint(
             controller: _model.controllerName,
-            isDisable: false,
+            isDisable: true,
             focusNode: _model.focusNodeName,
             deviceSize: deviceSize,
             hintText: 'Tên của bạn',
@@ -134,7 +134,7 @@ class _HandleInputState extends State<HandleInput>
                 width: (deviceSize.width - 48) / 2.1,
                 child: CustomOutLineInputWithHint(
                   controller: _model.controllerPhone,
-                  isDisable: false,
+                  isDisable: true,
                   focusNode: _model.focusNodePhone,
                   deviceSize: deviceSize,
                   validator: Validator.checkPhoneNumber,
@@ -146,7 +146,7 @@ class _HandleInputState extends State<HandleInput>
                 width: (deviceSize.width - 48) / 2.1,
                 child: CustomOutLineInputWithHint(
                   controller: _model.controllerEmail,
-                  isDisable: false,
+                  isDisable: true,
                   focusNode: _model.focusNodeEmail,
                   deviceSize: deviceSize,
                   hintText: 'Email',

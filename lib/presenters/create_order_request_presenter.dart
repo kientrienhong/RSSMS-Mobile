@@ -18,6 +18,10 @@ class CreateOrderRequestPresenter {
       if (response.statusCode == 200) {
         final decodedReponse = jsonDecode(response.body);
         Invoice invoice = Invoice.fromRequest(decodedReponse);
+        DateTime deliveryDate = DateTime.parse(invoice.deliveryDate);
+        if(DateTime.now().compareTo(deliveryDate) != -1){
+          model.isValidToCancel = false;
+        }
         view.updateView(invoice);
       }
       view.updateLoading();

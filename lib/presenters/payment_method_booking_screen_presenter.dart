@@ -1,6 +1,7 @@
 import 'package:rssms/helpers/response_handle.dart';
 import 'package:rssms/models/entity/order_booking.dart';
 import 'package:rssms/models/entity/order_detail.dart';
+import 'package:rssms/models/entity/request.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/models/payment_method_booking_screen_model.dart';
 import 'package:rssms/views/payment_method_booking_screen_view.dart';
@@ -64,6 +65,25 @@ class PaymentMethodBookingScreenPresenter {
         }
       }
       final response = await model.createOrder(listProduct, orderBooking, user);
+      final handledResponse = ResponseHandle.handle(response);
+      if (handledResponse['status'] == 'success') {
+        model.request = Request.fromMap(handledResponse['data']);
+        return true;
+      } else {
+        view.updateError(handledResponse['data']);
+        return false;
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    } finally {
+      view.updateLoading();
+    }
+  }
+
+  Future<bool> cancelRequest(Request request, Users user, String reason) async {
+    try {
+      view.updateLoading();
+      final response = await model.cancelOrder(request.id, user, reason);
       final handledResponse = ResponseHandle.handle(response);
       if (handledResponse['status'] == 'success') {
         return true;

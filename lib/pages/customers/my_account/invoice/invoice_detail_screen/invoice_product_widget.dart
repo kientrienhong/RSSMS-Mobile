@@ -44,19 +44,14 @@ class InvoiceProductWidget extends StatelessWidget {
     }
     List<OrderDetail> listAccessory =
         listTemp.where((element) => element.productType == 1).toList();
-    List<OrderDetail> listPackaging =
-        listTemp.where((element) => element.productType == 3).toList();
     int totalProduct = 0;
     int totalAccessory = 0;
-    int totalPackaging = 0;
+
     for (var element in listAccessory) {
       totalAccessory += (element.price * element.amount);
     }
     for (var element in listProduct) {
       totalProduct += (element.price * element.amount);
-    }
-    for (var element in listPackaging) {
-      totalPackaging += element.amount * element.price;
     }
     DateTime deliveryDate = DateTime.parse(invoice.deliveryDate);
     DateTime returnDate = DateTime.parse(invoice.returnDate);
@@ -382,12 +377,12 @@ class InvoiceProductWidget extends StatelessWidget {
                                             30)
                                         .ceil() +
                                 totalAccessory +
-                                totalPackaging +
+                              
                                 takingAdditionalFee) +
                             " đ"
                         : oCcy.format(totalProduct * invoice.durationMonths +
                                 totalAccessory +
-                                totalPackaging +
+                              
                                 takingAdditionalFee) +
                             " đ",
                     color: CustomColor.blue,

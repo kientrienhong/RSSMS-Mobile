@@ -81,104 +81,143 @@ class _ChoiceStorageScreenState extends State<ChoiceStorageScreen>
                     ),
                   ]),
             )
-          : Container(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Column(
-                children: [
-                  CustomSizedBox(
-                    context: context,
-                    height: 16,
-                  ),
-                  const CustomAppBar(
-                    isHome: false,
-                    name: 'Trang chọn kho',
-                  ),
-                  CustomSizedBox(
-                    context: context,
-                    height: 8,
-                  ),
-                  GridView.builder(
-                    padding: const EdgeInsets.all(0),
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: 0.6,
-                      crossAxisSpacing: 16.0,
-                    ),
-                    itemBuilder: (ctx, i) {
-                      return StorageChoiceWidget(
-                          storageEntity: _model.listStorage[i],
-                          currentIdStorage: _model.indexIdStorage,
-                          onChoice: chooseIndex);
-                    },
-                    itemCount: _model.listStorage.length,
-                  ),
-                  CustomSizedBox(
-                    context: context,
-                    height: 24,
-                  ),
-                  if (!_model.isChoose)
-                    CustomText(
-                        text: "Vui lòng chọn kho",
-                        color: CustomColor.red,
-                        context: context,
-                        fontSize: 16),
-                  CustomSizedBox(
-                    context: context,
-                    height: 24,
-                  ),
-                  SizedBox(
-                    width: double.infinity,
-                    child: Center(
-                      child: CustomButton(
-                          height: 24,
-                          text: 'Tiếp theo',
-                          width: deviceSize.width * 1.2 / 3,
-                          onPressFunction: () {
-                            if (_model.indexIdStorage != '') {
-                              setState(() {
-                                _model.isChoose = true;
-                              });
-                              OrderBooking orderBooking =
-                                  Provider.of<OrderBooking>(context,
-                                      listen: false);
-                              for (var element in _model.listStorage) {
-                                if (element.id == _model.indexIdStorage) {
-                                  orderBooking.storageId =
-                                      _model.indexIdStorage!;
-                                  orderBooking.deliveryFee =
-                                      element.deliveryFee;
-                                  orderBooking.distants =
-                                      element.deliveryDistance;
-                                }
-                              }
-
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const PaymentMethodBookingScreen()));
-                            } else {
-                              setState(() {
-                                _model.isChoose = false;
-                              });
-                            }
+          : _model.listStorage.length > 0
+              ? SingleChildScrollView(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: Column(
+                      children: [
+                        CustomSizedBox(
+                          context: context,
+                          height: 16,
+                        ),
+                        const CustomAppBar(
+                          isHome: false,
+                          name: 'Trang chọn kho',
+                        ),
+                        CustomSizedBox(
+                          context: context,
+                          height: 8,
+                        ),
+                        GridView.builder(
+                          padding: const EdgeInsets.all(0),
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            childAspectRatio: 0.6,
+                            crossAxisSpacing: 16.0,
+                          ),
+                          itemBuilder: (ctx, i) {
+                            return StorageChoiceWidget(
+                                storageEntity: _model.listStorage[i],
+                                currentIdStorage: _model.indexIdStorage,
+                                onChoice: chooseIndex);
                           },
-                          isLoading: false,
-                          textColor: CustomColor.white,
-                          buttonColor: CustomColor.blue,
-                          borderRadius: 6),
+                          itemCount: _model.listStorage.length,
+                        ),
+                        CustomSizedBox(
+                          context: context,
+                          height: 24,
+                        ),
+                        if (!_model.isChoose)
+                          CustomText(
+                              text: "Vui lòng chọn kho",
+                              color: CustomColor.red,
+                              context: context,
+                              fontSize: 16),
+                        CustomSizedBox(
+                          context: context,
+                          height: 24,
+                        ),
+                        SizedBox(
+                          width: double.infinity,
+                          child: Center(
+                            child: CustomButton(
+                                height: 24,
+                                text: 'Tiếp theo',
+                                width: deviceSize.width * 1.2 / 3,
+                                onPressFunction: () {
+                                  if (_model.indexIdStorage != '') {
+                                    setState(() {
+                                      _model.isChoose = true;
+                                    });
+                                    OrderBooking orderBooking =
+                                        Provider.of<OrderBooking>(context,
+                                            listen: false);
+                                    for (var element in _model.listStorage) {
+                                      if (element.id == _model.indexIdStorage) {
+                                        orderBooking.storageId =
+                                            _model.indexIdStorage!;
+                                        orderBooking.deliveryFee =
+                                            element.deliveryFee;
+                                        orderBooking.distants =
+                                            element.deliveryDistance;
+                                      }
+                                    }
+
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const PaymentMethodBookingScreen()));
+                                  } else {
+                                    setState(() {
+                                      _model.isChoose = false;
+                                    });
+                                  }
+                                },
+                                isLoading: false,
+                                textColor: CustomColor.white,
+                                buttonColor: CustomColor.blue,
+                                borderRadius: 6),
+                          ),
+                        ),
+                        CustomSizedBox(
+                          context: context,
+                          height: 24,
+                        ),
+                      ],
                     ),
                   ),
-                  CustomSizedBox(
-                    context: context,
-                    height: 24,
-                  ),
-                ],
-              ),
-            ),
+                )
+              : Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                  child: Column(children: [
+                    const CustomAppBar(
+                      isHome: false,
+                      name: '',
+                    ),
+                    Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset("assets/images/busy.png",
+                              width: deviceSize.height / 11 + 20,
+                              color: Colors.grey),
+                          CustomText(
+                              textAlign: TextAlign.center,
+                              text:
+                                  "Hiện tất cả các kho đều đang bận",
+                              color: Colors.grey,
+                              context: context,
+                              maxLines: 2,
+                              fontSize: 16),
+                          CustomText(
+                              textAlign: TextAlign.center,
+                              text:
+                                  "Quý khách vui lòng chọn khung giờ khác hoặc ngày khác",
+                              color: Colors.grey,
+                              context: context,
+                              maxLines: 2,
+                              fontSize: 16),
+                        ],
+                      ),
+                    )
+                  ]),
+                ),
     );
   }
 }

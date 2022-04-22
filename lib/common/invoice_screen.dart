@@ -38,14 +38,18 @@ class _InvoiceScreenState extends State<InvoiceScreen> implements InvoiceView {
 
   @override
   void setChangeList() {
-    setState(() {});
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   @override
   void updateIsLoadingInvoice() {
-    setState(() {
-      _model.isLoadingInvoice = !_model.isLoadingInvoice;
-    });
+    if (mounted) {
+      setState(() {
+        _model.isLoadingInvoice = !_model.isLoadingInvoice;
+      });
+    }
   }
 
   @override

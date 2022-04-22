@@ -1,6 +1,3 @@
-import 'dart:developer';
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -128,7 +125,10 @@ class _InvoiceTabState extends State<InvoiceTab> implements UpdateInvoiceView {
                 context: context,
                 height: 16,
               ),
-              if (widget.invoice.status != 0 && user.roleName == 'Customer' && widget.invoice.status != 8)
+              if (widget.invoice.status != 0 &&
+                  user.roleName == 'Customer' &&
+                  widget.invoice.status != 8 &&
+                  widget.invoice.status != 7)
                 Center(
                   child: CustomButton(
                       height: 24,
@@ -233,8 +233,7 @@ class _InvoiceTabState extends State<InvoiceTab> implements UpdateInvoiceView {
                                       invoice: widget.orginalInvoice,
                                       onClickAcceptImport: () {},
                                       export: export,
-                                      orderDetail:
-                                          widget.invoice.orderDetails,
+                                      orderDetail: widget.invoice.orderDetails,
                                     )));
                       },
                       width: widget.deviceSize.width / 2.5,

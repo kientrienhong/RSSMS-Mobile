@@ -26,6 +26,7 @@ class _StorageChoiceWidgetState extends State<StorageChoiceWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           color: CustomColor.white,
@@ -53,11 +54,14 @@ class _StorageChoiceWidgetState extends State<StorageChoiceWidget> {
             context: context,
             height: 8,
           ),
-          CustomText(
-            text: widget.storageEntity.address,
-            color: CustomColor.black,
-            context: context,
-            fontSize: 16,
+          Flexible(
+            child: CustomText(
+              text: widget.storageEntity.address,
+              color: CustomColor.black,
+              context: context,
+              maxLines: 2,
+              fontSize: 14,
+            ),
           ),
           CustomSizedBox(
             context: context,
@@ -65,17 +69,21 @@ class _StorageChoiceWidgetState extends State<StorageChoiceWidget> {
           ),
           Row(
             children: [
-              CustomText(
-                text: 'Phí vận chuyển: ',
-                color: CustomColor.black,
-                context: context,
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
+              Flexible(
+                child: CustomText(
+                  text: 'Phí vận chuyển: ',
+                  color: CustomColor.black,
+                  context: context,
+                  fontSize: 14,
+                  maxLines: 3,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               CustomText(
                 text: '${oCcy.format(widget.storageEntity.deliveryFee)}  đ',
                 color: CustomColor.blue,
                 context: context,
+                maxLines: 2,
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
               ),

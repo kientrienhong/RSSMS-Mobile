@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/order_booking.dart';
+import 'package:rssms/models/entity/order_detail.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/constants/constants.dart' as constants;
 
@@ -401,7 +402,8 @@ class ApiServices {
               ? constants.selfStorageTypeOrder
               : constants.doorToDoorTypeOrder,
           "note": orderBooking.note,
-          "requestDetails": listProduct
+          "requestDetails": listProduct,
+          "depositFee": orderBooking.totalPrice * 50 / 100
         }),
         headers: headers,
       );
@@ -801,6 +803,24 @@ class ApiServices {
         url,
         headers: headers,
       );
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  static Future<dynamic> cancelCreateRequest(
+      String requestId, String idToken, String reason) {
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        'Authorization': 'Bearer $idToken'
+      };
+
+      final url = Uri.parse('$_domain/api/v1/requests/cancel request to order/' +
+          requestId.toString());
+      return http.put(url,
+          headers: headers,
+          body: jsonEncode({"id": requestId, "cancelReason": reason}));
     } catch (e) {
       throw Exception(e.toString());
     }

@@ -5,10 +5,12 @@ class CreateOrderRequestModel {
   late Invoice invoice;
   late bool isLoading;
   late String idRequest;
+  late bool isValidToCancel;
   CreateOrderRequestModel(String id) {
     invoice = Invoice.empty();
     isLoading = true;
     idRequest = id;
+    isValidToCancel = true;
   }
 
   Future<dynamic> getDetailRequest(String id, String idToken) async {

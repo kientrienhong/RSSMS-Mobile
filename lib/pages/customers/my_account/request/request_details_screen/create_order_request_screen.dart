@@ -269,7 +269,7 @@ class _CreateOrderRequestScreenState extends State<CreateOrderRequestScreen>
                                 context: context,
                                 height: 16,
                               ),
-                              if (_model.invoice.status != 0)
+                              if (_model.invoice.status != 0&& _model.isValidToCancel)
                                 Center(
                                   child: CustomButton(
                                       height: 24,
