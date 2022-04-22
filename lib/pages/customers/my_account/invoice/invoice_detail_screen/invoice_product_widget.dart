@@ -67,7 +67,6 @@ class InvoiceProductWidget extends StatelessWidget {
         composationFee = e.price;
       } else if (e.type ==
           constants.ADDITION_FEE_TYPE.returningAdditionFee.index) {
-            
         returningAdditionalDescription = e.description;
         returningAdditionalFee = e.price;
       } else if (e.type ==
@@ -377,18 +376,54 @@ class InvoiceProductWidget extends StatelessWidget {
                                             30)
                                         .ceil() +
                                 totalAccessory +
-                              
                                 takingAdditionalFee) +
                             " đ"
                         : oCcy.format(totalProduct * invoice.durationMonths +
                                 totalAccessory +
-                              
                                 takingAdditionalFee) +
                             " đ",
                     color: CustomColor.blue,
                     context: context,
                     fontWeight: FontWeight.bold,
                     fontSize: 19),
+              ],
+            ),
+            CustomSizedBox(
+              context: context,
+              height: 10,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CustomText(
+                    text: "Đã tạm ứng (50%): ",
+                    color: Colors.black,
+                    context: context,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 17),
+                CustomText(
+                    text: invoice.typeOrder == TypeOrder.doorToDoor.index
+                        ? oCcy.format((totalProduct *
+                                        (returnDate
+                                                    .difference(deliveryDate)
+                                                    .inDays /
+                                                30)
+                                            .ceil() +
+                                    totalAccessory +
+                                    takingAdditionalFee) *
+                                50 /
+                                100) +
+                            " đ"
+                        : oCcy.format((totalProduct * invoice.durationMonths +
+                                    totalAccessory +
+                                    takingAdditionalFee) *
+                                50 /
+                                100) +
+                            " đ",
+                    color: CustomColor.blue,
+                    context: context,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 17),
               ],
             ),
             if (returningAdditionalFee > 0)

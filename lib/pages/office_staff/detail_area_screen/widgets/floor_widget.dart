@@ -67,7 +67,7 @@ class FloorWidget extends StatelessWidget {
                 child: Align(
                     alignment: Alignment.center,
                     child: CustomText(
-                        text: '${floor.usage}%',
+                        text: '${floor.usage.toStringAsFixed(2)}%',
                         color: CustomColor.black,
                         context: context,
                         fontSize: 16)),

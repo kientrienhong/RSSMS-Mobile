@@ -200,46 +200,48 @@ class _InvoiceTabState extends State<InvoiceTab> implements UpdateInvoiceView {
                       buttonColor: CustomColor.blue,
                       borderRadius: 6),
                 ),
-              if ((user.roleName == 'Office Staff' &&
-                      widget.invoice.typeOrder == 1 &&
-                      widget.isOrderReturn) ||
-                  widget.invoice.status == 4)
-                Center(
-                  child: CustomButton(
-                      height: 24,
-                      isLoading: false,
-                      text: 'Xuất kho',
-                      textColor: CustomColor.white,
-                      onPressFunction: () {
-                        Users user = Provider.of<Users>(context, listen: false);
-                        String formattedDate = DateFormat('yyyy-MM-dd kk:mm')
-                            .format(DateTime.now());
-                        Export export = Export(
-                            storageName: widget.orginalInvoice.storageName,
-                            storageAddress:
-                                widget.orginalInvoice.storageAddress,
-                            exportStaff: user.name!,
-                            exportDate: formattedDate,
-                            id: widget.orginalInvoice.name,
-                            customerName: widget.orginalInvoice.customerName,
-                            customerPhone: widget.orginalInvoice.customerPhone,
-                            returnAddress: widget.request!.deliveryAddress,
-                            exportDeliveryBy: '');
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ExportScreen(
-                                      isOrderReturn: widget.isOrderReturn,
-                                      invoice: widget.orginalInvoice,
-                                      onClickAcceptImport: () {},
-                                      export: export,
-                                      orderDetail: widget.invoice.orderDetails,
-                                    )));
-                      },
-                      width: widget.deviceSize.width / 2.5,
-                      buttonColor: CustomColor.blue,
-                      borderRadius: 6),
-                ),
+              if (widget.invoice.typeOrder == 1)
+                if ((user.roleName == 'Office Staff' && widget.isOrderReturn) ||
+                    widget.invoice.status == 4)
+                  Center(
+                    child: CustomButton(
+                        height: 24,
+                        isLoading: false,
+                        text: 'Xuất kho',
+                        textColor: CustomColor.white,
+                        onPressFunction: () {
+                          Users user =
+                              Provider.of<Users>(context, listen: false);
+                          String formattedDate = DateFormat('yyyy-MM-dd kk:mm')
+                              .format(DateTime.now());
+                          Export export = Export(
+                              storageName: widget.orginalInvoice.storageName,
+                              storageAddress:
+                                  widget.orginalInvoice.storageAddress,
+                              exportStaff: user.name!,
+                              exportDate: formattedDate,
+                              id: widget.orginalInvoice.name,
+                              customerName: widget.orginalInvoice.customerName,
+                              customerPhone:
+                                  widget.orginalInvoice.customerPhone,
+                              returnAddress: widget.request!.deliveryAddress,
+                              exportDeliveryBy: '');
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ExportScreen(
+                                        isOrderReturn: widget.isOrderReturn,
+                                        invoice: widget.orginalInvoice,
+                                        onClickAcceptImport: () {},
+                                        export: export,
+                                        orderDetail:
+                                            widget.invoice.orderDetails,
+                                      )));
+                        },
+                        width: widget.deviceSize.width / 2.5,
+                        buttonColor: CustomColor.blue,
+                        borderRadius: 6),
+                  ),
             ],
           ),
         ),

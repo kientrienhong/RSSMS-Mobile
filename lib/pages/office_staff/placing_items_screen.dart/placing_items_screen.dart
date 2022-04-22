@@ -120,15 +120,17 @@ class _PlacingItemsScreenState extends State<PlacingItemsScreen>
         placingItems.import.importDeliveryBy = _model.deliveryStaff.name;
         placingItems.import.importStaff = user.name!;
         Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => ImportScreen(
-                      onClickAcceptImport: onClickAcceptImport,
-                      import: placingItems.import,
-                      orderDetail: placingItems.placingItems['floors']
-                          .map<OrderDetail>((e) => OrderDetail.fromMap(e))
-                          .toList(),
-                    )));
+          context,
+          MaterialPageRoute(
+            builder: (context) => ImportScreen(
+              onClickAcceptImport: onClickAcceptImport,
+              import: placingItems.import,
+              orderDetail: placingItems.placingItems['floors']
+                  .map<OrderDetail>((e) => OrderDetail.fromMap(e))
+                  .toList(),
+            ),
+          ),
+        );
       }
     }
     if (result) {

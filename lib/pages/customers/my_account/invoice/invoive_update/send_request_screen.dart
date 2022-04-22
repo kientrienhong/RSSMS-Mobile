@@ -26,11 +26,13 @@ class SendRequestScreenState extends State<SendRequestScreen> {
     return Colors.white;
   }
 
+  CurrentRadioState? _state = CurrentRadioState.extendOrder;
+
   @override
   Widget build(BuildContext context) {
-    CurrentRadioState? _state = widget.invoice!.status != 5
-        ? CurrentRadioState.extendOrder
-        : CurrentRadioState.modifyItem;
+    if(widget.invoice!.status == 5){
+      _state = CurrentRadioState.modifyItem;
+    }
     final deviceSize = MediaQuery.of(context).size;
     return Scaffold(
       body: SingleChildScrollView(

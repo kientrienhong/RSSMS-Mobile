@@ -11,8 +11,7 @@ class ImportExportItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final deviceSize = MediaQuery.of(context).size;
-
+    
     return Table(
       defaultVerticalAlignment: TableCellVerticalAlignment.middle,
       children: [

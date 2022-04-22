@@ -43,12 +43,15 @@ class _StorageChoiceWidgetState extends State<StorageChoiceWidget> {
             context: context,
             height: 8,
           ),
-          CustomText(
-            text: widget.storageEntity.name,
-            color: CustomColor.black,
-            context: context,
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
+          Flexible(
+            child: CustomText(
+              text: widget.storageEntity.name,
+              color: CustomColor.black,
+              context: context,
+              fontSize: 16,
+              maxLines: 2,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           CustomSizedBox(
             context: context,
