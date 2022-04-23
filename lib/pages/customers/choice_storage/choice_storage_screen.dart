@@ -99,16 +99,10 @@ class _ChoiceStorageScreenState extends State<ChoiceStorageScreen>
                           context: context,
                           height: 8,
                         ),
-                        GridView.builder(
+                        ListView.builder(
                           padding: const EdgeInsets.all(0),
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            childAspectRatio: 0.6,
-                            crossAxisSpacing: 16.0,
-                          ),
                           itemBuilder: (ctx, i) {
                             return StorageChoiceWidget(
                                 storageEntity: _model.listStorage[i],
@@ -199,8 +193,7 @@ class _ChoiceStorageScreenState extends State<ChoiceStorageScreen>
                               color: Colors.grey),
                           CustomText(
                               textAlign: TextAlign.center,
-                              text:
-                                  "Hiện tất cả các kho đều đang bận",
+                              text: "Hiện tất cả các kho đều đang bận",
                               color: Colors.grey,
                               context: context,
                               maxLines: 2,

@@ -86,7 +86,7 @@ class _ExportScreenState extends State<ExportScreen> implements ExportView {
 
           Navigator.of(context)
             ..pop()
-            ..pop();
+            ..pop()..pop();
         }
       } else {
         CustomSnackBar.buildSnackbar(

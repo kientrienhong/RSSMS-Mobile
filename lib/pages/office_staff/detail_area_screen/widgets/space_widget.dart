@@ -61,7 +61,7 @@ class _SpaceWidgetState extends State<SpaceWidget> {
                     width: 8,
                   ),
                   Container(
-                    width: 4,
+                    width: 2,
                     height: 16,
                     color: CustomColor.black,
                   ),
@@ -87,7 +87,7 @@ class _SpaceWidgetState extends State<SpaceWidget> {
                       'Kích thước tầng: (${widget.space.floors[0].width}m x ${widget.space.floors[0].length}m x ${widget.space.floors[0].height}m)',
                   color: CustomColor.black,
                   context: context,
-                  fontSize: 16)
+                  fontSize: 14)
             ],
           ),
           children: [
