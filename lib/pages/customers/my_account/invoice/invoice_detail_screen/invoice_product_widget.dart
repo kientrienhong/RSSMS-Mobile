@@ -84,6 +84,12 @@ class InvoiceProductWidget extends StatelessWidget {
         deliveryFee = e.price;
       }
     }
+    if (deliveryFeeDescription == '') {
+      if (invoice.deliveryFee != 0) {
+        deliveryFeeDescription = 'Phí vận chuyển';
+        deliveryFee = invoice.deliveryFee;
+      }
+    }
 
     return Container(
       decoration: BoxDecoration(
@@ -437,7 +443,18 @@ class InvoiceProductWidget extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                       fontSize: 17),
                   CustomText(
-                      text: oCcy.format(invoice.advanceMoney) + " đ",
+                      text: oCcy.format((totalProduct *
+                                      (returnDate
+                                                  .difference(deliveryDate)
+                                                  .inDays /
+                                              30)
+                                          .ceil() +
+                                  totalAccessory +
+                                  takingAdditionalFee +
+                                  deliveryFee +
+                                  invoice.deliveryFee) *
+                              0.5) +
+                          " đ",
                       color: CustomColor.blue,
                       context: context,
                       fontWeight: FontWeight.bold,
