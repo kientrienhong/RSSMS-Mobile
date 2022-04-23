@@ -43,6 +43,9 @@ class PaymentMethodBookingScreenPresenter {
       returnDate: orderBooking.dateTimeReturnString,
       durationMonths: orderBooking.months,
       isOrder: false,
+      totalPrice: orderBooking.deliveryFee + orderBooking.totalPrice,
+      deliveryFee: orderBooking.deliveryFee,
+      advanceMoney: (orderBooking.deliveryFee + orderBooking.totalPrice) * 0.5,
       typeOrder: orderBooking.typeOrder.index,
     );
   }
@@ -64,6 +67,7 @@ class PaymentMethodBookingScreenPresenter {
           });
         }
       }
+
       final response = await model.createOrder(listProduct, orderBooking, user);
       final handledResponse = ResponseHandle.handle(response);
       if (handledResponse['status'] == 'success') {

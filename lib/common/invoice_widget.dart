@@ -20,6 +20,7 @@ class InvoiceWidget extends StatelessWidget {
           context,
           MaterialPageRoute(
               builder: (context) => InvoiceDetailScreen(
+                
                     invoice: invoice,
                   )),
         );

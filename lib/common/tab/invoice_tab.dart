@@ -97,6 +97,7 @@ class _InvoiceTabState extends State<InvoiceTab> implements UpdateInvoiceView {
                 height: 16,
               ),
               InvoiceProductWidget(
+                isInvoice: true,
                   deviceSize: widget.deviceSize, invoice: widget.invoice),
               CustomSizedBox(
                 context: context,

@@ -39,7 +39,9 @@ class Invoice with ChangeNotifier {
   late List<OrderDetail> orderDetails;
   late bool? isOrder;
   late String? exportAddress;
-
+  late double deliveryFee;
+  late String deliveryDistance;
+  late double advanceMoney;
   late List<OrderAdditionalFee> orderAdditionalFees;
   Invoice(
       {required this.id,
@@ -75,10 +77,12 @@ class Invoice with ChangeNotifier {
       required this.importCode,
       required this.importDay,
       required this.importDeliveryBy,
-      required this.importStaff});
+      required this.importStaff,
+      required this.deliveryDistance,
+      required this.advanceMoney,
+      required this.deliveryFee});
 
   Invoice.empty() {
-  
     id = '';
     customerName = '';
     customerPhone = '';
@@ -113,6 +117,9 @@ class Invoice with ChangeNotifier {
     importDeliveryBy = '';
     importStaff = '';
     exportAddress = '';
+    deliveryDistance = '';
+    deliveryFee = 0;
+    advanceMoney = 0;
   }
 
   Invoice copyWith(
@@ -150,7 +157,10 @@ class Invoice with ChangeNotifier {
       String? importDay,
       String? importStaff,
       String? importCode,
-      String? exportAddress}) {
+      String? exportAddress,
+      String? deliveryDistance,
+      double? deliveryFee,
+      double? advanceMoney}) {
     return Invoice(
         isOrder: isOrder ?? this.isOrder,
         id: id ?? this.id,
@@ -185,7 +195,10 @@ class Invoice with ChangeNotifier {
         importDay: importDay ?? this.importDay,
         importDeliveryBy: importDeliveryBy ?? this.importDeliveryBy,
         importStaff: importStaff ?? this.importStaff,
-        exportAddress: exportAddress ?? this.exportAddress);
+        exportAddress: exportAddress ?? this.exportAddress,
+        deliveryDistance: deliveryDistance ?? this.deliveryDistance,
+        deliveryFee: deliveryFee ?? this.deliveryFee,
+        advanceMoney: advanceMoney ?? this.advanceMoney);
   }
 
   Map<String, dynamic> toMap() {
@@ -273,7 +286,10 @@ class Invoice with ChangeNotifier {
         importDay: map['importDay'] ?? '',
         importDeliveryBy: map['importDeliveryBy'] ?? '',
         exportAddress: exportAddressRequest,
-        importStaff: map['importStaff'] ?? '');
+        importStaff: map['importStaff'] ?? '',
+        deliveryDistance: map['deliveryDistance'] ?? '',
+        deliveryFee: map['deliveryFee'] ?? 0,
+        advanceMoney: map['advanceMoney'] ?? 0);
   }
 
   factory Invoice.fromRequest(Map<String, dynamic> map) {
@@ -313,7 +329,10 @@ class Invoice with ChangeNotifier {
         importCode: map['importCode'] ?? '',
         importDay: map['importDay'] ?? '',
         importDeliveryBy: map['importDeliveryBy'] ?? '',
-        importStaff: map['importStaff'] ?? '');
+        importStaff: map['importStaff'] ?? '',
+        deliveryDistance: map['deliveryDistance'] ?? '',
+        deliveryFee: map['deliveryFee'] ?? 0,
+        advanceMoney: map['advanceMoney'] ?? 0);
   }
 
   void setInvoice({required Invoice invoice}) {
@@ -349,6 +368,8 @@ class Invoice with ChangeNotifier {
     importDay = invoice.importDay;
     importDeliveryBy = invoice.importDeliveryBy;
     importStaff = invoice.importStaff;
+    deliveryFee = invoice.deliveryFee;
+    advanceMoney = invoice.advanceMoney;
     notifyListeners();
   }
 

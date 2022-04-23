@@ -233,6 +233,7 @@ class NewInvoiceScreen extends StatelessWidget {
                       height: 16,
                     ),
                     InvoiceProductWidget(
+                      isInvoice: true,
                         deviceSize: deviceSize, invoice: newInvoice),
                     CustomSizedBox(
                       context: context,

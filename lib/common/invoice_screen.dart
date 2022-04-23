@@ -99,6 +99,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> implements InvoiceView {
               itemBuilder: (context, index) {
                 if (index < snapshot.data.length) {
                   return InvoiceWidget(
+                    
                     invoice: snapshot.data[index],
                   );
                 } else if (_model.hasMore) {

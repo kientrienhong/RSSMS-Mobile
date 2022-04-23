@@ -15,7 +15,8 @@ enum STATUS_REQUEST { canceled, inProcess, processed, completed }
 enum ADDITION_FEE_TYPE {
   takingAdditionFee,
   returningAdditionFee,
-  compensationFee
+  compensationFee,
+  deliveryFee,
 }
 
 const List<Map<String, String>> tabInvoiceDetail = [

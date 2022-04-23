@@ -13,10 +13,14 @@ import 'package:rssms/constants/constants.dart' as constants;
 class InvoiceProductWidget extends StatelessWidget {
   final Invoice invoice;
   final Size deviceSize;
+  final bool isInvoice;
   final oCcy = NumberFormat("#,##0", "en_US");
 
   InvoiceProductWidget(
-      {Key? key, required this.invoice, required this.deviceSize})
+      {Key? key,
+      required this.invoice,
+      required this.deviceSize,
+      required this.isInvoice})
       : super(key: key);
 
   List<Widget> mapProductWidget(listProduct) => listProduct
@@ -61,6 +65,8 @@ class InvoiceProductWidget extends StatelessWidget {
     double returningAdditionalFee = 0;
     String composationDescription = '';
     double composationFee = 0;
+    String deliveryFeeDescription = '';
+    double deliveryFee = 0;
     for (var e in invoice.orderAdditionalFees) {
       if (e.type == constants.ADDITION_FEE_TYPE.compensationFee.index) {
         composationDescription = e.description;
@@ -73,6 +79,9 @@ class InvoiceProductWidget extends StatelessWidget {
           constants.ADDITION_FEE_TYPE.takingAdditionFee.index) {
         takingAdditionalDescription = e.description;
         takingAdditionalFee = e.price;
+      } else if (e.type == constants.ADDITION_FEE_TYPE.deliveryFee.index) {
+        deliveryFeeDescription = e.description;
+        deliveryFee = e.price;
       }
     }
 
@@ -354,6 +363,29 @@ class InvoiceProductWidget extends StatelessWidget {
                 color: Color(0xFF8D8D8D),
               ),
             ),
+            if (invoice.typeOrder == 1)
+              CustomSizedBox(
+                context: context,
+                height: 10,
+              ),
+            if (invoice.typeOrder == 1 && deliveryFeeDescription.isNotEmpty)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  CustomText(
+                      text: deliveryFeeDescription,
+                      color: Colors.black,
+                      context: context,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15),
+                  CustomText(
+                      text: oCcy.format(deliveryFee) + " đ",
+                      color: CustomColor.blue,
+                      context: context,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15),
+                ],
+              ),
             CustomSizedBox(
               context: context,
               height: 10,
@@ -376,7 +408,9 @@ class InvoiceProductWidget extends StatelessWidget {
                                             30)
                                         .ceil() +
                                 totalAccessory +
-                                takingAdditionalFee) +
+                                takingAdditionalFee +
+                                deliveryFee +
+                                invoice.deliveryFee) +
                             " đ"
                         : oCcy.format(totalProduct * invoice.durationMonths +
                                 totalAccessory +
@@ -392,40 +426,24 @@ class InvoiceProductWidget extends StatelessWidget {
               context: context,
               height: 10,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CustomText(
-                    text: "Tạm ứng (50%): ",
-                    color: Colors.black,
-                    context: context,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 17),
-                CustomText(
-                    text: invoice.typeOrder == TypeOrder.doorToDoor.index
-                        ? oCcy.format((totalProduct *
-                                        (returnDate
-                                                    .difference(deliveryDate)
-                                                    .inDays /
-                                                30)
-                                            .ceil() +
-                                    totalAccessory +
-                                    takingAdditionalFee) *
-                                50 /
-                                100) +
-                            " đ"
-                        : oCcy.format((totalProduct * invoice.durationMonths +
-                                    totalAccessory +
-                                    takingAdditionalFee) *
-                                50 /
-                                100) +
-                            " đ",
-                    color: CustomColor.blue,
-                    context: context,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 17),
-              ],
-            ),
+            if (!isInvoice)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  CustomText(
+                      text: "Tạm ứng : ",
+                      color: Colors.black,
+                      context: context,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 17),
+                  CustomText(
+                      text: oCcy.format(invoice.advanceMoney) + " đ",
+                      color: CustomColor.blue,
+                      context: context,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 17),
+                ],
+              ),
             if (returningAdditionalFee > 0)
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 CustomSizedBox(

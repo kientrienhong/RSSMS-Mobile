@@ -68,12 +68,46 @@ class _PaymentMethodBookingScreenState extends State<PaymentMethodBookingScreen>
           Provider.of<OrderBooking>(context, listen: false);
 
       Users users = Provider.of<Users>(context, listen: false);
-      if (_model.currentIndexPaymentMethod == PAYMENT_METHOD.cash) {
-        orderBooking.setOrderBooking(
-            orderBooking: orderBooking.copyWith(isPaid: false));
-        bool isSuccess = await _presenter.createOrder(orderBooking, users);
+      // if (_model.currentIndexPaymentMethod == PAYMENT_METHOD.cash) {
+      // orderBooking.setOrderBooking(
+      //     orderBooking: orderBooking.copyWith(isPaid: false));
+      // bool isSuccess = await _presenter.createOrder(orderBooking, users);
 
-        if (isSuccess) {
+      // if (isSuccess) {
+      //   orderBooking.setOrderBooking(
+      //       orderBooking: OrderBooking.empty(TypeOrder.doorToDoor));
+      //   CustomSnackBar.buildSnackbar(
+      //       context: context,
+      //       message: 'Tạo yêu cầu đặt đơn hàng thành công',
+      //       color: CustomColor.green);
+      //   Navigator.of(context).pushAndRemoveUntil(
+      //       MaterialPageRoute(
+      //           builder: (context) => const CustomBottomNavigation(
+      //                 listIndexStack: [
+      //                   MyAccountScreen(initIndex: 2),
+      //                   CartScreen(),
+      //                   NotificationDeliveryScreen(),
+      //                 ],
+      //                 listNavigator: constants.listCustomerBottomNavigation,
+      //               )),
+      //       (Route<dynamic> route) => false);
+      // }
+      // } else {
+      orderBooking.setOrderBooking(
+          orderBooking: orderBooking.copyWith(isPaid: true, totalPrice: orderBooking.totalPrice + orderBooking.deliveryFee));
+      bool isSuccess = await _presenter.createOrder(orderBooking, users);
+      if (isSuccess) {
+        var request = BraintreeDropInRequest(
+          tokenizationKey: 'sandbox_x62jjpjk_n5rdrcwx7kv3ppb7',
+          collectDeviceData: true,
+          paypalRequest: BraintreePayPalRequest(
+            currencyCode: 'VND',
+            amount: (orderBooking.totalPrice / 2).toString(),
+            displayName: users.name,
+          ),
+        );
+        BraintreeDropInResult? result = await BraintreeDropIn.start(request);
+        if (result != null) {
           orderBooking.setOrderBooking(
               orderBooking: OrderBooking.empty(TypeOrder.doorToDoor));
           CustomSnackBar.buildSnackbar(
@@ -91,29 +125,14 @@ class _PaymentMethodBookingScreenState extends State<PaymentMethodBookingScreen>
                         listNavigator: constants.listCustomerBottomNavigation,
                       )),
               (Route<dynamic> route) => false);
-        }
-      } else {
-        orderBooking.setOrderBooking(
-            orderBooking: orderBooking.copyWith(isPaid: true));
-        bool isSuccess = await _presenter.createOrder(orderBooking, users);
-        if (isSuccess) {
-          var request = BraintreeDropInRequest(
-            tokenizationKey: 'sandbox_x62jjpjk_n5rdrcwx7kv3ppb7',
-            collectDeviceData: true,
-            paypalRequest: BraintreePayPalRequest(
-              currencyCode: 'VND',
-              amount: (orderBooking.totalPrice / 2).toString(),
-              displayName: users.name,
-            ),
-          );
-          BraintreeDropInResult? result = await BraintreeDropIn.start(request);
-          if (result != null) {
-            orderBooking.setOrderBooking(
-                orderBooking: OrderBooking.empty(TypeOrder.doorToDoor));
+        } else {
+          bool isSuccess = await _presenter.cancelRequest(_model.request, users,
+              constants.createRequestCreatingError['paymentfail']!);
+          if (isSuccess) {
             CustomSnackBar.buildSnackbar(
                 context: context,
-                message: 'Tạo yêu cầu đặt đơn hàng thành công',
-                color: CustomColor.green);
+                message: 'Tạo yêu cầu đặt đơn hàng không thành công',
+                color: CustomColor.red);
             Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(
                     builder: (context) => const CustomBottomNavigation(
@@ -125,30 +144,10 @@ class _PaymentMethodBookingScreenState extends State<PaymentMethodBookingScreen>
                           listNavigator: constants.listCustomerBottomNavigation,
                         )),
                 (Route<dynamic> route) => false);
-          } else {
-            bool isSuccess = await _presenter.cancelRequest(_model.request,
-                users, constants.createRequestCreatingError['paymentfail']!);
-            if (isSuccess) {
-              CustomSnackBar.buildSnackbar(
-                  context: context,
-                  message: 'Tạo yêu cầu đặt đơn hàng không thành công',
-                  color: CustomColor.red);
-              Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(
-                      builder: (context) => const CustomBottomNavigation(
-                            listIndexStack: [
-                              MyAccountScreen(initIndex: 2),
-                              CartScreen(),
-                              NotificationDeliveryScreen(),
-                            ],
-                            listNavigator:
-                                constants.listCustomerBottomNavigation,
-                          )),
-                  (Route<dynamic> route) => false);
-            }
           }
         }
       }
+      // }
     } catch (e) {
       log(e.toString());
     }
@@ -188,7 +187,12 @@ class _PaymentMethodBookingScreenState extends State<PaymentMethodBookingScreen>
                 height: 24,
               ),
               InvoiceProductWidget(
+                isInvoice: false,
                   deviceSize: deviceSize, invoice: _model.invoiceDisplay),
+              CustomSizedBox(
+                context: context,
+                height: 16,
+              ),
               CustomText(
                   text: 'Lưu ý',
                   color: CustomColor.blue,
@@ -202,7 +206,7 @@ class _PaymentMethodBookingScreenState extends State<PaymentMethodBookingScreen>
               CustomText(
                   text:
                       '* khi tiến hành tạo yêu cầu, quý khách phải thanh toán trước 50% tổng trên tổng số tiền tạo yêu cầu đặt đơn thông qua paypal',
-                  color: CustomColor.black,
+                  color: CustomColor.blue,
                   maxLines: 3,
                   context: context,
                   fontSize: 16),

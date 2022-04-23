@@ -371,7 +371,7 @@ class ApiServices {
         "typeOrder": orderBooking.typeOrder == TypeOrder.selfStorage
             ? constants.selfStorageTypeOrder
             : constants.doorToDoorTypeOrder,
-        "note": orderBooking.note,
+        "note": orderBooking.distants,
         "requestDetails": listProduct,
         "deliveryFee": orderBooking.deliveryFee,
         "distance": orderBooking.distants
@@ -400,7 +400,7 @@ class ApiServices {
           "typeOrder": orderBooking.typeOrder == TypeOrder.selfStorage
               ? constants.selfStorageTypeOrder
               : constants.doorToDoorTypeOrder,
-          "note": orderBooking.note,
+          "note": orderBooking.distants,
           "requestDetails": listProduct,
           "advanceMoney": orderBooking.totalPrice * 50 / 100
         }),

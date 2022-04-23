@@ -229,10 +229,11 @@ class _CreateOrderRequestScreenState extends State<CreateOrderRequestScreen>
                             ),
                           ],
                         ),
-                        CustomSizedBox(
-                          context: context,
-                          height: 24,
-                        ),
+                        if (_model.invoice.status == 0)
+                          CustomSizedBox(
+                            context: context,
+                            height: 24,
+                          ),
                         if (_model.invoice.status == 0)
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -257,10 +258,11 @@ class _CreateOrderRequestScreenState extends State<CreateOrderRequestScreen>
                               ),
                             ],
                           ),
-                        CustomSizedBox(
-                          context: context,
-                          height: 24,
-                        ),
+                        if (_model.invoice.status == 0)
+                          CustomSizedBox(
+                            context: context,
+                            height: 24,
+                          ),
                         SizedBox(
                           width: deviceSize.width,
                           child: Column(
@@ -271,6 +273,7 @@ class _CreateOrderRequestScreenState extends State<CreateOrderRequestScreen>
                                 height: 16,
                               ),
                               InvoiceProductWidget(
+                                  isInvoice: false,
                                   deviceSize: deviceSize,
                                   invoice: _model.invoice),
                               CustomSizedBox(
@@ -278,7 +281,7 @@ class _CreateOrderRequestScreenState extends State<CreateOrderRequestScreen>
                                 height: 16,
                               ),
                               CustomText(
-                                  text: "QR code",
+                                  text: "Mã QR",
                                   color: CustomColor.blue,
                                   context: context,
                                   textAlign: TextAlign.right,

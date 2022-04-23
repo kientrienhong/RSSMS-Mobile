@@ -133,6 +133,7 @@ class _QRInvoiceDetailsScreenState extends State<QRInvoiceDetailsScreen> {
                       height: 16,
                     ),
                     InvoiceProductWidget(
+                      isInvoice: true,
                         deviceSize: deviceSize, invoice: invoiceUI),
                     CustomSizedBox(
                       context: context,

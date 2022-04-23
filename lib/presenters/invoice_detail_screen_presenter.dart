@@ -49,8 +49,16 @@ class InvoiceDetailScreenPresenter {
         }
       }
     }
-
     return false;
+  }
+
+  Request getRequestCreated(List<Request> invoice) {
+    for (var element in invoice) {
+      if (element.type == REQUEST_TYPE.createOrder.index) {
+        return element;
+      }
+    }
+    return Request.empty();
   }
 
   void loadingDetailInvoice(String id, String idToken) async {
@@ -66,10 +74,13 @@ class InvoiceDetailScreenPresenter {
         if (decodedResponse['exportCode'] != null) {
           model.export = Export.fromMap(decodedResponse);
         } else {
-          List<Request>? listTemp = decodedResponse['requests']
+          List<Request>? listReqTemp = decodedResponse['requests']
               .map<Request>((e) => Request.fromMap(e))
               .toList();
-          model.isRequestReturn = checkRequestReturnItem(listTemp!);
+          model.isRequestReturn = checkRequestReturnItem(listReqTemp!);
+          Request createRequest = getRequestCreated(listReqTemp);
+          model.orginalInvoice.advanceMoney = createRequest.advanceMoney;
+          model.orginalInvoice.deliveryFee = createRequest.deliveryFee;
         }
 
         Invoice updatedInvoice = formatUIInvoice(invoice);

@@ -82,7 +82,7 @@ class InvoiceUpdatePresenter {
         }
       }
     }
-
+    final totalPrice = price + invoice.deliveryFee + double.parse(_model.controllerAdditionFeePrice.text);
     final orderDetails = [];
 
     List<OrderDetail> newListOrderDetails =
@@ -125,7 +125,7 @@ class InvoiceUpdatePresenter {
       "requestId": invoice.id,
       "deliveryAddress": invoice.deliveryAddress,
       "returnAddress": invoice.addressReturn,
-      "totalPrice": price,
+      "totalPrice": totalPrice,
       "rejectedReason": "",
       "orderAdditionalFees": [
         {
@@ -136,6 +136,11 @@ class InvoiceUpdatePresenter {
           "price": _model.isAdditionFee
               ? double.parse(_model.controllerAdditionFeePrice.text)
               : 0
+        },
+        {
+          "type": constants.ADDITION_FEE_TYPE.deliveryFee.index,
+          "description": "Phí vận chuyển",
+          "price": invoice.deliveryFee
         }
       ],
       "type": invoice.typeOrder,
