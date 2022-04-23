@@ -178,34 +178,6 @@ class _PaymentMethodBookingScreenState extends State<PaymentMethodBookingScreen>
                 name: '',
               ),
               CustomText(
-                  text: 'Phương thức thanh toán',
-                  color: CustomColor.blue,
-                  fontWeight: FontWeight.bold,
-                  context: context,
-                  fontSize: 24),
-              CustomSizedBox(
-                context: context,
-                height: 16,
-              ),
-              CustomRadioButton(
-                  function: () {
-                    setState(() {
-                      _model.currentIndexPaymentMethod =
-                          constants.listPaymentMethodChoices[0]['value'];
-                    });
-                  },
-                  text: constants.listPaymentMethodChoices[0]['name'],
-                  color: _model.currentIndexPaymentMethod ==
-                          constants.listPaymentMethodChoices[0]['value']
-                      ? CustomColor.blue
-                      : CustomColor.white,
-                  state: _model.currentIndexPaymentMethod,
-                  value: constants.listPaymentMethodChoices[0]['value']),
-              CustomSizedBox(
-                context: context,
-                height: 16,
-              ),
-              CustomText(
                   text: 'Thông tin chi tiết đơn hàng',
                   color: CustomColor.blue,
                   context: context,
@@ -217,25 +189,53 @@ class _PaymentMethodBookingScreenState extends State<PaymentMethodBookingScreen>
               ),
               InvoiceProductWidget(
                   deviceSize: deviceSize, invoice: _model.invoiceDisplay),
+              CustomText(
+                  text: 'Lưu ý',
+                  color: CustomColor.blue,
+                  fontWeight: FontWeight.bold,
+                  context: context,
+                  fontSize: 20),
               CustomSizedBox(
                 context: context,
-                height: 24,
+                height: 16,
+              ),
+              CustomText(
+                  text:
+                      '* khi tiến hành tạo yêu cầu, quý khách phải thanh toán trước 50% tổng trên tổng số tiền tạo yêu cầu đặt đơn thông qua paypal',
+                  color: CustomColor.black,
+                  maxLines: 3,
+                  context: context,
+                  fontSize: 16),
+              CustomSizedBox(
+                context: context,
+                height: 16,
               ),
               UIUtils.buildErrorUI(error: _model.error, context: context),
-              SizedBox(
-                width: double.infinity,
-                child: Center(
-                  child: CustomButton(
-                      height: 24,
-                      text: 'Tạo yêu cầu đặt đơn',
-                      width: deviceSize.width * 2 / 3,
-                      onPressFunction: () {
-                        onClickPayment();
-                      },
-                      isLoading: _model.isLoading,
-                      textColor: CustomColor.white,
-                      buttonColor: CustomColor.blue,
-                      borderRadius: 6),
+              GestureDetector(
+                onTap: () {
+                  onClickPayment();
+                },
+                child: Container(
+                  width: double.infinity,
+                  height: 40,
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  decoration: BoxDecoration(
+                    color: CustomColor.lightBlue,
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  child: _model.isLoading
+                      ? const SizedBox(
+                          height: 16,
+                          width: 16,
+                          child: CircularProgressIndicator(
+                            valueColor:
+                                AlwaysStoppedAnimation<Color>(Colors.white),
+                          ),
+                        )
+                      : Center(
+                          child: SizedBox(
+                              height: 40,
+                              child: Image.asset('assets/images/paypal.png'))),
                 ),
               ),
               CustomSizedBox(

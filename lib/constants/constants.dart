@@ -59,17 +59,30 @@ const requestTypeReturnOrder = 4;
 
 enum typeProduct { selfStorage, accessory, handy, unweildy, services }
 
-const listStatusOrder = [
-  {'color': CustomColor.red, 'name': 'Đã Hủy'},
-  {'color': CustomColor.blue, 'name': 'Đang vận chuyển'},
-  {'color': CustomColor.green, 'name': 'Đã về kho'},
-  {'color': CustomColor.orange, 'name': 'Sắp hết hạn'},
-  {'color': CustomColor.red, 'name': 'Đã quá hạn'},
-  {'color': CustomColor.red, 'name': 'Đang thanh lý'},
-  {'color': CustomColor.green, 'name': 'Đã hoàn tất'},
-  {'color': CustomColor.red, 'name': 'Đã thanh lý'},
-  {'color': CustomColor.blue, 'name': 'Đã xuất kho'},
-];
+const listStatusOrder = {
+  0: [
+    {'color': CustomColor.red, 'name': 'Đã Hủy'},
+    {'color': CustomColor.blue, 'name': 'Đã tạo đơn'},
+    {'color': CustomColor.green, 'name': 'Đã nhận kho'},
+    {'color': CustomColor.orange, 'name': 'Sắp hết hạn'},
+    {'color': CustomColor.red, 'name': 'Đã quá hạn'},
+    {'color': CustomColor.red, 'name': 'Đang thanh lý'},
+    {'color': CustomColor.green, 'name': 'Đã hoàn tất'},
+    {'color': CustomColor.red, 'name': 'Đã thanh lý'},
+    {'color': CustomColor.blue, 'name': 'Đã trả kho'},
+  ],
+  1: [
+    {'color': CustomColor.red, 'name': 'Đã Hủy'},
+    {'color': CustomColor.blue, 'name': 'Đang vận chuyển'},
+    {'color': CustomColor.green, 'name': 'Đã về kho'},
+    {'color': CustomColor.orange, 'name': 'Sắp hết hạn'},
+    {'color': CustomColor.red, 'name': 'Đã quá hạn'},
+    {'color': CustomColor.red, 'name': 'Đang thanh lý'},
+    {'color': CustomColor.green, 'name': 'Đã hoàn tất'},
+    {'color': CustomColor.red, 'name': 'Đã thanh lý'},
+    {'color': CustomColor.blue, 'name': 'Đã xuất kho'},
+  ],
+};
 
 const listStatusOfOrderDetail = [
   {'name': "Đang được gỡ xuống", 'color': CustomColor.brown},
@@ -171,7 +184,6 @@ Map<bool, Map<String, dynamic>> mapIsPaid = {
   },
   true: {'name': 'Đã thanh toán', 'color': CustomColor.blue}
 };
-
 
 const Map<String, String> createRequestCreatingError = {
   "paymentfail": "Đặt cọc thất bại, đã có lỗi xảy ra",

@@ -92,7 +92,7 @@ class _InvoiceDetailScreenState extends State<InvoiceDetailScreen>
       switch (_index) {
         case 0:
           return InvoiceTab(
-            request: _model.request,
+            returnRequest: _model.request,
             isOrderReturn: _model.isRequestReturn,
             deviceSize: deviceSize,
             orginalInvoice: _model.orginalInvoice,
@@ -181,9 +181,10 @@ class _InvoiceDetailScreenState extends State<InvoiceDetailScreen>
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: widget.invoice.typeOrder == 1
                             ? mapListTab()
-                            : mapListTab().where((element) =>
-                                element.index  != 2 &&
-                                element.index != 3).toList(),
+                            : mapListTab()
+                                .where((element) =>
+                                    element.index != 2 && element.index != 3)
+                                .toList(),
                       ),
                       CustomSizedBox(
                         context: context,

@@ -340,7 +340,7 @@ class _ImportExportInfoState extends State<ImportExportInfo> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             CustomText(
-                text: "Nhân viên vân chuyển",
+                text: "Nhân viên vận chuyển",
                 color: CustomColor.black,
                 context: context,
                 fontWeight: FontWeight.bold,

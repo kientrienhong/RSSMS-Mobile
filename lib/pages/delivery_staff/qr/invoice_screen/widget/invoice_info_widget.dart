@@ -7,7 +7,7 @@ import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/constants/constants.dart' as constants;
 
 class InvoiceInfoWidget extends StatelessWidget {
-  final Invoice? invoice;
+  final Invoice invoice;
   final Size deviceSize;
 
   const InvoiceInfoWidget(
@@ -17,15 +17,15 @@ class InvoiceInfoWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget textStatus = CustomText(
-        text: constants.listStatusOrder[invoice!.status]['name']! as String,
-        color: constants.listStatusOrder[invoice!.status]['color'] as Color,
+        text: constants.listStatusOrder[invoice.typeOrder]![invoice.status]['name']! as String,
+        color: constants.listStatusOrder[invoice.typeOrder]![invoice.status]['color'] as Color,
         context: context,
         fontWeight: FontWeight.bold,
         fontSize: 17);
-    if (!invoice!.isOrder!) {
+    if (!invoice.isOrder!) {
       textStatus = CustomText(
-          text: constants.listRequestStatus[invoice!.status]['name']! as String,
-          color: constants.listRequestStatus[invoice!.status]['color'] as Color,
+          text: constants.listRequestStatus[invoice.status]['name']! as String,
+          color: constants.listRequestStatus[invoice.status]['color'] as Color,
           context: context,
           fontWeight: FontWeight.bold,
           fontSize: 17);
@@ -79,8 +79,8 @@ class InvoiceInfoWidget extends StatelessWidget {
               fontWeight: FontWeight.bold,
               fontSize: 17),
           CustomText(
-              text: invoice!.deliveryDate
-                  .substring(0, invoice!.deliveryDate.indexOf("T")),
+              text: invoice.deliveryDate
+                  .substring(0, invoice.deliveryDate.indexOf("T")),
               color: Colors.black,
               context: context,
               fontWeight: FontWeight.bold,
@@ -101,8 +101,8 @@ class InvoiceInfoWidget extends StatelessWidget {
               fontWeight: FontWeight.bold,
               fontSize: 17),
           CustomText(
-              text: invoice!.returnDate
-                  .substring(0, invoice!.returnDate.indexOf("T")),
+              text: invoice.returnDate
+                  .substring(0, invoice.returnDate.indexOf("T")),
               color: Colors.black,
               context: context,
               fontWeight: FontWeight.bold,
@@ -125,7 +125,7 @@ class InvoiceInfoWidget extends StatelessWidget {
           SizedBox(
             width: deviceSize.width * 1.5 / 3,
             child: CustomText(
-              text: invoice!.deliveryAddress,
+              text: invoice.deliveryAddress,
               color: CustomColor.black,
               textAlign: TextAlign.right,
               context: context,

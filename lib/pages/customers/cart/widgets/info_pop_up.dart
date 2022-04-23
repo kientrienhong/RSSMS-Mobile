@@ -17,11 +17,21 @@ class InfoPopUp extends StatelessWidget {
           fontSize: 24,
           fontWeight: FontWeight.bold,
         ),
-        content: CustomText(
-            text: product!.tooltip,
-            color: CustomColor.black,
-            context: context,
-            maxLines: 80,
-            fontSize: 16));
+        content: Column(mainAxisSize: MainAxisSize.min, children: [
+          Flexible(
+            child: Text(
+              product!.tooltip,
+              overflow: TextOverflow.visible,
+              
+              maxLines: 8,
+              style: const TextStyle(
+                  color: CustomColor.black,
+                  height: 1.2,
+
+                  fontFamily: 'Helvetica',
+                  fontSize: 16),
+            ),
+          )
+        ]));
   }
 }

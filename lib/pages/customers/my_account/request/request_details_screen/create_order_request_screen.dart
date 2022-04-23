@@ -60,8 +60,10 @@ class _CreateOrderRequestScreenState extends State<CreateOrderRequestScreen>
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
     Widget statusText = CustomText(
-        text: listStatusOrder[_model.invoice.status]['name']! as String,
-        color: listStatusOrder[_model.invoice.status]['color'] as Color,
+        text: listStatusOrder[_model.invoice.typeOrder]![_model.invoice.status]
+            ['name']! as String,
+        color: listStatusOrder[_model.invoice.typeOrder]![_model.invoice.status]
+            ['color'] as Color,
         context: context,
         fontWeight: FontWeight.bold,
         fontSize: 16);
@@ -231,6 +233,34 @@ class _CreateOrderRequestScreenState extends State<CreateOrderRequestScreen>
                           context: context,
                           height: 24,
                         ),
+                        if (_model.invoice.status == 0)
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              CustomText(
+                                  text: "Lý do hủy:",
+                                  color: Colors.black,
+                                  context: context,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 17),
+                              SizedBox(
+                                width: deviceSize.width * 1.5 / 3,
+                                child: CustomText(
+                                  text: _model.request.cancelReason,
+                                  color: CustomColor.black,
+                                  textAlign: TextAlign.right,
+                                  context: context,
+                                  maxLines: 2,
+                                  fontSize: 16,
+                                  textOverflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
+                          ),
+                        CustomSizedBox(
+                          context: context,
+                          height: 24,
+                        ),
                         SizedBox(
                           width: deviceSize.width,
                           child: Column(
@@ -269,7 +299,8 @@ class _CreateOrderRequestScreenState extends State<CreateOrderRequestScreen>
                                 context: context,
                                 height: 16,
                               ),
-                              if (_model.invoice.status != 0&& _model.isValidToCancel)
+                              if (_model.invoice.status != 0 &&
+                                  _model.isValidToCancel)
                                 Center(
                                   child: CustomButton(
                                       height: 24,
@@ -290,25 +321,6 @@ class _CreateOrderRequestScreenState extends State<CreateOrderRequestScreen>
                                       buttonColor: CustomColor.blue,
                                       borderRadius: 6),
                                 ),
-                              if (_model.invoice.status == 0)
-                                Center(
-                                  child: CustomButton(
-                                      height: 24,
-                                      isLoading: false,
-                                      text: 'Chi tiết đơn hủy',
-                                      textColor: CustomColor.white,
-                                      onPressFunction: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const InvoiceCancelledScreen()),
-                                        );
-                                      },
-                                      width: deviceSize.width / 2.5,
-                                      buttonColor: CustomColor.blue,
-                                      borderRadius: 6),
-                                )
                             ],
                           ),
                         ),

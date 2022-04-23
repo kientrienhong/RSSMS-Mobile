@@ -13,7 +13,6 @@ import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/placing_items.dart';
 import 'package:rssms/models/entity/request.dart';
 import 'package:rssms/models/entity/user.dart';
-import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/invoice_cancelled_screen/invoice_cancelled_screen.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/invoice_info_widget.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/invoice_product_widget.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoive_update/send_request_screen.dart';
@@ -26,11 +25,11 @@ class InvoiceTab extends StatefulWidget {
   final Invoice orginalInvoice;
   final Size deviceSize;
   final bool isOrderReturn;
-  final Request? request;
+  final Request? returnRequest;
 
   const InvoiceTab(
       {Key? key,
-      this.request,
+      this.returnRequest,
       required this.isOrderReturn,
       required this.orginalInvoice,
       required this.deviceSize,
@@ -148,25 +147,25 @@ class _InvoiceTabState extends State<InvoiceTab> implements UpdateInvoiceView {
                       buttonColor: CustomColor.blue,
                       borderRadius: 6),
                 ),
-              if (widget.invoice.status == 0)
-                Center(
-                  child: CustomButton(
-                      height: 24,
-                      isLoading: false,
-                      text: 'Chi tiết đơn hủy',
-                      textColor: CustomColor.white,
-                      onPressFunction: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  const InvoiceCancelledScreen()),
-                        );
-                      },
-                      width: widget.deviceSize.width / 2.5,
-                      buttonColor: CustomColor.blue,
-                      borderRadius: 6),
-                ),
+              // if (widget.invoice.status == 0)
+              //   Center(
+              //     child: CustomButton(
+              //         height: 24,
+              //         isLoading: false,
+              //         text: 'Chi tiết đơn hủy',
+              //         textColor: CustomColor.white,
+              //         onPressFunction: () {
+              //           Navigator.push(
+              //             context,
+              //             MaterialPageRoute(
+              //                 builder: (context) =>
+              //                     const InvoiceCancelledScreen()),
+              //           );
+              //         },
+              //         width: widget.deviceSize.width / 2.5,
+              //         buttonColor: CustomColor.blue,
+              //         borderRadius: 6),
+              //   ),
               if (widget.invoice.status == 1 && user.roleName == 'Office Staff')
                 Center(
                   child: CustomButton(
@@ -224,7 +223,7 @@ class _InvoiceTabState extends State<InvoiceTab> implements UpdateInvoiceView {
                               customerName: widget.orginalInvoice.customerName,
                               customerPhone:
                                   widget.orginalInvoice.customerPhone,
-                              returnAddress: widget.request!.deliveryAddress,
+                              returnAddress: widget.returnRequest!.deliveryAddress,
                               exportDeliveryBy: '');
                           Navigator.push(
                               context,

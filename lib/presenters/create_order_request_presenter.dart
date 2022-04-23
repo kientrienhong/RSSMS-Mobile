@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:rssms/models/create_order_request_model.dart';
 import 'package:rssms/models/entity/invoice.dart';
+import 'package:rssms/models/entity/request.dart';
 import 'package:rssms/views/create_order_request_view.dart';
 
 class CreateOrderRequestPresenter {
@@ -18,11 +19,15 @@ class CreateOrderRequestPresenter {
       if (response.statusCode == 200) {
         final decodedReponse = jsonDecode(response.body);
         Invoice invoice = Invoice.fromRequest(decodedReponse);
+        Request request = Request.fromMap(decodedReponse);
         DateTime deliveryDate = DateTime.parse(invoice.deliveryDate);
-        if(DateTime.now().compareTo(deliveryDate) != -1){
-          model.isValidToCancel = false;
+        if (invoice.status != 0) {
+          if (DateTime.now().compareTo(deliveryDate) != -1) {
+            model.isValidToCancel = false;
+          }
         }
         view.updateView(invoice);
+        model.request = request;
       }
       view.updateLoading();
     } catch (e) {

@@ -78,6 +78,7 @@ class Invoice with ChangeNotifier {
       required this.importStaff});
 
   Invoice.empty() {
+  
     id = '';
     customerName = '';
     customerPhone = '';
@@ -86,7 +87,7 @@ class Invoice with ChangeNotifier {
     addressReturn = '';
     totalPrice = -1;
     rejectedReason = '';
-    typeOrder = -1;
+    typeOrder = 0;
     orderId = '';
     isUserDelivery = false;
     deliveryDate = '';

@@ -396,7 +396,7 @@ class InvoiceProductWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CustomText(
-                    text: "Đã tạm ứng (50%): ",
+                    text: "Tạm ứng (50%): ",
                     color: Colors.black,
                     context: context,
                     fontWeight: FontWeight.bold,

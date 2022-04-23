@@ -69,9 +69,11 @@ class InvoiceWidget extends StatelessWidget {
                           Flexible(
                             child: CustomText(
                                 textAlign: TextAlign.right,
-                                text: constants.listStatusOrder[invoice.status]
+                                text: constants.listStatusOrder[
+                                        invoice.typeOrder]![invoice.status]
                                     ['name']! as String,
-                                color: constants.listStatusOrder[invoice.status]
+                                color: constants.listStatusOrder[
+                                        invoice.typeOrder]![invoice.status]
                                     ['color'] as Color,
                                 context: context,
                                 maxLines: 2,

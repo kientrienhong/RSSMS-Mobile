@@ -31,8 +31,10 @@ class InvoiceInfoWidget extends StatelessWidget {
           Row(
             children: [
               CustomText(
-                  text: listStatusOrder[invoice.status]['name']! as String,
-                  color: listStatusOrder[invoice.status]['color'] as Color,
+                  text: listStatusOrder[invoice.typeOrder]![invoice.status]
+                      ['name']! as String,
+                  color: listStatusOrder[invoice.typeOrder]![invoice.status]
+                      ['color'] as Color,
                   context: context,
                   fontWeight: FontWeight.bold,
                   fontSize: 16),
