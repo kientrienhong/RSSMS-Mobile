@@ -4,9 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_app_bar.dart';
 import 'package:rssms/common/custom_bottom_navigation.dart';
-import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
-import 'package:rssms/common/custom_radio_button.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_snack_bar.dart';
 import 'package:rssms/common/custom_text.dart';
@@ -94,7 +92,9 @@ class _PaymentMethodBookingScreenState extends State<PaymentMethodBookingScreen>
       // }
       // } else {
       orderBooking.setOrderBooking(
-          orderBooking: orderBooking.copyWith(isPaid: true, totalPrice: orderBooking.totalPrice + orderBooking.deliveryFee));
+          orderBooking: orderBooking.copyWith(
+              isPaid: true,
+              totalPrice: orderBooking.totalPrice + orderBooking.deliveryFee));
       bool isSuccess = await _presenter.createOrder(orderBooking, users);
       if (isSuccess) {
         var request = BraintreeDropInRequest(
@@ -128,6 +128,8 @@ class _PaymentMethodBookingScreenState extends State<PaymentMethodBookingScreen>
         } else {
           bool isSuccess = await _presenter.cancelRequest(_model.request, users,
               constants.createRequestCreatingError['paymentfail']!);
+          orderBooking.setOrderBooking(
+              orderBooking: OrderBooking.empty(TypeOrder.doorToDoor));
           if (isSuccess) {
             CustomSnackBar.buildSnackbar(
                 context: context,
@@ -187,8 +189,9 @@ class _PaymentMethodBookingScreenState extends State<PaymentMethodBookingScreen>
                 height: 24,
               ),
               InvoiceProductWidget(
-                isInvoice: false,
-                  deviceSize: deviceSize, invoice: _model.invoiceDisplay),
+                  isInvoice: false,
+                  deviceSize: deviceSize,
+                  invoice: _model.invoiceDisplay),
               CustomSizedBox(
                 context: context,
                 height: 16,
