@@ -118,9 +118,9 @@ class _ImportExportInfoState extends State<ImportExportInfo> {
         ),
         CustomText(
           text: "Thông tin kho",
-          color: CustomColor.black,
+          color: CustomColor.blue,
           context: context,
-          fontSize: 18,
+          fontSize: 20,
           fontWeight: FontWeight.bold,
         ),
         CustomSizedBox(
@@ -159,17 +159,20 @@ class _ImportExportInfoState extends State<ImportExportInfo> {
                 context: context,
                 fontWeight: FontWeight.bold,
                 fontSize: 16),
-            Flexible(
-              child: CustomText(
-                textAlign: TextAlign.right,
-                text: widget.isExport
-                    ? widget.export!.storageAddress
-                    : widget.import!.storageAddress,
-                color: CustomColor.black,
-                context: context,
-                fontSize: 16,
-                maxLines: 2,
-                textOverflow: TextOverflow.fade,
+            SizedBox(
+              width: deviceSize.width / 2,
+              child: Flexible(
+                child: CustomText(
+                  textAlign: TextAlign.right,
+                  text: widget.isExport
+                      ? widget.export!.storageAddress
+                      : widget.import!.storageAddress,
+                  color: CustomColor.black,
+                  context: context,
+                  fontSize: 16,
+                  maxLines: 2,
+                  textOverflow: TextOverflow.fade,
+                ),
               ),
             ),
           ],
@@ -182,7 +185,7 @@ class _ImportExportInfoState extends State<ImportExportInfo> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             CustomText(
-                text: "Nhân viên thực hiện",
+                text: "Nhân viên thủ kho",
                 color: CustomColor.black,
                 context: context,
                 fontWeight: FontWeight.bold,
@@ -226,9 +229,9 @@ class _ImportExportInfoState extends State<ImportExportInfo> {
         ),
         CustomText(
           text: "Thông tin vận chuyển",
-          color: CustomColor.black,
+          color: CustomColor.blue,
           context: context,
-          fontSize: 18,
+          fontSize: 20,
           fontWeight: FontWeight.bold,
         ),
         CustomSizedBox(
@@ -329,7 +332,6 @@ class _ImportExportInfoState extends State<ImportExportInfo> {
                 textOverflow: TextOverflow.fade,
               ),
             ),
-          
           ],
         ),
         CustomSizedBox(
