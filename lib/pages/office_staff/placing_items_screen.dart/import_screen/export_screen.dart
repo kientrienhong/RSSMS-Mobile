@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rssms/common/custom_bottom_navigation.dart';
 import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
@@ -10,14 +11,19 @@ import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/common/import_export_details.dart';
 import 'package:rssms/common/import_export_info.dart';
 import 'package:rssms/common/import_export_license.dart';
+import 'package:rssms/common/invoice_screen.dart';
 import 'package:rssms/models/entity/account.dart';
 import 'package:rssms/models/entity/export.dart';
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/order_detail.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/models/export_model.dart';
+import 'package:rssms/pages/delivery_staff/qr/qr_screen.dart';
+import 'package:rssms/pages/office_staff/my_account/my_account_office.dart';
+import 'package:rssms/pages/office_staff/storage_screen/storage_screen.dart';
 import 'package:rssms/presenters/export_presenter.dart';
 import 'package:rssms/views/export_view.dart';
+import 'package:rssms/constants/constants.dart' as constant;
 
 class ExportScreen extends StatefulWidget {
   ExportScreen(
@@ -83,10 +89,39 @@ class _ExportScreenState extends State<ExportScreen> implements ExportView {
               context: context,
               message: 'Xuất kho thành công',
               color: CustomColor.green);
-
-          Navigator.of(context)
-            ..pop()
-            ..pop()..pop();
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => CustomBottomNavigation(
+                      listIndexStack: [
+                        const MyAccountOfficeScreen(),
+                        const QrScreen(),
+                        Scaffold(
+                            backgroundColor: CustomColor.white,
+                            body: Container(
+                              padding: const EdgeInsets.symmetric(vertical: 24),
+                              child: Column(
+                                children: [
+                                  CustomSizedBox(
+                                    context: context,
+                                    height: 8,
+                                  ),
+                                  CustomText(
+                                      text: 'Trang đơn hàng',
+                                      color: CustomColor.black,
+                                      context: context,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 24),
+                                  CustomSizedBox(context: context, height: 8),
+                                  const Expanded(child: InvoiceScreen()),
+                                ],
+                              ),
+                            )),
+                        const StorageScreen(),
+                      ],
+                      listNavigator: constant.listOfficeBottomNavigation,
+                    )),
+          );
         }
       } else {
         CustomSnackBar.buildSnackbar(

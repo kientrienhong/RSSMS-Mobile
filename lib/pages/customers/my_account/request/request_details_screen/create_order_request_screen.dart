@@ -12,7 +12,6 @@ import 'package:rssms/models/create_order_request_model.dart';
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/pages/customers/cancel_request.dart/cancel_request_screen.dart';
-import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/invoice_cancelled_screen/invoice_cancelled_screen.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/invoice_product_widget.dart';
 import 'package:rssms/presenters/create_order_request_presenter.dart';
 import 'package:rssms/views/create_order_request_view.dart';
@@ -210,7 +209,7 @@ class _CreateOrderRequestScreenState extends State<CreateOrderRequestScreen>
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             CustomText(
-                                text: "Địa chỉ:",
+                                text: "Địa chỉ của khách:",
                                 color: Colors.black,
                                 context: context,
                                 fontWeight: FontWeight.bold,
@@ -225,6 +224,60 @@ class _CreateOrderRequestScreenState extends State<CreateOrderRequestScreen>
                                 maxLines: 2,
                                 fontSize: 16,
                                 textOverflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
+                        CustomSizedBox(
+                          context: context,
+                          height: 24,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            CustomText(
+                                text: "Tên kho:",
+                                color: Colors.black,
+                                context: context,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 17),
+                            SizedBox(
+                              width: deviceSize.width * 1.5 / 3,
+                              child: CustomText(
+                                text: _model.invoice.storageName,
+                                color: CustomColor.black,
+                                textAlign: TextAlign.right,
+                                context: context,
+                                maxLines: 2,
+                                fontSize: 16,
+                                textOverflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
+                        CustomSizedBox(
+                          context: context,
+                          height: 24,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            CustomText(
+                                text: "Địa chỉ kho:",
+                                color: Colors.black,
+                                context: context,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 17),
+                            SizedBox(
+                              width: deviceSize.width * 1.5 / 3,
+                              child: CustomText(
+                                text: _model.invoice.storageAddress,
+                                color: CustomColor.black,
+                                textAlign: TextAlign.right,
+                                context: context,
+                                maxLines: 3,
+                                fontSize: 16,
+                                textOverflow: TextOverflow.visible,
                               ),
                             ),
                           ],

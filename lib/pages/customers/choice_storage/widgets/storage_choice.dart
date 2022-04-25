@@ -27,7 +27,7 @@ class _StorageChoiceWidgetState extends State<StorageChoiceWidget> {
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 8),
+      margin: const EdgeInsets.symmetric(vertical: 16),
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),

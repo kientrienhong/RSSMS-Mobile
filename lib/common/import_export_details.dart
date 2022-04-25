@@ -19,9 +19,24 @@ class ImportExportDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        CustomSizedBox(
+          context: context,
+          height: 8,
+        ),
+        CustomText(
+          text: "Danh sách sản phẩm",
+          color: CustomColor.blue,
+          context: context,
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+        ),
+        CustomSizedBox(
+          context: context,
+          height: 8,
+        ),
         Table(
           children: [
             TableRow(

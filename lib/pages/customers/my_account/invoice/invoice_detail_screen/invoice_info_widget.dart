@@ -124,7 +124,7 @@ class InvoiceInfoWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           CustomText(
-              text: "Địa chỉ:",
+              text: "Địa chỉ của khách:",
               color: Colors.black,
               context: context,
               fontWeight: FontWeight.bold,
@@ -136,9 +136,55 @@ class InvoiceInfoWidget extends StatelessWidget {
               color: CustomColor.black,
               textAlign: TextAlign.right,
               context: context,
+              maxLines: 3,
+              fontSize: 16,
+              textOverflow: TextOverflow.visible,
+            ),
+          ),
+        ],
+      ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          CustomText(
+              text: "Tên kho:",
+              color: Colors.black,
+              context: context,
+              fontWeight: FontWeight.bold,
+              fontSize: 17),
+          SizedBox(
+            width: deviceSize.width * 1.5 / 3,
+            child: CustomText(
+              text: invoice.storageName,
+              color: CustomColor.black,
+              textAlign: TextAlign.right,
+              context: context,
               maxLines: 2,
               fontSize: 16,
               textOverflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ],
+      ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          CustomText(
+              text: "Địa chỉ kho:",
+              color: Colors.black,
+              context: context,
+              fontWeight: FontWeight.bold,
+              fontSize: 17),
+          SizedBox(
+            width: deviceSize.width * 1.5 / 3,
+            child: CustomText(
+              text: invoice.storageAddress,
+              color: CustomColor.black,
+              textAlign: TextAlign.right,
+              context: context,
+              maxLines: 3,
+              fontSize: 16,
+              textOverflow: TextOverflow.visible,
             ),
           ),
         ],

@@ -31,6 +31,7 @@ class Invoice with ChangeNotifier {
   late int durationDays;
   late int durationMonths;
   late int status;
+
   late bool isPaid;
   late String importDeliveryBy;
   late String importDay;
