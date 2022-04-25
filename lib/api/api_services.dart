@@ -374,7 +374,9 @@ class ApiServices {
         "note": orderBooking.distants,
         "requestDetails": listProduct,
         "deliveryFee": orderBooking.deliveryFee,
-        "distance": orderBooking.distants
+        "distance": orderBooking.distants,
+                  "advanceMoney":  orderBooking.totalPrice * 50 / 100
+
       }));
       final url = Uri.parse('$_domain/api/v1/requests');
       bool isCustomerDelivery = orderBooking.typeOrder.index == 0
@@ -387,7 +389,7 @@ class ApiServices {
           "isCustomerDelivery": isCustomerDelivery,
           "orderId": null,
           "storageId": orderBooking.storageId,
-          "totalPrice": orderBooking.deliveryFee + orderBooking.totalPrice,
+          "totalPrice":orderBooking.totalPrice,
           "customerId": user.userId,
           "deliveryAddress": orderBooking.addressDelivery,
           "returnDate": orderBooking.dateTimeReturn.toIso8601String(),
@@ -397,12 +399,10 @@ class ApiServices {
               : '',
           "deliveryDate": orderBooking.dateTimeDelivery.toIso8601String(),
           "type": 1,
-          "typeOrder": orderBooking.typeOrder == TypeOrder.selfStorage
-              ? constants.selfStorageTypeOrder
-              : constants.doorToDoorTypeOrder,
+          "typeOrder": orderBooking.typeOrder.index,
           "note": orderBooking.distants,
           "requestDetails": listProduct,
-          "advanceMoney": (orderBooking.deliveryFee + orderBooking.totalPrice) * 50 / 100
+          "advanceMoney":  orderBooking.totalPrice * 50 / 100
         }),
         headers: headers,
       );

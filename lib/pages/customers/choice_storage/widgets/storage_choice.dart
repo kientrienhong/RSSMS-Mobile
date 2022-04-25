@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
+import 'package:rssms/constants/constants.dart';
+import 'package:rssms/models/entity/order_booking.dart';
 import 'package:rssms/models/entity/storage_entity.dart';
 
 class StorageChoiceWidget extends StatefulWidget {
@@ -25,6 +28,7 @@ class _StorageChoiceWidgetState extends State<StorageChoiceWidget> {
 
   @override
   Widget build(BuildContext context) {
+    OrderBooking orderBooking = Provider.of<OrderBooking>(context);
     final deviceSize = MediaQuery.of(context).size;
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 16),
@@ -99,51 +103,54 @@ class _StorageChoiceWidgetState extends State<StorageChoiceWidget> {
                   context: context,
                   height: 7,
                 ),
-                Row(
-                  children: [
-                    CustomText(
-                      text: 'Phí vận chuyển: ',
-                      color: CustomColor.black,
-                      context: context,
-                      fontSize: 13,
-                      maxLines: 3,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    CustomText(
-                      text:
-                          '${oCcy.format(widget.storageEntity.deliveryFee)}  đ',
-                      color: CustomColor.blue,
-                      context: context,
-                      maxLines: 2,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14,
-                    ),
-                  ],
-                ),
-                CustomSizedBox(
-                  context: context,
-                  height: 7,
-                ),
-                Row(
-                  children: [
-                    CustomText(
-                      text: 'Khoảng cách: ',
-                      color: CustomColor.black,
-                      context: context,
-                      fontSize: 13,
-                      maxLines: 3,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    CustomText(
-                      text: widget.storageEntity.deliveryDistance,
-                      color: CustomColor.blue,
-                      context: context,
-                      maxLines: 2,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14,
-                    ),
-                  ],
-                ),
+                if (orderBooking.typeOrder.index != selfStorageTypeOrder)
+                  Row(
+                    children: [
+                      CustomText(
+                        text: 'Phí vận chuyển: ',
+                        color: CustomColor.black,
+                        context: context,
+                        fontSize: 13,
+                        maxLines: 3,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      CustomText(
+                        text:
+                            '${oCcy.format(widget.storageEntity.deliveryFee)}  đ',
+                        color: CustomColor.blue,
+                        context: context,
+                        maxLines: 2,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                      ),
+                    ],
+                  ),
+                if (orderBooking.typeOrder.index != selfStorageTypeOrder)
+                  CustomSizedBox(
+                    context: context,
+                    height: 7,
+                  ),
+                if (orderBooking.typeOrder.index != selfStorageTypeOrder)
+                  Row(
+                    children: [
+                      CustomText(
+                        text: 'Khoảng cách: ',
+                        color: CustomColor.black,
+                        context: context,
+                        fontSize: 13,
+                        maxLines: 3,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      CustomText(
+                        text: widget.storageEntity.deliveryDistance,
+                        color: CustomColor.blue,
+                        context: context,
+                        maxLines: 2,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                      ),
+                    ],
+                  ),
               ],
             ),
           ),

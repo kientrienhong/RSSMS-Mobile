@@ -67,9 +67,12 @@ class PaymentMethodBookingScreenPresenter {
           });
           totalPrice += ele['price'] * ele['quantity'];
         }
-        if(element == 'product'){
+        if (element == 'product') {
           totalPrice *= orderBooking.months;
         }
+      }
+      if (orderBooking.typeOrder.index != 0) {
+        totalPrice += orderBooking.deliveryFee;
       }
       orderBooking.setOrderBooking(
           orderBooking: orderBooking.copyWith(totalPrice: totalPrice));

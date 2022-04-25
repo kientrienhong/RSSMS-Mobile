@@ -203,12 +203,13 @@ class InvoiceInfoWidget extends StatelessWidget {
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          CustomText(
-              text: "Thông tin vận chuyển:",
-              color: Colors.black,
-              context: context,
-              fontWeight: FontWeight.bold,
-              fontSize: 17),
+          if (invoice.typeOrder != selfStorageTypeOrder)
+            CustomText(
+                text: "Thông tin vận chuyển:",
+                color: Colors.black,
+                context: context,
+                fontWeight: FontWeight.bold,
+                fontSize: 17),
           CustomButton(
               height: 24,
               isLoading: false,

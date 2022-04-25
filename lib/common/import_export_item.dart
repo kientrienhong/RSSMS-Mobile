@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/models/entity/order_detail.dart';
-import 'package:rssms/models/entity/product.dart';
 
 class ImportExportItem extends StatelessWidget {
   final OrderDetail orderDetail;

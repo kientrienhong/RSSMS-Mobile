@@ -13,11 +13,14 @@ import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/placing_items.dart';
 import 'package:rssms/models/entity/request.dart';
 import 'package:rssms/models/entity/user.dart';
+import 'package:rssms/models/invoice_detail_screen.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/invoice_info_widget.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/invoice_product_widget.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoive_update/send_request_screen.dart';
 import 'package:rssms/pages/office_staff/placing_items_screen.dart/import_screen/export_screen.dart';
+import 'package:rssms/presenters/invoice_detail_screen_presenter.dart';
 import 'package:rssms/presenters/invoice_update_presenter.dart';
+import 'package:rssms/views/invoice_detail_screen_view.dart';
 import 'package:rssms/views/invoice_update_view.dart';
 
 class InvoiceTab extends StatefulWidget {
@@ -40,36 +43,28 @@ class InvoiceTab extends StatefulWidget {
   State<InvoiceTab> createState() => _InvoiceTabState();
 }
 
-class _InvoiceTabState extends State<InvoiceTab> implements UpdateInvoiceView {
-  late InvoiceUpdatePresenter _presenter;
+class _InvoiceTabState extends State<InvoiceTab>
+    implements InvoiceDetailScreenView {
+  late InvoiceDetailScreenPresenter _presenter;
+  late InvoiceDetailScreenModel _model;
 
-  @override
-  void onChangeDateReturn(BuildContext context) {}
-
-  @override
-  void onChangeDurationMonth() {}
   @override
   void initState() {
-    Invoice invoice = Provider.of<Invoice>(context, listen: false);
-
-    Users users = Provider.of<Users>(context, listen: false);
-    _presenter = InvoiceUpdatePresenter(users, invoice);
-    _presenter.setView(this);
+    _presenter = InvoiceDetailScreenPresenter();
+    _presenter.view = this;
+    _model = _presenter.model;
     super.initState();
   }
 
   @override
-  void onClickUpdateOrder() async {}
+  void updateLoading() {
+    // TODO: implement updateLoading
+  }
 
   @override
-  void updateError(String error) {}
-
-  @override
-  void updateLoadingUpdate() {}
-
-  @override
-  void updateView() {}
-
+  void updateView(Invoice invoice, Invoice showUIInvoice) {
+    // TODO: implement updateView
+  }
   @override
   Widget build(BuildContext context) {
     Users user = Provider.of<Users>(context, listen: false);
@@ -255,6 +250,4 @@ class _InvoiceTabState extends State<InvoiceTab> implements UpdateInvoiceView {
       ],
     );
   }
-
-
 }

@@ -92,23 +92,6 @@ class _PlacingItemsScreenState extends State<PlacingItemsScreen>
   void onClickUndo(int index) {}
 
   @override
-  void onClickAcceptImport() async {
-    final placingItems = Provider.of<PlacingItems>(context, listen: false);
-    final user = Provider.of<Users>(context, listen: false);
-    bool result = false;
-    result = await _presenter.onPressConfirmStore(
-        user.idToken!, placingItems, _model.deliveryStaff.id);
-    if (result) {
-      Navigator.pop(context, result);
-      CustomSnackBar.buildSnackbar(
-          context: context,
-          message: 'Thao tác thành công',
-          color: CustomColor.green);
-      placingItems.emptyPlacing();
-    }
-  }
-
-  @override
   void onClickConfirm({isAccept = false}) async {
     final placingItems = Provider.of<PlacingItems>(context, listen: false);
     final user = Provider.of<Users>(context, listen: false);
@@ -123,7 +106,7 @@ class _PlacingItemsScreenState extends State<PlacingItemsScreen>
           context,
           MaterialPageRoute(
             builder: (context) => ImportScreen(
-              onClickAcceptImport: onClickAcceptImport,
+              deliveryStaff: _model.deliveryStaff,
               import: placingItems.import,
               orderDetail: placingItems.placingItems['floors']
                   .map<OrderDetail>((e) => OrderDetail.fromMap(e))
@@ -449,4 +432,5 @@ class _PlacingItemsScreenState extends State<PlacingItemsScreen>
       )),
     );
   }
+
 }

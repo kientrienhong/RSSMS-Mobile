@@ -21,7 +21,7 @@ class PlacingItems with ChangeNotifier {
     notifyListeners();
   }
 
-  void removePlacing(int idPlacing) {
+  void removePlacing(String idPlacing) {
     final index =
         placingItems['floors'].indexWhere((e) => e['idPlacing'] == idPlacing);
 
@@ -46,6 +46,7 @@ class PlacingItems with ChangeNotifier {
         storedItems['items'].firstWhere((e) => e.id == orderDetailId);
     Map<String, dynamic> placingOrderTemp = orderDetailFound.toMap();
     placingOrderTemp['idPlacing'] = placingOrderTemp['id'];
+    placingOrderTemp['amount'] = 1;
     placingOrderTemp['note'] = '';
     placingOrderTemp['areaName'] = currentPosition['areaName'];
     placingOrderTemp['floorName'] = currentPosition['floorName'];

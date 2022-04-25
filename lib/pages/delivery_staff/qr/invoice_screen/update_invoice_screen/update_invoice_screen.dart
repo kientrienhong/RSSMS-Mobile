@@ -238,8 +238,16 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
       _model.durationMonths.text == (--months).toString();
       DateTime dateTimeReturn =
           DateFormat('dd/MM/yyyy').parse(_model.returnDateController.text);
+
       dateTimeReturn = DateTime(
           dateTimeReturn.year, dateTimeReturn.month - 1, dateTimeReturn.day);
+      _model.durationMonths.text = months.toString();
+      _model.returnDateController.text =
+          DateFormat('ddd/MM/yyyy').format(dateTimeReturn);
+      Invoice invoice = Provider.of<Invoice>(context, listen: false);
+      invoice.setInvoice(
+          invoice:
+              invoice.copyWith(returnDate: dateTimeReturn.toIso8601String(), durationMonths: months));
     });
   }
 
@@ -251,10 +259,14 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
           DateFormat('dd/MM/yyyy').parse(_model.returnDateController.text);
       dateTimeReturn = DateTime(
           dateTimeReturn.year, dateTimeReturn.month + 1, dateTimeReturn.day);
+      _model.returnDateController.text =
+          DateFormat('ddd/MM/yyyy').format(dateTimeReturn);
+      _model.durationMonths.text = months.toString();
+
       Invoice invoice = Provider.of<Invoice>(context, listen: false);
       invoice.setInvoice(
           invoice:
-              invoice.copyWith(returnDate: dateTimeReturn.toIso8601String()));
+              invoice.copyWith(returnDate: dateTimeReturn.toIso8601String(), durationMonths: months));
     });
   }
 
