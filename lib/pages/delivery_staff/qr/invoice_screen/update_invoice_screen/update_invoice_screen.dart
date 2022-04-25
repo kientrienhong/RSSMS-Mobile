@@ -228,6 +228,36 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
     }
   }
 
+  void onMinusMonth() {
+    if (_model.durationMonths.text == '0') {
+      return;
+    }
+
+    setState(() {
+      int months = int.parse(_model.durationMonths.text);
+      _model.durationMonths.text == (--months).toString();
+      DateTime dateTimeReturn =
+          DateFormat('dd/MM/yyyy').parse(_model.returnDateController.text);
+      dateTimeReturn = DateTime(
+          dateTimeReturn.year, dateTimeReturn.month - 1, dateTimeReturn.day);
+    });
+  }
+
+  void onAddMonth() {
+    setState(() {
+      int months = int.parse(_model.durationMonths.text);
+      _model.durationMonths.text == (++months).toString();
+      DateTime dateTimeReturn =
+          DateFormat('dd/MM/yyyy').parse(_model.returnDateController.text);
+      dateTimeReturn = DateTime(
+          dateTimeReturn.year, dateTimeReturn.month + 1, dateTimeReturn.day);
+      Invoice invoice = Provider.of<Invoice>(context, listen: false);
+      invoice.setInvoice(
+          invoice:
+              invoice.copyWith(returnDate: dateTimeReturn.toIso8601String()));
+    });
+  }
+
   void updateOrder() async {
     try {
       Invoice invoice = Provider.of<Invoice>(context, listen: false);
@@ -401,160 +431,199 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                   context: context,
                   height: 16,
                 ),
-                CustomText(
-                  text: "Thông tin cơ bản đơn hàng",
-                  color: CustomColor.black,
-                  context: context,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-                CustomSizedBox(
-                  context: context,
-                  height: 16,
-                ),
-                buildInformation('Ngày bắt đầu',
-                    DateFormatHelper.formatToVNDay(invoice.deliveryDate)),
+                if (!widget.isDone)
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomText(
+                        text: "Thông tin cơ bản đơn hàng",
+                        color: CustomColor.black,
+                        context: context,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      CustomSizedBox(
+                        context: context,
+                        height: 16,
+                      ),
+                      buildInformation('Ngày bắt đầu',
+                          DateFormatHelper.formatToVNDay(invoice.deliveryDate)),
+                      CustomSizedBox(
+                        context: context,
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          CustomText(
+                              text: invoice.typeOrder ==
+                                      constant.doorToDoorTypeOrder
+                                  ? 'Ngày kết thúc:'
+                                  : 'Thời hạn:',
+                              color: CustomColor.black,
+                              context: context,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16),
+                          invoice.typeOrder == constant.doorToDoorTypeOrder
+                              ? SizedBox(
+                                  width: deviceSize.width / 2.5,
+                                  height: deviceSize.height / 14,
+                                  child: TextFormField(
+                                    validator: ((value) => value!.isEmpty
+                                        ? "* Vui lòng nhập ngày"
+                                        : null),
+                                    controller: _model.returnDateController,
+                                    onTap: () => onChangeDateReturn(context),
+                                    style: const TextStyle(fontSize: 12),
+                                    textAlign: TextAlign.center,
+                                    readOnly: true,
+                                    decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.symmetric(
+                                          vertical: (deviceSize.height - 12) /
+                                                  28 -
+                                              (deviceSize.height - 12) / 56),
+                                      hintText: 'dd/MM/yyyy',
+                                      border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(4),
+                                          borderSide: BorderSide(
+                                              color: CustomColor.black[2]!)),
+                                      suffixIcon: const ImageIcon(
+                                        AssetImage(
+                                            'assets/images/calendar.png'),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : Row(
+                                  children: [
+                                    GestureDetector(
+                                      onTap: onMinusMonth,
+                                      child: Container(
+                                        height: 40,
+                                        width: 40,
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: CustomColor.black[3]!),
+                                            borderRadius:
+                                                BorderRadius.circular(4)),
+                                        child: Center(
+                                          child: CustomText(
+                                              text: '-',
+                                              color: CustomColor.black[3]!,
+                                              context: context,
+                                              fontSize: 32),
+                                        ),
+                                      ),
+                                    ),
+                                    CustomSizedBox(
+                                      context: context,
+                                      width: 8,
+                                    ),
+                                    SizedBox(
+                                      width: deviceSize.width / 10,
+                                      height: 40,
+                                      child: TextFormField(
+                                        enabled: false,
+                                        keyboardType: TextInputType.number,
+                                        textAlign: TextAlign.center,
+                                        decoration: InputDecoration(
+                                          contentPadding:
+                                              const EdgeInsets.symmetric(
+                                                  vertical: 8),
+                                          border: OutlineInputBorder(
+                                              borderRadius:
+                                                  const BorderRadius.all(
+                                                      Radius.circular(5.0)),
+                                              borderSide: BorderSide(
+                                                  color:
+                                                      CustomColor.black[3]!)),
+                                          focusedBorder: OutlineInputBorder(
+                                              borderRadius:
+                                                  const BorderRadius.all(
+                                                      Radius.circular(5.0)),
+                                              borderSide: BorderSide(
+                                                  color:
+                                                      CustomColor.black[3]!)),
+                                        ),
+                                        controller: _model.durationMonths,
+                                      ),
+                                    ),
+                                    CustomSizedBox(
+                                      context: context,
+                                      width: 8,
+                                    ),
+                                    GestureDetector(
+                                      onTap: onAddMonth,
+                                      child: Container(
+                                        height: 40,
+                                        width: 40,
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(4),
+                                            color: CustomColor.blue),
+                                        child: Center(
+                                          child: CustomText(
+                                              text: '+',
+                                              color: CustomColor.white,
+                                              context: context,
+                                              fontSize: 32),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                )
+                        ],
+                      ),
+                    ],
+                  ),
                 CustomSizedBox(
                   context: context,
                   height: 10,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    CustomText(
-                        text: 'Ngày kết thúc',
-                        color: CustomColor.black,
-                        context: context,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16),
-                    invoice.typeOrder == constant.doorToDoorTypeOrder
-                        ? SizedBox(
-                            width: deviceSize.width / 2.5,
-                            height: deviceSize.height / 14,
-                            child: TextFormField(
-                              validator: ((value) => value!.isEmpty
-                                  ? "* Vui lòng nhập ngày"
-                                  : null),
-                              controller: _model.returnDateController,
-                              onTap: () => onChangeDateReturn(context),
-                              style: const TextStyle(fontSize: 12),
-                              textAlign: TextAlign.center,
-                              readOnly: true,
-                              decoration: InputDecoration(
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: (deviceSize.height - 12) / 28 -
-                                        (deviceSize.height - 12) / 56),
-                                hintText: 'dd/MM/yyyy',
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(4),
-                                    borderSide: BorderSide(
-                                        color: CustomColor.black[2]!)),
-                                suffixIcon: const ImageIcon(
-                                  AssetImage('assets/images/calendar.png'),
-                                ),
-                              ),
-                            ),
-                          )
-                        : Row(
-                            children: [
-                              GestureDetector(
-                                // onTap: widget.minusQuantity,
-                                child: Container(
-                                  height: 40,
-                                  width: 40,
-                                  decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: CustomColor.black[3]!),
-                                      borderRadius: BorderRadius.circular(4)),
-                                  child: Center(
-                                    child: CustomText(
-                                        text: '-',
-                                        color: CustomColor.black[3]!,
-                                        context: context,
-                                        fontSize: 32),
-                                  ),
-                                ),
-                              ),
-                              CustomSizedBox(
-                                context: context,
-                                width: 8,
-                              ),
-                              SizedBox(
-                                width: deviceSize.width / 10,
-                                height: 40,
-                                child: TextFormField(
-                                  enabled: false,
-                                  keyboardType: TextInputType.number,
-                                  textAlign: TextAlign.center,
-                                  decoration: InputDecoration(
-                                    contentPadding:
-                                        const EdgeInsets.symmetric(vertical: 8),
-                                    border: OutlineInputBorder(
-                                        borderRadius: const BorderRadius.all(
-                                            Radius.circular(5.0)),
-                                        borderSide: BorderSide(
-                                            color: CustomColor.black[3]!)),
-                                    focusedBorder: OutlineInputBorder(
-                                        borderRadius: const BorderRadius.all(
-                                            Radius.circular(5.0)),
-                                        borderSide: BorderSide(
-                                            color: CustomColor.black[3]!)),
-                                  ),
-                                  controller: _model.durationMonths,
-                                ),
-                              ),
-                              CustomSizedBox(
-                                context: context,
-                                width: 8,
-                              ),
-                              GestureDetector(
-                                // onTap: widget.addQuantity,
-                                child: Container(
-                                  height: 40,
-                                  width: 40,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(4),
-                                      color: CustomColor.blue),
-                                  child: Center(
-                                    child: CustomText(
-                                        text: '+',
-                                        color: CustomColor.white,
-                                        context: context,
-                                        fontSize: 32),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          )
-                  ],
-                ),
-                CustomSizedBox(
-                  context: context,
-                  height: 10,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    CustomText(
-                        text: 'Thời hạn: ',
-                        color: CustomColor.black,
-                        context: context,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16),
-                    CustomText(
-                        text: DateFormat('dd/MM/yyyy')
-                                .parse(_model.returnDateController.text)
-                                .difference(DateFormat('yyyy-MM-dd')
-                                    .parse(invoice.deliveryDate.split('T')[0]))
-                                .inDays
-                                .toString() +
-                            ' ngày',
-                        color: CustomColor.blue,
-                        context: context,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16)
-                  ],
-                ),
+                if (invoice.typeOrder == constant.doorToDoorTypeOrder)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CustomText(
+                          text: 'Thời hạn: ',
+                          color: CustomColor.black,
+                          context: context,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16),
+                      CustomText(
+                          text: DateFormat('dd/MM/yyyy')
+                                  .parse(_model.returnDateController.text)
+                                  .difference(DateFormat('yyyy-MM-dd').parse(
+                                      invoice.deliveryDate.split('T')[0]))
+                                  .inDays
+                                  .toString() +
+                              ' ngày',
+                          color: CustomColor.blue,
+                          context: context,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16)
+                    ],
+                  ),
+                if (invoice.typeOrder == constant.selfStorageTypeOrder)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CustomText(
+                          text: 'Ngày kết thúc: ',
+                          color: CustomColor.black,
+                          context: context,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16),
+                      CustomText(
+                          text: DateFormatHelper.formatToVNDay(
+                              invoice.returnDate),
+                          color: CustomColor.blue,
+                          context: context,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16)
+                    ],
+                  ),
                 CustomSizedBox(
                   context: context,
                   height: 10,
