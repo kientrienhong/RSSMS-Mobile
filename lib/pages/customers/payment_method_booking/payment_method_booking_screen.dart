@@ -66,31 +66,6 @@ class _PaymentMethodBookingScreenState extends State<PaymentMethodBookingScreen>
           Provider.of<OrderBooking>(context, listen: false);
 
       Users users = Provider.of<Users>(context, listen: false);
-      // if (_model.currentIndexPaymentMethod == PAYMENT_METHOD.cash) {
-      // orderBooking.setOrderBooking(
-      //     orderBooking: orderBooking.copyWith(isPaid: false));
-      // bool isSuccess = await _presenter.createOrder(orderBooking, users);
-
-      // if (isSuccess) {
-      //   orderBooking.setOrderBooking(
-      //       orderBooking: OrderBooking.empty(TypeOrder.doorToDoor));
-      //   CustomSnackBar.buildSnackbar(
-      //       context: context,
-      //       message: 'Tạo yêu cầu đặt đơn hàng thành công',
-      //       color: CustomColor.green);
-      //   Navigator.of(context).pushAndRemoveUntil(
-      //       MaterialPageRoute(
-      //           builder: (context) => const CustomBottomNavigation(
-      //                 listIndexStack: [
-      //                   MyAccountScreen(initIndex: 2),
-      //                   CartScreen(),
-      //                   NotificationDeliveryScreen(),
-      //                 ],
-      //                 listNavigator: constants.listCustomerBottomNavigation,
-      //               )),
-      //       (Route<dynamic> route) => false);
-      // }
-      // } else {
       orderBooking.setOrderBooking(
           orderBooking: orderBooking.copyWith(
               isPaid: true,));

@@ -56,7 +56,7 @@ class PaymentMethodBookingScreenPresenter {
       List<Map<String, dynamic>> listProduct = [];
 
       List listKeys = orderBooking.productOrder.keys.toList();
-
+      double totalPrice = 0;
       for (var element in listKeys) {
         for (var ele in orderBooking.productOrder[element]!) {
           listProduct.add({
@@ -65,9 +65,12 @@ class PaymentMethodBookingScreenPresenter {
             "amount": ele['quantity'],
             'note': ele['note']
           });
+          totalPrice += ele['price'] * ele['quantity'];
         }
       }
-
+      totalPrice += orderBooking.deliveryFee;
+      orderBooking.setOrderBooking(
+          orderBooking: orderBooking.copyWith(totalPrice: totalPrice));
       final response = await model.createOrder(listProduct, orderBooking, user);
       final handledResponse = ResponseHandle.handle(response);
       if (handledResponse['status'] == 'success') {

@@ -89,15 +89,15 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
 
     if (picked != null &&
         picked !=
-            DateFormat("yyyy-MM-dd")
-                .parse(invoice.deliveryDate.split('T')[0])) {
+            DateFormat("yyyy-MM-dd").parse(invoice.returnDate.split('T')[0])) {
       setState(() {
         final deliveryDate =
             DateFormat("yyyy-MM-dd").parse(invoice.deliveryDate.split('T')[0]);
 
         final invoiceTemp = invoice.copyWith(
             durationDays: picked.difference(deliveryDate).inDays);
-
+        _model.returnDateController.text =
+            DateFormatHelper.formatToVNDay(picked.toIso8601String());
         invoice.setInvoice(invoice: invoiceTemp);
       });
     }
@@ -536,6 +536,33 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     CustomText(
+                        text: 'Thời hạn: ',
+                        color: CustomColor.black,
+                        context: context,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16),
+                    CustomText(
+                        text: DateFormat('dd/MM/yyyy')
+                                .parse(_model.returnDateController.text)
+                                .difference(DateFormat('yyyy-MM-dd')
+                                    .parse(invoice.deliveryDate.split('T')[0]))
+                                .inDays
+                                .toString() +
+                            ' ngày',
+                        color: CustomColor.blue,
+                        context: context,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16)
+                  ],
+                ),
+                CustomSizedBox(
+                  context: context,
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CustomText(
                       text: "Dịch vụ",
                       color: CustomColor.black,
                       context: context,
@@ -937,7 +964,15 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => NewInvoiceScreen(
-                                            invoice: invoice,
+                                            invoice: invoice.copyWith(
+                                                returnDate: DateFormat(
+                                                        'dd/MM/yyyy')
+                                                    .parse(_model
+                                                        .returnDateController
+                                                        .text)
+                                                    .toIso8601String(),
+                                                durationMonths: int.parse(_model
+                                                    .durationMonths.text)),
                                           )));
                             }
                           },

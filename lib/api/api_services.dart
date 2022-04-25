@@ -815,8 +815,9 @@ class ApiServices {
         'Authorization': 'Bearer $idToken'
       };
 
-      final url = Uri.parse('$_domain/api/v1/requests/cancel request to order/' +
-          requestId.toString());
+      final url = Uri.parse(
+          '$_domain/api/v1/requests/cancel request to order/' +
+              requestId.toString());
       return http.put(url,
           headers: headers,
           body: jsonEncode({"id": requestId, "cancelReason": reason}));

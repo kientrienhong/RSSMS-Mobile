@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:intl/intl.dart';
 import 'package:rssms/helpers/image_handle.dart';
 import 'package:rssms/models/entity/imageEntity.dart';
 import 'package:rssms/models/entity/invoice.dart';
@@ -154,7 +155,9 @@ class InvoiceUpdatePresenter {
       "isUserDelivery": false,
       "deliveryDate": invoice.deliveryDate,
       "deliveryTime": invoice.deliveryTime,
-      "returnDate": invoice.returnDate,
+      "returnDate": DateFormat('dd/MM/yyyy')
+          .parse(_model.returnDateController.text)
+          .toIso8601String(),
       "returnTime": invoice.returnTime,
       "status": invoice.status,
       "orderDetails": orderDetails
