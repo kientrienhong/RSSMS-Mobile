@@ -68,8 +68,7 @@ class _PaymentMethodBookingScreenState extends State<PaymentMethodBookingScreen>
       Users users = Provider.of<Users>(context, listen: false);
       orderBooking.setOrderBooking(
           orderBooking: orderBooking.copyWith(
-              isPaid: true,
-              totalPrice: orderBooking.totalPrice + orderBooking.deliveryFee));
+              isPaid: true,));
       bool isSuccess = await _presenter.createOrder(orderBooking, users);
       if (isSuccess) {
         var request = BraintreeDropInRequest(

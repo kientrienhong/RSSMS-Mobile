@@ -130,7 +130,6 @@ class InvoiceInfoWidget extends StatelessWidget {
               fontWeight: FontWeight.bold,
               fontSize: 17),
           SizedBox(
-            width: deviceSize.width * 1.5 / 3,
             child: CustomText(
               text: invoice.deliveryAddress,
               color: CustomColor.black,
@@ -142,6 +141,10 @@ class InvoiceInfoWidget extends StatelessWidget {
             ),
           ),
         ],
+      ),
+      CustomSizedBox(
+        context: context,
+        height: 24,
       ),
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -165,6 +168,10 @@ class InvoiceInfoWidget extends StatelessWidget {
             ),
           ),
         ],
+      ),
+      CustomSizedBox(
+        context: context,
+        height: 24,
       ),
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

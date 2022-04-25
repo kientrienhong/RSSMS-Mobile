@@ -83,15 +83,12 @@ class InvoiceUpdatePresenter {
         }
       }
     }
-    var totalPrice;
-    if (_model.controllerAdditionFeePrice.text.isNotEmpty) {
-      totalPrice = price +
-          invoice.deliveryFee +
-          double.parse(_model.controllerAdditionFeePrice.text);
-    } else {
-      totalPrice = price + invoice.deliveryFee;
-    }
+    String additionalFee = _model.controllerAdditionFeePrice.text == ""
+        ? "0"
+        : _model.controllerAdditionFeePrice.text;
 
+    final totalPrice =
+        price + invoice.deliveryFee + double.parse(additionalFee);
     final orderDetails = [];
 
     List<OrderDetail> newListOrderDetails =

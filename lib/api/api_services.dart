@@ -354,7 +354,28 @@ class ApiServices {
         "Content-type": "application/json",
         'Authorization': 'Bearer ${user.idToken}'
       };
-
+      log(jsonEncode({
+        "isPaid": orderBooking.isPaid,
+        "isCustomerDelivery": orderBooking.isCustomerDelivery,
+        "orderId": null,
+        "totalPrice": orderBooking.deliveryFee + orderBooking.totalPrice,
+        "customerId": user.userId,
+        "deliveryAddress": orderBooking.addressDelivery,
+        "returnDate": orderBooking.dateTimeReturn.toIso8601String(),
+        "returnAddress": '',
+        "deliveryTime": orderBooking.currentSelectTime != -1
+            ? constants.listPickUpTime[orderBooking.currentSelectTime]
+            : '',
+        "deliveryDate": orderBooking.dateTimeDelivery.toIso8601String(),
+        "type": 1,
+        "typeOrder": orderBooking.typeOrder == TypeOrder.selfStorage
+            ? constants.selfStorageTypeOrder
+            : constants.doorToDoorTypeOrder,
+        "note": orderBooking.distants,
+        "requestDetails": listProduct,
+        "deliveryFee": orderBooking.deliveryFee,
+        "distance": orderBooking.distants
+      }));
       final url = Uri.parse('$_domain/api/v1/requests');
       bool isCustomerDelivery = orderBooking.typeOrder.index == 0
           ? true
@@ -366,7 +387,7 @@ class ApiServices {
           "isCustomerDelivery": isCustomerDelivery,
           "orderId": null,
           "storageId": orderBooking.storageId,
-          "totalPrice": orderBooking.totalPrice,
+          "totalPrice": orderBooking.deliveryFee + orderBooking.totalPrice,
           "customerId": user.userId,
           "deliveryAddress": orderBooking.addressDelivery,
           "returnDate": orderBooking.dateTimeReturn.toIso8601String(),
@@ -381,7 +402,7 @@ class ApiServices {
               : constants.doorToDoorTypeOrder,
           "note": orderBooking.distants,
           "requestDetails": listProduct,
-          "advanceMoney": orderBooking.totalPrice * 50 / 100
+          "advanceMoney": (orderBooking.deliveryFee + orderBooking.totalPrice) * 50 / 100
         }),
         headers: headers,
       );

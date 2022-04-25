@@ -35,8 +35,8 @@ class InvoiceUpdateModel {
     isAdditionFee = false;
     durationMonths =
         TextEditingController(text: invoice.durationMonths.toString());
-    returnDateController = TextEditingController(
-        text: DateFormatHelper.formatToVNDay(invoice.returnDate));
+    returnDateController =
+        TextEditingController(text: invoice.returnDate.split("T")[0]);
     controllerAdditionFeeDescription = TextEditingController(text: '');
     controllerAdditionFeePrice = TextEditingController(text: '');
     controllerFullname = TextEditingController(text: invoice.customerName);
