@@ -90,6 +90,7 @@ class InvoiceProductWidget extends StatelessWidget {
         deliveryFee = invoice.deliveryFee;
       }
     }
+    
 
     return Container(
       decoration: BoxDecoration(

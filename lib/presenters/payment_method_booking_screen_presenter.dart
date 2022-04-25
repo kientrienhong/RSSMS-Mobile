@@ -67,8 +67,10 @@ class PaymentMethodBookingScreenPresenter {
           });
           totalPrice += ele['price'] * ele['quantity'];
         }
+        if(element == 'product'){
+          totalPrice *= orderBooking.months;
+        }
       }
-      totalPrice += orderBooking.deliveryFee;
       orderBooking.setOrderBooking(
           orderBooking: orderBooking.copyWith(totalPrice: totalPrice));
       final response = await model.createOrder(listProduct, orderBooking, user);
