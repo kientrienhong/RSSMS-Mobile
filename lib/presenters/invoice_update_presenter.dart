@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:intl/intl.dart';
 import 'package:rssms/helpers/image_handle.dart';
 import 'package:rssms/models/entity/imageEntity.dart';
 import 'package:rssms/models/entity/invoice.dart';
@@ -82,7 +83,15 @@ class InvoiceUpdatePresenter {
         }
       }
     }
-    final totalPrice = price + invoice.deliveryFee + double.parse(_model.controllerAdditionFeePrice.text);
+    var totalPrice;
+    if (_model.controllerAdditionFeePrice.text.isNotEmpty) {
+      totalPrice = price +
+          invoice.deliveryFee +
+          double.parse(_model.controllerAdditionFeePrice.text);
+    } else {
+      totalPrice = price + invoice.deliveryFee;
+    }
+
     final orderDetails = [];
 
     List<OrderDetail> newListOrderDetails =
@@ -144,12 +153,14 @@ class InvoiceUpdatePresenter {
         }
       ],
       "type": invoice.typeOrder,
-      "isPaid": _model.getIsPaid,
+      "isPaid": _model.isPaid,
       "paymentMethod": invoice.paymentMethod,
       "isUserDelivery": false,
       "deliveryDate": invoice.deliveryDate,
       "deliveryTime": invoice.deliveryTime,
-      "returnDate": invoice.returnDate,
+      "returnDate": DateFormat('dd/MM/yyyy')
+          .parse(_model.returnDateController.text)
+          .toIso8601String(),
       "returnTime": invoice.returnTime,
       "status": invoice.status,
       "orderDetails": orderDetails

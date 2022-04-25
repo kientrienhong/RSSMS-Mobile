@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:rssms/api/api_services.dart';
+import 'package:rssms/helpers/date_format.dart';
 import 'package:rssms/models/entity/invoice.dart';
 
 import '/models/entity/user.dart';
@@ -34,7 +35,8 @@ class InvoiceUpdateModel {
     isAdditionFee = false;
     durationMonths =
         TextEditingController(text: invoice.durationMonths.toString());
-    returnDateController = TextEditingController(text: invoice.returnDate);
+    returnDateController = TextEditingController(
+        text: DateFormatHelper.formatToVNDay(invoice.returnDate));
     controllerAdditionFeeDescription = TextEditingController(text: '');
     controllerAdditionFeePrice = TextEditingController(text: '');
     controllerFullname = TextEditingController(text: invoice.customerName);

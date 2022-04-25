@@ -44,6 +44,11 @@ class _InvoiceTabState extends State<InvoiceTab> implements UpdateInvoiceView {
   late InvoiceUpdatePresenter _presenter;
 
   @override
+  void onChangeDateReturn(BuildContext context) {}
+
+  @override
+  void onChangeDurationMonth() {}
+  @override
   void initState() {
     Invoice invoice = Provider.of<Invoice>(context, listen: false);
 
@@ -97,8 +102,9 @@ class _InvoiceTabState extends State<InvoiceTab> implements UpdateInvoiceView {
                 height: 16,
               ),
               InvoiceProductWidget(
-                isInvoice: true,
-                  deviceSize: widget.deviceSize, invoice: widget.invoice),
+                  isInvoice: true,
+                  deviceSize: widget.deviceSize,
+                  invoice: widget.invoice),
               CustomSizedBox(
                 context: context,
                 height: 16,
@@ -224,7 +230,8 @@ class _InvoiceTabState extends State<InvoiceTab> implements UpdateInvoiceView {
                               customerName: widget.orginalInvoice.customerName,
                               customerPhone:
                                   widget.orginalInvoice.customerPhone,
-                              returnAddress: widget.returnRequest!.deliveryAddress,
+                              returnAddress:
+                                  widget.returnRequest!.deliveryAddress,
                               exportDeliveryBy: '');
                           Navigator.push(
                               context,

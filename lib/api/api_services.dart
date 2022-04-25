@@ -354,28 +354,7 @@ class ApiServices {
         "Content-type": "application/json",
         'Authorization': 'Bearer ${user.idToken}'
       };
-      log(jsonEncode({
-        "isPaid": orderBooking.isPaid,
-        "isCustomerDelivery": orderBooking.isCustomerDelivery,
-        "orderId": null,
-        "totalPrice": 0,
-        "customerId": user.userId,
-        "deliveryAddress": orderBooking.addressDelivery,
-        "returnDate": orderBooking.dateTimeReturn.toIso8601String(),
-        "returnAddress": '',
-        "deliveryTime": orderBooking.currentSelectTime != -1
-            ? constants.listPickUpTime[orderBooking.currentSelectTime]
-            : '',
-        "deliveryDate": orderBooking.dateTimeDelivery.toIso8601String(),
-        "type": 1,
-        "typeOrder": orderBooking.typeOrder == TypeOrder.selfStorage
-            ? constants.selfStorageTypeOrder
-            : constants.doorToDoorTypeOrder,
-        "note": orderBooking.distants,
-        "requestDetails": listProduct,
-        "deliveryFee": orderBooking.deliveryFee,
-        "distance": orderBooking.distants
-      }));
+
       final url = Uri.parse('$_domain/api/v1/requests');
       bool isCustomerDelivery = orderBooking.typeOrder.index == 0
           ? true
@@ -387,7 +366,7 @@ class ApiServices {
           "isCustomerDelivery": isCustomerDelivery,
           "orderId": null,
           "storageId": orderBooking.storageId,
-          "totalPrice": 0,
+          "totalPrice": orderBooking.totalPrice,
           "customerId": user.userId,
           "deliveryAddress": orderBooking.addressDelivery,
           "returnDate": orderBooking.dateTimeReturn.toIso8601String(),
@@ -815,8 +794,9 @@ class ApiServices {
         'Authorization': 'Bearer $idToken'
       };
 
-      final url = Uri.parse('$_domain/api/v1/requests/cancel request to order/' +
-          requestId.toString());
+      final url = Uri.parse(
+          '$_domain/api/v1/requests/cancel request to order/' +
+              requestId.toString());
       return http.put(url,
           headers: headers,
           body: jsonEncode({"id": requestId, "cancelReason": reason}));
