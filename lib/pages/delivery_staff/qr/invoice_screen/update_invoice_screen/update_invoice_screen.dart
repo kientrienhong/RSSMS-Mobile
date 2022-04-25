@@ -130,12 +130,12 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
             color: CustomColor.black,
             context: context,
             fontWeight: FontWeight.bold,
-            fontSize: 24),
+            fontSize: 18),
         CustomText(
             text: value,
             color: CustomColor.black,
             context: context,
-            fontSize: 24),
+            fontSize: 18),
       ],
     );
   }
@@ -419,13 +419,14 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                   height: 10,
                 ),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     CustomText(
                         text: 'Ngày kết thúc',
                         color: CustomColor.black,
                         context: context,
                         fontWeight: FontWeight.bold,
-                        fontSize: 24),
+                        fontSize: 18),
                     invoice.typeOrder == constant.doorToDoorTypeOrder
                         ? SizedBox(
                             width: deviceSize.width / 2.5,
@@ -538,7 +539,7 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                       text: "Dịch vụ",
                       color: CustomColor.black,
                       context: context,
-                      fontSize: 20,
+                      fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
                     if (!widget.isDone)
@@ -590,13 +591,13 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                       text: "Phụ kiện riêng",
                       color: CustomColor.black,
                       context: context,
-                      fontSize: 20,
+                      fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
                     if (!widget.isDone)
                       CustomButton(
                           height: 20,
-                          text: 'Thêm dịch vụ',
+                          text: 'Thêm phụ kiện',
                           textSize: 14,
                           width: deviceSize.width * 1 / 3,
                           onPressFunction: () {
@@ -613,10 +614,6 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                           buttonColor: CustomColor.blue,
                           borderRadius: 6)
                   ],
-                ),
-                CustomSizedBox(
-                  context: context,
-                  height: 16,
                 ),
                 Consumer<Invoice>(
                   builder: (context, invoiceLocal, child) {
@@ -656,7 +653,7 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                       text: "Chí phí thêm",
                       color: CustomColor.black,
                       context: context,
-                      fontSize: 20,
+                      fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
                     Checkbox(
@@ -770,7 +767,7 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                       text: "Đã thanh toán",
                       color: CustomColor.black,
                       context: context,
-                      fontSize: 20,
+                      fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
                     Checkbox(

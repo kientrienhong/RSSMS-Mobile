@@ -82,7 +82,12 @@ class InvoiceUpdatePresenter {
         }
       }
     }
-    final totalPrice = price + invoice.deliveryFee + double.parse(_model.controllerAdditionFeePrice.text);
+    String additionalFee = _model.controllerAdditionFeePrice.text == ""
+        ? "0"
+        : _model.controllerAdditionFeePrice.text;
+
+    final totalPrice =
+        price + invoice.deliveryFee + double.parse(additionalFee);
     final orderDetails = [];
 
     List<OrderDetail> newListOrderDetails =
@@ -144,7 +149,7 @@ class InvoiceUpdatePresenter {
         }
       ],
       "type": invoice.typeOrder,
-      "isPaid": _model.getIsPaid,
+      "isPaid": _model.isPaid,
       "paymentMethod": invoice.paymentMethod,
       "isUserDelivery": false,
       "deliveryDate": invoice.deliveryDate,

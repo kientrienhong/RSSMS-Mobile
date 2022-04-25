@@ -415,7 +415,7 @@ class InvoiceProductWidget extends StatelessWidget {
                                         .ceil() +
                                 totalAccessory +
                                 takingAdditionalFee +
-                                deliveryFee +
+                          
                                 invoice.deliveryFee) +
                             " đ"
                         : oCcy.format(totalProduct * invoice.durationMonths +
@@ -451,7 +451,6 @@ class InvoiceProductWidget extends StatelessWidget {
                                           .ceil() +
                                   totalAccessory +
                                   takingAdditionalFee +
-                                  deliveryFee +
                                   invoice.deliveryFee) *
                               0.5) +
                           " đ",

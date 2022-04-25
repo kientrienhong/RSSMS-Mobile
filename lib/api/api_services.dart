@@ -358,7 +358,7 @@ class ApiServices {
         "isPaid": orderBooking.isPaid,
         "isCustomerDelivery": orderBooking.isCustomerDelivery,
         "orderId": null,
-        "totalPrice": 0,
+        "totalPrice": orderBooking.deliveryFee + orderBooking.totalPrice,
         "customerId": user.userId,
         "deliveryAddress": orderBooking.addressDelivery,
         "returnDate": orderBooking.dateTimeReturn.toIso8601String(),
@@ -387,7 +387,7 @@ class ApiServices {
           "isCustomerDelivery": isCustomerDelivery,
           "orderId": null,
           "storageId": orderBooking.storageId,
-          "totalPrice": 0,
+          "totalPrice": orderBooking.deliveryFee + orderBooking.totalPrice,
           "customerId": user.userId,
           "deliveryAddress": orderBooking.addressDelivery,
           "returnDate": orderBooking.dateTimeReturn.toIso8601String(),
@@ -402,7 +402,7 @@ class ApiServices {
               : constants.doorToDoorTypeOrder,
           "note": orderBooking.distants,
           "requestDetails": listProduct,
-          "advanceMoney": orderBooking.totalPrice * 50 / 100
+          "advanceMoney": (orderBooking.deliveryFee + orderBooking.totalPrice) * 50 / 100
         }),
         headers: headers,
       );

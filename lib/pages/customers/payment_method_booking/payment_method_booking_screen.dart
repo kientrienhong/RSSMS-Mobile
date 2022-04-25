@@ -93,8 +93,7 @@ class _PaymentMethodBookingScreenState extends State<PaymentMethodBookingScreen>
       // } else {
       orderBooking.setOrderBooking(
           orderBooking: orderBooking.copyWith(
-              isPaid: true,
-              totalPrice: orderBooking.totalPrice + orderBooking.deliveryFee));
+              isPaid: true,));
       bool isSuccess = await _presenter.createOrder(orderBooking, users);
       if (isSuccess) {
         var request = BraintreeDropInRequest(

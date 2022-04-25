@@ -248,4 +248,14 @@ class _InvoiceTabState extends State<InvoiceTab> implements UpdateInvoiceView {
       ],
     );
   }
+
+  @override
+  void onChangeDateReturn(BuildContext context) {
+    // TODO: implement onChangeDateReturn
+  }
+
+  @override
+  void onChangeDurationMonth() {
+    // TODO: implement onChangeDurationMonth
+  }
 }
