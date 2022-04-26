@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/models/entity/user.dart';
@@ -62,7 +63,7 @@ class _RequestScreenState extends State<RequestScreen> with RequestScreenView {
     return StreamBuilder(
       stream: _model.stream,
       builder: (context, AsyncSnapshot snapshot) {
-        if (!snapshot.hasData || _model.isLoadingRequest!) {
+        if (_model.isLoadingRequest! && !snapshot.hasData) {
           return Center(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -79,6 +80,17 @@ class _RequestScreenState extends State<RequestScreen> with RequestScreenView {
                   ),
                 ),
               ],
+            ),
+          );
+        } else if (!snapshot.hasData) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20),
+            child: Center(
+              child: CustomText(
+                  text: "Hiện vẫn chưa có yêu cầu",
+                  color: CustomColor.black,
+                  context: context,
+                  fontSize: 16),
             ),
           );
         } else {

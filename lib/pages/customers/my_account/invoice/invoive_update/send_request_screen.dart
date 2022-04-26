@@ -19,8 +19,6 @@ class SendRequestScreen extends StatefulWidget {
 enum CurrentRadioState { extendOrder, modifyItem }
 
 class SendRequestScreenState extends State<SendRequestScreen> {
-  CurrentRadioState? _state = CurrentRadioState.extendOrder;
-
   Color getColor(Set<MaterialState> states) {
     if (states.contains(MaterialState.focused)) {
       return CustomColor.blue;
@@ -28,8 +26,13 @@ class SendRequestScreenState extends State<SendRequestScreen> {
     return Colors.white;
   }
 
+  CurrentRadioState? _state = CurrentRadioState.extendOrder;
+
   @override
   Widget build(BuildContext context) {
+    if(widget.invoice!.status == 5){
+      _state = CurrentRadioState.modifyItem;
+    }
     final deviceSize = MediaQuery.of(context).size;
     return Scaffold(
       body: SingleChildScrollView(
@@ -67,18 +70,19 @@ class SendRequestScreenState extends State<SendRequestScreen> {
                 context: context,
                 height: 24,
               ),
-              CustomRadioButton(
-                  function: () {
-                    setState(() {
-                      _state = CurrentRadioState.extendOrder;
-                    });
-                  },
-                  text: "Gia hạn đơn",
-                  color: _state == CurrentRadioState.extendOrder
-                      ? CustomColor.blue
-                      : CustomColor.white,
-                  state: _state,
-                  value: CurrentRadioState.extendOrder),
+              if (widget.invoice!.status != 5)
+                CustomRadioButton(
+                    function: () {
+                      setState(() {
+                        _state = CurrentRadioState.extendOrder;
+                      });
+                    },
+                    text: "Gia hạn đơn",
+                    color: _state == CurrentRadioState.extendOrder
+                        ? CustomColor.blue
+                        : CustomColor.white,
+                    state: _state,
+                    value: CurrentRadioState.extendOrder),
               if (widget.invoice!.typeOrder == 1)
                 CustomRadioButton(
                     function: () {

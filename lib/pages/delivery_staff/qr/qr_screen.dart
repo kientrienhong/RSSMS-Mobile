@@ -8,6 +8,7 @@ import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/user.dart';
+import 'package:rssms/models/qr_invoice_model.dart';
 import 'package:rssms/pages/delivery_staff/qr/invoice_screen/invoice_screen.dart';
 import 'package:rssms/presenters/qr_scan_presenter.dart';
 import 'package:rssms/views/qr_invoice_view.dart';
@@ -23,12 +24,13 @@ class _QrScreenState extends State<QrScreen> implements QRInvoiceView {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
 
   String qrCode = "";
-  QRScanPresenter? _presenter;
-
+  late QRScanPresenter _presenter;
+  late QRInvoiceModel _model;
   @override
   void initState() {
     super.initState();
     _presenter = QRScanPresenter();
+    _model = _presenter.model;
   }
 
   @override
@@ -57,7 +59,7 @@ class _QrScreenState extends State<QrScreen> implements QRInvoiceView {
       qrCode = barcodeScanRes;
     });
     Users user = Provider.of<Users>(context, listen: false);
-    bool result = await _presenter?.loadRequest(user.idToken!, qrCode) as bool;
+    bool result = await _presenter.loadRequest(user.idToken!, qrCode);
     if (!result) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Không tìm thấy đơn"),
@@ -67,13 +69,13 @@ class _QrScreenState extends State<QrScreen> implements QRInvoiceView {
 
     bool isDone = false;
     Invoice invoice = Provider.of<Invoice>(context, listen: false);
-    if (_presenter!.model.invoice!.orderId!.isNotEmpty) {
-      result = await _presenter?.loadInvoice(
-          user.idToken!, _presenter!.model.invoice!.orderId!) as bool;
+    if (_presenter.model.invoice!.orderId!.isNotEmpty) {
+      result = await _presenter.loadInvoice(
+          user.idToken!, _model.invoice!.orderId!);
       isDone = true;
     }
     if (result) {
-      invoice.setInvoice(invoice: _presenter!.model.invoice!);
+      invoice.setInvoice(invoice: _presenter.model.invoice!);
       Navigator.push(
         context,
         MaterialPageRoute(

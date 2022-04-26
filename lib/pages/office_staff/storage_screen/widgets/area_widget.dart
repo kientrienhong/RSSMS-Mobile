@@ -96,7 +96,7 @@ class AreaWidget extends StatelessWidget {
                         text: area.name,
                         color: CustomColor.black,
                         context: context,
-                        fontSize: 16,
+                        fontSize: 15,
                         fontWeight: FontWeight.bold,
                       )
                     ],

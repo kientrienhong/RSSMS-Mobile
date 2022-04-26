@@ -68,8 +68,9 @@ class _QRInvoiceDetailsScreenState extends State<QRInvoiceDetailsScreen> {
               element.type == constants.typeProduct.accessory.index ||
               element.type == constants.typeProduct.services.index)
           .toList();
-      element = element.copyWith(amount: quantity);
-      invoiceResult.orderDetails[index++] = element.copyWith(amount: quantity);
+      element = element.copyWith(amount: quantity, status: -1);
+      invoiceResult.orderDetails[index++] =
+          element.copyWith(amount: quantity, status: -1);
     }
 
     return invoiceResult;
@@ -133,7 +134,9 @@ class _QRInvoiceDetailsScreenState extends State<QRInvoiceDetailsScreen> {
                       height: 16,
                     ),
                     InvoiceProductWidget(
-                        deviceSize: deviceSize, invoice: invoiceUI),
+                        isInvoice: true,
+                        deviceSize: deviceSize,
+                        invoice: invoiceUI),
                     CustomSizedBox(
                       context: context,
                       height: 16,

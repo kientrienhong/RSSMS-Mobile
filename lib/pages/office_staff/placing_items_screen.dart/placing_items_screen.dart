@@ -15,6 +15,7 @@ import 'package:rssms/models/entity/order_detail.dart';
 import 'package:rssms/models/entity/placing_items.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/models/placing_items_screen_model.dart';
+import 'package:rssms/pages/office_staff/placing_items_screen.dart/import_screen/import_screen.dart';
 import 'package:rssms/presenters/placing_items_screen_presenter.dart';
 import 'package:rssms/views/placing_items_screen_view.dart';
 
@@ -91,15 +92,29 @@ class _PlacingItemsScreenState extends State<PlacingItemsScreen>
   void onClickUndo(int index) {}
 
   @override
-  void onClickConfirm() async {
+  void onClickConfirm({isAccept = false}) async {
     final placingItems = Provider.of<PlacingItems>(context, listen: false);
     final user = Provider.of<Users>(context, listen: false);
     bool result = false;
     if (placingItems.isMoving) {
       result = await _presenter.onPressConfirmMove(user.idToken!, placingItems);
     } else {
-      result = await _presenter.onPressConfirmStore(
-          user.idToken!, placingItems, _model.deliveryStaff.id);
+      if (_model.deliveryStaff.id != '') {
+        placingItems.import.importDeliveryBy = _model.deliveryStaff.name;
+        placingItems.import.importStaff = user.name!;
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ImportScreen(
+              deliveryStaff: _model.deliveryStaff,
+              import: placingItems.import,
+              orderDetail: placingItems.placingItems['floors']
+                  .map<OrderDetail>((e) => OrderDetail.fromMap(e))
+                  .toList(),
+            ),
+          ),
+        );
+      }
     }
     if (result) {
       Navigator.pop(context, result);
@@ -147,21 +162,29 @@ class _PlacingItemsScreenState extends State<PlacingItemsScreen>
     setState(() {
       qrCode = barcodeScanRes;
     });
-    if (qrCode.split("_")[1] == "user") {
-      Users user = Provider.of<Users>(context, listen: false);
-      bool result =
-          await _presenter.getStaffDetail(user.idToken!, qrCode.split("_")[0]);
-      if (!result) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text("Không tìm thấy nhân viên"),
-        ));
-        return;
+    try {
+      String prefixQrcode = qrCode.split("_")[1];
+      if (prefixQrcode == "user") {
+        Users user = Provider.of<Users>(context, listen: false);
+        bool result = await _presenter.getStaffDetail(
+            user.idToken!, qrCode.split("_")[0]);
+        if (!result) {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text("Không tìm thấy nhân viên"),
+          ));
+          return;
+        } else {
+          setState(() {});
+        }
       } else {
-        setState(() {});
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          backgroundColor: CustomColor.red,
+          content: Text("Vui lòng quét mã trên nhân viên vận chuyển!"),
+        ));
       }
-    } else {
+    } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        backgroundColor: CustomColor.red,
+        backgroundColor: Colors.grey,
         content: Text("Vui lòng quét mã trên nhân viên vận chuyển!"),
       ));
     }
@@ -328,33 +351,35 @@ class _PlacingItemsScreenState extends State<PlacingItemsScreen>
               context: context,
               height: 8,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CustomText(
-                    text: "Thông tin vận chuyển",
-                    color: CustomColor.black,
-                    context: context,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16),
-                CustomButton(
-                    height: 20,
-                    text: 'Quét QR',
-                    width: deviceSize.width / 3 - 50,
-                    onPressFunction: () {
-                      scanQR(deviceSize);
-                    },
-                    isLoading: _model.isLoading,
-                    textColor: CustomColor.white,
-                    buttonColor: CustomColor.blue,
-                    textSize: 12,
-                    borderRadius: 4),
-              ],
-            ),
-            CustomSizedBox(
-              context: context,
-              height: 16,
-            ),
+            if (!placingItems.isMoving)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  CustomText(
+                      text: "Thông tin vận chuyển",
+                      color: CustomColor.black,
+                      context: context,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16),
+                  CustomButton(
+                      height: 20,
+                      text: 'Quét QR',
+                      width: deviceSize.width / 3 - 50,
+                      onPressFunction: () {
+                        scanQR(deviceSize);
+                      },
+                      isLoading: _model.isLoading,
+                      textColor: CustomColor.white,
+                      buttonColor: CustomColor.blue,
+                      textSize: 12,
+                      borderRadius: 4),
+                ],
+              ),
+            if (!placingItems.isMoving)
+              CustomSizedBox(
+                context: context,
+                height: 16,
+              ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -393,7 +418,7 @@ class _PlacingItemsScreenState extends State<PlacingItemsScreen>
                     borderRadius: 4),
                 CustomButton(
                     height: 24,
-                    text: 'Xác nhận',
+                    text: 'Tiếp theo',
                     width: deviceSize.width / 3 - 40,
                     onPressFunction: onClickConfirm,
                     isLoading: _model.isLoading,
@@ -407,4 +432,5 @@ class _PlacingItemsScreenState extends State<PlacingItemsScreen>
       )),
     );
   }
+
 }

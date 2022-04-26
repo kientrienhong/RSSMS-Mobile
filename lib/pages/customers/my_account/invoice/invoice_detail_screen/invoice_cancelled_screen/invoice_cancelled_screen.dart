@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
+import 'package:rssms/constants/constants.dart';
+import 'package:rssms/models/entity/request.dart';
 
 class InvoiceCancelledScreen extends StatelessWidget {
-  const InvoiceCancelledScreen({Key? key}) : super(key: key);
+  final Request request;
+  const InvoiceCancelledScreen({Key? key, required this.request})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +48,24 @@ class InvoiceCancelledScreen extends StatelessWidget {
               context: context,
               height: 32,
             ),
+            Row(
+              children: [
+                CustomText(
+                  text: "Trạng thái",
+                  color: CustomColor.black,
+                  context: context,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+                CustomText(
+                  text: listRequestStatus[request.status]['name'].toString(),
+                  color: listRequestStatus[request.status]['color'] as Color,
+                  context: context,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                )
+              ],
+            )
           ],
         ),
       )),

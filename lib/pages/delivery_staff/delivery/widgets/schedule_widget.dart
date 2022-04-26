@@ -208,7 +208,7 @@ class _ScheduleWidgetState extends State<ScheduleWidget>
                       child: Container(
                         width: 1,
                         color: CustomColor.black[3],
-                        height: deviceSize.height / 3,
+                        height: deviceSize.height / 2.3,
                       ),
                     ),
               Container(
@@ -229,7 +229,7 @@ class _ScheduleWidgetState extends State<ScheduleWidget>
               onPressViewDetail();
             },
             child: SizedBox(
-              height: deviceSize.height / 2.8,
+              height: deviceSize.height / 2.3,
               width: deviceSize.width * 3 / 4,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

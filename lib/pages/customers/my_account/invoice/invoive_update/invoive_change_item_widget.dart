@@ -117,7 +117,7 @@ class _ChangeItemWidgetState extends State<ChangeItemWidget>
           MaterialPageRoute(
               builder: (context) => const CustomBottomNavigation(
                     listIndexStack: [
-                      MyAccountScreen(),
+                      MyAccountScreen(initIndex: 2,),
                       CartScreen(),
                       NotificationDeliveryScreen(),
                     ],

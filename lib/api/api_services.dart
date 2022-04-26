@@ -358,7 +358,7 @@ class ApiServices {
         "isPaid": orderBooking.isPaid,
         "isCustomerDelivery": orderBooking.isCustomerDelivery,
         "orderId": null,
-        "totalPrice": 0,
+        "totalPrice": orderBooking.deliveryFee + orderBooking.totalPrice,
         "customerId": user.userId,
         "deliveryAddress": orderBooking.addressDelivery,
         "returnDate": orderBooking.dateTimeReturn.toIso8601String(),
@@ -371,10 +371,12 @@ class ApiServices {
         "typeOrder": orderBooking.typeOrder == TypeOrder.selfStorage
             ? constants.selfStorageTypeOrder
             : constants.doorToDoorTypeOrder,
-        "note": orderBooking.note,
+        "note": orderBooking.distants,
         "requestDetails": listProduct,
         "deliveryFee": orderBooking.deliveryFee,
-        "distance": orderBooking.distants
+        "distance": orderBooking.distants,
+                  "advanceMoney":  orderBooking.totalPrice * 50 / 100
+
       }));
       final url = Uri.parse('$_domain/api/v1/requests');
       bool isCustomerDelivery = orderBooking.typeOrder.index == 0
@@ -387,7 +389,7 @@ class ApiServices {
           "isCustomerDelivery": isCustomerDelivery,
           "orderId": null,
           "storageId": orderBooking.storageId,
-          "totalPrice": 0,
+          "totalPrice":orderBooking.totalPrice,
           "customerId": user.userId,
           "deliveryAddress": orderBooking.addressDelivery,
           "returnDate": orderBooking.dateTimeReturn.toIso8601String(),
@@ -397,11 +399,10 @@ class ApiServices {
               : '',
           "deliveryDate": orderBooking.dateTimeDelivery.toIso8601String(),
           "type": 1,
-          "typeOrder": orderBooking.typeOrder == TypeOrder.selfStorage
-              ? constants.selfStorageTypeOrder
-              : constants.doorToDoorTypeOrder,
-          "note": orderBooking.note,
-          "requestDetails": listProduct
+          "typeOrder": orderBooking.typeOrder.index,
+          "note": orderBooking.distants,
+          "requestDetails": listProduct,
+          "advanceMoney":  orderBooking.totalPrice * 50 / 100
         }),
         headers: headers,
       );
@@ -801,6 +802,25 @@ class ApiServices {
         url,
         headers: headers,
       );
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  static Future<dynamic> cancelCreateRequest(
+      String requestId, String idToken, String reason) {
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        'Authorization': 'Bearer $idToken'
+      };
+
+      final url = Uri.parse(
+          '$_domain/api/v1/requests/cancel request to order/' +
+              requestId.toString());
+      return http.put(url,
+          headers: headers,
+          body: jsonEncode({"id": requestId, "cancelReason": reason}));
     } catch (e) {
       throw Exception(e.toString());
     }

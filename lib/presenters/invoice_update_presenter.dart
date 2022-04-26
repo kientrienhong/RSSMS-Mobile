@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:intl/intl.dart';
 import 'package:rssms/helpers/image_handle.dart';
 import 'package:rssms/models/entity/imageEntity.dart';
 import 'package:rssms/models/entity/invoice.dart';
@@ -82,7 +83,12 @@ class InvoiceUpdatePresenter {
         }
       }
     }
+    String additionalFee = _model.controllerAdditionFeePrice.text == ""
+        ? "0"
+        : _model.controllerAdditionFeePrice.text;
 
+    final totalPrice =
+        price + invoice.deliveryFee + double.parse(additionalFee);
     final orderDetails = [];
 
     List<OrderDetail> newListOrderDetails =
@@ -125,7 +131,7 @@ class InvoiceUpdatePresenter {
       "requestId": invoice.id,
       "deliveryAddress": invoice.deliveryAddress,
       "returnAddress": invoice.addressReturn,
-      "totalPrice": price,
+      "totalPrice": totalPrice,
       "rejectedReason": "",
       "orderAdditionalFees": [
         {
@@ -136,15 +142,22 @@ class InvoiceUpdatePresenter {
           "price": _model.isAdditionFee
               ? double.parse(_model.controllerAdditionFeePrice.text)
               : 0
+        },
+        {
+          "type": constants.ADDITION_FEE_TYPE.deliveryFee.index,
+          "description": "Phí vận chuyển",
+          "price": invoice.deliveryFee
         }
       ],
       "type": invoice.typeOrder,
-      "isPaid": _model.getIsPaid,
+      "isPaid": _model.isPaid,
       "paymentMethod": invoice.paymentMethod,
       "isUserDelivery": false,
       "deliveryDate": invoice.deliveryDate,
       "deliveryTime": invoice.deliveryTime,
-      "returnDate": invoice.returnDate,
+      "returnDate": DateFormat('dd/MM/yyyy')
+          .parse(_model.returnDateController.text)
+          .toIso8601String(),
       "returnTime": invoice.returnTime,
       "status": invoice.status,
       "orderDetails": orderDetails
@@ -183,6 +196,16 @@ class InvoiceUpdatePresenter {
     return result;
   }
 
+  Map<String, dynamic> dateFormatHelperDoneOrderOfficeStaff(Invoice invoice) {
+    Map<String, dynamic> result = {
+      "orderId": invoice.id,
+      "requestId": invoice.requestId,
+      'status': 6,
+    };
+
+    return result;
+  }
+
   Future<bool> updateOrder(Users user, Invoice invoice) async {
     try {
       view.updateLoadingUpdate();
@@ -207,7 +230,14 @@ class InvoiceUpdatePresenter {
   Future<bool?> doneOrder(Users user, Invoice invoice) async {
     try {
       view.updateLoadingUpdate();
-      final dataRequest = dateFormatHelperDoneOrder(invoice);
+      var dataRequest = {};
+      if (user.roleName == "Delivery Staff") {
+        dataRequest = dateFormatHelperDoneOrder(invoice);
+      } else if (user.roleName == "Office Staff") {
+        dataRequest = dateFormatHelperDoneOrderOfficeStaff(invoice);
+      } else {
+        return false;
+      }
       log(jsonEncode(dataRequest));
       var response = await model.doneOrder(dataRequest, user.idToken!);
       if (response.statusCode == 200) {

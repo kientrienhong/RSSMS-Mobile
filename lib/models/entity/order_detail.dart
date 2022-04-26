@@ -154,7 +154,7 @@ class OrderDetail {
               return Product(
                 id: x['serviceId'] ?? '',
                 name: x['serviceName'] ?? '',
-                price: x['totalPrice']?.toInt() ?? 0,
+                price: x['price']?.toInt() ?? 0,
                 size: x['size'] ?? '',
                 height: x['height']?.toDouble() ?? 0,
                 width: x['width']?.toDouble() ?? 0,

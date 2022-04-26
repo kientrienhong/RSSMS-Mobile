@@ -6,8 +6,8 @@ class CustomRadioButton extends StatelessWidget {
   final VoidCallback function;
   final String text;
   final Color color;
-  final state;
-  final value;
+  final dynamic state;
+  final dynamic value;
   const CustomRadioButton(
       {Key? key,
       required this.function,

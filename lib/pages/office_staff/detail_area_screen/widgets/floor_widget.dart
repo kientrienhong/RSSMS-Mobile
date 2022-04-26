@@ -67,7 +67,7 @@ class FloorWidget extends StatelessWidget {
                 child: Align(
                     alignment: Alignment.center,
                     child: CustomText(
-                        text: '${floor.usage}%',
+                        text: '${floor.usage.toStringAsFixed(2)}%',
                         color: CustomColor.black,
                         context: context,
                         fontSize: 16)),
@@ -116,6 +116,7 @@ class FloorWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               CustomButton(
+                textSize: 14,
                   height: 24,
                   text: 'Lưu trữ đồ',
                   width: deviceSize.width / 3 - 40,
@@ -151,6 +152,7 @@ class FloorWidget extends StatelessWidget {
                 height: 8,
               ),
               CustomButton(
+                textSize: 14,
                   height: 24,
                   text: 'Xem thêm',
                   width: deviceSize.width / 3 - 40,

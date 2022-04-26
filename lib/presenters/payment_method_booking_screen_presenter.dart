@@ -1,6 +1,7 @@
 import 'package:rssms/helpers/response_handle.dart';
 import 'package:rssms/models/entity/order_booking.dart';
 import 'package:rssms/models/entity/order_detail.dart';
+import 'package:rssms/models/entity/request.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/models/payment_method_booking_screen_model.dart';
 import 'package:rssms/views/payment_method_booking_screen_view.dart';
@@ -42,6 +43,9 @@ class PaymentMethodBookingScreenPresenter {
       returnDate: orderBooking.dateTimeReturnString,
       durationMonths: orderBooking.months,
       isOrder: false,
+      totalPrice: orderBooking.deliveryFee + orderBooking.totalPrice,
+      deliveryFee: orderBooking.deliveryFee,
+      advanceMoney: (orderBooking.deliveryFee + orderBooking.totalPrice) * 0.5,
       typeOrder: orderBooking.typeOrder.index,
     );
   }
@@ -52,7 +56,7 @@ class PaymentMethodBookingScreenPresenter {
       List<Map<String, dynamic>> listProduct = [];
 
       List listKeys = orderBooking.productOrder.keys.toList();
-
+      double totalPrice = 0;
       for (var element in listKeys) {
         for (var ele in orderBooking.productOrder[element]!) {
           listProduct.add({
@@ -61,9 +65,37 @@ class PaymentMethodBookingScreenPresenter {
             "amount": ele['quantity'],
             'note': ele['note']
           });
+          totalPrice += ele['price'] * ele['quantity'];
+        }
+        if (element == 'product') {
+          totalPrice *= orderBooking.months;
         }
       }
+      if (orderBooking.typeOrder.index != 0) {
+        totalPrice += orderBooking.deliveryFee;
+      }
+      orderBooking.setOrderBooking(
+          orderBooking: orderBooking.copyWith(totalPrice: totalPrice));
       final response = await model.createOrder(listProduct, orderBooking, user);
+      final handledResponse = ResponseHandle.handle(response);
+      if (handledResponse['status'] == 'success') {
+        model.request = Request.fromMap(handledResponse['data']);
+        return true;
+      } else {
+        view.updateError(handledResponse['data']);
+        return false;
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    } finally {
+      view.updateLoading();
+    }
+  }
+
+  Future<bool> cancelRequest(Request request, Users user, String reason) async {
+    try {
+      view.updateLoading();
+      final response = await model.cancelOrder(request.id, user, reason);
       final handledResponse = ResponseHandle.handle(response);
       if (handledResponse['status'] == 'success') {
         return true;

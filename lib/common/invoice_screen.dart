@@ -38,14 +38,18 @@ class _InvoiceScreenState extends State<InvoiceScreen> implements InvoiceView {
 
   @override
   void setChangeList() {
-    setState(() {});
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   @override
   void updateIsLoadingInvoice() {
-    setState(() {
-      _model.isLoadingInvoice = !_model.isLoadingInvoice;
-    });
+    if (mounted) {
+      setState(() {
+        _model.isLoadingInvoice = !_model.isLoadingInvoice;
+      });
+    }
   }
 
   @override
@@ -74,12 +78,31 @@ class _InvoiceScreenState extends State<InvoiceScreen> implements InvoiceView {
     return StreamBuilder(
       stream: _model.stream,
       builder: (context, AsyncSnapshot snapshot) {
-        if (!snapshot.hasData) {
+        if (_model.isLoadingInvoice && !snapshot.hasData) {
+          return Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                CustomSizedBox(
+                  context: context,
+                  height: 50,
+                ),
+                const SizedBox(
+                  height: 16,
+                  width: 16,
+                  child: CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.black54),
+                  ),
+                ),
+              ],
+            ),
+          );
+        } else if (!snapshot.hasData) {
           return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20.0),
+            padding: const EdgeInsets.symmetric(vertical: 20),
             child: Center(
               child: CustomText(
-                  text: "Hiện vẫn chưa có đơn hàng",
+                  text: "Hiện vẫn chưa có yêu cầu",
                   color: CustomColor.black,
                   context: context,
                   fontSize: 16),

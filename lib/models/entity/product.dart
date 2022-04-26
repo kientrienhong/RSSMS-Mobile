@@ -1,20 +1,20 @@
 import 'dart:convert';
 
 class Product {
-  final String id;
+  late String id;
   int? quantity;
-  final String name;
-  final int price;
-  final String size;
-  final String description;
-  final int type;
-  final String unit;
-  final String tooltip;
-  final int status;
-  final double width;
-  final double length;
-  final double height;
-  final String imageUrl;
+  late String name;
+  late int price;
+  late String size;
+  late String description;
+  late int type;
+  late String unit;
+  late String tooltip;
+  late int status;
+  late double width;
+  late double length;
+  late double height;
+  late String imageUrl;
   Product({
     this.quantity,
     required this.id,
@@ -31,6 +31,22 @@ class Product {
     required this.width,
     required this.imageUrl,
   });
+
+  Product.empty() {
+    id = '';
+    name = '';
+    price = 0;
+    size = '';
+    description = '';
+    type = 0;
+    unit = '';
+    tooltip = '';
+    status = 0;
+    width = 0;
+    height = 0;
+    length = 0;
+    imageUrl = '';
+  }
 
   Product copyWith({
     int? quantity,

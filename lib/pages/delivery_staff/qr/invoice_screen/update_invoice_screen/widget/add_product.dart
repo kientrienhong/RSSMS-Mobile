@@ -29,21 +29,37 @@ class AddProduct extends StatelessWidget {
     void addMainProduct() {
       Invoice invoice = Provider.of<Invoice>(context, listen: false);
       Invoice invoiceTemp = invoice.copyWith();
-      if (product.type == constants.typeProduct.handy.index) {
-        invoiceTemp.orderDetails.add(OrderDetail(
-            id: invoiceTemp.orderDetails.length.toString(),
-            productId: product.id,
-            productName: product.name,
-            status: -1,
-            price: product.price,
-            height: product.height,
-            width: product.width,
-            length: product.length,
-            amount: 1,
-            serviceImageUrl: product.imageUrl,
-            productType: product.type,
-            note: '',
-            images: []));
+      if (product.type == constants.typeProduct.handy.index ||
+          product.type == constants.typeProduct.unweildy.index) {
+        final anotherType = product.type == constants.typeProduct.handy.index
+            ? constants.typeProduct.unweildy.index
+            : constants.typeProduct.handy.index;
+
+        final anotherTypeFoundIndex = invoiceTemp.orderDetails
+            .indexWhere((element) => element.productType == anotherType);
+
+        if (anotherTypeFoundIndex == -1) {
+          invoiceTemp.orderDetails.add(OrderDetail(
+              id: invoiceTemp.orderDetails.length.toString(),
+              productId: product.id,
+              productName: product.name,
+              status: -1,
+              price: product.price,
+              height: product.height,
+              width: product.width,
+              length: product.length,
+              amount: 1,
+              serviceImageUrl: product.imageUrl,
+              productType: product.type,
+              note: '',
+              images: []));
+        } else {
+          CustomSnackBar.buildSnackbar(
+              context: context,
+              message: "Đơn hàng không thể gồm 2 loại dịch vụ chính",
+              color: CustomColor.red);
+              return;
+        }
       } else {
         invoiceTemp.orderDetails.add(OrderDetail(
             id: invoiceTemp.orderDetails.length.toString(),

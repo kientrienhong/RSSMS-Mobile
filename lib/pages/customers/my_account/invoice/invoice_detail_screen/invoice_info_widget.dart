@@ -31,11 +31,13 @@ class InvoiceInfoWidget extends StatelessWidget {
           Row(
             children: [
               CustomText(
-                  text: listStatusOrder[invoice.status]['name']! as String,
-                  color: listStatusOrder[invoice.status]['color'] as Color,
+                  text: listStatusOrder[invoice.typeOrder]![invoice.status]
+                      ['name']! as String,
+                  color: listStatusOrder[invoice.typeOrder]![invoice.status]
+                      ['color'] as Color,
                   context: context,
                   fontWeight: FontWeight.bold,
-                  fontSize: 16),
+                  fontSize: 15),
               Container(
                 width: 2,
                 height: deviceSize.height / 40,
@@ -47,7 +49,7 @@ class InvoiceInfoWidget extends StatelessWidget {
                   color: mapIsPaid[invoice.isPaid]!['color'] as Color,
                   context: context,
                   fontWeight: FontWeight.bold,
-                  fontSize: 16),
+                  fontSize: 15),
             ],
           ),
         ],
@@ -122,7 +124,33 @@ class InvoiceInfoWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           CustomText(
-              text: "Địa chỉ:",
+              text: "Địa chỉ của khách:",
+              color: Colors.black,
+              context: context,
+              fontWeight: FontWeight.bold,
+              fontSize: 17),
+          SizedBox(
+            child: CustomText(
+              text: invoice.deliveryAddress,
+              color: CustomColor.black,
+              textAlign: TextAlign.right,
+              context: context,
+              maxLines: 3,
+              fontSize: 16,
+              textOverflow: TextOverflow.visible,
+            ),
+          ),
+        ],
+      ),
+      CustomSizedBox(
+        context: context,
+        height: 24,
+      ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          CustomText(
+              text: "Tên kho:",
               color: Colors.black,
               context: context,
               fontWeight: FontWeight.bold,
@@ -130,7 +158,7 @@ class InvoiceInfoWidget extends StatelessWidget {
           SizedBox(
             width: deviceSize.width * 1.5 / 3,
             child: CustomText(
-              text: invoice.deliveryAddress,
+              text: invoice.storageName,
               color: CustomColor.black,
               textAlign: TextAlign.right,
               context: context,
@@ -149,11 +177,39 @@ class InvoiceInfoWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           CustomText(
-              text: "Thông tin vận chuyển:",
+              text: "Địa chỉ kho:",
               color: Colors.black,
               context: context,
               fontWeight: FontWeight.bold,
               fontSize: 17),
+          SizedBox(
+            width: deviceSize.width * 1.5 / 3,
+            child: CustomText(
+              text: invoice.storageAddress,
+              color: CustomColor.black,
+              textAlign: TextAlign.right,
+              context: context,
+              maxLines: 3,
+              fontSize: 16,
+              textOverflow: TextOverflow.visible,
+            ),
+          ),
+        ],
+      ),
+      CustomSizedBox(
+        context: context,
+        height: 24,
+      ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          if (invoice.typeOrder != selfStorageTypeOrder)
+            CustomText(
+                text: "Thông tin vận chuyển:",
+                color: Colors.black,
+                context: context,
+                fontWeight: FontWeight.bold,
+                fontSize: 17),
           CustomButton(
               height: 24,
               isLoading: false,

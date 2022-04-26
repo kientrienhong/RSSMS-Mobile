@@ -15,12 +15,16 @@ enum STATUS_REQUEST { canceled, inProcess, processed, completed }
 enum ADDITION_FEE_TYPE {
   takingAdditionFee,
   returningAdditionFee,
-  compensationFee
+  compensationFee,
+  deliveryFee,
 }
 
 const List<Map<String, String>> tabInvoiceDetail = [
   {"name": "Hóa đơn"},
-  {"name": "Đồ đạc"}
+  {"name": "Đồ đạc"},
+  {"name": "Phiếu nhập"},
+  {"name": "Phiếu xuất"},
+
 ];
 
 const doorToDoorTypeOrder = 1;
@@ -57,16 +61,30 @@ const requestTypeReturnOrder = 4;
 
 enum typeProduct { selfStorage, accessory, handy, unweildy, services }
 
-const listStatusOrder = [
-  {'color': CustomColor.red, 'name': 'Đã Hủy'},
-  {'color': CustomColor.blue, 'name': 'Đang vận chuyển'},
-  {'color': CustomColor.green, 'name': 'Đã về kho'},
-  {'color': CustomColor.orange, 'name': 'Sắp hết hạn'},
-  {'color': CustomColor.red, 'name': 'Đã quá hạn'},
-  {'color': CustomColor.red, 'name': 'Đang thanh lý'},
-  {'color': CustomColor.green, 'name': 'Đã hoàn tất'},
-  {'color': CustomColor.red, 'name': 'Đã thanh lý'},
-];
+const listStatusOrder = {
+  0: [
+    {'color': CustomColor.red, 'name': 'Đã Hủy'},
+    {'color': CustomColor.blue, 'name': 'Đã tạo đơn'},
+    {'color': CustomColor.green, 'name': 'Đã nhận kho'},
+    {'color': CustomColor.orange, 'name': 'Sắp hết hạn'},
+    {'color': CustomColor.red, 'name': 'Đã quá hạn'},
+    {'color': CustomColor.red, 'name': 'Đang thanh lý'},
+    {'color': CustomColor.green, 'name': 'Đã hoàn tất'},
+    {'color': CustomColor.red, 'name': 'Đã thanh lý'},
+    {'color': CustomColor.blue, 'name': 'Đã trả kho'},
+  ],
+  1: [
+    {'color': CustomColor.red, 'name': 'Đã Hủy'},
+    {'color': CustomColor.blue, 'name': 'Đang vận chuyển'},
+    {'color': CustomColor.green, 'name': 'Đã về kho'},
+    {'color': CustomColor.orange, 'name': 'Sắp hết hạn'},
+    {'color': CustomColor.red, 'name': 'Đã quá hạn'},
+    {'color': CustomColor.red, 'name': 'Đang thanh lý'},
+    {'color': CustomColor.green, 'name': 'Đã hoàn tất'},
+    {'color': CustomColor.red, 'name': 'Đã thanh lý'},
+    {'color': CustomColor.blue, 'name': 'Đã xuất kho'},
+  ],
+};
 
 const listStatusOfOrderDetail = [
   {'name': "Đang được gỡ xuống", 'color': CustomColor.brown},
@@ -157,8 +175,8 @@ const Map<String, String> invoiceIcons = {
 };
 
 const List<Map<String, dynamic>> listPaymentMethodChoices = [
-  {'name': 'Thanh toán tiền mặt', 'value': PAYMENT_METHOD.cash},
   {'name': 'Thánh toán thông qua paypal', 'value': PAYMENT_METHOD.paypal},
+  // {'name': 'Thanh toán tiền mặt', 'value': PAYMENT_METHOD.cash},
 ];
 
 Map<bool, Map<String, dynamic>> mapIsPaid = {
@@ -167,4 +185,8 @@ Map<bool, Map<String, dynamic>> mapIsPaid = {
     'color': CustomColor.black[3],
   },
   true: {'name': 'Đã thanh toán', 'color': CustomColor.blue}
+};
+
+const Map<String, String> createRequestCreatingError = {
+  "paymentfail": "Đặt cọc thất bại, đã có lỗi xảy ra",
 };

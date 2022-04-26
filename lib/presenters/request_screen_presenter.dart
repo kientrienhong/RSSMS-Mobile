@@ -78,6 +78,7 @@ class RequestScreenPresenter {
         model!.hasMore = !(model!.page == model!.metadata!["totalPage"]);
         model!.controller.add(model!.data);
       }
+
     } catch (e) {
       log(e.toString());
     } finally {

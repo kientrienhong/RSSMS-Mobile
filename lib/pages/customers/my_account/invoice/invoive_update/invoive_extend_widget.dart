@@ -140,7 +140,7 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
               MaterialPageRoute(
                   builder: (context) => const CustomBottomNavigation(
                         listIndexStack: [
-                          MyAccountScreen(),
+                          MyAccountScreen(initIndex: 2,),
                           CartScreen(),
                           NotificationDeliveryScreen(),
                         ],

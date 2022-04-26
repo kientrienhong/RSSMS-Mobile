@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:rssms/models/entity/import.dart';
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/order_detail.dart';
 import 'package:rssms/constants/constants.dart' as constants;
@@ -6,6 +7,7 @@ import 'package:rssms/constants/constants.dart' as constants;
 class PlacingItems with ChangeNotifier {
   late Map<String, dynamic> storedItems;
   late Map<String, dynamic> placingItems;
+  late Import import;
   late bool isMoving;
   PlacingItems.empty() {
     storedItems = {'orderId': '', 'items': [], 'totalQuantity': 0};
@@ -15,10 +17,11 @@ class PlacingItems with ChangeNotifier {
       'floors': [],
     };
     isMoving = false;
+    import = Import.empty();
     notifyListeners();
   }
 
-  void removePlacing(int idPlacing) {
+  void removePlacing(String idPlacing) {
     final index =
         placingItems['floors'].indexWhere((e) => e['idPlacing'] == idPlacing);
 
@@ -43,6 +46,7 @@ class PlacingItems with ChangeNotifier {
         storedItems['items'].firstWhere((e) => e.id == orderDetailId);
     Map<String, dynamic> placingOrderTemp = orderDetailFound.toMap();
     placingOrderTemp['idPlacing'] = placingOrderTemp['id'];
+    placingOrderTemp['amount'] = 1;
     placingOrderTemp['note'] = '';
     placingOrderTemp['areaName'] = currentPosition['areaName'];
     placingOrderTemp['floorName'] = currentPosition['floorName'];

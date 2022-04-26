@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_bottom_navigation.dart';
 import 'package:rssms/common/custom_button.dart';
@@ -11,6 +12,7 @@ import 'package:rssms/common/custom_snack_bar.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/common/image_widget.dart';
 import 'package:rssms/constants/constants.dart';
+import 'package:rssms/helpers/date_format.dart';
 import 'package:rssms/helpers/validator.dart';
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/order_additional_fee.dart';
@@ -74,6 +76,36 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
   }
 
   @override
+  void onChangeDateReturn(BuildContext context) async {
+    Invoice invoice = Provider.of<Invoice>(context, listen: false);
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate:
+          DateFormat("yyyy-MM-dd").parse(invoice.deliveryDate.split('T')[0]),
+      firstDate: DateTime.now().add(const Duration(days: 1)),
+      lastDate: DateTime(2025),
+    );
+
+    if (picked != null &&
+        picked !=
+            DateFormat("yyyy-MM-dd").parse(invoice.returnDate.split('T')[0])) {
+      setState(() {
+        final deliveryDate =
+            DateFormat("yyyy-MM-dd").parse(invoice.deliveryDate.split('T')[0]);
+
+        final invoiceTemp = invoice.copyWith(
+            durationDays: picked.difference(deliveryDate).inDays);
+        _model.returnDateController.text =
+            DateFormatHelper.formatToVNDay(picked.toIso8601String());
+        invoice.setInvoice(invoice: invoiceTemp);
+      });
+    }
+  }
+
+  @override
+  void onChangeDurationMonth() {}
+
+  @override
   void dispose() {
     super.dispose();
     _focusNodeFullname.dispose();
@@ -84,8 +116,27 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
   void updateLoadingUpdate() {
     setState(() {
       _presenter.model.isLoadingUpdateInvoice =
-          !_presenter.model.isLoadingUpdateInvoice;
+          !_presenter.model.isLoadingUpdateInvoice!;
     });
+  }
+
+  Widget buildInformation(String title, String value) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        CustomText(
+            text: title,
+            color: CustomColor.black,
+            context: context,
+            fontWeight: FontWeight.bold,
+            fontSize: 18),
+        CustomText(
+            text: value,
+            color: CustomColor.black,
+            context: context,
+            fontSize: 18),
+      ],
+    );
   }
 
   void onAddAdditionSeperate(OrderDetail product) {
@@ -176,6 +227,50 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
     }
   }
 
+  void onMinusMonth() {
+    if (_model.durationMonths.text == '0') {
+      return;
+    }
+
+    setState(() {
+      int months = int.parse(_model.durationMonths.text);
+      _model.durationMonths.text == (--months).toString();
+      DateTime dateTimeReturn =
+          DateFormat('dd/MM/yyyy').parse(_model.returnDateController.text);
+
+      dateTimeReturn = DateTime(
+          dateTimeReturn.year, dateTimeReturn.month - 1, dateTimeReturn.day);
+      _model.durationMonths.text = months.toString();
+      _model.returnDateController.text =
+          DateFormat('ddd/MM/yyyy').format(dateTimeReturn);
+      Invoice invoice = Provider.of<Invoice>(context, listen: false);
+      invoice.setInvoice(
+          invoice: invoice.copyWith(
+              returnDate: dateTimeReturn.toIso8601String(),
+              durationMonths: months));
+    });
+  }
+
+  void onAddMonth() {
+    setState(() {
+      int months = int.parse(_model.durationMonths.text);
+      _model.durationMonths.text == (++months).toString();
+      DateTime dateTimeReturn =
+          DateFormat('dd/MM/yyyy').parse(_model.returnDateController.text);
+      dateTimeReturn = DateTime(
+          dateTimeReturn.year, dateTimeReturn.month + 1, dateTimeReturn.day);
+      _model.returnDateController.text =
+          DateFormat('ddd/MM/yyyy').format(dateTimeReturn);
+      _model.durationMonths.text = months.toString();
+
+      Invoice invoice = Provider.of<Invoice>(context, listen: false);
+      invoice.setInvoice(
+          invoice: invoice.copyWith(
+              returnDate: dateTimeReturn.toIso8601String(),
+              durationMonths: months));
+    });
+  }
+
   void updateOrder() async {
     try {
       Invoice invoice = Provider.of<Invoice>(context, listen: false);
@@ -247,7 +342,7 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
   List<Widget> mapInvoiceWidget(List<OrderDetail> listOrderDetail) =>
       listOrderDetail
           .map<Widget>((e) => ImageWidget(
-                orderDetail: e,
+                orderDetail: e.copyWith(status: -1),
                 deleteItem: deleteImageEntity,
                 isView: widget.isView! || widget.isDone,
               ))
@@ -345,6 +440,207 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                     focusNode: _focusNodePhone,
                     validator: Validator.checkPhoneNumber,
                     deviceSize: deviceSize),
+                CustomSizedBox(
+                  context: context,
+                  height: 16,
+                ),
+                if (!widget.isDone)
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomText(
+                        text: "Thông tin cơ bản đơn hàng",
+                        color: CustomColor.black,
+                        context: context,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      CustomSizedBox(
+                        context: context,
+                        height: 16,
+                      ),
+                      buildInformation('Ngày bắt đầu',
+                          DateFormatHelper.formatToVNDay(invoice.deliveryDate)),
+                      CustomSizedBox(
+                        context: context,
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          CustomText(
+                              text: invoice.typeOrder ==
+                                      constant.doorToDoorTypeOrder
+                                  ? 'Ngày kết thúc:'
+                                  : 'Thời hạn:',
+                              color: CustomColor.black,
+                              context: context,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16),
+                          invoice.typeOrder == constant.doorToDoorTypeOrder
+                              ? SizedBox(
+                                  width: deviceSize.width / 2.5,
+                                  height: deviceSize.height / 14,
+                                  child: TextFormField(
+                                    validator: ((value) => value!.isEmpty
+                                        ? "* Vui lòng nhập ngày"
+                                        : null),
+                                    controller: _model.returnDateController,
+                                    onTap: () => onChangeDateReturn(context),
+                                    style: const TextStyle(fontSize: 12),
+                                    textAlign: TextAlign.center,
+                                    readOnly: true,
+                                    decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.symmetric(
+                                          vertical: (deviceSize.height - 12) /
+                                                  28 -
+                                              (deviceSize.height - 12) / 56),
+                                      hintText: 'dd/MM/yyyy',
+                                      border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(4),
+                                          borderSide: BorderSide(
+                                              color: CustomColor.black[2]!)),
+                                      suffixIcon: const ImageIcon(
+                                        AssetImage(
+                                            'assets/images/calendar.png'),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : Row(
+                                  children: [
+                                    GestureDetector(
+                                      onTap: onMinusMonth,
+                                      child: Container(
+                                        height: 40,
+                                        width: 40,
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: CustomColor.black[3]!),
+                                            borderRadius:
+                                                BorderRadius.circular(4)),
+                                        child: Center(
+                                          child: CustomText(
+                                              text: '-',
+                                              color: CustomColor.black[3]!,
+                                              context: context,
+                                              fontSize: 32),
+                                        ),
+                                      ),
+                                    ),
+                                    CustomSizedBox(
+                                      context: context,
+                                      width: 8,
+                                    ),
+                                    SizedBox(
+                                      width: deviceSize.width / 10,
+                                      height: 40,
+                                      child: TextFormField(
+                                        enabled: false,
+                                        keyboardType: TextInputType.number,
+                                        textAlign: TextAlign.center,
+                                        decoration: InputDecoration(
+                                          contentPadding:
+                                              const EdgeInsets.symmetric(
+                                                  vertical: 8),
+                                          border: OutlineInputBorder(
+                                              borderRadius:
+                                                  const BorderRadius.all(
+                                                      Radius.circular(5.0)),
+                                              borderSide: BorderSide(
+                                                  color:
+                                                      CustomColor.black[3]!)),
+                                          focusedBorder: OutlineInputBorder(
+                                              borderRadius:
+                                                  const BorderRadius.all(
+                                                      Radius.circular(5.0)),
+                                              borderSide: BorderSide(
+                                                  color:
+                                                      CustomColor.black[3]!)),
+                                        ),
+                                        controller: _model.durationMonths,
+                                      ),
+                                    ),
+                                    CustomSizedBox(
+                                      context: context,
+                                      width: 8,
+                                    ),
+                                    GestureDetector(
+                                      onTap: onAddMonth,
+                                      child: Container(
+                                        height: 40,
+                                        width: 40,
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(4),
+                                            color: CustomColor.blue),
+                                        child: Center(
+                                          child: CustomText(
+                                              text: '+',
+                                              color: CustomColor.white,
+                                              context: context,
+                                              fontSize: 32),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                )
+                        ],
+                      ),
+                    ],
+                  ),
+                CustomSizedBox(
+                  context: context,
+                  height: 10,
+                ),
+                if (invoice.typeOrder == constant.doorToDoorTypeOrder)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CustomText(
+                          text: 'Thời hạn: ',
+                          color: CustomColor.black,
+                          context: context,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16),
+                      CustomText(
+                          text: DateFormat('dd/MM/yyyy')
+                                  .parse(_model.returnDateController.text)
+                                  .difference(DateFormat('yyyy-MM-dd').parse(
+                                      invoice.deliveryDate.split('T')[0]))
+                                  .inDays
+                                  .toString() +
+                              ' ngày',
+                          color: CustomColor.blue,
+                          context: context,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16)
+                    ],
+                  ),
+                if (invoice.typeOrder == constant.selfStorageTypeOrder)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CustomText(
+                          text: 'Ngày kết thúc: ',
+                          color: CustomColor.black,
+                          context: context,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16),
+                      CustomText(
+                          text: DateFormatHelper.formatToVNDay(
+                              invoice.returnDate),
+                          color: CustomColor.blue,
+                          context: context,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16)
+                    ],
+                  ),
+                CustomSizedBox(
+                  context: context,
+                  height: 10,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -352,7 +648,7 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                       text: "Dịch vụ",
                       color: CustomColor.black,
                       context: context,
-                      fontSize: 20,
+                      fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
                     if (!widget.isDone)
@@ -404,13 +700,13 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                       text: "Phụ kiện riêng",
                       color: CustomColor.black,
                       context: context,
-                      fontSize: 20,
+                      fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
                     if (!widget.isDone)
                       CustomButton(
                           height: 20,
-                          text: 'Thêm dịch vụ',
+                          text: 'Thêm phụ kiện',
                           textSize: 14,
                           width: deviceSize.width * 1 / 3,
                           onPressFunction: () {
@@ -427,10 +723,6 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                           buttonColor: CustomColor.blue,
                           borderRadius: 6)
                   ],
-                ),
-                CustomSizedBox(
-                  context: context,
-                  height: 16,
                 ),
                 Consumer<Invoice>(
                   builder: (context, invoiceLocal, child) {
@@ -470,7 +762,7 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                       text: "Chí phí thêm",
                       color: CustomColor.black,
                       context: context,
-                      fontSize: 20,
+                      fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
                     Checkbox(
@@ -479,7 +771,7 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                         onChanged: widget.isView == false
                             ? (value) {
                                 setState(() {
-                                  _model.isAdditionFee = value;
+                                  _model.isAdditionFee = value!;
                                 });
                               }
                             : (val) => {})
@@ -538,7 +830,7 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                               onChanged: widget.isView == false
                                   ? (value) {
                                       setState(() {
-                                        _model.isCompensation = value;
+                                        _model.isCompensation = value!;
                                       });
                                     }
                                   : (val) => {})
@@ -584,16 +876,16 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                       text: "Đã thanh toán",
                       color: CustomColor.black,
                       context: context,
-                      fontSize: 20,
+                      fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
                     Checkbox(
                         fillColor: MaterialStateProperty.all(CustomColor.blue),
-                        value: _model.getIsPaid,
+                        value: _model.isPaid,
                         onChanged: widget.isView == false
                             ? (value) {
                                 setState(() {
-                                  _model.setIsPaid = value;
+                                  _model.isPaid = value!;
                                 });
                               }
                             : (val) => {})
@@ -629,7 +921,7 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                     children: [
                       CustomButton(
                           height: 24,
-                          isLoading: _model.isLoadingUpdateInvoice,
+                          isLoading: _model.isLoadingUpdateInvoice!,
                           text: widget.isDone ? "Trả đơn" : 'Tạo đơn',
                           textColor: CustomColor.white,
                           onPressFunction: () {
@@ -686,7 +978,7 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                               return;
                             }
 
-                            if (!_model.getIsPaid) {
+                            if (!_model.isPaid) {
                               updateError('Vui lòng thanh toán hóa đơn');
                               return;
                             }
@@ -754,7 +1046,15 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => NewInvoiceScreen(
-                                            invoice: invoice,
+                                            invoice: invoice.copyWith(
+                                                returnDate: DateFormat(
+                                                        'dd/MM/yyyy')
+                                                    .parse(_model
+                                                        .returnDateController
+                                                        .text)
+                                                    .toIso8601String(),
+                                                durationMonths: int.parse(_model
+                                                    .durationMonths.text)),
                                           )));
                             }
                           },

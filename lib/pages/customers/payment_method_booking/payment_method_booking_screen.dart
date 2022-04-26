@@ -4,9 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_app_bar.dart';
 import 'package:rssms/common/custom_bottom_navigation.dart';
-import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
-import 'package:rssms/common/custom_radio_button.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_snack_bar.dart';
 import 'package:rssms/common/custom_text.dart';
@@ -68,12 +66,22 @@ class _PaymentMethodBookingScreenState extends State<PaymentMethodBookingScreen>
           Provider.of<OrderBooking>(context, listen: false);
 
       Users users = Provider.of<Users>(context, listen: false);
-      if (_model.currentIndexPaymentMethod == PAYMENT_METHOD.cash) {
-        orderBooking.setOrderBooking(
-            orderBooking: orderBooking.copyWith(isPaid: false));
-        bool isSuccess = await _presenter.createOrder(orderBooking, users);
-
-        if (isSuccess) {
+      orderBooking.setOrderBooking(
+          orderBooking: orderBooking.copyWith(
+              isPaid: true,));
+      bool isSuccess = await _presenter.createOrder(orderBooking, users);
+      if (isSuccess) {
+        var request = BraintreeDropInRequest(
+          tokenizationKey: 'sandbox_x62jjpjk_n5rdrcwx7kv3ppb7',
+          collectDeviceData: true,
+          paypalRequest: BraintreePayPalRequest(
+            currencyCode: 'VND',
+            amount: (orderBooking.totalPrice / 2).toString(),
+            displayName: users.name,
+          ),
+        );
+        BraintreeDropInResult? result = await BraintreeDropIn.start(request);
+        if (result != null) {
           orderBooking.setOrderBooking(
               orderBooking: OrderBooking.empty(TypeOrder.doorToDoor));
           CustomSnackBar.buildSnackbar(
@@ -84,40 +92,28 @@ class _PaymentMethodBookingScreenState extends State<PaymentMethodBookingScreen>
               MaterialPageRoute(
                   builder: (context) => const CustomBottomNavigation(
                         listIndexStack: [
-                          MyAccountScreen(),
+                          MyAccountScreen(initIndex: 2),
                           CartScreen(),
                           NotificationDeliveryScreen(),
                         ],
                         listNavigator: constants.listCustomerBottomNavigation,
                       )),
               (Route<dynamic> route) => false);
-        }
-      } else {
-        orderBooking.setOrderBooking(
-            orderBooking: orderBooking.copyWith(isPaid: true));
-        var request = BraintreeDropInRequest(
-            tokenizationKey: 'sandbox_x62jjpjk_n5rdrcwx7kv3ppb7',
-            collectDeviceData: true,
-            paypalRequest: BraintreePayPalRequest(
-                currencyCode: 'VND',
-                amount: orderBooking.totalPrice.toString(),
-                displayName: users.name));
-        BraintreeDropInResult? result = await BraintreeDropIn.start(request);
-        if (result != null) {
-          bool isSuccess = await _presenter.createOrder(orderBooking, users);
-
+        } else {
+          bool isSuccess = await _presenter.cancelRequest(_model.request, users,
+              constants.createRequestCreatingError['paymentfail']!);
+          orderBooking.setOrderBooking(
+              orderBooking: OrderBooking.empty(TypeOrder.doorToDoor));
           if (isSuccess) {
-            orderBooking.setOrderBooking(
-                orderBooking: OrderBooking.empty(TypeOrder.doorToDoor));
             CustomSnackBar.buildSnackbar(
                 context: context,
-                message: 'Tạo yêu cầu đặt đơn hàng thành công',
-                color: CustomColor.green);
+                message: 'Tạo yêu cầu đặt đơn hàng không thành công',
+                color: CustomColor.red);
             Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(
                     builder: (context) => const CustomBottomNavigation(
                           listIndexStack: [
-                            MyAccountScreen(),
+                            MyAccountScreen(initIndex: 2),
                             CartScreen(),
                             NotificationDeliveryScreen(),
                           ],
@@ -127,26 +123,10 @@ class _PaymentMethodBookingScreenState extends State<PaymentMethodBookingScreen>
           }
         }
       }
+      // }
     } catch (e) {
       log(e.toString());
     }
-  }
-
-  List<Widget> _buildListDropDownPaymentMethods() {
-    return constants.listPaymentMethodChoices
-        .map((e) => CustomRadioButton(
-            function: () {
-              setState(() {
-                _model.currentIndexPaymentMethod = e['value'];
-              });
-            },
-            text: e['name'],
-            color: _model.currentIndexPaymentMethod == e['value']
-                ? CustomColor.blue
-                : CustomColor.white,
-            state: _model.currentIndexPaymentMethod,
-            value: e['value']))
-        .toList();
   }
 
   @override
@@ -173,23 +153,6 @@ class _PaymentMethodBookingScreenState extends State<PaymentMethodBookingScreen>
                 name: '',
               ),
               CustomText(
-                  text: 'Phương thức thanh toán',
-                  color: CustomColor.blue,
-                  fontWeight: FontWeight.bold,
-                  context: context,
-                  fontSize: 24),
-              CustomSizedBox(
-                context: context,
-                height: 16,
-              ),
-              Column(
-                children: _buildListDropDownPaymentMethods(),
-              ),
-              CustomSizedBox(
-                context: context,
-                height: 16,
-              ),
-              CustomText(
                   text: 'Thông tin chi tiết đơn hàng',
                   color: CustomColor.blue,
                   context: context,
@@ -200,26 +163,60 @@ class _PaymentMethodBookingScreenState extends State<PaymentMethodBookingScreen>
                 height: 24,
               ),
               InvoiceProductWidget(
-                  deviceSize: deviceSize, invoice: _model.invoiceDisplay),
+                  isInvoice: false,
+                  deviceSize: deviceSize,
+                  invoice: _model.invoiceDisplay),
               CustomSizedBox(
                 context: context,
-                height: 24,
+                height: 16,
+              ),
+              CustomText(
+                  text: 'Lưu ý',
+                  color: CustomColor.blue,
+                  fontWeight: FontWeight.bold,
+                  context: context,
+                  fontSize: 20),
+              CustomSizedBox(
+                context: context,
+                height: 16,
+              ),
+              CustomText(
+                  text:
+                      '* khi tiến hành tạo yêu cầu, quý khách phải thanh toán trước 50% tổng trên tổng số tiền tạo yêu cầu đặt đơn thông qua paypal',
+                  color: CustomColor.blue,
+                  maxLines: 3,
+                  context: context,
+                  fontSize: 16),
+              CustomSizedBox(
+                context: context,
+                height: 16,
               ),
               UIUtils.buildErrorUI(error: _model.error, context: context),
-              SizedBox(
-                width: double.infinity,
-                child: Center(
-                  child: CustomButton(
-                      height: 24,
-                      text: 'Tạo yêu cầu đặt đơn',
-                      width: deviceSize.width * 2 / 3,
-                      onPressFunction: () {
-                        onClickPayment();
-                      },
-                      isLoading: _model.isLoading,
-                      textColor: CustomColor.white,
-                      buttonColor: CustomColor.blue,
-                      borderRadius: 6),
+              GestureDetector(
+                onTap: () {
+                  onClickPayment();
+                },
+                child: Container(
+                  width: double.infinity,
+                  height: 40,
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  decoration: BoxDecoration(
+                    color: CustomColor.lightBlue,
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  child: _model.isLoading
+                      ? const SizedBox(
+                          height: 16,
+                          width: 16,
+                          child: CircularProgressIndicator(
+                            valueColor:
+                                AlwaysStoppedAnimation<Color>(Colors.white),
+                          ),
+                        )
+                      : Center(
+                          child: SizedBox(
+                              height: 40,
+                              child: Image.asset('assets/images/paypal.png'))),
                 ),
               ),
               CustomSizedBox(

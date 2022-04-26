@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
+import 'package:rssms/common/custom_text.dart';
+import 'package:rssms/common/export_widget.dart';
+import 'package:rssms/common/import_widget.dart';
 import 'package:rssms/common/invoice_image_widget.dart';
 import 'package:rssms/common/tab/invoice_tab.dart';
 import 'package:rssms/common/tab/item_tab.dart';
@@ -74,16 +77,66 @@ class _InvoiceDetailScreenState extends State<InvoiceDetailScreen>
     final deviceSize = MediaQuery.of(context).size;
     List<TitleTab> mapListTab() {
       int index = 0;
+      return constants.tabInvoiceDetail.map<TitleTab>((e) {
+        return TitleTab(
+          title: e,
+          index: index++,
+          deviceSize: deviceSize,
+          currentIndex: _index,
+          onChangeTab: onChangeTab,
+        );
+      }).toList();
+    }
 
-      return constants.tabInvoiceDetail
-          .map<TitleTab>((e) => TitleTab(
-                title: e,
-                index: index++,
-                deviceSize: deviceSize,
-                currentIndex: _index,
-                onChangeTab: onChangeTab,
-              ))
-          .toList();
+    Widget switchWidget() {
+      switch (_index) {
+        case 0:
+          return InvoiceTab(
+            listHistory: _model.listHistory,
+            isExtendOrder: _model.isExtendOrder,
+            returnRequest: _model.request,
+            isOrderReturn: _model.isRequestReturn,
+            deviceSize: deviceSize,
+            orginalInvoice: _model.orginalInvoice,
+            invoice: _model.showUIInvoice,
+          );
+        case 1:
+          return ItemTab(invoice: _model.invoice);
+
+        case 2:
+          if (_model.import.id != '') {
+            return ImportWidget(
+                onClickAcceptImport: () {},
+                import: _model.import,
+                orderDetail: _model.showUIInvoice.orderDetails);
+          } else {
+            return Center(
+              child: CustomText(
+                  text: "Đơn hiện vẫn chưa nhập kho",
+                  color: CustomColor.black,
+                  context: context,
+                  fontSize: 16),
+            );
+          }
+
+        case 3:
+          if (_model.export.id != '') {
+            return ExportWidget(
+                onClickAcceptImport: () {},
+                export: _model.export,
+                orderDetail: _model.showUIInvoice.orderDetails);
+          } else {
+            return Center(
+              child: CustomText(
+                  text: "Đơn hiện vẫn chưa xuất kho",
+                  color: CustomColor.black,
+                  context: context,
+                  fontSize: 16),
+            );
+          }
+        default:
+          return Container();
+      }
     }
 
     return Scaffold(
@@ -128,19 +181,18 @@ class _InvoiceDetailScreenState extends State<InvoiceDetailScreen>
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: mapListTab(),
+                        children: widget.invoice.typeOrder == 1
+                            ? mapListTab()
+                            : mapListTab()
+                                .where((element) =>
+                                    element.index != 2 && element.index != 3)
+                                .toList(),
                       ),
                       CustomSizedBox(
                         context: context,
                         height: 16,
                       ),
-                      _index == 0
-                          ? InvoiceTab(
-                              deviceSize: deviceSize,
-                              orginalInvoice: _model.orginalInvoice,
-                              invoice: _model.showUIInvoice,
-                            )
-                          : ItemTab(invoice: _model.invoice)
+                      switchWidget()
                     ],
                   ),
                 ),
