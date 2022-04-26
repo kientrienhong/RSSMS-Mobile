@@ -6,6 +6,7 @@ import 'package:rssms/models/entity/export.dart';
 import 'package:rssms/models/entity/import.dart';
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/order_detail.dart';
+import 'package:rssms/models/entity/order_history_extension.dart';
 import 'package:rssms/models/entity/request.dart';
 import 'package:rssms/models/invoice_detail_screen.dart';
 import 'package:rssms/views/invoice_detail_screen_view.dart';
@@ -77,6 +78,15 @@ class InvoiceDetailScreenPresenter {
           List<Request>? listReqTemp = decodedResponse['requests']
               .map<Request>((e) => Request.fromMap(e))
               .toList();
+          List<OrderHistoryExtension> listHistory =
+              decodedResponse['orderHistoryExtensions']
+                  .map<OrderHistoryExtension>(
+                      (e) => OrderHistoryExtension.fromMap(e))
+                  .toList();
+          if (listHistory.isNotEmpty) {
+            model.isExtendOrder = true;
+            model.listHistory = listHistory;
+          }
           model.isRequestReturn = checkRequestReturnItem(listReqTemp!);
           Request createRequest = getRequestCreated(listReqTemp);
           model.orginalInvoice.advanceMoney = createRequest.advanceMoney;

@@ -37,7 +37,7 @@ class InvoiceInfoWidget extends StatelessWidget {
                       ['color'] as Color,
                   context: context,
                   fontWeight: FontWeight.bold,
-                  fontSize: 16),
+                  fontSize: 15),
               Container(
                 width: 2,
                 height: deviceSize.height / 40,
@@ -49,7 +49,7 @@ class InvoiceInfoWidget extends StatelessWidget {
                   color: mapIsPaid[invoice.isPaid]!['color'] as Color,
                   context: context,
                   fontWeight: FontWeight.bold,
-                  fontSize: 16),
+                  fontSize: 15),
             ],
           ),
         ],

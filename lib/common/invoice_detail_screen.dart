@@ -92,6 +92,8 @@ class _InvoiceDetailScreenState extends State<InvoiceDetailScreen>
       switch (_index) {
         case 0:
           return InvoiceTab(
+            listHistory: _model.listHistory,
+            isExtendOrder: _model.isExtendOrder,
             returnRequest: _model.request,
             isOrderReturn: _model.isRequestReturn,
             deviceSize: deviceSize,

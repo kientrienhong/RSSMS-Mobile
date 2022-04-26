@@ -73,6 +73,7 @@ class _ImportScreenState extends State<ImportScreen>
   void updateLoading() {
     setState(() {
       _model.isLoading = !_model.isLoading;
+
     });
   }
 

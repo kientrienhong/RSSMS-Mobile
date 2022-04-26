@@ -65,7 +65,26 @@ class _RequestScreenState extends State<RequestScreen> with RequestScreenView {
     return StreamBuilder(
       stream: _model.stream,
       builder: (context, AsyncSnapshot snapshot) {
-        if (!snapshot.hasData) {
+           if (_model.isLoadingRequest! && !snapshot.hasData) {
+          return Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                CustomSizedBox(
+                  context: context,
+                  height: 50,
+                ),
+                const SizedBox(
+                  height: 16,
+                  width: 16,
+                  child: CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.black54),
+                  ),
+                ),
+              ],
+            ),
+          );
+        } else if (!snapshot.hasData) {
           return Padding(
             padding: const EdgeInsets.symmetric(vertical: 20),
             child: Center(
@@ -141,6 +160,7 @@ class _RequestScreenState extends State<RequestScreen> with RequestScreenView {
 
   @override
   Future<void> refresh() {
+
     Users user = Provider.of<Users>(context, listen: false);
     _presenter.loadCusRequest(idToken: user.idToken, clearCachedDate: true);
     return Future.value();

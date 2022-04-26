@@ -95,9 +95,9 @@ class Invoice with ChangeNotifier {
     typeOrder = 0;
     orderId = '';
     isUserDelivery = false;
-    deliveryDate = '';
+    deliveryDate = '2000-12-12';
     deliveryTime = '';
-    returnDate = '';
+    returnDate = '2000-12-12';
     returnTime = '';
     customerId = '';
     requestId = '';

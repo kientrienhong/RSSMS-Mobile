@@ -161,18 +161,16 @@ class _ImportExportInfoState extends State<ImportExportInfo> {
                 fontSize: 16),
             SizedBox(
               width: deviceSize.width / 2,
-              child: Flexible(
-                child: CustomText(
-                  textAlign: TextAlign.right,
-                  text: widget.isExport
-                      ? widget.export!.storageAddress
-                      : widget.import!.storageAddress,
-                  color: CustomColor.black,
-                  context: context,
-                  fontSize: 16,
-                  maxLines: 2,
-                  textOverflow: TextOverflow.fade,
-                ),
+              child: CustomText(
+                textAlign: TextAlign.right,
+                text: widget.isExport
+                    ? widget.export!.storageAddress
+                    : widget.import!.storageAddress,
+                color: CustomColor.black,
+                context: context,
+                fontSize: 16,
+                maxLines: 2,
+                textOverflow: TextOverflow.fade,
               ),
             ),
           ],

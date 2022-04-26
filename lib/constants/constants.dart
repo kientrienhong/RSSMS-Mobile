@@ -24,6 +24,7 @@ const List<Map<String, String>> tabInvoiceDetail = [
   {"name": "Đồ đạc"},
   {"name": "Phiếu nhập"},
   {"name": "Phiếu xuất"},
+
 ];
 
 const doorToDoorTypeOrder = 1;
