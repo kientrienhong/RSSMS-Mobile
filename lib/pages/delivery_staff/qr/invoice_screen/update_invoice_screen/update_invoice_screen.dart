@@ -19,7 +19,6 @@ import 'package:rssms/models/entity/order_additional_fee.dart';
 import 'package:rssms/models/entity/order_detail.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/models/invoice_update_model.dart';
-import 'package:rssms/pages/customers/cart/widgets/quantity_widget.dart';
 import 'package:rssms/pages/delivery_staff/delivery/delivery_screen.dart';
 import 'package:rssms/pages/delivery_staff/my_account/my_account_delivery.dart';
 import 'package:rssms/pages/delivery_staff/notifcation/notification_delivery.dart';
@@ -246,8 +245,9 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
           DateFormat('ddd/MM/yyyy').format(dateTimeReturn);
       Invoice invoice = Provider.of<Invoice>(context, listen: false);
       invoice.setInvoice(
-          invoice:
-              invoice.copyWith(returnDate: dateTimeReturn.toIso8601String(), durationMonths: months));
+          invoice: invoice.copyWith(
+              returnDate: dateTimeReturn.toIso8601String(),
+              durationMonths: months));
     });
   }
 
@@ -265,8 +265,9 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
 
       Invoice invoice = Provider.of<Invoice>(context, listen: false);
       invoice.setInvoice(
-          invoice:
-              invoice.copyWith(returnDate: dateTimeReturn.toIso8601String(), durationMonths: months));
+          invoice: invoice.copyWith(
+              returnDate: dateTimeReturn.toIso8601String(),
+              durationMonths: months));
     });
   }
 

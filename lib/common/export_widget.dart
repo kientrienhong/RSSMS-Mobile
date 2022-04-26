@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
-import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/common/import_export_details.dart';
 import 'package:rssms/common/import_export_info.dart';
 import 'package:rssms/common/import_export_license.dart';

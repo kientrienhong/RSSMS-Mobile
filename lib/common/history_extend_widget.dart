@@ -20,7 +20,7 @@ class _HistoryExtendWidgetState extends State<HistoryExtendWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [

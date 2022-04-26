@@ -15,13 +15,10 @@ import 'package:rssms/models/entity/order_history_extension.dart';
 import 'package:rssms/models/entity/placing_items.dart';
 import 'package:rssms/models/entity/request.dart';
 import 'package:rssms/models/entity/user.dart';
-import 'package:rssms/models/invoice_detail_screen.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/invoice_info_widget.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/invoice_product_widget.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoive_update/send_request_screen.dart';
 import 'package:rssms/pages/office_staff/placing_items_screen.dart/import_screen/export_screen.dart';
-import 'package:rssms/presenters/invoice_detail_screen_presenter.dart';
-import 'package:rssms/views/invoice_detail_screen_view.dart';
 
 class InvoiceTab extends StatefulWidget {
   final Invoice invoice;
@@ -47,28 +44,7 @@ class InvoiceTab extends StatefulWidget {
   State<InvoiceTab> createState() => _InvoiceTabState();
 }
 
-class _InvoiceTabState extends State<InvoiceTab>
-    implements InvoiceDetailScreenView {
-  late InvoiceDetailScreenPresenter _presenter;
-  late InvoiceDetailScreenModel _model;
-
-  @override
-  void initState() {
-    _presenter = InvoiceDetailScreenPresenter();
-    _presenter.view = this;
-    _model = _presenter.model;
-    super.initState();
-  }
-
-  @override
-  void updateLoading() {
-    // TODO: implement updateLoading
-  }
-
-  @override
-  void updateView(Invoice invoice, Invoice showUIInvoice) {
-    // TODO: implement updateView
-  }
+class _InvoiceTabState extends State<InvoiceTab> {
   @override
   Widget build(BuildContext context) {
     Users user = Provider.of<Users>(context, listen: false);
@@ -156,25 +132,6 @@ class _InvoiceTabState extends State<InvoiceTab>
                           buttonColor: CustomColor.blue,
                           borderRadius: 6),
                     ),
-                  // if (widget.invoice.status == 0)
-                  //   Center(
-                  //     child: CustomButton(
-                  //         height: 24,
-                  //         isLoading: false,
-                  //         text: 'Chi tiết đơn hủy',
-                  //         textColor: CustomColor.white,
-                  //         onPressFunction: () {
-                  //           Navigator.push(
-                  //             context,
-                  //             MaterialPageRoute(
-                  //                 builder: (context) =>
-                  //                     const InvoiceCancelledScreen()),
-                  //           );
-                  //         },
-                  //         width: widget.deviceSize.width / 2.5,
-                  //         buttonColor: CustomColor.blue,
-                  //         borderRadius: 6),
-                  //   ),
                   if (widget.invoice.status == 1 &&
                       user.roleName == 'Office Staff')
                     Center(
@@ -273,7 +230,7 @@ class _InvoiceTabState extends State<InvoiceTab>
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => HistoryExtendScreen(
-                                          listHistory: widget.listHistory,
+                                          listHistory: widget.listHistory!,
                                         )));
                           },
                           width: widget.deviceSize.width / 2.5,
