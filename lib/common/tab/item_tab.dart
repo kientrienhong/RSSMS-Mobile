@@ -16,7 +16,6 @@ class ItemTab extends StatefulWidget {
   @override
   _ItemTabState createState() => _ItemTabState();
 }
-
 class _ItemTabState extends State<ItemTab> {
   List<Widget> mapInvoiceWidget(List<OrderDetail> listOrderDetail) =>
       listOrderDetail
