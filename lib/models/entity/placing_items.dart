@@ -108,7 +108,8 @@ class PlacingItems with ChangeNotifier {
     storedItems = {
       'orderId': invoice.id,
       'items': listStoredItems,
-      'totalQuantity': listStoredItems.length
+      'totalQuantity': listStoredItems.length,
+      'typeOrder': invoice.typeOrder
     };
     notifyListeners();
     return true;

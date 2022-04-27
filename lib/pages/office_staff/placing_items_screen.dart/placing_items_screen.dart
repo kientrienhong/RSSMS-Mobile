@@ -18,6 +18,7 @@ import 'package:rssms/models/placing_items_screen_model.dart';
 import 'package:rssms/pages/office_staff/placing_items_screen.dart/import_screen/import_screen.dart';
 import 'package:rssms/presenters/placing_items_screen_presenter.dart';
 import 'package:rssms/views/placing_items_screen_view.dart';
+import 'package:rssms/constants/constants.dart' as constants;
 
 class PlacingItemsScreen extends StatefulWidget {
   final String floorId;
@@ -99,7 +100,9 @@ class _PlacingItemsScreenState extends State<PlacingItemsScreen>
     if (placingItems.isMoving) {
       result = await _presenter.onPressConfirmMove(user.idToken!, placingItems);
     } else {
-      if (_model.deliveryStaff.id != '') {
+      if (_model.deliveryStaff.id != '' &&
+          placingItems.storedItems['typeOrder'] ==
+              constants.doorToDoorTypeOrder) {
         placingItems.import.importDeliveryBy = _model.deliveryStaff.name;
         placingItems.import.importStaff = user.name!;
         Navigator.push(
@@ -114,6 +117,10 @@ class _PlacingItemsScreenState extends State<PlacingItemsScreen>
             ),
           ),
         );
+      } else if (placingItems.storedItems['typeOrder'] ==
+          constants.selfStorageTypeOrder) {
+        result =
+            await _presenter.onPressConfirmStore(user.idToken!, placingItems, '');
       }
     }
     if (result) {
@@ -351,59 +358,64 @@ class _PlacingItemsScreenState extends State<PlacingItemsScreen>
               context: context,
               height: 8,
             ),
-            if (!placingItems.isMoving)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            if (!placingItems.isMoving &&
+                placingItems.storedItems['typeOrder'] ==
+                    constants.doorToDoorTypeOrder)
+              Column(
                 children: [
-                  CustomText(
-                      text: "Thông tin vận chuyển",
-                      color: CustomColor.black,
-                      context: context,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16),
-                  CustomButton(
-                      height: 20,
-                      text: 'Quét QR',
-                      width: deviceSize.width / 3 - 50,
-                      onPressFunction: () {
-                        scanQR(deviceSize);
-                      },
-                      isLoading: _model.isLoading,
-                      textColor: CustomColor.white,
-                      buttonColor: CustomColor.blue,
-                      textSize: 12,
-                      borderRadius: 4),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CustomText(
+                          text: "Thông tin vận chuyển",
+                          color: CustomColor.black,
+                          context: context,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16),
+                      CustomButton(
+                          height: 20,
+                          text: 'Quét QR',
+                          width: deviceSize.width / 3 - 50,
+                          onPressFunction: () {
+                            scanQR(deviceSize);
+                          },
+                          isLoading: _model.isLoading,
+                          textColor: CustomColor.white,
+                          buttonColor: CustomColor.blue,
+                          textSize: 12,
+                          borderRadius: 4),
+                    ],
+                  ),
+                  CustomSizedBox(
+                    context: context,
+                    height: 16,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CustomText(
+                          text: "Người vận chuyển",
+                          color: CustomColor.black,
+                          context: context,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16),
+                      CustomText(
+                          text: _model.deliveryStaff.name == ''
+                              ? '(Trống)'
+                              : _model.deliveryStaff.name,
+                          color: _model.deliveryStaff.name == ''
+                              ? Colors.grey
+                              : CustomColor.black,
+                          context: context,
+                          fontSize: 16)
+                    ],
+                  ),
+                  CustomSizedBox(
+                    context: context,
+                    height: 16,
+                  ),
                 ],
               ),
-            if (!placingItems.isMoving)
-              CustomSizedBox(
-                context: context,
-                height: 16,
-              ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CustomText(
-                    text: "Người vận chuyển",
-                    color: CustomColor.black,
-                    context: context,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16),
-                CustomText(
-                    text: _model.deliveryStaff.name == ''
-                        ? '(Trống)'
-                        : _model.deliveryStaff.name,
-                    color: _model.deliveryStaff.name == ''
-                        ? Colors.grey
-                        : CustomColor.black,
-                    context: context,
-                    fontSize: 16)
-              ],
-            ),
-            CustomSizedBox(
-              context: context,
-              height: 16,
-            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -432,5 +444,4 @@ class _PlacingItemsScreenState extends State<PlacingItemsScreen>
       )),
     );
   }
-
 }

@@ -113,8 +113,9 @@ class _CustomOutLineInputState extends State<CustomOutLineInputDateTime> {
                       DateTime? date = DateTime(1900);
                       date = await showDatePicker(
                         context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime(1900),
+                        initialDate:
+                            DateTime.now().add(const Duration(days: 1)),
+                        firstDate: DateTime.now().add(const Duration(days: 1)),
                         lastDate: DateTime(2100),
                       );
                       if (date != null) {

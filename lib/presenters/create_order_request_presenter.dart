@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:rssms/constants/constants.dart';
 import 'package:rssms/models/create_order_request_model.dart';
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/request.dart';
@@ -22,7 +23,7 @@ class CreateOrderRequestPresenter {
         Request request = Request.fromMap(decodedReponse);
         DateTime deliveryDate = DateTime.parse(invoice.deliveryDate);
         if (invoice.status != 0) {
-          if (DateTime.now().compareTo(deliveryDate) != -1) {
+          if (DateTime.now().compareTo(deliveryDate) != -1|| request.status == STATUS_REQUEST.completed.index) {
             model.isValidToCancel = false;
           }
         }
