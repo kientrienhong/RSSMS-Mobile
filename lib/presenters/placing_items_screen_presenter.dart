@@ -106,10 +106,16 @@ class PlacingItemsScreenPresenter {
           "note": e['note']
         };
       }).toList();
-      Map<String, dynamic> dataRequest = {
-        "deliveryId": deliveryId,
-        "orderDetailAssignFloor": listAssigned
-      };
+      Map<String, dynamic> dataRequest;
+      if (deliveryId.isEmpty) {
+        dataRequest = {"orderDetailAssignFloor": listAssigned};
+      } else {
+        dataRequest = {
+          "deliveryId": deliveryId,
+          "orderDetailAssignFloor": listAssigned
+        };
+      }
+
       final response = await model.assignOrderToFloor(idToken, dataRequest);
       final result = ResponseHandle.handle(response);
       if (result['status'] == 'success') {

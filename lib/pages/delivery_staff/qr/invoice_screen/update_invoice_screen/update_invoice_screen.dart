@@ -11,6 +11,7 @@ import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_snack_bar.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/common/image_widget.dart';
+import 'package:rssms/common/invoice_screen.dart';
 import 'package:rssms/constants/constants.dart';
 import 'package:rssms/helpers/date_format.dart';
 import 'package:rssms/helpers/validator.dart';
@@ -29,6 +30,7 @@ import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_scre
 import 'package:rssms/pages/delivery_staff/qr/invoice_screen/update_invoice_screen/widget/dialog_add_service.dart';
 import 'package:rssms/pages/delivery_staff/qr/qr_screen.dart';
 import 'package:rssms/pages/office_staff/my_account/my_account_office.dart';
+import 'package:rssms/pages/office_staff/storage_screen/storage_screen.dart';
 import 'package:rssms/presenters/invoice_update_presenter.dart';
 import 'package:rssms/views/invoice_update_view.dart';
 import 'package:rssms/constants/constants.dart' as constant;
@@ -213,10 +215,33 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
         } else if (user.roleName == 'Office Staff') {
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
-                  builder: (context) => const CustomBottomNavigation(
+                  builder: (context) => CustomBottomNavigation(
                         listIndexStack: [
-                          MyAccountOfficeScreen(),
-                          QrScreen(),
+                          const MyAccountOfficeScreen(),
+                          const QrScreen(),
+                          Scaffold(
+                              backgroundColor: CustomColor.white,
+                              body: Container(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 24),
+                                child: Column(
+                                  children: [
+                                    CustomSizedBox(
+                                      context: context,
+                                      height: 8,
+                                    ),
+                                    CustomText(
+                                        text: 'Trang đơn hàng',
+                                        color: CustomColor.black,
+                                        context: context,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 24),
+                                    CustomSizedBox(context: context, height: 8),
+                                    const Expanded(child: InvoiceScreen()),
+                                  ],
+                                ),
+                              )),
+                          const StorageScreen(),
                         ],
                         listNavigator: constant.listOfficeBottomNavigation,
                       )),
@@ -246,8 +271,9 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
           DateFormat('ddd/MM/yyyy').format(dateTimeReturn);
       Invoice invoice = Provider.of<Invoice>(context, listen: false);
       invoice.setInvoice(
-          invoice:
-              invoice.copyWith(returnDate: dateTimeReturn.toIso8601String(), durationMonths: months));
+          invoice: invoice.copyWith(
+              returnDate: dateTimeReturn.toIso8601String(),
+              durationMonths: months));
     });
   }
 
@@ -265,8 +291,9 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
 
       Invoice invoice = Provider.of<Invoice>(context, listen: false);
       invoice.setInvoice(
-          invoice:
-              invoice.copyWith(returnDate: dateTimeReturn.toIso8601String(), durationMonths: months));
+          invoice: invoice.copyWith(
+              returnDate: dateTimeReturn.toIso8601String(),
+              durationMonths: months));
     });
   }
 

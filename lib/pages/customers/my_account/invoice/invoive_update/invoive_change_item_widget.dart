@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_bottom_navigation.dart';
 import 'package:rssms/common/custom_button.dart';
@@ -94,17 +95,33 @@ class _ChangeItemWidgetState extends State<ChangeItemWidget>
     });
   }
 
+  _selectDateDelivery(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now().add(const Duration(days: 1)),
+      firstDate: DateTime.now().add(const Duration(days: 1)),
+      lastDate: DateTime(2025),
+    );
+    if (picked != null) {
+      String dateDeliveryString = picked.toIso8601String().split("T")[0];
+
+      setState(() {
+        _model.controllerBirthDate.text = dateDeliveryString;
+      });
+    }
+  }
+
   @override
   void onClickCreateRequest() async {
     Users users = Provider.of<Users>(context, listen: false);
-    List<String>? date = _model.controllerBirthDate.text.split("/");
+    List<String>? date = _model.controllerBirthDate.text.split("-");
 
     Map<String, dynamic> request = {
       "orderId": widget.invoice!.id,
       "isCustomerDedlivery": false,
       "deliveryAddress": _model.controllerStreet.text,
       "deliveryTime": constants.listPickUpTime[_currentIndex],
-      "deliveryDate": DateTime.parse(date![2] + "-" + date[1] + '-' + date[0]),
+      "deliveryDate": DateFormat("dd-MM-yyyy").parse(date![2] + "-" + date[1] + '-' + date[0]),
       "type": 4
     };
     bool result = await _presenter.createRequest(request, users);
@@ -117,7 +134,9 @@ class _ChangeItemWidgetState extends State<ChangeItemWidget>
           MaterialPageRoute(
               builder: (context) => const CustomBottomNavigation(
                     listIndexStack: [
-                      MyAccountScreen(initIndex: 2,),
+                      MyAccountScreen(
+                        initIndex: 2,
+                      ),
                       CartScreen(),
                       NotificationDeliveryScreen(),
                     ],
@@ -198,15 +217,30 @@ class _ChangeItemWidgetState extends State<ChangeItemWidget>
                 textOverflow: TextOverflow.ellipsis,
               ),
             ),
+           
             SizedBox(
               width: deviceSize.width / 2.5,
-              child: CustomOutLineInputDateTime(
-                deviceSize: deviceSize,
-                labelText: '',
-                isDisable: false,
-                focusNode: _focusNodeBirthDate,
+              height: deviceSize.height / 14,
+              child: TextFormField(
+                validator: ((value) =>
+                    value!.isEmpty ? "* Vui lòng nhập ngày" : null),
                 controller: _model.controllerBirthDate,
-                icon: "assets/images/calendar.png",
+                onTap: () => _selectDateDelivery(context),
+                style: const TextStyle(fontSize: 12),
+                textAlign: TextAlign.center,
+                readOnly: true,
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.symmetric(
+                      vertical: (deviceSize.height - 12) / 28 -
+                          (deviceSize.height - 12) / 56),
+                  hintText: 'yyyy-mm-dd',
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(4),
+                      borderSide: BorderSide(color: CustomColor.black[2]!)),
+                  suffixIcon: const ImageIcon(
+                    AssetImage('assets/images/calendar.png'),
+                  ),
+                ),
               ),
             ),
           ],

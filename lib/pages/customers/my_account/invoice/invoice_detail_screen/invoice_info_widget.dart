@@ -203,9 +203,9 @@ class InvoiceInfoWidget extends StatelessWidget {
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          if (invoice.typeOrder != selfStorageTypeOrder)
+         
             CustomText(
-                text: "Thông tin vận chuyển:",
+                text: "Dòng thời gian:",
                 color: Colors.black,
                 context: context,
                 fontWeight: FontWeight.bold,
