@@ -8,8 +8,9 @@ import 'package:rssms/common/history_extend_widget.dart';
 import 'package:rssms/models/entity/order_history_extension.dart';
 
 class HistoryExtendScreen extends StatefulWidget {
-  late List<OrderHistoryExtension>? listHistory;
-  HistoryExtendScreen({Key? key, this.listHistory}) : super(key: key);
+  final List<OrderHistoryExtension> listHistory;
+  const HistoryExtendScreen({Key? key, required this.listHistory})
+      : super(key: key);
 
   @override
   State<HistoryExtendScreen> createState() => _HistoryExtendScreenState();

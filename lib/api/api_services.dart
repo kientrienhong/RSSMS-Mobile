@@ -10,7 +10,7 @@ import 'package:rssms/constants/constants.dart' as constants;
 
 class ApiServices {
   ApiServices._();
-  static const _domain = 'https://localhost:44304';
+  static const _domain = 'https://rssms.azurewebsites.net';
 
   static Future<dynamic> logInWithEmail(
       String email, String password, String deviceToken) {
@@ -375,8 +375,7 @@ class ApiServices {
         "requestDetails": listProduct,
         "deliveryFee": orderBooking.deliveryFee,
         "distance": orderBooking.distants,
-                  "advanceMoney":  orderBooking.totalPrice * 50 / 100
-
+        "advanceMoney": orderBooking.totalPrice * 50 / 100
       }));
       final url = Uri.parse('$_domain/api/v1/requests');
       bool isCustomerDelivery = orderBooking.typeOrder.index == 0
@@ -389,7 +388,7 @@ class ApiServices {
           "isCustomerDelivery": isCustomerDelivery,
           "orderId": null,
           "storageId": orderBooking.storageId,
-          "totalPrice":orderBooking.totalPrice,
+          "totalPrice": orderBooking.totalPrice,
           "customerId": user.userId,
           "deliveryAddress": orderBooking.addressDelivery,
           "returnDate": orderBooking.dateTimeReturn.toIso8601String(),
@@ -402,7 +401,7 @@ class ApiServices {
           "typeOrder": orderBooking.typeOrder.index,
           "note": orderBooking.distants,
           "requestDetails": listProduct,
-          "advanceMoney":  orderBooking.totalPrice * 50 / 100
+          "advanceMoney": orderBooking.totalPrice * 50 / 100
         }),
         headers: headers,
       );
