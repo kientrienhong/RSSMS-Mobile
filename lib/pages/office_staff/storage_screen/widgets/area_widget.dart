@@ -106,7 +106,7 @@ class AreaWidget extends StatelessWidget {
                     height: 16,
                   ),
                   buildInformation('Kích thước',
-                      '${area.width}m x ${area.length}m x ${area.height}'),
+                      '${area.width}m x ${area.length}m x ${area.height}m'),
                   CustomSizedBox(
                     context: context,
                     height: 16,
