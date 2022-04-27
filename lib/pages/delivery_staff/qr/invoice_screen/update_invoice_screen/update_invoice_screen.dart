@@ -322,10 +322,33 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
         } else if (user.roleName == 'Office Staff') {
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
-                  builder: (context) => const CustomBottomNavigation(
+                  builder: (context) => CustomBottomNavigation(
                         listIndexStack: [
-                          MyAccountOfficeScreen(),
-                          QrScreen(),
+                          const MyAccountOfficeScreen(),
+                          const QrScreen(),
+                          Scaffold(
+                              backgroundColor: CustomColor.white,
+                              body: Container(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 24),
+                                child: Column(
+                                  children: [
+                                    CustomSizedBox(
+                                      context: context,
+                                      height: 8,
+                                    ),
+                                    CustomText(
+                                        text: 'Trang đơn hàng',
+                                        color: CustomColor.black,
+                                        context: context,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 24),
+                                    CustomSizedBox(context: context, height: 8),
+                                    const Expanded(child: InvoiceScreen()),
+                                  ],
+                                ),
+                              )),
+                          const StorageScreen(),
                         ],
                         listNavigator: constant.listOfficeBottomNavigation,
                       )),

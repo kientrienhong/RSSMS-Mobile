@@ -61,7 +61,7 @@ class SignUpPresenter {
       List<int> imageBytes = await newFile.readAsBytes();
       final responseGetRole = await model.getRoles();
 
-      jsonDecode(responseGetRole.body)['data'][0]['id'];
+      // jsonDecode(responseGetRole.body)['data'][0]['id'];
 
       final response = await model.signUp(
           user,

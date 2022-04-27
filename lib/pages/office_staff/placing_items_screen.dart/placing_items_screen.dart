@@ -103,6 +103,14 @@ class _PlacingItemsScreenState extends State<PlacingItemsScreen>
       if (_model.deliveryStaff.id != '' &&
           placingItems.storedItems['typeOrder'] ==
               constants.doorToDoorTypeOrder) {
+        for (var e in (placingItems.placingItems['floors'] as List)) {
+          if (e['note'] == '') {
+            setState(() {
+              _model.error = "Vui lòng nhập mô tả cho tất cả đồ!";
+            });
+            return;
+          }
+        }
         placingItems.import.importDeliveryBy = _model.deliveryStaff.name;
         placingItems.import.importStaff = user.name!;
         Navigator.push(
@@ -116,11 +124,21 @@ class _PlacingItemsScreenState extends State<PlacingItemsScreen>
                   .toList(),
             ),
           ),
-        );
+        ).then((value) {
+          if (value) {
+            Navigator.pop(context, value);
+          }
+        });
       } else if (placingItems.storedItems['typeOrder'] ==
           constants.selfStorageTypeOrder) {
-        result =
-            await _presenter.onPressConfirmStore(user.idToken!, placingItems, '');
+        result = await _presenter.onPressConfirmStore(
+            user.idToken!, placingItems, '');
+      } else if (_model.deliveryStaff.id == '' &&
+          placingItems.storedItems['typeOrder'] ==
+              constants.doorToDoorTypeOrder) {
+        setState(() {
+          _model.error = "Vui lòng quét mã trên nhân viên vận chuyển!";
+        });
       }
     }
     if (result) {
@@ -438,7 +456,24 @@ class _PlacingItemsScreenState extends State<PlacingItemsScreen>
                     buttonColor: CustomColor.blue,
                     borderRadius: 4),
               ],
-            )
+            ),
+            if (_model.error.isNotEmpty)
+              CustomSizedBox(
+                context: context,
+                height: 24,
+              ),
+            if (_model.error.isNotEmpty)
+              Center(
+                child: CustomText(
+                  textAlign: TextAlign.center,
+                  text: _model.error,
+                  color: CustomColor.red,
+                  context: context,
+                  fontSize: 16,
+                  maxLines: 2,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
           ],
         ),
       )),

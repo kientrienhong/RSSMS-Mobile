@@ -103,7 +103,7 @@ class PlacingItemsScreenPresenter {
           "orderDetailId": e['id'],
           "floorId": e['floorId'],
           "serviceType": e['serviceType'],
-          "note": e['note']
+          "importNote": e['note']
         };
       }).toList();
       Map<String, dynamic> dataRequest;

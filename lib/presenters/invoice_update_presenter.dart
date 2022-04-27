@@ -234,7 +234,7 @@ class InvoiceUpdatePresenter {
       if (user.roleName == "Delivery Staff") {
         dataRequest = dateFormatHelperDoneOrder(invoice);
       } else if (user.roleName == "Office Staff") {
-        dataRequest = dateFormatHelperDoneOrderOfficeStaff(invoice);
+        dataRequest = dateFormatHelperDoneOrder(invoice);
       } else {
         return false;
       }
