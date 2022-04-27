@@ -215,7 +215,7 @@ class _CreateOrderRequestScreenState extends State<CreateOrderRequestScreen>
                                 fontWeight: FontWeight.bold,
                                 fontSize: 17),
                             SizedBox(
-                              width: deviceSize.width * 1.5 / 3,
+                  
                               child: CustomText(
                                 text: _model.invoice.deliveryAddress,
                                 color: CustomColor.black,

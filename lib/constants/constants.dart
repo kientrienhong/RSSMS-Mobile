@@ -24,7 +24,6 @@ const List<Map<String, String>> tabInvoiceDetail = [
   {"name": "Đồ đạc"},
   {"name": "Phiếu nhập"},
   {"name": "Phiếu xuất"},
-
 ];
 
 const doorToDoorTypeOrder = 1;
@@ -71,7 +70,7 @@ const listStatusOrder = {
     {'color': CustomColor.red, 'name': 'Đang thanh lý'},
     {'color': CustomColor.green, 'name': 'Đã hoàn tất'},
     {'color': CustomColor.red, 'name': 'Đã thanh lý'},
-    {'color': CustomColor.blue, 'name': 'Đã trả kho'},
+    {'color': CustomColor.green, 'name': 'Đã hoàn tất'},
   ],
   1: [
     {'color': CustomColor.red, 'name': 'Đã Hủy'},
@@ -104,6 +103,7 @@ const listStatusOfOrderDetail = [
     'name': "Đã hết hạn",
     'color': CustomColor.red,
   },
+
 ];
 
 const listAreaType = [

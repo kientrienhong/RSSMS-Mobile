@@ -10,7 +10,7 @@ import 'package:rssms/constants/constants.dart' as constants;
 
 class ApiServices {
   ApiServices._();
-  static const _domain = 'https://rssms.azurewebsites.net';
+  static const _domain = 'https://localhost:44304';
 
   static Future<dynamic> logInWithEmail(
       String email, String password, String deviceToken) {

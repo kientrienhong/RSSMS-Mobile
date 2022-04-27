@@ -49,7 +49,7 @@ class _ImportScreenState extends State<ImportScreen>
   void onClickAcceptImport() async {
     final placingItems = Provider.of<PlacingItems>(context, listen: false);
     final user = Provider.of<Users>(context, listen: false);
-    bool result = false;
+    bool result = true;
     result = await _presenter.onPressConfirmStore(
         user.idToken!, placingItems, widget.deliveryStaff.id);
     if (result) {
