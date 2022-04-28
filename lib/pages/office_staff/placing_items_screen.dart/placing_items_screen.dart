@@ -111,7 +111,7 @@ class _PlacingItemsScreenState extends State<PlacingItemsScreen>
             return;
           }
         }
-        placingItems.import.importDeliveryBy = _model.deliveryStaff.name;
+        placingItems.import.importDeliveryBy =  _model.deliveryStaff.roleName == "Customer" ? "Khách tự vận chuyển": _model.deliveryStaff.name;
         placingItems.import.importStaff = user.name!;
         Navigator.push(
           context,

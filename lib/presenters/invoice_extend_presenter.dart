@@ -17,7 +17,7 @@ class InvoiceExtendPresenter {
     try {
       final response = await model!.createExtendRequest(extendInvoice, user);
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200) { 
         return true;
       }
 

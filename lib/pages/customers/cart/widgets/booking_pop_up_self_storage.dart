@@ -258,6 +258,18 @@ class _BookingPopUpSelfStorageState extends State<BookingPopUpSelfStorage>
                 context: context,
                 height: 16,
               ),
+              CustomText(
+                  text:
+                      "* Quý khách có thể lên nhận kho trong khung giờ từ 9:00 đến 17:00",
+                  color: CustomColor.blue,
+                  maxLines: 2,
+                  fontWeight: FontWeight.bold,
+                  context: context,
+                  fontSize: 16),
+              CustomSizedBox(
+                context: context,
+                height: 16,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
