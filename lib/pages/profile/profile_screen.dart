@@ -122,7 +122,7 @@ class _ProfileScreenState extends State<FormProfileScreen>
     try {
       Users user = Provider.of<Users>(context, listen: false);
       bool response =
-          await profilePresenter.updateProfile(user.idToken!, user.userId!);
+          await profilePresenter.updateProfile(user.idToken!, user.userId!, user.roleName!);
       if (response) {
         CustomSnackBar.buildSnackbar(
             context: context,
@@ -462,7 +462,7 @@ class _ProfileScreenState extends State<FormProfileScreen>
                   ],
                 ),
               ),
-              if (user.roleName == "Delivery Staff")
+              if (user.roleName != "Office Staff")
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

@@ -137,7 +137,7 @@ class _PlacingItemsScreenState extends State<PlacingItemsScreen>
           placingItems.storedItems['typeOrder'] ==
               constants.doorToDoorTypeOrder) {
         setState(() {
-          _model.error = "Vui lòng quét mã trên nhân viên vận chuyển!";
+          _model.error = "Vui lòng chọn người đem hàng đến kho!";
         });
       }
     }

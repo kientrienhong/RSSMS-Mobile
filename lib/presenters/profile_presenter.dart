@@ -20,7 +20,8 @@ class ProfilePresenter {
     model = ProfileModel(user);
   }
 
-  Future<bool> updateProfile(String idToken, String userId) async {
+  Future<bool> updateProfile(
+      String idToken, String userId, String roleName) async {
     try {
       view.updateLoadingProfile();
       model.focusNodeStreet.unfocus();
@@ -40,11 +41,22 @@ class ProfilePresenter {
       }
       DateTime tempDate =
           DateFormat("dd/MM/yyyy").parse(model.controllerBirthDate.text);
-      ImageEntity avatarTemp =
-          await ImageHandle.convertImagePathToBase64(model.imageUrl);
 
-      final response = await model.updateProfile(
-          genderCode, tempDate, avatarTemp.toMap(), idToken, userId);
+      final response;
+      if (roleName == "Delivery Staff") {
+        if (model.isEditAvatar) {
+          ImageEntity? avatarTemp =
+              await ImageHandle.convertImagePathToBase64(model.imageUrl);
+          response = await model.updateProfileDeliveryStaff(
+              genderCode, tempDate, avatarTemp.toMap(), idToken, userId);
+        } else {
+          response =
+              await model.updateProfile(genderCode, tempDate, idToken, userId);
+        }
+      } else {
+        response =
+            await model.updateProfile(genderCode, tempDate, idToken, userId);
+      }
 
       final handledResponse = ResponseHandle.handle(response);
       if (handledResponse['status'] == 'success') {

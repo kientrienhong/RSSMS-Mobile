@@ -144,10 +144,12 @@ class _ChoiceStorageScreenState extends State<ChoiceStorageScreen>
                                       if (element.id == _model.indexIdStorage) {
                                         orderBooking.storageId =
                                             _model.indexIdStorage!;
-                                        orderBooking.deliveryFee =
-                                            element.deliveryFee;
-                                        orderBooking.distants =
-                                            element.deliveryDistance;
+                                        if (!orderBooking.isCustomerDelivery) {
+                                          orderBooking.deliveryFee =
+                                              element.deliveryFee;
+                                          orderBooking.distants =
+                                              element.deliveryDistance;
+                                        }
                                       }
                                     }
 
