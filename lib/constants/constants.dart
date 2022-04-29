@@ -103,7 +103,6 @@ const listStatusOfOrderDetail = [
     'name': "Đã hết hạn",
     'color': CustomColor.red,
   },
-
 ];
 
 const listAreaType = [

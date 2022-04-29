@@ -130,6 +130,7 @@ class InvoiceInfoWidget extends StatelessWidget {
               fontWeight: FontWeight.bold,
               fontSize: 17),
           SizedBox(
+            width: deviceSize.width * 1.5 / 3,
             child: CustomText(
               text: invoice.deliveryAddress,
               color: CustomColor.black,
@@ -203,13 +204,12 @@ class InvoiceInfoWidget extends StatelessWidget {
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-         
-            CustomText(
-                text: "Dòng thời gian:",
-                color: Colors.black,
-                context: context,
-                fontWeight: FontWeight.bold,
-                fontSize: 17),
+          CustomText(
+              text: "Dòng thời gian:",
+              color: Colors.black,
+              context: context,
+              fontWeight: FontWeight.bold,
+              fontSize: 17),
           CustomButton(
               height: 24,
               isLoading: false,
