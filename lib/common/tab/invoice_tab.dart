@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:rssms/api/api_services.dart';
 import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
+import 'package:rssms/common/custom_confirm_dialog.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_snack_bar.dart';
 import 'package:rssms/common/custom_text.dart';
@@ -173,6 +175,39 @@ class _InvoiceTabState extends State<InvoiceTab> {
                           buttonColor: CustomColor.blue,
                           borderRadius: 6),
                     ),
+                  if (user.roleName == 'Office Staff' &&
+                      widget.invoice.status != 0 &&
+                      widget.invoice.status != 5 &&
+                      widget.invoice.status != 6 &&
+                      widget.invoice.status != 7 &&
+                      widget.invoice.status != 8)
+                    CustomButton(
+                        height: 24,
+                        isLoading: false,
+                        text: 'Hủy đơn',
+                        textColor: CustomColor.white,
+                        onPressFunction: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return CustomConfirmDialog(
+                                  failMsg: 'Hủy đơn thất bại',
+                                  successMsg: 'Hủy đơn thành công',
+                                  onSubmit: (String reason) async {
+                                    Users users =
+                                        Provider.of(context, listen: false);
+                                    return await ApiServices.cancelInvoice(
+                                        users.idToken!, {
+                                      'id': widget.invoice.id,
+                                      'rejectedReason': reason
+                                    });
+                                  });
+                            },
+                          );
+                        },
+                        width: widget.deviceSize.width / 2.5,
+                        buttonColor: CustomColor.red,
+                        borderRadius: 6),
                   if (widget.invoice.typeOrder == 1)
                     if ((user.roleName == 'Office Staff' &&
                             widget.isOrderReturn) ||

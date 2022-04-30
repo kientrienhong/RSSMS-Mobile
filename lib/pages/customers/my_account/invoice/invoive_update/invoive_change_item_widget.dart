@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_bottom_navigation.dart';
 import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
-import 'package:rssms/common/custom_input_date.dart';
 import 'package:rssms/common/custom_input_with_hint.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_snack_bar.dart';
@@ -121,7 +120,8 @@ class _ChangeItemWidgetState extends State<ChangeItemWidget>
       "isCustomerDedlivery": false,
       "deliveryAddress": _model.controllerStreet.text,
       "deliveryTime": constants.listPickUpTime[_currentIndex],
-      "deliveryDate": DateFormat("dd-MM-yyyy").parse(date![2] + "-" + date[1] + '-' + date[0]),
+      "deliveryDate": DateFormat("dd-MM-yyyy")
+          .parse(date![2] + "-" + date[1] + '-' + date[0]),
       "type": 4
     };
     bool result = await _presenter.createRequest(request, users);
@@ -217,7 +217,6 @@ class _ChangeItemWidgetState extends State<ChangeItemWidget>
                 textOverflow: TextOverflow.ellipsis,
               ),
             ),
-           
             SizedBox(
               width: deviceSize.width / 2.5,
               height: deviceSize.height / 14,

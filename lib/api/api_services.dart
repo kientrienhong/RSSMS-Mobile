@@ -10,7 +10,8 @@ import 'package:rssms/constants/constants.dart' as constants;
 
 class ApiServices {
   ApiServices._();
-  static const _domain = 'https://localhost:44304';
+  static const _domain = 'https://rssmsapi20220426221036.azurewebsites.net';
+  // static const _domain = 'https://localhost:44304';
 
   static Future<dynamic> logInWithEmail(
       String email, String password, String deviceToken) {
@@ -781,6 +782,23 @@ class ApiServices {
           '$_domain/api/v1/requests/send request notification/$idRequest');
       return http.post(url,
           body: jsonEncode({"message": message}), headers: headers);
+    } catch (e) {
+      log(e.toString());
+      throw Exception(e.toString());
+    }
+  }
+
+  static Future<dynamic> cancelInvoice(
+      String idToken, Map<dynamic, dynamic> cancelOrder) {
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        'Authorization': 'Bearer $idToken'
+      };
+
+      final url =
+          Uri.parse('$_domain/api/v1/orders/cancel/${cancelOrder['id']}');
+      return http.put(url, headers: headers, body: jsonEncode(cancelOrder));
     } catch (e) {
       log(e.toString());
       throw Exception(e.toString());
