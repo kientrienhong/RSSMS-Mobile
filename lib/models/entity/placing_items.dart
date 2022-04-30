@@ -6,10 +6,12 @@ import 'package:rssms/constants/constants.dart' as constants;
 
 class PlacingItems with ChangeNotifier {
   late Map<String, dynamic> storedItems;
+  late Map<String, dynamic> lostItems;
   late Map<String, dynamic> placingItems;
   late Import import;
   late bool isMoving;
   PlacingItems.empty() {
+    lostItems = {'items': []};
     storedItems = {'orderId': '', 'items': [], 'totalQuantity': 0};
     placingItems = {
       'typeOrder': '',
@@ -19,6 +21,35 @@ class PlacingItems with ChangeNotifier {
     isMoving = false;
     import = Import.empty();
     notifyListeners();
+  }
+
+  void addLostItem(String orderDetailId) {
+    final orderDetailFound =
+        storedItems['items'].firstWhere((e) => e.id == orderDetailId);
+    Map<String, dynamic> lostOrderTemp =
+        orderDetailFound.copyWith(status: 5).toMap();
+    lostOrderTemp['idLosing'] = lostOrderTemp['id'];
+    lostOrderTemp['amount'] = 1;
+    lostItems['items'].add(lostOrderTemp);
+    storedItems['items'] =
+        storedItems['items'].where((e) => e.id != orderDetailId).toList();
+    storedItems['totalQuantity']--;
+    notifyListeners();
+  }
+
+  void removeLostItem(String idLosing) {
+    final index =
+        lostItems['items'].indexWhere((e) => e['idLosing'] == idLosing);
+
+    final placingOrderDetail = lostItems['items'][index];
+    if (index != -1) {
+      lostItems['items'].removeAt(index);
+      storedItems['totalQuantity']++;
+      storedItems['items']
+          .add(OrderDetail.fromMap(placingOrderDetail).copyWith(status: -1));
+
+      notifyListeners();
+    }
   }
 
   void removePlacing(String idPlacing) {
@@ -31,6 +62,7 @@ class PlacingItems with ChangeNotifier {
       storedItems['totalQuantity']++;
       storedItems['items']
           .add(OrderDetail.fromMap(placingOrderDetail).copyWith(status: -1));
+
       notifyListeners();
     }
   }
@@ -65,6 +97,7 @@ class PlacingItems with ChangeNotifier {
       'orderId': '',
       'floors': [],
     };
+    lostItems = {'items': []};
     isMoving = false;
     notifyListeners();
   }
