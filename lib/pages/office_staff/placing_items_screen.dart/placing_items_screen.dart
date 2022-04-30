@@ -90,6 +90,27 @@ class _PlacingItemsScreenState extends State<PlacingItemsScreen>
   }
 
   @override
+  void onClickAddLosing(int index) {
+    final placingItems = Provider.of<PlacingItems>(context, listen: false);
+    placingItems.addLostItem(placingItems.storedItems['items'][index].id);
+    CustomSnackBar.buildSnackbar(
+        context: context,
+        message: 'Thao tác thành công',
+        color: CustomColor.green);
+  }
+
+  @override
+  void onClickUndoLosing(int index) {
+    final placingItems = Provider.of<PlacingItems>(context, listen: false);
+    placingItems
+        .removeLostItem(placingItems.lostItems['items'][index]['idLosing']);
+    CustomSnackBar.buildSnackbar(
+        context: context,
+        message: 'Thao tác thành công',
+        color: CustomColor.green);
+  }
+
+  @override
   void onClickUndo(int index) {}
 
   @override
@@ -237,8 +258,9 @@ class _PlacingItemsScreenState extends State<PlacingItemsScreen>
             CustomText(
                 text: 'Danh sách đồ: ',
                 color: CustomColor.black,
+                fontWeight: FontWeight.bold,
                 context: context,
-                fontSize: 24),
+                fontSize: 16),
             placingItems.storedItems['items'].isEmpty
                 ? Column(children: [
                     CustomSizedBox(
@@ -256,8 +278,14 @@ class _PlacingItemsScreenState extends State<PlacingItemsScreen>
                 : Consumer<PlacingItems>(
                     builder: (_, items, child) => ListView.builder(
                         shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
                         itemCount: items.storedItems['items'].length,
                         itemBuilder: (_, index) => ImageWidget(
+                            addRemovingItem: !widget.isView
+                                ? () {
+                                    onClickAddLosing(index);
+                                  }
+                                : null,
                             placingItem: !widget.isView
                                 ? () {
                                     onClickPlace(index);
@@ -272,8 +300,9 @@ class _PlacingItemsScreenState extends State<PlacingItemsScreen>
             CustomText(
                 text: 'Danh sách đồ đã được đặt: ',
                 color: CustomColor.black,
+                fontWeight: FontWeight.bold,
                 context: context,
-                fontSize: 24),
+                fontSize: 16),
             placingItems.placingItems['floors'].isEmpty
                 ? Column(children: [
                     CustomSizedBox(
@@ -290,6 +319,7 @@ class _PlacingItemsScreenState extends State<PlacingItemsScreen>
                   ])
                 : Consumer<PlacingItems>(
                     builder: (_, items, child) => ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       itemCount: items.placingItems['floors'].length,
                       itemBuilder: (_, index) => Column(
@@ -340,7 +370,9 @@ class _PlacingItemsScreenState extends State<PlacingItemsScreen>
                             context: context,
                             height: 8,
                           ),
-                          if (!items.isMoving)
+                          if (!items.isMoving &&
+                              placingItems.storedItems['typeOrder'] ==
+                                  constants.doorToDoorTypeOrder)
                             Column(
                               children: [
                                 TextFormField(
@@ -372,6 +404,48 @@ class _PlacingItemsScreenState extends State<PlacingItemsScreen>
                       ),
                     ),
                   ),
+            CustomSizedBox(
+              context: context,
+              height: 8,
+            ),
+            CustomText(
+                text: 'Danh sách đồ bị mất: ',
+                color: CustomColor.black,
+                fontWeight: FontWeight.bold,
+                context: context,
+                fontSize: 16),
+            CustomSizedBox(
+              context: context,
+              height: 8,
+            ),
+            placingItems.lostItems['items'].isEmpty
+                ? Column(children: [
+                    CustomSizedBox(
+                      context: context,
+                      height: 8,
+                    ),
+                    Center(
+                      child: CustomText(
+                          text: '(Trống)',
+                          color: CustomColor.black[2]!,
+                          context: context,
+                          fontSize: 16),
+                    ),
+                  ])
+                : Consumer<PlacingItems>(
+                    builder: (_, items, child) => ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: items.lostItems['items'].length,
+                        itemBuilder: (_, index) => ImageWidget(
+                            removeLosingItem: !widget.isView
+                                ? () {
+                                    onClickUndoLosing(index);
+                                  }
+                                : null,
+                            orderDetail: OrderDetail.fromMap(
+                                items.lostItems['items'][index]),
+                            isView: true))),
             CustomSizedBox(
               context: context,
               height: 8,

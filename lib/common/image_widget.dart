@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rssms/common/confirm_dialog.dart';
 import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
@@ -20,13 +21,17 @@ class ImageWidget extends StatefulWidget {
   final OrderDetail orderDetail;
   final Function? deleteItem;
   final Function? placingItem;
+  final Function? removeLosingItem;
   final Function? movingItem;
+  final Function? addRemovingItem;
   final Function? removePlacingItem;
   final bool isView;
   const ImageWidget(
       {Key? key,
       required this.orderDetail,
       this.placingItem,
+      this.removeLosingItem,
+      this.addRemovingItem,
       this.movingItem,
       this.removePlacingItem,
       required this.isView,
@@ -156,6 +161,7 @@ class _ImageWidgetState extends State<ImageWidget> {
                       ['color'] as Color,
                   width: 2)),
       child: ExpansionTile(
+        initiallyExpanded: true,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -194,26 +200,19 @@ class _ImageWidgetState extends State<ImageWidget> {
                   textColor: CustomColor.white,
                   buttonColor: CustomColor.blue,
                   borderRadius: 4),
-            if (user.roleName == 'Office Staff' && widget.placingItem != null)
-              CustomButton(
-                  height: 24,
-                  text: 'Đặt vào',
-                  width: deviceSize.width / 3 - 40,
-                  onPressFunction: () {
-                    widget.placingItem!();
-                  },
-                  isLoading: false,
-                  textColor: CustomColor.white,
-                  buttonColor: CustomColor.blue,
-                  borderRadius: 4),
             if (user.roleName == 'Office Staff' &&
-                widget.removePlacingItem != null)
+                (widget.removePlacingItem != null ||
+                    widget.removeLosingItem != null))
               CustomButton(
                   height: 24,
                   text: 'Hoàn tác',
                   width: deviceSize.width / 3 - 40,
                   onPressFunction: () {
-                    widget.removePlacingItem!();
+                    if (widget.removePlacingItem != null) {
+                      widget.removePlacingItem!();
+                    } else {
+                      widget.removeLosingItem!();
+                    }
                   },
                   isLoading: false,
                   textColor: CustomColor.red,
@@ -395,7 +394,46 @@ class _ImageWidgetState extends State<ImageWidget> {
                             ),
                           ],
                         )
-                  : Container()
+                  : Container(),
+              if (user.roleName == 'Office Staff' && widget.placingItem != null)
+                Column(
+                  children: [
+                    const Divider(),
+                    CustomSizedBox(
+                      context: context,
+                      height: 8,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        TextButton(
+                            onPressed: () {
+                              widget.addRemovingItem!();
+                            },
+                            child: CustomText(
+                                text: 'Báo mất',
+                                color: CustomColor.black[3]!,
+                                context: context,
+                                fontSize: 20)),
+                        CustomButton(
+                            height: 24,
+                            text: 'Đặt vào',
+                            width: deviceSize.width / 3 - 40,
+                            onPressFunction: () {
+                              widget.placingItem!();
+                            },
+                            isLoading: false,
+                            textColor: CustomColor.white,
+                            buttonColor: CustomColor.blue,
+                            borderRadius: 4),
+                      ],
+                    ),
+                    CustomSizedBox(
+                      context: context,
+                      height: 16,
+                    ),
+                  ],
+                )
             ],
           )
         ],
