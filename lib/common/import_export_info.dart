@@ -112,119 +112,6 @@ class _ImportExportInfoState extends State<ImportExportInfo> {
           isHome: widget.backButton,
           name: widget.isExport ? "Phiếu xuất kho" : "Phiếu nhập kho",
         ),
-        CustomSizedBox(
-          context: context,
-          height: 18,
-        ),
-        CustomText(
-          text: "Thông tin kho",
-          color: CustomColor.blue,
-          context: context,
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-        ),
-        CustomSizedBox(
-          context: context,
-          height: 16,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            CustomText(
-                text: "Tên kho",
-                color: CustomColor.black,
-                context: context,
-                fontWeight: FontWeight.bold,
-                fontSize: 16),
-            CustomText(
-              text: widget.isExport
-                  ? widget.export!.storageName
-                  : widget.import!.storageName,
-              color: CustomColor.black,
-              context: context,
-              fontSize: 16,
-            ),
-          ],
-        ),
-        CustomSizedBox(
-          context: context,
-          height: 16,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            CustomText(
-                text: "Địa chỉ",
-                color: CustomColor.black,
-                context: context,
-                fontWeight: FontWeight.bold,
-                fontSize: 16),
-            SizedBox(
-              width: deviceSize.width / 2,
-              child: CustomText(
-                textAlign: TextAlign.right,
-                text: widget.isExport
-                    ? widget.export!.storageAddress
-                    : widget.import!.storageAddress,
-                color: CustomColor.black,
-                context: context,
-                fontSize: 16,
-                maxLines: 2,
-                textOverflow: TextOverflow.fade,
-              ),
-            ),
-          ],
-        ),
-        CustomSizedBox(
-          context: context,
-          height: 16,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            CustomText(
-                text: "Nhân viên thủ kho",
-                color: CustomColor.black,
-                context: context,
-                fontWeight: FontWeight.bold,
-                fontSize: 16),
-            CustomText(
-              text: widget.isExport
-                  ? widget.export!.exportStaff
-                  : widget.import!.importStaff,
-              color: CustomColor.black,
-              context: context,
-              fontSize: 16,
-            ),
-          ],
-        ),
-        CustomSizedBox(
-          context: context,
-          height: 16,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            CustomText(
-                text: widget.isExport ? "Ngày xuất kho" : "Ngày nhập kho",
-                color: CustomColor.black,
-                context: context,
-                fontWeight: FontWeight.bold,
-                fontSize: 16),
-            CustomText(
-              text: widget.isExport
-                  ? widget.export!.exportDate.split('T')[0]
-                  : widget.import!.deliveryDate.split('T')[0],
-              color: CustomColor.black,
-              context: context,
-              fontSize: 16,
-            ),
-          ],
-        ),
-        CustomSizedBox(
-          context: context,
-          height: 18,
-        ),
         CustomText(
           text: "Thông tin vận chuyển",
           color: CustomColor.blue,
@@ -383,6 +270,119 @@ class _ImportExportInfoState extends State<ImportExportInfo> {
                 fontSize: 16,
               ),
           ],
+        ),
+        CustomSizedBox(
+          context: context,
+          height: 16,
+        ),
+        CustomText(
+          text: "Thông tin kho",
+          color: CustomColor.blue,
+          context: context,
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+        ),
+        CustomSizedBox(
+          context: context,
+          height: 16,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            CustomText(
+                text: "Tên kho",
+                color: CustomColor.black,
+                context: context,
+                fontWeight: FontWeight.bold,
+                fontSize: 16),
+            CustomText(
+              text: widget.isExport
+                  ? widget.export!.storageName
+                  : widget.import!.storageName,
+              color: CustomColor.black,
+              context: context,
+              fontSize: 16,
+            ),
+          ],
+        ),
+        CustomSizedBox(
+          context: context,
+          height: 16,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            CustomText(
+                text: "Địa chỉ",
+                color: CustomColor.black,
+                context: context,
+                fontWeight: FontWeight.bold,
+                fontSize: 16),
+            SizedBox(
+              width: deviceSize.width / 2,
+              child: CustomText(
+                textAlign: TextAlign.right,
+                text: widget.isExport
+                    ? widget.export!.storageAddress
+                    : widget.import!.storageAddress,
+                color: CustomColor.black,
+                context: context,
+                fontSize: 16,
+                maxLines: 2,
+                textOverflow: TextOverflow.fade,
+              ),
+            ),
+          ],
+        ),
+        CustomSizedBox(
+          context: context,
+          height: 16,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            CustomText(
+                text: "Nhân viên thủ kho",
+                color: CustomColor.black,
+                context: context,
+                fontWeight: FontWeight.bold,
+                fontSize: 16),
+            CustomText(
+              text: widget.isExport
+                  ? widget.export!.exportStaff
+                  : widget.import!.importStaff,
+              color: CustomColor.black,
+              context: context,
+              fontSize: 16,
+            ),
+          ],
+        ),
+        CustomSizedBox(
+          context: context,
+          height: 16,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            CustomText(
+                text: widget.isExport ? "Ngày xuất kho" : "Ngày nhập kho",
+                color: CustomColor.black,
+                context: context,
+                fontWeight: FontWeight.bold,
+                fontSize: 16),
+            CustomText(
+              text: widget.isExport
+                  ? widget.export!.exportDate.split('T')[0]
+                  : widget.import!.deliveryDate.split('T')[0],
+              color: CustomColor.black,
+              context: context,
+              fontSize: 16,
+            ),
+          ],
+        ),
+        CustomSizedBox(
+          context: context,
+          height: 18,
         ),
       ],
     );

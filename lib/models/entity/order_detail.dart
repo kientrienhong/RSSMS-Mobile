@@ -20,10 +20,19 @@ class OrderDetail {
   String serviceImageUrl;
   List<Product>? listAdditionService;
   final int? status;
+  String? nameFloor;
+  String? nameSpace;
+  String? nameArea;
+  String? nameStorage;
+
   OrderDetail(
       {required this.id,
       required this.productId,
       this.width,
+      this.nameArea,
+      this.nameStorage,
+      this.nameFloor,
+      this.nameSpace,
       this.height,
       required this.status,
       this.length,
@@ -51,12 +60,20 @@ class OrderDetail {
     int? status,
     double? width,
     String? note,
+    String? nameArea,
+    String? nameFloor,
+    String? nameStorage,
+    String? nameSpace,
     List<ImageEntity>? images,
     List<ImageEntity>? imageProduct,
     List<Product>? listAdditionService,
   }) {
     return OrderDetail(
         id: id ?? this.id,
+        nameStorage: nameStorage ?? this.nameStorage,
+        nameArea: nameArea ?? this.nameArea,
+        nameFloor: nameFloor ?? this.nameFloor,
+        nameSpace: nameSpace ?? this.nameSpace,
         height: height ?? this.height,
         length: length ?? this.length,
         status: status ?? this.status,
@@ -138,14 +155,20 @@ class OrderDetail {
   factory OrderDetail.fromMap(Map<String, dynamic> map) {
     return OrderDetail(
       id: map['id'] ?? '',
+      nameFloor: map['floorName'] ?? '',
+      nameSpace: map['spaceName'] ?? '',
+      nameStorage: map['storageName'] ?? '',
       note: map['note'] ?? '',
-      status: map['orderStatus']?.toInt() ?? 0,
+      status: map['status'] == null
+          ? map['orderStatus']?.toInt() ?? 0
+          : map['status']?.toInt(),
       idFloor: map['idFloor'] ?? '',
       width: map['width']?.toDouble() ?? 0,
       height: map['height']?.toDouble() ?? 0,
       length: map['length']?.toDouble() ?? 0,
       productId: map['serviceId'] ?? '',
       productName: map['serviceName'] ?? '',
+      nameArea: map['areaName'] ?? '',
       price: map['servicePrice']?.toInt() ?? 0,
       amount: map['amount']?.toInt() ?? 0,
       serviceImageUrl: map['serviceImageUrl'] ?? '',
