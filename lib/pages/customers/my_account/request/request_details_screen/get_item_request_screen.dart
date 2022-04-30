@@ -218,7 +218,8 @@ class _GetItemRequestScreenState extends State<GetItemRequestScreen>
                         CustomSizedBox(
                           context: context,
                           height: 24,
-                        ),
+                        ), 
+                        if(widget.request.status != 3)
                         Center(
                           child: CustomButton(
                               height: 24,

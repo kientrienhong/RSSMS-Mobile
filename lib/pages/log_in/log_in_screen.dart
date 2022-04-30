@@ -153,66 +153,69 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
     if (result != null) {
       user.setUser(user: result);
       if (user.roleName == 'Customer') {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => const CustomBottomNavigation(
-                    listIndexStack: [
-                      MyAccountScreen(initIndex: 1,),
-                      CartScreen(),
-                      NotificationScreen(),
-                    ],
-                    listNavigator: constant.listCustomerBottomNavigation,
-                  )),
-        );
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const CustomBottomNavigation(
+                      listIndexStack: [
+                        MyAccountScreen(
+                          initIndex: 1,
+                        ),
+                        CartScreen(),
+                        NotificationScreen(),
+                      ],
+                      listNavigator: constant.listCustomerBottomNavigation,
+                    )),
+            (Route<dynamic> route) => false);
       } else if (user.roleName == 'Delivery Staff') {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
               builder: (context) => const CustomBottomNavigation(
-                    listIndexStack: [
-                      MyAccountDeliveryScreen(),
-                      DeliveryScreen(),
-                      QrScreen(),
-                      NotificationDeliveryScreen(),
-                    ],
-                    listNavigator: constant.listDeliveryBottomNavigation,
-                  )),
-        );
+                listIndexStack: [
+                  MyAccountDeliveryScreen(),
+                  DeliveryScreen(),
+                  QrScreen(),
+                  NotificationDeliveryScreen(),
+                ],
+                listNavigator: constant.listDeliveryBottomNavigation,
+              ),
+            ),
+            (Route<dynamic> route) => false);
       } else if (user.roleName == 'Office Staff') {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => CustomBottomNavigation(
-                    listIndexStack: [
-                      const MyAccountOfficeScreen(),
-                      const QrScreen(),
-                      Scaffold(
-                          backgroundColor: CustomColor.white,
-                          body: Container(
-                            padding: const EdgeInsets.symmetric(vertical: 24),
-                            child: Column(
-                              children: [
-                                CustomSizedBox(
-                                  context: context,
-                                  height: 8,
-                                ),
-                                CustomText(
-                                    text: 'Trang đơn hàng',
-                                    color: CustomColor.black,
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+                builder: (context) => CustomBottomNavigation(
+                      listIndexStack: [
+                        const MyAccountOfficeScreen(),
+                        const QrScreen(),
+                        Scaffold(
+                            backgroundColor: CustomColor.white,
+                            body: Container(
+                              padding: const EdgeInsets.symmetric(vertical: 24),
+                              child: Column(
+                                children: [
+                                  CustomSizedBox(
                                     context: context,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 24),
-                                CustomSizedBox(context: context, height: 8),
-                                const Expanded(child: InvoiceScreen()),
-                              ],
-                            ),
-                          )),
-                      const StorageScreen(),
-                    ],
-                    listNavigator: constant.listOfficeBottomNavigation,
-                  )),
-        );
+                                    height: 8,
+                                  ),
+                                  CustomText(
+                                      text: 'Trang đơn hàng',
+                                      color: CustomColor.black,
+                                      context: context,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 24),
+                                  CustomSizedBox(context: context, height: 8),
+                                  const Expanded(child: InvoiceScreen()),
+                                ],
+                              ),
+                            )),
+                        const StorageScreen(),
+                      ],
+                      listNavigator: constant.listOfficeBottomNavigation,
+                    )),
+            (Route<dynamic> route) => false);
       } else {
         Navigator.push(
             context,
