@@ -661,6 +661,31 @@ class ApiServices {
     }
   }
 
+  static Future<dynamic> checkAddress(List<Map<String, dynamic>> listProduct,
+      Invoice invoice, Users user, String returnAddress) {
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        'Authorization': 'Bearer ${user.idToken}'
+      };
+      final url = Uri.parse('$_domain/api/v1/requests/get-storage-available');
+
+      return http.post(
+        url,
+        body: jsonEncode({
+          "isCustomerDelivery": invoice.isUserDelivery,
+          "orderId": invoice.id,
+          "returnAddress": returnAddress,
+          "requestDetails": listProduct,
+          'type': constants.REQUEST_TYPE.returnOrder.index
+        }),
+        headers: headers,
+      );
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
   static Future<dynamic> loadListAvailableStorages(
       List<Map<String, dynamic>> listProduct,
       OrderBooking orderBooking,

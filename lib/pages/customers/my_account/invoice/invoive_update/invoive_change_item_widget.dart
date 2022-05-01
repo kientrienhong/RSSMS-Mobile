@@ -69,7 +69,7 @@ class _ChangeItemWidgetState extends State<ChangeItemWidget>
   //     });
   //   }
   // }
-
+  final oCcy = NumberFormat("#,##0", "en_US");
   @override
   void dispose() {
     super.dispose();
@@ -103,7 +103,12 @@ class _ChangeItemWidgetState extends State<ChangeItemWidget>
     );
     if (picked != null) {
       String dateDeliveryString = picked.toIso8601String().split("T")[0];
-
+      if (DateTime.parse(dateDeliveryString)
+          .isAfter(DateTime.parse(widget.invoice!.returnDate))) {
+        _model.isAfter = true;
+      } else {
+        _model.isAfter = false;
+      }
       setState(() {
         _model.controllerBirthDate.text = dateDeliveryString;
       });
@@ -114,7 +119,16 @@ class _ChangeItemWidgetState extends State<ChangeItemWidget>
   void onClickCreateRequest() async {
     Users users = Provider.of<Users>(context, listen: false);
     List<String>? date = _model.controllerBirthDate.text.split("-");
-
+    if (_model.deliveryFee == 0) {
+      _presenter.view.updateError("Vui lòng kiểm tra phí vận chuyển");
+      return;
+    } else {
+      _presenter.view.updateError("");
+    }
+    if (_currentIndex == -1 || _model.controllerBirthDate.text.isEmpty) {
+      _presenter.view.updateError("Vui lòng chọn thời gian nhận hàng");
+      return;
+    }
     Map<String, dynamic> request = {
       "orderId": widget.invoice!.id,
       "isCustomerDedlivery": false,
@@ -144,6 +158,12 @@ class _ChangeItemWidgetState extends State<ChangeItemWidget>
                   )),
           (Route<dynamic> route) => false);
     }
+  }
+
+  @override
+  void onClickCheckAddress() {
+    Users user = Provider.of<Users>(context, listen: false);
+    _presenter.onClickCheckAddress(widget.invoice!, user);
   }
 
   @override
@@ -197,6 +217,38 @@ class _ChangeItemWidgetState extends State<ChangeItemWidget>
           isDisable: false,
           focusNode: _focusNodeStreet,
           controller: _model.controllerStreet,
+        ),
+        Row(
+          children: [
+            CustomButton(
+                height: 24,
+                text: "Xem phí vận chuyển",
+                width: deviceSize.width / 3,
+                onPressFunction: onClickCheckAddress,
+                isLoading: _model.isLoadingButton,
+                textColor: CustomColor.white,
+                buttonColor: CustomColor.blue,
+                borderRadius: 6),
+            CustomSizedBox(
+              context: context,
+              width: 5,
+            ),
+            CustomText(
+                text: "Phí vận chuyển",
+                color: CustomColor.black,
+                context: context,
+                fontWeight: FontWeight.bold,
+                fontSize: 16),
+            CustomSizedBox(
+              context: context,
+              width: 5,
+            ),
+            CustomText(
+                text: '${oCcy.format(_model.deliveryFee)}  đ',
+                color: CustomColor.black,
+                context: context,
+                fontSize: 16)
+          ],
         ),
         CustomSizedBox(
           context: context,
@@ -259,6 +311,19 @@ class _ChangeItemWidgetState extends State<ChangeItemWidget>
           width: deviceSize.width,
           child: ListTimeSelect(
               currentIndex: _currentIndex, onChangeTab: onChangeTime),
+        ),
+        if (_model.isAfter)
+          CustomText(
+              text:
+                  "* Ngày rút đồ sau ngày hết hạn của đơn, có thể sẽ phát sinh thêm phí",
+              color: CustomColor.blue,
+              maxLines: 2,
+              fontWeight: FontWeight.bold,
+              context: context,
+              fontSize: 16),
+        CustomSizedBox(
+          context: context,
+          height: 14,
         ),
         UIUtils.buildErrorUI(error: _model.error, context: context),
         CustomButton(

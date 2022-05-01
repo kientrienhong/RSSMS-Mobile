@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:rssms/helpers/response_handle.dart';
+import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/models/invoice_get_model.dart';
 import 'package:rssms/views/invoice_get_view.dart';
@@ -24,6 +27,33 @@ class InvoiceGetPresenter {
       }
     } catch (e) {
       throw Exception(e.toString());
+    } finally {
+      view.updateStatusButton();
+    }
+  }
+
+  Future<void> onClickCheckAddress(Invoice invoice, Users user) async {
+    view.updateStatusButton();
+    try {
+      List<Map<String, dynamic>> listServices = [];
+      for (var element in invoice.orderDetails) {
+        listServices.add({
+          "serviceId": element.productId,
+          "price": element.price,
+          "amount": element.amount,
+          'note': element.note
+        });
+      }
+      final response = await model.checkAddress(
+          listServices, invoice, user, model.controllerStreet.text);
+      final result = ResponseHandle.handle(response);
+      if (result['status'] == 'success') {
+        model.deliveryFee = result['data'][0]['deliveryFee'];
+      } else {
+        view.updateError(result['data']);
+      }
+    } catch (e) {
+      log(e.toString());
     } finally {
       view.updateStatusButton();
     }
