@@ -206,7 +206,6 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                           MyAccountDeliveryScreen(),
                           DeliveryScreen(),
                           QrScreen(),
-                          NotificationDeliveryScreen(),
                         ],
                         listNavigator: constant.listDeliveryBottomNavigation,
                       )),
@@ -314,7 +313,7 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                           MyAccountDeliveryScreen(),
                           DeliveryScreen(),
                           QrScreen(),
-                          NotificationDeliveryScreen(),
+             
                         ],
                         listNavigator: constant.listDeliveryBottomNavigation,
                       )),

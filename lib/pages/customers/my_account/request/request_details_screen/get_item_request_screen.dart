@@ -6,6 +6,7 @@ import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/helpers/date_format.dart';
+import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/order_detail.dart';
 import 'package:rssms/models/entity/request.dart';
 import 'package:rssms/models/entity/user.dart';
@@ -37,12 +38,23 @@ class _GetItemRequestScreenState extends State<GetItemRequestScreen>
       context: context,
       builder: (BuildContext context) {
         return ConfirmDialog(
-            confirmFunction: _presenter!.cancelRequest,
-            id: _model!.request!.id);
+            confirmFunction: onPressConfirm, id: _model!.request!.id);
       },
     ).then((value) => {
           if (value) {init()}
         });
+  }
+
+  Future<dynamic> onPressConfirm() async {
+    Users users = Provider.of<Users>(context, listen: false);
+    Map<String, dynamic> cancelRequest = {
+      "cancelReason": "Khách hủy yêu cầu rút đồ về",
+      "id": widget.request.id,
+      'type': constants.REQUEST_TYPE.returnOrder.index
+    };
+
+    return await _presenter!
+        .cancelRequest(cancelRequest, _model!.invoice!, users);
   }
 
   @override
@@ -218,22 +230,23 @@ class _GetItemRequestScreenState extends State<GetItemRequestScreen>
                         CustomSizedBox(
                           context: context,
                           height: 24,
-                        ), 
-                        if(widget.request.status != 3)
-                        Center(
-                          child: CustomButton(
-                              height: 24,
-                              text: 'Hủy yêu cầu',
-                              width: deviceSize.width * 1 / 3,
-                              onPressFunction: () {
-                                onPressCancel();
-                              },
-                              isLoading: false,
-                              textColor: CustomColor.red,
-                              buttonColor: CustomColor.white,
-                              isCancelButton: true,
-                              borderRadius: 6),
                         ),
+                        if (widget.request.status != 3 &&
+                            widget.request.status != 0)
+                          Center(
+                            child: CustomButton(
+                                height: 24,
+                                text: 'Hủy yêu cầu',
+                                width: deviceSize.width * 1 / 3,
+                                onPressFunction: () {
+                                  onPressCancel();
+                                },
+                                isLoading: false,
+                                textColor: CustomColor.red,
+                                buttonColor: CustomColor.white,
+                                isCancelButton: true,
+                                borderRadius: 6),
+                          ),
                       ],
                     )
                   else

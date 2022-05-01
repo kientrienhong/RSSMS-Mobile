@@ -16,7 +16,7 @@ class ConfirmDialogPresenter {
   Future<bool> onClickConfirm(String id, String idToken) async {
     try {
       view.updateLoading();
-      final response = await _confirmFunction(idToken, id);
+      final response = await _confirmFunction();
       final result = ResponseHandle.handle(response);
       if (result['status'] == 'success') {
         return true;

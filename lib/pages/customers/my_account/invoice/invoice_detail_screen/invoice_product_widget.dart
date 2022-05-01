@@ -413,9 +413,7 @@ class InvoiceProductWidget extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     fontSize: 19),
                 CustomText(
-                    text: invoice.typeOrder == TypeOrder.doorToDoor.index
-                        ? oCcy.format(totalPriceDoorToDoor) + " đ"
-                        : oCcy.format(totalPriceSelfStorage) + " đ",
+                    text: oCcy.format(invoice.totalPrice).toString() + " đ",
                     color: CustomColor.blue,
                     context: context,
                     fontWeight: FontWeight.bold,
@@ -436,19 +434,12 @@ class InvoiceProductWidget extends StatelessWidget {
                       context: context,
                       fontWeight: FontWeight.bold,
                       fontSize: 17),
-                  invoice.typeOrder == constants.doorToDoorTypeOrder
-                      ? CustomText(
-                          text: oCcy.format(totalPriceDoorToDoor * 0.5) + " đ",
-                          color: CustomColor.blue,
-                          context: context,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 17)
-                      : CustomText(
-                          text: oCcy.format(totalPriceSelfStorage * 0.5) + " đ",
-                          color: CustomColor.blue,
-                          context: context,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 17),
+                  CustomText(
+                      text: oCcy.format(invoice.advanceMoney) + " đ",
+                      color: CustomColor.blue,
+                      context: context,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 17)
                 ],
               ),
             if (returningAdditionalFee > 0)

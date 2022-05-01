@@ -78,6 +78,7 @@ class _InvoiceTabState extends State<InvoiceTab> {
                 context: context,
                 height: 16,
               ),
+              
               InvoiceProductWidget(
                   isInvoice: true,
                   deviceSize: widget.deviceSize,

@@ -4,6 +4,7 @@ import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_snack_bar.dart';
 import 'package:rssms/common/custom_text.dart';
+import 'package:rssms/constants/constants.dart';
 import 'package:rssms/models/confirm_dialog_model.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/presenters/confirm_dialog_presenter.dart';
@@ -56,7 +57,6 @@ class _ConfirmDialogState extends State<ConfirmDialog>
   @override
   void onPressConfirm() async {
     Users user = Provider.of<Users>(context, listen: false);
-
     bool result = await _presenter.onClickConfirm(widget.id, user.idToken!);
     if (result) {
       CustomSnackBar.buildSnackbar(

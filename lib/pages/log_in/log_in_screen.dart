@@ -176,7 +176,6 @@ class _FormLogInState extends State<FormLogIn> implements LoginView {
                   MyAccountDeliveryScreen(),
                   DeliveryScreen(),
                   QrScreen(),
-                  NotificationDeliveryScreen(),
                 ],
                 listNavigator: constant.listDeliveryBottomNavigation,
               ),

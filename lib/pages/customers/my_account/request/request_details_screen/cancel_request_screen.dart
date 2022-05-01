@@ -143,28 +143,32 @@ class _CancelledRequestScreenState extends State<CancelledRequestScreen>
                           context: context,
                           height: 24,
                         ),
-                        CustomText(
-                            text: "Lý do hủy:",
-                            color: Colors.black,
-                            context: context,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 17),
-                        CustomSizedBox(
-                          context: context,
-                          height: 16,
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(4),
-                              border: Border.all(
-                                  color: CustomColor.black[3]!, width: 1)),
-                          child: TextFormField(
-                            minLines: 6,
-                            enabled: false,
-                            controller: noteController,
-                            keyboardType: TextInputType.multiline,
-                            maxLines: null,
-                          ),
+                        Column(
+                          children: [
+                            CustomText(
+                                text: "Lý do hủy:",
+                                color: Colors.black,
+                                context: context,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 17),
+                            CustomSizedBox(
+                              context: context,
+                              height: 16,
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(4),
+                                  border: Border.all(
+                                      color: CustomColor.black[3]!, width: 1)),
+                              child: TextFormField(
+                                minLines: 6,
+                                enabled: false,
+                                controller: noteController,
+                                keyboardType: TextInputType.multiline,
+                                maxLines: null,
+                              ),
+                            ),
+                          ],
                         ),
                         CustomSizedBox(
                           context: context,
