@@ -16,17 +16,8 @@ class ItemTab extends StatefulWidget {
   @override
   _ItemTabState createState() => _ItemTabState();
 }
-class _ItemTabState extends State<ItemTab> {
-  List<Widget> mapInvoiceWidget(List<OrderDetail> listOrderDetail) =>
-      listOrderDetail
-          .where((element) =>
-              element.productType == constants.typeProduct.handy.index)
-          .map((e) => ImageWidget(
-                orderDetail: e,
-                isView: true,
-              ))
-          .toList();
 
+class _ItemTabState extends State<ItemTab> {
   List<Widget> mapSeperateAdditionWidget(List<OrderDetail> listOrderDetail) {
     final list = listOrderDetail.where((element) =>
         element.productType == constants.typeProduct.accessory.index);
@@ -55,6 +46,47 @@ class _ItemTabState extends State<ItemTab> {
 
   @override
   Widget build(BuildContext context) {
+    final deviceSize = MediaQuery.of(context).size;
+    List<Widget> mapInvoiceWidget(List<OrderDetail> listOrderDetail) =>
+        listOrderDetail
+            .where((element) =>
+                element.productType == constants.typeProduct.handy.index)
+            .map((e) =>
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  e.status == 0
+                      ? CustomText(
+                          maxLines: 2,
+                          text: 'Đồ bị thất lạc',
+                          color: CustomColor.black[2]!,
+                          context: context,
+                          fontSize: 16)
+                      : SizedBox(
+                          width: deviceSize.width,
+                          child: Flexible(
+                            child: CustomText(
+                                maxLines: 2,
+                                text:
+                                    'Vị trí: ${e.nameStorage} / ${e.nameArea} / ${e.nameSpace} / ${e.nameFloor}',
+                                color: CustomColor.black,
+                                context: context,
+                                fontSize: 16),
+                          ),
+                        ),
+                  CustomSizedBox(
+                    context: context,
+                    height: 8,
+                  ),
+                  ImageWidget(
+                    orderDetail: e.status == 0 ? e.copyWith(status: 5) : e,
+                    isView: true,
+                  ),
+                  CustomSizedBox(
+                    context: context,
+                    height: 8,
+                  ),
+                ]))
+            .toList();
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

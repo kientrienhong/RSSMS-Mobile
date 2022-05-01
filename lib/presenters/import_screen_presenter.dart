@@ -29,6 +29,14 @@ class ImportScreenPresenter {
           "importNote": e['note']
         };
       }).toList();
+      placingItems.lostItems['items'].forEach((e) {
+        listAssigned.add({
+          "orderDetailId": e['id'],
+          "floorId": null,
+          "serviceType": e['serviceType'],
+          "importNote": e['note']
+        });
+      });
       Map<String, dynamic> dataRequest = {
         "deliveryId": deliveryId,
         "orderDetailAssignFloor": listAssigned

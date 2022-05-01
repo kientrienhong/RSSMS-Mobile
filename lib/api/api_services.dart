@@ -273,6 +273,8 @@ class ApiServices {
         'Authorization': 'Bearer $idToken'
       };
 
+      log(jsonEncode(dataRequest));
+
       final url = Uri.parse('$_domain/api/v1/orders/assign to floor');
       return http.post(
         url,
