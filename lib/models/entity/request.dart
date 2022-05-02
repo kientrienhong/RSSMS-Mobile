@@ -29,6 +29,7 @@ class Request {
   late double totalPrice;
   late double deliveryFee;
   late double advanceMoney;
+  late String oldReturnDate;
   Request(
       {required this.id,
       required this.totalPrice,
@@ -57,7 +58,8 @@ class Request {
       required this.note,
       required this.createdDate,
       required this.advanceMoney,
-      required this.deliveryFee});
+      required this.deliveryFee,
+      required this.oldReturnDate});
 
   Request.empty() {
     id = '';
@@ -88,6 +90,7 @@ class Request {
     createdDate = '';
     deliveryFee = 0;
     advanceMoney = 0;
+    oldReturnDate = '';
   }
 
   Request copyWith(
@@ -118,7 +121,8 @@ class Request {
       String? createdDate,
       double? totalPrice,
       double? advanceMoney,
-      double? deliveryFee}) {
+      double? deliveryFee,
+      String? oldReturnDate}) {
     return Request(
         id: id ?? this.id,
         totalPrice: totalPrice ?? this.totalPrice,
@@ -147,7 +151,8 @@ class Request {
         note: note ?? this.note,
         createdDate: createdDate ?? this.createdDate,
         advanceMoney: advanceMoney ?? this.advanceMoney,
-        deliveryFee: deliveryFee ?? this.deliveryFee);
+        deliveryFee: deliveryFee ?? this.deliveryFee,
+        oldReturnDate: oldReturnDate ?? this.oldReturnDate);
   }
 
   Map<String, dynamic> toMap() {
@@ -179,7 +184,8 @@ class Request {
       'note': note,
       'createdDate': createdDate,
       'deliveryFee': deliveryFee,
-      'advanceMoney': advanceMoney
+      'advanceMoney': advanceMoney,
+      'oldReturnDate': oldReturnDate
     };
   }
 
@@ -212,7 +218,8 @@ class Request {
         note: map['note'] ?? '',
         createdDate: map['createdDate'] ?? '',
         advanceMoney: map['advanceMoney'] ?? 0,
-        deliveryFee: map['deliveryFee'] ?? 0);
+        deliveryFee: map['deliveryFee'] ?? 0,
+        oldReturnDate: map['oldReturnDate'] ?? '');
   }
 
   String toJson() => json.encode(toMap());

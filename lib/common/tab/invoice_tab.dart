@@ -86,24 +86,26 @@ class _InvoiceTabState extends State<InvoiceTab> {
                 context: context,
                 height: 16,
               ),
-              CustomText(
-                  text: "Mã QR",
-                  color: CustomColor.blue,
-                  context: context,
-                  textAlign: TextAlign.right,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16),
-              SizedBox(
-                width: double.infinity,
-                child: Center(
-                  child: QrImage(
-                    data: widget.invoice.requestId!,
-                    size: 88.0,
-                    gapless: true,
-                    version: 4,
+              if (user.roleName != 'Office Staff')
+                CustomText(
+                    text: "Mã QR",
+                    color: CustomColor.blue,
+                    context: context,
+                    textAlign: TextAlign.right,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16),
+              if (user.roleName != 'Office Staff')
+                SizedBox(
+                  width: double.infinity,
+                  child: Center(
+                    child: QrImage(
+                      data: widget.invoice.requestId!,
+                      size: 88.0,
+                      gapless: true,
+                      version: 4,
+                    ),
                   ),
                 ),
-              ),
               CustomSizedBox(
                 context: context,
                 height: 16,
@@ -114,7 +116,8 @@ class _InvoiceTabState extends State<InvoiceTab> {
                   if (widget.invoice.status != 0 &&
                       user.roleName == 'Customer' &&
                       widget.invoice.status != 8 &&
-                      widget.invoice.status != 7)
+                      widget.invoice.status != 7 &&
+                      widget.returnRequest!.status == 0)
                     Center(
                       child: CustomButton(
                           height: 24,

@@ -103,7 +103,7 @@ class _StorageChoiceWidgetState extends State<StorageChoiceWidget> {
                   context: context,
                   height: 7,
                 ),
-                if (orderBooking.typeOrder.index != selfStorageTypeOrder)
+                if (orderBooking.typeOrder.index != selfStorageTypeOrder && !orderBooking.isCustomerDelivery)
                   Row(
                     children: [
                       CustomText(

@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/request.dart';
+import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/models/extend_request_model.dart';
 import 'package:rssms/views/extend_request_view.dart';
 
@@ -14,14 +15,16 @@ class ExtendRequestPresenter {
     model = ExtendRequestModel();
   }
 
-  Future<void> getRequest(String id, String idToken) async {
+  Future<void>  getRequest(String id, String idToken) async {
     view!.changeLoadingStatus();
     try {
       final responseRequest = await model!.getRequestById(idToken, id);
       if (responseRequest.statusCode == 200) {
         final decodedReponse = jsonDecode(responseRequest.body);
         Request? request = Request.fromMap(decodedReponse);
+        Invoice invoice = Invoice.fromRequest(decodedReponse);
         model!.request = request;
+        model!.invoice = invoice;
       } else if (responseRequest.statusCode >= 500) {
         throw Exception("Máy chủ bị lỗi vui lòng thử lại sau");
       }
@@ -50,9 +53,10 @@ class ExtendRequestPresenter {
     }
   }
 
-  Future<dynamic> cancelRequest(String idToken, String id) async {
+  Future<dynamic> cancelRequest(
+      Map<String, dynamic> dataRequest, Invoice invoice, Users user) async {
     try {
-      return await model!.cancelRequest(idToken, id);
+      return await model!.cancelRequest(dataRequest, user);
     } catch (e) {
       throw Exception(e);
     }

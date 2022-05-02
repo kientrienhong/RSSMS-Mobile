@@ -228,6 +228,40 @@ class InvoiceInfoWidget extends StatelessWidget {
               borderRadius: 6),
         ],
       ),
+      CustomSizedBox(
+        context: context,
+        height: 24,
+      ),
+      if (invoice.rejectedReason.isNotEmpty)
+        Align(
+          alignment: Alignment.topLeft,
+          child: CustomText(
+              text: "Lý do hủy:",
+              color: Colors.black,
+              context: context,
+              fontWeight: FontWeight.bold,
+              fontSize: 17),
+        ),
+      if (invoice.rejectedReason.isNotEmpty)
+        CustomSizedBox(
+          context: context,
+          height: 10,
+        ),
+      if (invoice.rejectedReason.isNotEmpty)
+        Align(
+          alignment: Alignment.topLeft,
+          child: CustomText(
+              text: invoice.rejectedReason,
+              color: CustomColor.black,
+              maxLines: 20,
+              context: context,
+              fontSize: 15),
+        ),
+      if (invoice.rejectedReason.isNotEmpty)
+        CustomSizedBox(
+          context: context,
+          height: 24,
+        ),
     ]);
   }
 }

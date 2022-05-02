@@ -10,9 +10,13 @@ import 'package:rssms/constants/constants.dart' as constants;
 
 class ApiServices {
   ApiServices._();
+
+//  static const _domain = 'https://rssmsapi20220426221036.azurewebsites.net';
   static const _domain = 'https://rssmsapi20220426221036.azurewebsites.net';
+
   // static const _domain = 'https://localhost:44304';
 
+  // static const _domain = 'https://localhost:44304';
   static Future<dynamic> logInWithEmail(
       String email, String password, String deviceToken) {
     try {
@@ -270,8 +274,6 @@ class ApiServices {
         'Authorization': 'Bearer $idToken'
       };
 
-      log(jsonEncode(dataRequest));
-
       final url = Uri.parse('$_domain/api/v1/orders/assign to floor');
       return http.post(
         url,
@@ -340,6 +342,7 @@ class ApiServices {
           "type": extendInvoice["type"],
           "status": extendInvoice["status"],
           "note": extendInvoice["note"],
+          "typeOrder": extendInvoice["typeOrder"]
         }),
         headers: headers,
       );
@@ -361,6 +364,7 @@ class ApiServices {
         "isPaid": orderBooking.isPaid,
         "isCustomerDelivery": orderBooking.isCustomerDelivery,
         "orderId": null,
+        "storageId": orderBooking.storageId,
         "totalPrice": orderBooking.deliveryFee + orderBooking.totalPrice,
         "customerId": user.userId,
         "deliveryAddress": orderBooking.addressDelivery,
@@ -480,7 +484,7 @@ class ApiServices {
     }
   }
 
-  static Future<dynamic> updateProfile(
+  static Future<dynamic> updateProfileDeliveryStaff(
       String fullname,
       String phone,
       DateTime birthday,
@@ -506,6 +510,38 @@ class ApiServices {
             "address": address,
             "phone": phone,
             "image": image
+          }));
+    } catch (e) {
+      log(e.toString());
+      throw Exception('Update Failed');
+    }
+  }
+
+  static Future<dynamic> updateProfile(
+    String fullname,
+    String phone,
+    DateTime birthday,
+    int gender,
+    String address,
+    String idToken,
+    String userId,
+  ) {
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        'Authorization': 'Bearer $idToken'
+      };
+
+      final url = Uri.parse('$_domain/api/v1/accounts/$userId');
+      return http.put(url,
+          headers: headers,
+          body: jsonEncode({
+            "id": userId,
+            "name": fullname,
+            "gender": gender,
+            "birthdate": birthday.toIso8601String(),
+            "address": address,
+            "phone": phone,
           }));
     } catch (e) {
       log(e.toString());
@@ -625,6 +661,31 @@ class ApiServices {
     } catch (e) {
       log(e.toString());
       throw Exception('Get Notification Failed');
+    }
+  }
+
+  static Future<dynamic> checkAddress(List<Map<String, dynamic>> listProduct,
+      Invoice invoice, Users user, String returnAddress) {
+    try {
+      Map<String, String> headers = {
+        "Content-type": "application/json",
+        'Authorization': 'Bearer ${user.idToken}'
+      };
+      final url = Uri.parse('$_domain/api/v1/requests/get-storage-available');
+
+      return http.post(
+        url,
+        body: jsonEncode({
+          "isCustomerDelivery": invoice.isUserDelivery,
+          "orderId": invoice.id,
+          "returnAddress": returnAddress,
+          "requestDetails": listProduct,
+          'type': constants.REQUEST_TYPE.returnOrder.index
+        }),
+        headers: headers,
+      );
+    } catch (e) {
+      throw Exception(e.toString());
     }
   }
 

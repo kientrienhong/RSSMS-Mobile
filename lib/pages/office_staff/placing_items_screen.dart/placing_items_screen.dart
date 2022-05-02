@@ -132,7 +132,7 @@ class _PlacingItemsScreenState extends State<PlacingItemsScreen>
             return;
           }
         }
-        placingItems.import.importDeliveryBy = _model.deliveryStaff.name;
+        placingItems.import.importDeliveryBy =  _model.deliveryStaff.roleName == "Customer" ? "Khách tự vận chuyển": _model.deliveryStaff.name;
         placingItems.import.importStaff = user.name!;
         Navigator.push(
           context,
@@ -158,7 +158,7 @@ class _PlacingItemsScreenState extends State<PlacingItemsScreen>
           placingItems.storedItems['typeOrder'] ==
               constants.doorToDoorTypeOrder) {
         setState(() {
-          _model.error = "Vui lòng quét mã trên nhân viên vận chuyển!";
+          _model.error = "Vui lòng chọn người đem hàng đến kho!";
         });
       }
     }

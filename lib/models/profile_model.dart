@@ -73,10 +73,10 @@ class ProfileModel {
     isEditAvatar = false;
   }
 
-  Future<dynamic> updateProfile(int gender, DateTime birthday,
+  Future<dynamic> updateProfileDeliveryStaff(int gender, DateTime birthday,
       Map<String, dynamic> image, String idToken, String userId) async {
     try {
-      return await ApiServices.updateProfile(
+      return await ApiServices.updateProfileDeliveryStaff(
           controllerFullname.text,
           controllerPhone.text,
           birthday,
@@ -85,6 +85,22 @@ class ProfileModel {
           idToken,
           userId,
           image);
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future<dynamic> updateProfile(
+      int gender, DateTime birthday, String idToken, String userId) async {
+    try {
+      return await ApiServices.updateProfile(
+          controllerFullname.text,
+          controllerPhone.text,
+          birthday,
+          gender,
+          controllerStreet.text,
+          idToken,
+          userId);
     } catch (e) {
       throw Exception(e);
     }

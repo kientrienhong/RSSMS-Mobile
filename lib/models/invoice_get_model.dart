@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:rssms/api/api_services.dart';
+import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/user.dart';
 
 class InvoiceGetModel {
@@ -7,12 +8,15 @@ class InvoiceGetModel {
   late TextEditingController _controllerBirthDate;
   late TextEditingController _controllerStreet;
   late String _error;
-
+  late double deliveryFee;
+  late bool isAfter;
   InvoiceGetModel() {
     isLoadingButton = false;
     _controllerBirthDate = TextEditingController();
     _controllerStreet = TextEditingController();
     _error = '';
+    isAfter = false;
+    deliveryFee = 0;
   }
 
   get error => _error;
@@ -34,5 +38,11 @@ class InvoiceGetModel {
   Future<dynamic> createGetInvoicedRequest(
       Map<String, dynamic> request, Users user) async {
     return await ApiServices.createGetInvoicedRequest(request, user);
+  }
+
+  Future<dynamic> checkAddress(List<Map<String, dynamic>> listProduct,
+      Invoice invoice, Users user, String returnAddress) async {
+    return await ApiServices.checkAddress(
+        listProduct, invoice, user, returnAddress);
   }
 }

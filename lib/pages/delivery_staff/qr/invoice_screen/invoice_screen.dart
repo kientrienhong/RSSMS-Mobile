@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
@@ -79,7 +80,15 @@ class _QRInvoiceDetailsScreenState extends State<QRInvoiceDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     Invoice invoice = Provider.of<Invoice>(context, listen: false);
-    Invoice invoiceUI = invoice;
+    Invoice invoiceUI = invoice;  
+    // bool isAllowCreateOrder = invoice.deliveryDate.split("T")[0] == DateFormat("yyyy-MM-dd").format(DateTime.now());
+     bool isAllowCreateOrder = true;
+
+    if(invoice.isUserDelivery){
+      if(!isAllowCreateOrder){
+        
+      }
+    }
     final deviceSize = MediaQuery.of(context).size;
     if (widget.isDone) invoiceUI = formatUIInvoice(invoice);
     return Scaffold(
@@ -146,7 +155,7 @@ class _QRInvoiceDetailsScreenState extends State<QRInvoiceDetailsScreen> {
                       height: 16,
                     ),
                     UIUtils.buildErrorUI(error: error, context: context),
-                    if (widget.isScanQR == true)
+                    if (widget.isScanQR == true && isAllowCreateOrder)
                       // if (invoice.status == constants.ASSIGNED)
                       Center(
                         child: CustomButton(

@@ -84,8 +84,9 @@ class _ImportExportInfoState extends State<ImportExportInfo> {
           ));
           return;
         } else {
-          widget.updateStaff!(_model.deliveryStaff);
-          setState(() {});
+          setState(() {
+            widget.updateStaff!(_model.deliveryStaff);
+          });
         }
       } else {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -227,7 +228,7 @@ class _ImportExportInfoState extends State<ImportExportInfo> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             CustomText(
-                text: "Nhân viên vận chuyển",
+                text: "Người vận chuyển",
                 color: CustomColor.black,
                 context: context,
                 fontWeight: FontWeight.bold,
@@ -250,7 +251,7 @@ class _ImportExportInfoState extends State<ImportExportInfo> {
                 widget.export!.exportDeliveryBy != '' &&
                 !widget.isView)
               CustomText(
-                text: _model.deliveryStaff.name,
+                text: _model.deliveryStaff.roleName,
                 color: CustomColor.black,
                 context: context,
                 fontSize: 16,

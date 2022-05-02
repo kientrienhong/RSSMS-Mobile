@@ -90,7 +90,6 @@ class InvoiceProductWidget extends StatelessWidget {
         deliveryFee = invoice.deliveryFee;
       }
     }
-
     return Container(
       decoration: BoxDecoration(
           border: Border.all(color: CustomColor.blue, width: 2),
@@ -406,21 +405,7 @@ class InvoiceProductWidget extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     fontSize: 19),
                 CustomText(
-                    text: invoice.typeOrder == TypeOrder.doorToDoor.index
-                        ? oCcy.format(totalProduct *
-                                    (returnDate
-                                                .difference(deliveryDate)
-                                                .inDays /
-                                            30)
-                                        .ceil() +
-                                totalAccessory +
-                                takingAdditionalFee +
-                                invoice.deliveryFee) +
-                            " đ"
-                        : oCcy.format(totalProduct * invoice.durationMonths +
-                                totalAccessory +
-                                takingAdditionalFee) +
-                            " đ",
+                    text: oCcy.format(invoice.totalPrice).toString() + " đ",
                     color: CustomColor.blue,
                     context: context,
                     fontWeight: FontWeight.bold,
@@ -441,34 +426,12 @@ class InvoiceProductWidget extends StatelessWidget {
                       context: context,
                       fontWeight: FontWeight.bold,
                       fontSize: 17),
-                  invoice.typeOrder == constants.doorToDoorTypeOrder
-                      ? CustomText(
-                          text: oCcy.format((totalProduct *
-                                          (returnDate
-                                                      .difference(deliveryDate)
-                                                      .inDays /
-                                                  30)
-                                              .ceil() +
-                                      totalAccessory +
-                                      takingAdditionalFee +
-                                      invoice.deliveryFee) *
-                                  0.5) +
-                              " đ",
-                          color: CustomColor.blue,
-                          context: context,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 17)
-                      : CustomText(
-                          text: oCcy.format((totalProduct *
-                                          invoice.durationMonths +
-                                      totalAccessory +
-                                      takingAdditionalFee ) *
-                                  0.5) +
-                              " đ",
-                          color: CustomColor.blue,
-                          context: context,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 17),
+                  CustomText(
+                      text: oCcy.format(invoice.advanceMoney) + " đ",
+                      color: CustomColor.blue,
+                      context: context,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 17)
                 ],
               ),
             if (returningAdditionalFee > 0)

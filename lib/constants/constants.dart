@@ -39,7 +39,6 @@ const List<Map<String, String>> listDeliveryBottomNavigation = [
   {'url': "assets/images/profile.png", 'label': 'Thông tin tài khoản'},
   {'url': "assets/images/deliveryNav.png", 'label': 'Lịch giao'},
   {'url': "assets/images/qrCode.png", 'label': 'QR'},
-  {'url': "assets/images/notification.png", 'label': 'Thông báo'},
 ];
 
 const List<Map<String, String>> listOfficeBottomNavigation = [

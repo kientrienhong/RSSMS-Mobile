@@ -1,7 +1,7 @@
 import 'package:rssms/api/api_services.dart';
-import 'package:rssms/constants/constants.dart';
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/request.dart';
+import 'package:rssms/models/entity/user.dart';
 
 class ExtendRequestModel {
   Invoice? invoice;
@@ -28,10 +28,10 @@ class ExtendRequestModel {
     }
   }
 
-  Future<dynamic> cancelRequest(String idToken, String id) async {
+  Future<dynamic> cancelRequest(
+      Map<String, dynamic> dataRequest, Users user) async {
     try {
-      return await ApiServices.updateRequest(
-          id, idToken, STATUS_REQUEST.canceled.index);
+      return await ApiServices.cancelOrder(user.idToken!, dataRequest);
     } catch (e) {
       throw Exception(e);
     }

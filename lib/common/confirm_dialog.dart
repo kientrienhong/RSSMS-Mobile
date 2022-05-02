@@ -56,7 +56,6 @@ class _ConfirmDialogState extends State<ConfirmDialog>
   @override
   void onPressConfirm() async {
     Users user = Provider.of<Users>(context, listen: false);
-
     bool result = await _presenter.onClickConfirm(widget.id, user.idToken!);
     if (result) {
       CustomSnackBar.buildSnackbar(
