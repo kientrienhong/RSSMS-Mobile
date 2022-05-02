@@ -12,11 +12,11 @@ class ApiServices {
   ApiServices._();
 
 //  static const _domain = 'https://rssmsapi20220426221036.azurewebsites.net';
-  static const _domain = 'https://rssmsapi20220426221036.azurewebsites.net';
+  // static const _domain = 'https://rssmsapi20220426221036.azurewebsites.net';
 
   // static const _domain = 'https://localhost:44304';
 
-  // static const _domain = 'https://localhost:44304';
+  static const _domain = 'https://localhost:44304';
   static Future<dynamic> logInWithEmail(
       String email, String password, String deviceToken) {
     try {
@@ -273,6 +273,8 @@ class ApiServices {
         "Content-type": "application/json",
         'Authorization': 'Bearer $idToken'
       };
+
+      log(jsonEncode(dataRequest));
 
       final url = Uri.parse('$_domain/api/v1/orders/assign to floor');
       return http.post(

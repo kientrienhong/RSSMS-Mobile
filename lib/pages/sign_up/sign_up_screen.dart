@@ -130,8 +130,6 @@ class _FormSignUpState extends State<FormSignUp> implements SignUpView {
       }
     } catch (e) {
       log(e.toString());
-      signupPresenter.view
-          .updateViewErrorMsg("Đã có lỗi xảy ra, vui lòng thử lại sau!");
     }
   }
 

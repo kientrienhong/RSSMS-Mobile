@@ -7,6 +7,10 @@ class ResponseHandle {
         'status': 'success',
         'data': jsonDecode(response.body),
       };
+    } else if (response.statusCode == 204) {
+      return {
+        'status': 'success',
+      };
     } else if (response.statusCode == 401) {
       return {
         'status': 'failed',

@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:rssms/helpers/response_handle.dart';
 import 'package:rssms/models/signup_model.dart';
 import 'package:rssms/views/signup_view.dart';
 import 'package:path_provider/path_provider.dart';
@@ -70,10 +71,13 @@ class SignUpPresenter {
           base64Encode(imageBytes),
           model.token);
 
-      if (response.statusCode == 200) {
-        return Users.fromMap(jsonDecode(response.body));
+      final result = ResponseHandle.handle(response);
+
+      if (result['status'] == 'success') {
+        return Users.fromMap(result['data']);
+      } else {
+        view.updateViewErrorMsg(result['data']);
       }
-      throw Exception(response.body.toString());
     } catch (e) {
       throw Exception(e.toString());
     } finally {
