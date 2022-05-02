@@ -89,6 +89,7 @@ class _ProductWidgetState extends State<ProductWidget> implements ProductView {
       return orderBooking.productOrder['product']![foundItem]['note'];
     }
 
+    print(widget.product!.imageUrl);
     return AnimatedContainer(
       curve: Curves.easeOut,
       duration: const Duration(milliseconds: 400),

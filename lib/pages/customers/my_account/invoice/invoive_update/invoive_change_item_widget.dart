@@ -132,7 +132,7 @@ class _ChangeItemWidgetState extends State<ChangeItemWidget>
     Map<String, dynamic> request = {
       "orderId": widget.invoice!.id,
       "isCustomerDedlivery": false,
-      "deliveryAddress": _model.controllerStreet.text,
+      "deliveryAddress": _model.street,
       "deliveryTime": constants.listPickUpTime[_currentIndex],
       "deliveryDate": DateFormat("dd-MM-yyyy")
           .parse(date![2] + "-" + date[1] + '-' + date[0]),
@@ -161,9 +161,9 @@ class _ChangeItemWidgetState extends State<ChangeItemWidget>
   }
 
   @override
-  void onClickCheckAddress() {
+  void onClickCheckAddress() async {
     Users user = Provider.of<Users>(context, listen: false);
-    _presenter.onClickCheckAddress(widget.invoice!, user);
+    await _presenter.onClickCheckAddress(widget.invoice!, user);
   }
 
   @override

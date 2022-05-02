@@ -522,7 +522,7 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                               color: CustomColor.black,
                               context: context,
                               fontWeight: FontWeight.bold,
-                              fontSize: 16),
+                              fontSize: 18),
                           invoice.typeOrder == constant.doorToDoorTypeOrder
                               ? SizedBox(
                                   width: deviceSize.width / 2.5,
@@ -649,7 +649,7 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                           color: CustomColor.black,
                           context: context,
                           fontWeight: FontWeight.bold,
-                          fontSize: 16),
+                          fontSize: 18),
                       CustomText(
                           text: DateFormat('dd/MM/yyyy')
                                   .parse(_model.returnDateController.text)
@@ -805,7 +805,7 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     CustomText(
-                      text: "Chí phí thêm",
+                      text: "Chi phí thêm",
                       color: CustomColor.black,
                       context: context,
                       fontSize: 18,
@@ -866,7 +866,7 @@ class _UpdateInvoiceScreenState extends State<UpdateInvoiceScreen>
                             text: "Bồi thường",
                             color: CustomColor.black,
                             context: context,
-                            fontSize: 20,
+                            fontSize: 18,
                             fontWeight: FontWeight.bold,
                           ),
                           Checkbox(

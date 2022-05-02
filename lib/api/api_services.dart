@@ -12,11 +12,11 @@ class ApiServices {
   ApiServices._();
 
 //  static const _domain = 'https://rssmsapi20220426221036.azurewebsites.net';
-  static const _domain = 'https://rssmsapi20220426221036.azurewebsites.net';
+  // static const _domain = 'https://rssmsapi20220426221036.azurewebsites.net';
 
   // static const _domain = 'https://localhost:44304';
 
-  // static const _domain = 'https://localhost:44304';
+  static const _domain = 'https://localhost:44304';
   static Future<dynamic> logInWithEmail(
       String email, String password, String deviceToken) {
     try {

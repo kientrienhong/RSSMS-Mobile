@@ -50,7 +50,8 @@ class _ItemTabState extends State<ItemTab> {
     List<Widget> mapInvoiceWidget(List<OrderDetail> listOrderDetail) =>
         listOrderDetail
             .where((element) =>
-                element.productType == constants.typeProduct.handy.index)
+                element.productType == constants.typeProduct.handy.index ||
+                element.productType == constants.typeProduct.unweildy.index)
             .map((e) =>
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                   e.status == 0
@@ -62,15 +63,13 @@ class _ItemTabState extends State<ItemTab> {
                           fontSize: 16)
                       : SizedBox(
                           width: deviceSize.width,
-                          child: Flexible(
-                            child: CustomText(
-                                maxLines: 2,
-                                text:
-                                    'Vị trí: ${e.nameStorage} / ${e.nameArea} / ${e.nameSpace} / ${e.nameFloor}',
-                                color: CustomColor.black,
-                                context: context,
-                                fontSize: 16),
-                          ),
+                          child: CustomText(
+                              maxLines: 2,
+                              text:
+                                  'Vị trí: ${e.nameStorage} / ${e.nameArea} / ${e.nameSpace} / ${e.nameFloor}',
+                              color: CustomColor.black,
+                              context: context,
+                              fontSize: 16),
                         ),
                   CustomSizedBox(
                     context: context,

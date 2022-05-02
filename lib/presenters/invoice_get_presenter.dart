@@ -32,7 +32,7 @@ class InvoiceGetPresenter {
     }
   }
 
-  Future<void> onClickCheckAddress(Invoice invoice, Users user) async {
+  Future<bool> onClickCheckAddress(Invoice invoice, Users user) async {
     view.updateStatusButton();
     try {
       List<Map<String, dynamic>> listServices = [];
@@ -49,11 +49,15 @@ class InvoiceGetPresenter {
       final result = ResponseHandle.handle(response);
       if (result['status'] == 'success') {
         model.deliveryFee = result['data'][0]['deliveryFee'];
+        model.street = model.controllerStreet.text;
+        return true;
       } else {
         view.updateError(result['data']);
+        return false;
       }
     } catch (e) {
       log(e.toString());
+      return false;
     } finally {
       view.updateStatusButton();
     }

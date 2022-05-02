@@ -102,7 +102,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> implements InvoiceView {
             padding: const EdgeInsets.symmetric(vertical: 20),
             child: Center(
               child: CustomText(
-                  text: "Hiện vẫn chưa có yêu cầu",
+                  text: "Hiện vẫn chưa có đơn hàng",
                   color: CustomColor.black,
                   context: context,
                   fontSize: 16),
