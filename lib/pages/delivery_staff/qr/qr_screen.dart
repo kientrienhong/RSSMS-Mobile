@@ -69,14 +69,14 @@ class _QrScreenState extends State<QrScreen> implements QRInvoiceView {
 
     bool isDone = false;
     Invoice invoice = Provider.of<Invoice>(context, listen: false);
-    if (_presenter.model.invoice!.orderId!.isNotEmpty &&
-        _presenter.model.invoice!.status != 0) {
+    if (_presenter.model.invoice.orderId!.isNotEmpty &&
+        _presenter.model.invoice.status != 0) {
       result =
-          await _presenter.loadInvoice(user.idToken!, _model.invoice!.orderId!);
+          await _presenter.loadInvoice(user.idToken!, _model.invoice.orderId!);
       isDone = true;
     }
     if (result) {
-      invoice.setInvoice(invoice: _presenter.model.invoice!);
+      invoice.setInvoice(invoice: _presenter.model.invoice);
       Navigator.push(
         context,
         MaterialPageRoute(

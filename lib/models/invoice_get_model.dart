@@ -10,6 +10,7 @@ class InvoiceGetModel {
   late String _error;
   late double deliveryFee;
   late bool isAfter;
+  late String street;
   InvoiceGetModel() {
     isLoadingButton = false;
     _controllerBirthDate = TextEditingController();
@@ -17,6 +18,7 @@ class InvoiceGetModel {
     _error = '';
     isAfter = false;
     deliveryFee = 0;
+    street = _controllerStreet.text;
   }
 
   get error => _error;
