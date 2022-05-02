@@ -78,7 +78,6 @@ class _InvoiceTabState extends State<InvoiceTab> {
                 context: context,
                 height: 16,
               ),
-              
               InvoiceProductWidget(
                   isInvoice: true,
                   deviceSize: widget.deviceSize,
@@ -117,7 +116,8 @@ class _InvoiceTabState extends State<InvoiceTab> {
                   if (widget.invoice.status != 0 &&
                       user.roleName == 'Customer' &&
                       widget.invoice.status != 8 &&
-                      widget.invoice.status != 7)
+                      widget.invoice.status != 7 &&
+                      widget.returnRequest!.status == 0)
                     Center(
                       child: CustomButton(
                           height: 24,

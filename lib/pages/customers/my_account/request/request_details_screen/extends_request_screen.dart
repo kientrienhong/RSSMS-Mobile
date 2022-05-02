@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:rssms/common/confirm_dialog.dart';
 import 'package:rssms/common/custom_color.dart';
@@ -70,7 +71,8 @@ class _ExtendRequestScreenState extends State<ExtendRequestScreen>
     listProduct = listTemp
         .where((element) =>
             element.productType == constants.typeProduct.handy.index ||
-            element.productType == constants.typeProduct.unweildy.index)
+            element.productType == constants.typeProduct.unweildy.index ||
+            element.productType == constants.typeProduct.selfStorage.index)
         .toList();
     setState(() {});
   }
@@ -85,10 +87,10 @@ class _ExtendRequestScreenState extends State<ExtendRequestScreen>
     setState(() {});
   }
 
+  final oCcy = NumberFormat("#,##0", "en_US");
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
-
     return Scaffold(
       body: SingleChildScrollView(
           child: Container(
@@ -181,48 +183,64 @@ class _ExtendRequestScreenState extends State<ExtendRequestScreen>
                               ),
                               CustomSizedBox(
                                 context: context,
-                                height: 10,
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  CustomText(
-                                      text: "Tạm tính",
-                                      color: Colors.black,
-                                      context: context,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16),
-                                  CustomText(
-                                      text: "100,000 đ",
-                                      color: Colors.black,
-                                      context: context,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16),
-                                ],
-                              ),
-                              CustomSizedBox(
-                                context: context,
                                 height: 16,
                               ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  CustomText(
-                                      text: "Số tháng muốn gia hạn",
-                                      color: Colors.black,
-                                      context: context,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16),
-                                  CustomText(
-                                      text: "5 tháng",
-                                      color: Colors.black,
-                                      context: context,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16),
-                                ],
-                              ),
+                              _model!.invoice!.typeOrder ==
+                                      constants.doorToDoorTypeOrder
+                                  ? Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        CustomText(
+                                            text: "Số ngày muốn gia hạn",
+                                            color: Colors.black,
+                                            context: context,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16),
+                                        CustomText(
+                                            text: DateTime.parse(_model!
+                                                        .request!.returnDate)
+                                                    .difference(DateTime.parse(
+                                                        _model!.request!
+                                                            .oldReturnDate))
+                                                    .inDays
+                                                    .toString() +
+                                                " ngày",
+                                            color: Colors.black,
+                                            context: context,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16),
+                                      ],
+                                    )
+                                  : Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        CustomText(
+                                            text: "Số tháng muốn gia hạn",
+                                            color: Colors.black,
+                                            context: context,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16),
+                                        CustomText(
+                                            text: ((DateTime.parse(_model!
+                                                                .request!
+                                                                .returnDate)
+                                                            .difference(DateTime
+                                                                .parse(_model!
+                                                                    .request!
+                                                                    .oldReturnDate))
+                                                            .inDays) /
+                                                        30)
+                                                    .floor()
+                                                    .toString() +
+                                                " tháng",
+                                            color: Colors.black,
+                                            context: context,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16),
+                                      ],
+                                    ),
                               CustomSizedBox(
                                 context: context,
                                 height: 6,
@@ -245,7 +263,11 @@ class _ExtendRequestScreenState extends State<ExtendRequestScreen>
                                       fontWeight: FontWeight.bold,
                                       fontSize: 16),
                                   CustomText(
-                                      text: "500,000 đ",
+                                      text: oCcy
+                                              .format(
+                                                  _model!.request!.totalPrice)
+                                              .toString() +
+                                          " đ",
                                       color: CustomColor.blue,
                                       context: context,
                                       fontWeight: FontWeight.bold,
@@ -269,8 +291,8 @@ class _ExtendRequestScreenState extends State<ExtendRequestScreen>
                                 fontWeight: FontWeight.bold,
                                 fontSize: 18),
                             CustomText(
-                                text: _model!.invoice!.returnDate.substring(0,
-                                    _model!.invoice!.returnDate.indexOf("T")),
+                                text: _model!.request!.oldReturnDate
+                                    .split("T")[0],
                                 color: CustomColor.black,
                                 context: context,
                                 fontWeight: FontWeight.bold,
@@ -297,8 +319,7 @@ class _ExtendRequestScreenState extends State<ExtendRequestScreen>
                               ),
                             ),
                             CustomText(
-                                text: _model!.request!.returnDate.substring(0,
-                                    _model!.request!.returnDate.indexOf("T")),
+                                text: _model!.request!.returnDate.split("T")[0],
                                 color: CustomColor.black,
                                 context: context,
                                 fontWeight: FontWeight.bold,

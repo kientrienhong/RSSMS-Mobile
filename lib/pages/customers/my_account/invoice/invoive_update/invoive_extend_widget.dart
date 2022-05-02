@@ -114,6 +114,7 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
         "orderId": widget.invoice!.id,
         "type": 2,
         "status": 1,
+        "typeOrder": widget.invoice!.typeOrder,
         "note": "",
         "totalPrice": totalProduct * durationMonth!
       };
@@ -140,7 +141,9 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
               MaterialPageRoute(
                   builder: (context) => const CustomBottomNavigation(
                         listIndexStack: [
-                          MyAccountScreen(initIndex: 2,),
+                          MyAccountScreen(
+                            initIndex: 2,
+                          ),
                           CartScreen(),
                           NotificationDeliveryScreen(),
                         ],
@@ -195,6 +198,7 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
+
     return Column(
       children: [
         Column(

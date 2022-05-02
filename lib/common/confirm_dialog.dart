@@ -4,7 +4,6 @@ import 'package:rssms/common/custom_button.dart';
 import 'package:rssms/common/custom_color.dart';
 import 'package:rssms/common/custom_snack_bar.dart';
 import 'package:rssms/common/custom_text.dart';
-import 'package:rssms/constants/constants.dart';
 import 'package:rssms/models/confirm_dialog_model.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/presenters/confirm_dialog_presenter.dart';

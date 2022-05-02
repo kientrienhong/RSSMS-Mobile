@@ -90,14 +90,6 @@ class InvoiceProductWidget extends StatelessWidget {
         deliveryFee = invoice.deliveryFee;
       }
     }
-    double totalPriceDoorToDoor = totalProduct *
-            (returnDate.difference(deliveryDate).inDays / 30).ceil() +
-        totalAccessory +
-        takingAdditionalFee +
-        invoice.deliveryFee;
-    double totalPriceSelfStorage = totalProduct * invoice.durationMonths +
-        totalAccessory +
-        takingAdditionalFee;
     return Container(
       decoration: BoxDecoration(
           border: Border.all(color: CustomColor.blue, width: 2),

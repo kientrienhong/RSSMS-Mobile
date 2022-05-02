@@ -81,7 +81,9 @@ class _QRInvoiceDetailsScreenState extends State<QRInvoiceDetailsScreen> {
   Widget build(BuildContext context) {
     Invoice invoice = Provider.of<Invoice>(context, listen: false);
     Invoice invoiceUI = invoice;  
-    bool isAllowCreateOrder = invoice.deliveryDate.split("T")[0] == DateFormat("yyyy-MM-dd").format(DateTime.now());
+    // bool isAllowCreateOrder = invoice.deliveryDate.split("T")[0] == DateFormat("yyyy-MM-dd").format(DateTime.now());
+     bool isAllowCreateOrder = true;
+
     if(invoice.isUserDelivery){
       if(!isAllowCreateOrder){
         
