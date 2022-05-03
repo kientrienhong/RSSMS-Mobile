@@ -6,6 +6,7 @@ import 'package:rssms/common/custom_sizebox.dart';
 import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/models/entity/area.dart';
 import 'package:rssms/models/entity/floor.dart';
+import 'package:rssms/models/entity/space.dart';
 import 'package:rssms/models/entity/user.dart';
 import 'package:rssms/pages/office_staff/floor_details_screen/floor_detail_screen.dart';
 import 'package:rssms/pages/office_staff/placing_items_screen.dart/placing_items_screen.dart';
@@ -15,9 +16,11 @@ class FloorWidget extends StatelessWidget {
   final String areaName;
   final Function getListSpace;
   final Area area;
+  final Space space;
   const FloorWidget(
       {Key? key,
       required this.getListSpace,
+      required this.space,
       required this.floor,
       required this.area,
       required this.areaName})
@@ -133,6 +136,7 @@ class FloorWidget extends StatelessWidget {
                                   'length': floor.length
                                 },
                                 floorName: floor.name,
+                                spaceName: space.name,
                                 isView: false,
                               )),
                     ).then((value) {

@@ -171,9 +171,11 @@ class _InvoiveExtendWidgetState extends State<InvoiveExtendWidget>
     date = await showDatePicker(
       context: context,
       initialDate: DateFormat("yyyy-MM-dd")
-          .parse(widget.invoice!.returnDate.split('T')[0]),
+          .parse(widget.invoice!.returnDate.split('T')[0])
+          .add(const Duration(days: 1)),
       firstDate: DateFormat("yyyy-MM-dd")
-          .parse(widget.invoice!.returnDate.split('T')[0]),
+          .parse(widget.invoice!.returnDate.split('T')[0])
+          .add(const Duration(days: 1)),
       lastDate: DateTime(2100),
     );
     if (date != null) {

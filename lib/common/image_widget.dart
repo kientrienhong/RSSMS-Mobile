@@ -405,6 +405,7 @@ class _ImageWidgetState extends State<ImageWidget> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
+                        if(widget.addRemovingItem != null)
                         TextButton(
                             onPressed: () {
                               widget.addRemovingItem!();

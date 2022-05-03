@@ -19,6 +19,7 @@ class StoreItemsButton extends StatelessWidget {
                 builder: (context) => PlacingItemsScreen(
                       area: Area.empty(),
                       floorId: '',
+                      spaceName: '',
                       floorName: '',
                       sizeOfFloor: const {},
                       isView: true,

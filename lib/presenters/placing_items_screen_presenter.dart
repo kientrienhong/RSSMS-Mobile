@@ -67,7 +67,7 @@ class PlacingItemsScreenPresenter {
   }
 
   bool onPressPlace(PlacingItems placingItems, Map<String, double> sizeOfFloor,
-      OrderDetail orderDetail, String floorId, Area area, String floorName) {
+      OrderDetail orderDetail, String floorId, Area area, String floorName, String spaceName) {
     if (orderDetail.length! > sizeOfFloor['length']! ||
         orderDetail.height! > sizeOfFloor['height']! ||
         orderDetail.width! > sizeOfFloor['width']!) {
@@ -86,7 +86,7 @@ class PlacingItemsScreenPresenter {
     }
 
     placingItems.placeItems(floorId, orderDetail.id,
-        {'areaName': area.name, 'floorName': floorName, 'floorId': floorId});
+        {'areaName': area.name, 'floorName': floorName, 'floorId': floorId, 'spaceName': spaceName});
     return true;
   }
 

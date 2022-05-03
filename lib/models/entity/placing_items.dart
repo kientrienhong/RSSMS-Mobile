@@ -81,6 +81,8 @@ class PlacingItems with ChangeNotifier {
     placingOrderTemp['amount'] = 1;
     placingOrderTemp['note'] = '';
     placingOrderTemp['areaName'] = currentPosition['areaName'];
+    placingOrderTemp['spaceName'] = currentPosition['spaceName'];
+
     placingOrderTemp['floorName'] = currentPosition['floorName'];
     placingOrderTemp['floorId'] = currentPosition['floorId'];
     placingItems['floors'].add(placingOrderTemp);

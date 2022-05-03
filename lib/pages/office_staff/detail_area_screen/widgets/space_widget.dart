@@ -100,6 +100,7 @@ class _SpaceWidgetState extends State<SpaceWidget> {
                   return FloorWidget(
                     floor: widget.space.floors[index],
                     areaName: widget.areaName,
+                    space: widget.space,
                     getListSpace: widget.getListSpace,
                     area: widget.area,
                   );

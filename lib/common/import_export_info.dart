@@ -251,7 +251,7 @@ class _ImportExportInfoState extends State<ImportExportInfo> {
                 widget.export!.exportDeliveryBy != '' &&
                 !widget.isView)
               CustomText(
-                text: _model.deliveryStaff.roleName,
+                text: _model.deliveryStaff.name,
                 color: CustomColor.black,
                 context: context,
                 fontSize: 16,

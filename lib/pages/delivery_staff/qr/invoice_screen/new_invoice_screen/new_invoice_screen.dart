@@ -6,6 +6,7 @@ import 'package:rssms/common/custom_text.dart';
 import 'package:rssms/helpers/date_format.dart';
 import 'package:rssms/models/entity/invoice.dart';
 import 'package:rssms/models/entity/order_detail.dart';
+import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/invoice_product_widget%20copy.dart';
 import 'package:rssms/pages/customers/my_account/invoice/invoice_detail_screen/invoice_product_widget.dart';
 import 'package:rssms/constants/constants.dart' as constants;
 import 'package:rssms/pages/time_line/time_line_screen.dart';
@@ -232,9 +233,10 @@ class NewInvoiceScreen extends StatelessWidget {
                       context: context,
                       height: 16,
                     ),
-                    InvoiceProductWidget(
-                      isInvoice: true,
-                        deviceSize: deviceSize, invoice: newInvoice),
+                    InvoiceProductWidgetCreateOrder(
+                        isInvoice: true,
+                        deviceSize: deviceSize,
+                        invoice: newInvoice),
                     CustomSizedBox(
                       context: context,
                       height: 16,

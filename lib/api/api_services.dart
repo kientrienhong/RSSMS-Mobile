@@ -12,11 +12,11 @@ class ApiServices {
   ApiServices._();
 
 //  static const _domain = 'https://rssmsapi20220426221036.azurewebsites.net';
-  // static const _domain = 'https://rssmsapi20220426221036.azurewebsites.net';
+  static const _domain = 'https://rssmsapi20220426221036.azurewebsites.net';
 
   // static const _domain = 'https://localhost:44304';
 
-  static const _domain = 'https://localhost:44304';
+  // static const _domain = 'https://localhost:44304';
   static Future<dynamic> logInWithEmail(
       String email, String password, String deviceToken) {
     try {
@@ -255,7 +255,6 @@ class ApiServices {
         "Content-type": "application/json",
         'Authorization': 'Bearer $idToken'
       };
-
       final url = Uri.parse('$_domain/api/v1/orders');
       return http.post(
         url,
@@ -330,6 +329,18 @@ class ApiServices {
         "Content-type": "application/json",
         'Authorization': 'Bearer ${user.idToken}'
       };
+      log(jsonEncode({
+        "orderId": extendInvoice["orderId"],
+        "totalPrice": extendInvoice["totalPrice"],
+        "oldReturnDate": extendInvoice["oldReturnDate"].toIso8601String(),
+        "returnDate": extendInvoice["newReturnDate"].toIso8601String(),
+        "isPaid": extendInvoice['isPaid'],
+        // "cancelDay": extendInvoice["oldReturnDate"].toIso8601String(),
+        "type": extendInvoice["type"],
+        "status": extendInvoice["status"],
+        "note": extendInvoice["note"],
+        "typeOrder": extendInvoice["typeOrder"]
+      }));
 
       final url = Uri.parse('$_domain/api/v1/requests');
       return http.post(

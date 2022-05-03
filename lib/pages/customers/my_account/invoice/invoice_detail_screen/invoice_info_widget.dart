@@ -130,7 +130,7 @@ class InvoiceInfoWidget extends StatelessWidget {
               fontWeight: FontWeight.bold,
               fontSize: 17),
           SizedBox(
-            width: deviceSize.width * 1.5 / 3,
+            width: deviceSize.width * 1.5 / 3.1,
             child: CustomText(
               text: invoice.deliveryAddress,
               color: CustomColor.black,

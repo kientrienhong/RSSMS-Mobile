@@ -18,6 +18,7 @@ class RequestWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
     Widget _buildInformationRequest(Request request) {
+      final tet = request;
       List<Widget> inforRequest = [
         Row(
           children: [
@@ -29,6 +30,25 @@ class RequestWidget extends StatelessWidget {
                 fontSize: 16),
             CustomText(
                 text: DateFormatHelper.formatToVNDay(request.createdDate),
+                color: CustomColor.black,
+                context: context,
+                fontSize: 16),
+          ],
+        ),
+        CustomSizedBox(
+          context: context,
+          height: 8,
+        ),
+        Row(
+          children: [
+            CustomText(
+                text: 'Ngày hủy lịch: ',
+                color: CustomColor.black,
+                fontWeight: FontWeight.bold,
+                context: context,
+                fontSize: 16),
+            CustomText(
+                text: DateFormatHelper.formatToVNDay(request.deliveryDate),
                 color: CustomColor.black,
                 context: context,
                 fontSize: 16),
@@ -71,14 +91,14 @@ class RequestWidget extends StatelessWidget {
                         request: request!,
                       )));
         }
-        if (request!.type == constants.REQUEST_TYPE.cancelSchedule.index) {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => CancelledRequestScreen(
-                        request: request!,
-                      )));
-        }
+        // if (request!.type == constants.REQUEST_TYPE.cancelSchedule.index) {
+        //   Navigator.push(
+        //       context,
+        //       MaterialPageRoute(
+        //           builder: (context) => CancelledRequestScreen(
+        //                 request: request!,
+        //               )));
+        // }
         if (request!.type == constants.REQUEST_TYPE.returnOrder.index) {
           Navigator.push(
               context,

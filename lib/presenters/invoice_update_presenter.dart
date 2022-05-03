@@ -197,10 +197,31 @@ class InvoiceUpdatePresenter {
   }
 
   Map<String, dynamic> dateFormatHelperDoneOrderOfficeStaff(Invoice invoice) {
+    List<OrderAdditionalFee>? listOrderAdditionFee;
+    if (model.isAdditionFee || model.isCompensation) {
+      listOrderAdditionFee = [];
+    }
+
+    if (model.isAdditionFee) {
+      listOrderAdditionFee!.add(OrderAdditionalFee(
+          type: constants.ADDITION_FEE_TYPE.returningAdditionFee.index,
+          description: model.controllerAdditionFeeDescription.text,
+          price: double.parse(model.controllerAdditionFeePrice.text)));
+    }
+
+    if (model.isCompensation) {
+      listOrderAdditionFee!.add(OrderAdditionalFee(
+          type: constants.ADDITION_FEE_TYPE.compensationFee.index,
+          description: model.controllerCompensationFeeDescription.text,
+          price: double.parse(model.controllerCompensationFeePrice.text)));
+    }
+
     Map<String, dynamic> result = {
       "orderId": invoice.id,
       "requestId": invoice.requestId,
       'status': 6,
+      "orderAdditionalFees":
+          listOrderAdditionFee?.map((e) => e.toMap()).toList()
     };
 
     return result;
@@ -237,7 +258,6 @@ class InvoiceUpdatePresenter {
       } else {
         return false;
       }
-      log(jsonEncode(dataRequest));
       var response = await model.doneOrder(dataRequest, user.idToken!);
       if (response.statusCode == 200) {
         return true;

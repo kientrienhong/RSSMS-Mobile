@@ -23,11 +23,13 @@ import 'package:rssms/constants/constants.dart' as constants;
 class PlacingItemsScreen extends StatefulWidget {
   final String floorId;
   final String floorName;
+  final String spaceName;
   final Area area;
   final bool isView;
   final Map<String, double> sizeOfFloor;
   const PlacingItemsScreen(
       {Key? key,
+      required this.spaceName,
       required this.floorId,
       required this.sizeOfFloor,
       required this.area,
@@ -75,7 +77,7 @@ class _PlacingItemsScreenState extends State<PlacingItemsScreen>
         placingItems.storedItems['items'][index],
         widget.floorId,
         widget.area,
-        widget.floorName);
+        widget.floorName, widget.spaceName);
     if (result) {
       CustomSnackBar.buildSnackbar(
           context: context,
@@ -281,7 +283,7 @@ class _PlacingItemsScreenState extends State<PlacingItemsScreen>
                         physics: const NeverScrollableScrollPhysics(),
                         itemCount: items.storedItems['items'].length,
                         itemBuilder: (_, index) => ImageWidget(
-                            addRemovingItem: !widget.isView
+                            addRemovingItem: !widget.isView && !items.isMoving
                                 ? () {
                                     onClickAddLosing(index);
                                   }
@@ -339,7 +341,7 @@ class _PlacingItemsScreenState extends State<PlacingItemsScreen>
                               ),
                               CustomText(
                                 text:
-                                    '${items.placingItems['floors'][index]['areaName']} / ${items.placingItems['floors'][index]['floorName']}',
+                                    '${items.placingItems['floors'][index]['areaName']} /${items.placingItems['floors'][index]['spaceName']}/ ${items.placingItems['floors'][index]['floorName']}',
                                 color: CustomColor.blue,
                                 context: context,
                                 fontSize: 16,
